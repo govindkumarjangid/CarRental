@@ -1,0 +1,172 @@
+import { useAppContext } from "../context/AppContext";
+
+const Login = () => {
+	const {
+		setShowLogin,
+		axios,
+		setToken,
+		navigate,
+		loading,
+		setLoading,
+		useState,
+		useRef,
+		motion,
+		toast,
+	} = useAppContext();
+	const [state, setState] = useState("login");
+	const [name, setName] = useState("");
+	const [email, setEmail] = useState("");
+	const [password, setPassword] = useState("");
+	const ref = useRef(null);
+
+	const handleSubmit = async (e) => {
+		try {
+			e.preventDefault();
+			setLoading(true);
+			const { data } = await axios.post(`/api/user/${state}`, {
+				name,
+				email,
+				password,
+			});
+			if (data.success) {
+				navigate("/");
+				setToken(data.token);
+				localStorage.setItem("token", data.token);
+				toast.success("Login successful");
+				setShowLogin(false);
+			} else {
+				toast.error(data.message);
+			}
+		} catch (error) {
+			toast.error(error.message);
+		} finally {
+			setLoading(false);
+		}
+	};
+
+	return (
+		<motion.div
+			onClick={() => setShowLogin(false)}
+			initial={{ opacity: 0 }}
+			animate={{ opacity: 1 }}
+			exit={{ opacity: 0 }}
+			transition={{ duration: 0.3 }}
+			className="fixed top-0 left-0 right-0 bottom-0 z-100 text-sm text-gray-600 flex items-center backdrop-blur-md h-full w-full justify-center"
+		>
+			<motion.form
+				ref={ref}
+				initial={{ scale: 0.8, opacity: 0, scale: 0 }}
+				animate={{ scale: 1, opacity: 1, scale: 1 }}
+				transition={{ duration: 0.4 }}
+				onSubmit={handleSubmit}
+				onClick={(e) => e.stopPropagation()}
+				className="flex flex-col gap-4 m-auto items-start p-8 py-12 w-80 sm:w-[352px] text-gray-500 rounded-lg shadow-xl border border-gray-200 bg-white z-200  dark:bg-[#081c24] dark:text-light"
+			>
+				<p className="text-3xl font-medium m-auto">
+					<span className="text-primary dark:brightness-500">
+						User
+					</span>{" "}
+					{state === "login" ? "Login" : "Sign Up"}
+				</p>
+				{state === "register" && (
+					<div className="w-full relative">
+						<input
+							onChange={(e) => setName(e.target.value)}
+							value={name}
+							name="name"
+							className="peer w-full border border-gray-200 rounded-lg py-3 px-4 outline-none
+              dark:outline-[#9BFFFF]"
+							type="text"
+						/>
+						<label
+							htmlFor="name"
+							className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none
+             transition-all duration-200 peer-focus:-translate-y-9 peer-focus:text-sm
+              peer-valid:-translate-y-6 peer-valid:text-sm bg-white dark:bg-[#081c24] p-1"
+						>
+							Name
+						</label>
+					</div>
+				)}
+				<div className="relative w-full">
+					<input
+						type="email"
+						value={email}
+						onChange={(e) => setEmail(e.target.value)}
+						className="peer w-full border border-gray-200 rounded-lg py-3 px-4 outline-none
+               dark:outline-[#9BFFFF]"
+					/>
+
+					<label
+						htmlFor="email"
+						className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none
+            transition-all duration-200 peer-focus:-translate-y-9 peer-focus:text-sm
+            peer-valid:-translate-y-6 peer-valid:text-sm bg-white dark:bg-[#081c24] p-1"
+					>
+						Email
+					</label>
+				</div>
+				<div className="relative w-full">
+					<input
+						type="password"
+						value={password}
+						onChange={(e) => setPassword(e.target.value)}
+						className="peer w-full border border-gray-200 rounded-lg py-3 px-4 outline-none
+               dark:outline-[#9BFFFF]"
+					/>
+
+					<label
+						htmlFor="password"
+						className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none
+               transition-all duration-200 peer-focus:-translate-y-9 peer-focus:text-sm
+               peer-valid:-translate-y-6 peer-valid:text-sm bg-white dark:bg-[#081c24] p-1"
+					>
+						Password
+					</label>
+				</div>
+				<div className="flex items-center justify-center w-full text-sm ">
+					{state === "register" ? (
+						<p>
+							Already have account?{" "}
+							<span
+								onClick={() => setState("login")}
+								className="text-primary cursor-pointer dark:text-[#9BFFFF] "
+							>
+								click here
+							</span>
+						</p>
+					) : (
+						<p>
+							Create an account?{" "}
+							<span
+								onClick={() => setState("register")}
+								className="text-primary cursor-pointer dark:text-[#9BFFFF] "
+							>
+								click here
+							</span>
+						</p>
+					)}
+				</div>
+				<button
+					type="submit"
+					disabled={loading}
+					className={`${
+						loading
+							? "opacity-50 cursor-not-allowed bg-primary"
+							: "bg-primary hover:bg-primary-dull"
+					} transition-all text-white w-full py-2 rounded-lg mt-2
+     cursor-pointer active:scale-95
+     dark:bg-[#9BFFFF] dark:text-gray-900 dark:hover:bg-[#7EDFFF]`}
+				>
+					{loading
+						? "Please wait..."
+						: state === "register"
+						? "Create Account"
+						: "Login"}
+				</button>
+			</motion.form>
+		</motion.div>
+	);
+};
+
+export default Login;
