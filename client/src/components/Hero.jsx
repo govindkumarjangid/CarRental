@@ -157,8 +157,8 @@ const Hero = () => {
 								stiffness: 120,
 								damping: 20,
 							}}
-							className="fixed bottom-3 right-3 z-50 bg-white shadow-2xl border rounded-md border-gray-400 overflow-y-auto  overflow-x-hidden 
-               w-full sm:w-lg no-scrollbar max-h-2/5"
+							className="fixed sm:bottom-2 sm:right-2 z-50 bg-white shadow-2xl border rounded-md border-gray-400 overflow-y-scroll  overflow-x-hidden
+               w-full h-fit sm:w-lg no-scrollbar"
 						>
 							<div className="sticky top-0 bg-white flex justify-between items-center px-2 py-2 border-b border-gray-400">
 								<h3 className="font-semibold">

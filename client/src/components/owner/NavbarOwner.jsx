@@ -22,7 +22,7 @@ const NavbarOwner = () => {
 					loading="lazy"
 				/>
 			</Link>
-			<p className="text-sm md:text-lg">
+			<p className="text-sm md:text-lg capitalize">
 				Welcome, {user?.name || "Owner"}
 			</p>
 		</motion.div>

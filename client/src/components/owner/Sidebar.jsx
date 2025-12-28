@@ -88,7 +88,9 @@ const Sidebar = () => {
 				</button>
 			)}
 
-			<p className="mt-2 text-base max-md:hidden">{user?.name}</p>
+			<p className="mt-2 text-base max-md:hidden capitalize">
+				{user?.name}
+			</p>
 
 			{/* Menu */}
 			<motion.div initial="hidden" animate="show" className="w-full">

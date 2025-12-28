@@ -60,7 +60,7 @@ const Cardetails = () => {
 		setCar(cars.find((car) => car._id === id));
 	}, [id]);
 
-	if (loading) return <Loader />;
+	if (loading && !car) return <Loader />;
 
 	return (
 		car && (

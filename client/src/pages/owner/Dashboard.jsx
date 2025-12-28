@@ -76,10 +76,8 @@ const Dashboard = () => {
 	return (
 		<div className="px-4 pt-10 md:px-10 flex-1">
 			<OwnerTitle
-				title={"Admin Dashboard"}
-				subTitle={
-					"Monitor overall platform performance including total cars, bookings, revenue, and recent activities"
-				}
+				title="Admin Dashboard"
+				subTitle="Monitor overall platform performance including total cars, bookings, revenue, and recent activities"
 			/>
 			<div className="grid sm:grid-cols-2 md:grid-cols-3  lg:grid-cols-5 gap-6 my-8 max-w-11/12">
 				{dashboardCards.map((card, index) => (
@@ -144,7 +142,7 @@ const Dashboard = () => {
 								</div>
 							</div>
 							<div className="flex items-center gap-2  font-medium">
-								<p className="text-sm text-gray-500 md:text-base">
+								<p className="text-sm max-sm:hidden text-gray-500 md:text-base">
 									{currency} {booking.price}
 								</p>
 								<p

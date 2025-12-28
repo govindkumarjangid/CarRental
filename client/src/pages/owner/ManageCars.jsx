@@ -103,7 +103,7 @@ const ManageCars = () => {
 									duration: 0.5,
 									delay: index * 0.1,
 								}}
-								className="border-t border-gray-400"
+								className="border-t border-gray-400 hover:bg-gray-100 hover:scale-101 transition-all duration-300"
 								key={index}
 							>
 								<td className="p-3 flex items-center gap-3">
