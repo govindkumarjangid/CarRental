@@ -144,3 +144,14 @@ export const addReview = async (req, res) => {
     res.json({ success: false, message: error.message })
   }
 }
+
+//* Get Reviews
+export const getReviews = async (req, res) => {
+  try {
+    const reviews = await Review.find().sort({ createdAt: -1 });
+    res.json({ success: true, reviews });
+  } catch (error) {
+    console.log(error.message)
+    res.json({ success: false, message: error.message })
+  }
+} 

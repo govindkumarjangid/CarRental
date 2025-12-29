@@ -1,6 +1,7 @@
-import { motion } from "motion/react";
+import { useAppContext } from "../../context/AppContext";
 
 export const Title = ({ title, subTitle }) => {
+	const { motion } = useAppContext();
 	return (
 		<>
 			<motion.h1

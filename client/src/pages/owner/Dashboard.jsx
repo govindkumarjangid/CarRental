@@ -13,7 +13,7 @@ const Dashboard = () => {
 		useState,
 		iconList,
 	} = useAppContext();
-	console.log(iconList);
+
 
 	const [data, setData] = useState({
 		totalCars: 0,
@@ -107,9 +107,8 @@ const Dashboard = () => {
 							</div>
 
 							<div
-								className={`${
-									colorMap[card.title]
-								} rounded-full p-2 inline-flex`}
+								className={`${colorMap[card.title]
+									} rounded-full p-2 inline-flex`}
 							>
 								<Icon size={25} strokeWidth={1.8} />
 							</div>
@@ -136,13 +135,12 @@ const Dashboard = () => {
 						>
 							<div className="flex items-center gap-2">
 								<div
-									className={`hidden md:flex items-center justify-center w-12 h-12 rounded-full	${
-										booking.status === "pending"
+									className={`hidden md:flex items-center justify-center w-12 h-12 rounded-full	${booking.status === "pending"
 											? "bg-yellow-100 text-yellow-500"
 											: booking.status === "confirmed"
-											? "bg-green-100 text-green-500"
-											: "bg-red-100 text-red-500"
-									} `}
+												? "bg-green-100 text-green-500"
+												: "bg-red-100 text-red-500"
+										} `}
 								>
 									<iconList.ClipboardList size={20} />
 								</div>
@@ -161,13 +159,12 @@ const Dashboard = () => {
 									{booking.price.toLocaleString("en-IN")}
 								</p>
 								<p
-									className={`px-3 py-0.5 rounded-md text-xs md:text-sm ${
-										booking.status === "pending"
+									className={`px-3 py-0.5 rounded-md text-xs md:text-sm ${booking.status === "pending"
 											? "bg-yellow-100 text-yellow-500"
 											: booking.status === "confirmed"
-											? "bg-green-100 text-green-500"
-											: "bg-red-100 text-red-500"
-									}`}
+												? "bg-green-100 text-green-500"
+												: "bg-red-100 text-red-500"
+										}`}
 								>
 									{booking.status}
 								</p>

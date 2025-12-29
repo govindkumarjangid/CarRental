@@ -1,9 +1,7 @@
-import { Facebook, Instagram, Twitter, MailIcon } from "lucide-react";
-import { Link } from "react-router-dom";
 import { useAppContext } from "../context/AppContext";
 
 const Footer = () => {
-	const { motion, assets } = useAppContext();
+	const { motion, assets, iconList, Link } = useAppContext();
 	const fadeUp = {
 		hidden: { opacity: 0, y: 20 },
 		show: {
@@ -12,7 +10,6 @@ const Footer = () => {
 			transition: { duration: 0.6, ease: "easeOut" },
 		},
 	};
-
 	const staggerContainer = {
 		hidden: {},
 		show: {
@@ -29,7 +26,7 @@ const Footer = () => {
 			variants={staggerContainer}
 			className="max-w-8xl m-auto bg-light
        text-gray-500/80 pt-14 px-6 md:px-16 lg:px-24 xl:px-32
-      dark:bg-linear-to-r dark:from-[#081c24] dark:to-[#334b57] dark:text-light"
+      dark:bg-linear-to-r dark:from-main-bg dark:to-second-bg dark:text-light"
 		>
 			<div className="flex flex-wrap justify-between items-start gap-8 pb-6 md:gap-6">
 				<motion.div variants={fadeUp} className="max-w-80">
@@ -48,18 +45,21 @@ const Footer = () => {
 					</p>
 
 					<div className="flex items-center gap-3 mt-4">
-						{[Facebook, Instagram, Twitter, MailIcon].map(
-							(Icon, index) => (
-								<motion.div
-									key={index}
-									whileHover={{ scale: 1.15, y: -4 }}
-									whileTap={{ scale: 0.95 }}
-									className="cursor-pointer"
-								>
-									<Icon className="w-6 h-6 transition" />
-								</motion.div>
-							)
-						)}
+						{[
+							iconList.Facebook,
+							iconList.Instagram,
+							iconList.Twitter,
+							iconList.Mail,
+						].map((Icon, index) => (
+							<motion.div
+								key={index}
+								whileHover={{ scale: 1.15, y: -4 }}
+								whileTap={{ scale: 0.95 }}
+								className="cursor-pointer"
+							>
+								<Icon className="w-6 h-6 transition" />
+							</motion.div>
+						))}
 					</div>
 				</motion.div>
 

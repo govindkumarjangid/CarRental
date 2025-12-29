@@ -1,7 +1,5 @@
-import { X } from "lucide-react";
 import { cityList } from "../assets/assets";
 import { useAppContext } from "../context/AppContext";
-import { AnimatePresence } from "motion/react";
 
 const Hero = () => {
 	const {
@@ -15,6 +13,7 @@ const Hero = () => {
 		loading,
 		setLoading,
 		iconList,
+		AnimatePresence,
 	} = useAppContext();
 
 	const [pickupDate, setPickupDate] = useState("");
@@ -172,7 +171,7 @@ const Hero = () => {
 									onClick={() => setOpen(false)}
 									className="text-primary text-xl font-bold cursor-pointer"
 								>
-									<X />
+									<iconList.X />
 								</motion.button>
 							</div>
 

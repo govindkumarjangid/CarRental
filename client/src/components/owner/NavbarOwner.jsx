@@ -1,8 +1,7 @@
-import { Link } from "react-router-dom";
 import { useAppContext } from "../../context/AppContext.jsx";
 
 const NavbarOwner = () => {
-	const { user, motion, useInView, useRef, assets } = useAppContext();
+	const { user, motion, useInView, useRef, assets, Link } = useAppContext();
 	const ref = useRef(null);
 	const isInView = useInView(ref, { once: true });
 

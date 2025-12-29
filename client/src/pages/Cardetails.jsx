@@ -225,7 +225,7 @@ const Cardetails = () => {
 							initial={{ opacity: 0, x: 100 }}
 							animate={{ opacity: 1, x: 0 }}
 							transition={{ duration: 0.6, ease: "easeOut" }}
-							className="shadow-lg h-max sticky top-18 rounded-xl p-6 space-y-6 text-gray-500 dark:bg-[#334b57] dark:text-gray-300"
+							className="shadow-lg h-max sticky top-18 rounded-xl p-6 space-y-6 text-gray-500 dark:bg-second-bg dark:text-gray-300"
 						>
 							{/* price per day  */}
 							<p className="flex items-center justify-between text-2xl text-gray-800 font-semibold dark:text-gray-200">

@@ -1,6 +1,4 @@
 import { ownerMenuLinks } from "../../assets/assets.jsx";
-import { NavLink, useLocation } from "react-router-dom";
-import {} from "lucide-react";
 import { useAppContext } from "../../context/AppContext.jsx";
 
 const Sidebar = () => {
@@ -11,8 +9,9 @@ const Sidebar = () => {
 		toast,
 		motion,
 		useState,
-		assets,
 		iconList,
+		NavLink,
+		useLocation,
 	} = useAppContext();
 	const location = useLocation();
 	const MotionNavLink = motion(NavLink);

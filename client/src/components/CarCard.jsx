@@ -1,7 +1,7 @@
 import { useAppContext } from "../context/AppContext";
 
 const CarCard = ({ car, index }) => {
-	const { currency, navigate, motion, assets, useRef, useInView, iconList } =
+	const { currency, navigate, motion, useRef, useInView, iconList } =
 		useAppContext();
 	const ref = useRef(null);
 	const inView = useInView(ref, { once: true });

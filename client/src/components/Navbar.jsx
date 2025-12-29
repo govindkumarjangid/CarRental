@@ -1,4 +1,3 @@
-import { Link, useLocation } from "react-router-dom";
 import { menuLinks } from "../assets/assets";
 import { useThemeContext } from "../context/ThemeContextProvider";
 import { useAppContext } from "../context/AppContext";
@@ -20,6 +19,8 @@ const Navbar = () => {
 		useInView,
 		useEffect,
 		iconList,
+		Link,
+		useLocation,
 	} = useAppContext();
 
 	const location = useLocation();

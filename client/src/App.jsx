@@ -1,5 +1,4 @@
 import Navbar from "./components/Navbar.jsx";
-import { useLocation, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home.jsx";
 import Cars from "./pages/Cars.jsx";
 import Mybookings from "./pages/Mybookings.jsx";
@@ -11,12 +10,12 @@ import ManageCars from "./pages/owner/ManageCars.jsx";
 import ManageBookings from "./pages/owner/ManageBookings.jsx";
 import Layout from "./pages/Layout.jsx";
 import Login from "./components/Login.jsx";
-import { Toaster } from "react-hot-toast";
 import { useAppContext } from "./context/AppContext.jsx";
 import TestimonialForm from "./components/TestimonialForm.jsx";
 
 const App = () => {
-	const { showLogin, showReview } = useAppContext();
+	const { showLogin, showReview, useLocation, Routes, Route, Toaster } =
+		useAppContext();
 
 	const isOwnerPath = useLocation().pathname.startsWith("/owner");
 

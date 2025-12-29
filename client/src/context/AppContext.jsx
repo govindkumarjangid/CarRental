@@ -4,10 +4,19 @@ import { Title as OwnerTitle } from "../components/owner/Title.jsx";
 import { Title as UserTitle } from "../components/Title.jsx";
 import { createContext, useContext, useEffect, useState, useRef } from "react";
 import axios from "axios";
-import { toast } from "react-hot-toast";
-import { useNavigate, useParams } from "react-router-dom";
+import { toast, Toaster } from "react-hot-toast";
+import {
+	useNavigate,
+	useParams,
+	Link,
+	NavLink,
+	useLocation,
+	Outlet,
+	Routes,
+	Route,
+} from "react-router-dom";
 import { assets, iconList } from "../assets/assets.jsx";
-import { motion, useInView } from "motion/react";
+import { motion, AnimatePresence, useInView } from "motion/react";
 
 axios.defaults.baseURL = import.meta.env.VITE_BASE_URL;
 
@@ -28,7 +37,6 @@ export const AppProvider = ({ children }) => {
 	const [showReview, setShowReview] = useState(false);
 
 	//check user login or not
-
 	const fetchUser = async () => {
 		try {
 			const { data } = await axios.get("/api/user/data");
@@ -57,7 +65,6 @@ export const AppProvider = ({ children }) => {
 	};
 
 	// logout the user
-
 	const logout = () => {
 		localStorage.removeItem("token");
 		setToken(null);
@@ -69,7 +76,6 @@ export const AppProvider = ({ children }) => {
 	};
 
 	//get token from localstorage
-
 	useEffect(() => {
 		const token = localStorage.getItem("token");
 		setToken(token);
@@ -77,7 +83,6 @@ export const AppProvider = ({ children }) => {
 	}, []);
 
 	//get user data
-
 	useEffect(() => {
 		if (token) {
 			axios.defaults.headers.common["Authorization"] = `${token}`;
@@ -123,6 +128,15 @@ export const AppProvider = ({ children }) => {
 		useParams,
 		CarCard,
 		iconList,
+		Link,
+		NavLink,
+		useLocation,
+		AnimatePresence,
+		useLocation,
+		Outlet,
+		Routes,
+		Route,
+		Toaster,
 	};
 
 	return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
