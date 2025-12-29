@@ -11,6 +11,7 @@ const Cars = () => {
 		CarCard,
 		loading,
 		Loader,
+		iconList,
 	} = useAppContext();
 
 	const [filter, setFilter] = useState("");
@@ -38,12 +39,12 @@ const Cars = () => {
 	if (loading) return <Loader />;
 	return (
 		<>
-			<div className="max-w-8xl m-auto flex flex-col items-center dark:bg-linear-to-r pb-20 dark:to-[#081c24] dark:from-[#334b57] relative">
+			<div className="max-w-8xl m-auto flex flex-col items-center dark:bg-linear-to-r pb-20 dark:to-main-bg dark:from-second-bg relative px-2">
 				<motion.div
 					initial={{ opacity: 0, y: 100 }}
 					animate={{ opacity: 1, y: 0 }}
 					transition={{ duration: 0.9, ease: "easeOut" }}
-					className="bg-light  dark:bg-[#081c24] w-full pb-20 pt-20 flex flex-col justify-center items-center  p-4 "
+					className=" bg-light dark:bg-[#081c24] w-full py-20 px-4 flex flex-col justify-center items-center"
 				>
 					<UserTitle
 						title="Avaiable Cars"
@@ -53,16 +54,16 @@ const Cars = () => {
 						initial={{ opacity: 0, y: 100 }}
 						animate={{ opacity: 1, y: 0 }}
 						transition={{ duration: 0.9, ease: "easeOut" }}
-						className="mt-8 flex items-center justify-between gap-4 border border-gray-300 dark:border-white px-4 py-1 rounded-lg bg-white shadow-xl min-w-80 md:min-w-3xl"
+						className="mt-8 flex items-center justify-between gap-4 border border-gray-300 dark:border-white px-4 py-1 rounded-lg shadow-xl max-w-96 md:max-w-3xl bg-white w-full"
 					>
-						<img src={assets.search_icon} alt="search icon" />
+						<iconList.Search size={18} className="text-gray-500" />
 						<input
 							type="text"
 							onChange={(e) => setInput(e.target.value)}
 							placeholder="Search by make, model, or features"
 							className="outline-none py-2 flex-9"
 						/>
-						<img src={assets.filter_icon} alt="filter icon" />
+						<iconList.Funnel size={18} className="text-gray-500" />
 					</motion.div>
 				</motion.div>
 

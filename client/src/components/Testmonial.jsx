@@ -1,7 +1,8 @@
 import { useAppContext } from "../context/AppContext";
 
 const Testmonial = () => {
-	const { UserTitle, motion, useRef } = useAppContext();
+	const { UserTitle, motion, useRef, setShowReview, showReview } =
+		useAppContext();
 
 	const testimonials = [
 		{
@@ -44,14 +45,22 @@ const Testmonial = () => {
 			/>
 		</svg>
 	);
-
 	return (
 		<>
-			<div className="max-w-8xl m-auto py-28 px-6 md:px-16 lg:px-24 xl:px-34  dark:bg-linear-to-r dark:from-[#081c24] dark:to-[#334b57]">
+			<div className="max-w-8xl m-auto py-28 px-6 md:px-16 lg:px-24 xl:px-34  dark:bg-linear-to-r dark:from-main-bg dark:to-second-bg">
 				<UserTitle
 					title="What Our Customers Say"
 					subTitle="Discover why discerning travelers choose StayVenture for their luxury accomodations around the world."
 				/>
+
+				<div className="flex justify-end">
+					<button
+						onClick={() => setShowReview(true)}
+						className="flex items-center gap-2 mb-6 text-gray-500 cursor-pointer dark:text-gray-200"
+					>
+						Add Testimonial
+					</button>
+				</div>
 
 				<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-18 place-items-center">
 					{testimonials.map((testimonial, index) => (

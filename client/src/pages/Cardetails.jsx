@@ -20,11 +20,11 @@ const Cardetails = () => {
 		toast,
 		loading,
 		setLoading,
+		iconList,
 	} = useAppContext();
 
 	const { id } = useParams();
 	const [car, setCar] = useState(null);
-	const ref = useRef(null);
 	const createUserBooking = async (e) => {
 		e.preventDefault();
 		setLoading(true);
@@ -69,7 +69,7 @@ const Cardetails = () => {
 					initial={{ opacity: 0, y: 50 }}
 					animate={{ opacity: 1, y: 0 }}
 					transition={{ duration: 0.9, ease: "easeOut" }}
-					className="h-auto max-w-8xl m-auto px-6 md:px-16 lg:px-24 xl:px-32 pt-16 pb-16 dark:bg-linear-to-r dark:to-[#081c24] dark:from-[#334b57]"
+					className="h-auto max-w-8xl m-auto px-6 md:px-16 lg:px-24 xl:px-32 pt-16 pb-16 dark:bg-linear-to-r dark:to-main-bg dark:from-second-bg"
 				>
 					<button
 						onClick={() => {
@@ -78,11 +78,7 @@ const Cardetails = () => {
 						}}
 						className="flex items-center gap-2 mb-6 text-gray-500 cursor-pointer dark:text-gray-200"
 					>
-						<img
-							src={assets.arrow_icon}
-							alt=""
-							className="rotate-180 opacity-65 dark:brightness-500"
-						/>
+						<iconList.MoveLeft size={20} />
 						Back to all cars
 					</button>
 
@@ -92,37 +88,28 @@ const Cardetails = () => {
 							{/* IMAGE WITH SMOOTH HOVER */}
 							<div>
 								<motion.img
-									ref={ref}
 									src={car.image}
-									initial={{ scale: 0 }}
-									animate={{ scale: 1 }}
+									initial={{ scale: 0, y: 100 }}
+									animate={{ scale: 1, y: 0 }}
 									transition={{
-										duration: 0.8,
-										ease: "easeOut",
+										type: "spring",
+										stiffness: 50,
+										duration: 0.5,
 									}}
 									whileHover={{ scale: 1.03 }}
-									alt=""
+									alt="main-car-image"
+									loading="lazy"
 									className="w-full h-auto md:max-h-100 object-cover rounded-xl shadow-md"
 								/>
 							</div>
 
 							{/* Car details wrapper */}
-							<motion.div
-								initial="hidden"
-								animate="visible"
-								variants={{
-									visible: {
-										transition: { staggerChildren: 0.15 },
-									},
-								}}
-								className="space-y-6"
-							>
+							<motion.div className="space-y-6">
 								{/* Title */}
 								<motion.div
-									variants={{
-										hidden: { opacity: 0, y: 20 },
-										visible: { opacity: 1, y: 0 },
-									}}
+									initial={{ opacity: 0, y: 20 }}
+									animate={{ opacity: 1, y: 0 }}
+									transition={{ delay: 0.2 }}
 									className="mt-3"
 								>
 									<h1 className="text-3xl font-bold dark:text-gray-200">
@@ -139,36 +126,43 @@ const Cardetails = () => {
 								<div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
 									{[
 										{
-											icon: assets.users_icon,
+											icon: (
+												<iconList.Users className="mb-1 text-primary " />
+											),
 											text: `${car.seating_capacity} Seats`,
 										},
 										{
-											icon: assets.fuel_icon,
+											icon: (
+												<iconList.Fuel className="mb-1 text-primary " />
+											),
 											text: `${car.fuel_type}`,
 										},
 										{
-											icon: assets.car_icon,
+											icon: (
+												<iconList.Car className="mb-1 text-primary " />
+											),
 											text: `${car.transmission}`,
 										},
 										{
-											icon: assets.location_icon,
+											icon: (
+												<iconList.MapPin className="mb-1 text-primary " />
+											),
 											text: `${car.location}`,
 										},
-									].map(({ icon, text }) => (
+									].map(({ icon, text, index }) => (
 										<motion.div
 											key={text}
+											initial={{ opacity: 0, y: 20 }}
+											animate={{ opacity: 1, y: 0 }}
 											whileHover={{ scale: 1.05 }}
 											transition={{
 												type: "spring",
 												stiffness: 200,
+												delay: 0.2 * index,
 											}}
 											className="flex flex-col items-center bg-light dark:bg-main-bg p-4 rounded-lg"
 										>
-											<img
-												src={icon}
-												alt=""
-												className="h-5 mb-2 dark:brightness-200"
-											/>
+											{icon}
 											<p className="dark:text-gray-300">
 												{text}
 											</p>
@@ -178,10 +172,9 @@ const Cardetails = () => {
 
 								{/* Description */}
 								<motion.div
-									variants={{
-										hidden: { opacity: 0, y: 20 },
-										visible: { opacity: 1, y: 0 },
-									}}
+									initial={{ opacity: 0, y: 20 }}
+									animate={{ opacity: 1, y: 0 }}
+									transition={{ delay: 0.2 }}
 								>
 									<h1 className="text-xl font-medium mb-3 dark:text-gray-200">
 										Description
@@ -193,10 +186,9 @@ const Cardetails = () => {
 
 								{/* Features list */}
 								<motion.div
-									variants={{
-										hidden: { opacity: 0, y: 20 },
-										visible: { opacity: 1, y: 0 },
-									}}
+									initial={{ opacity: 0, y: 20 }}
+									animate={{ opacity: 1, y: 0 }}
+									transition={{ delay: 0.2 }}
 								>
 									<h1 className="text-xl font-medium mb-3 dark:text-gray-200">
 										Features
@@ -213,10 +205,9 @@ const Cardetails = () => {
 												key={item}
 												className="flex items-center text-gray-500"
 											>
-												<img
-													src={assets.check_icon}
-													className="h-4 mr-2 dark:brightness-200"
-													alt=""
+												<iconList.CircleCheckBig
+													size={16}
+													className="mr-2 text-primary"
 												/>
 												<p className="dark:text-gray-300">
 													{item}
@@ -231,11 +222,12 @@ const Cardetails = () => {
 						{/* RIGHT / BOOKING FORM */}
 						<motion.form
 							onSubmit={(e) => createUserBooking(e)}
-							initial={{ opacity: 0, x: 40 }}
+							initial={{ opacity: 0, x: 100 }}
 							animate={{ opacity: 1, x: 0 }}
 							transition={{ duration: 0.6, ease: "easeOut" }}
 							className="shadow-lg h-max sticky top-18 rounded-xl p-6 space-y-6 text-gray-500 dark:bg-[#334b57] dark:text-gray-300"
 						>
+							{/* price per day  */}
 							<p className="flex items-center justify-between text-2xl text-gray-800 font-semibold dark:text-gray-200">
 								{currency}
 								{car.pricePerDay}
@@ -246,6 +238,7 @@ const Cardetails = () => {
 
 							<hr className="border-borderColor my-4" />
 
+							{/* pickup date input  */}
 							<div className="flex flex-col gap-2">
 								<label>Pickup Date</label>
 								<input
@@ -258,6 +251,7 @@ const Cardetails = () => {
 								/>
 							</div>
 
+							{/* return date input  */}
 							<div className="flex flex-col gap-2">
 								<label>Return Date</label>
 								<input
@@ -270,32 +264,17 @@ const Cardetails = () => {
 								/>
 							</div>
 
+							{/* booking button  */}
 							<motion.button
 								type="submit"
-								disabled={loading || !car?.isAvaliable}
-								whileTap={
-									car?.isAvaliable && !loading
-										? { scale: 0.9 }
-										: {}
-								}
-								whileHover={
-									car?.isAvaliable && !loading
-										? { scale: 1.02 }
-										: {}
-								}
-								className={`w-full transition-all py-3 font-medium text-white rounded-xl ${
+								disabled={loading}
+								className={`w-full transition-all py-3 font-medium text-white rounded-xl hover:scale-102 active:scale-95 ${
 									loading
-										? "bg-gray-400 cursor-not-allowed"
-										: car?.isAvaliable
-										? "bg-primary hover:bg-primary-dull cursor-pointer"
-										: "bg-red-500 cursor-not-allowed"
+										? "bg-primary opacity-50 cursor-not-allowed"
+										: "bg-primary hover:bg-primary-dull cursor-pointer"
 								}`}
 							>
-								{loading
-									? "Processing..."
-									: car?.isAvaliable
-									? "Book Now"
-									: "Not Available"}
+								{loading ? "Processing..." : "Book Now"}
 							</motion.button>
 
 							<p className="text-center text-sm text-gray-400 dark:text-300">

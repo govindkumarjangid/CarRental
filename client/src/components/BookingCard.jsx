@@ -1,7 +1,8 @@
 import { useAppContext } from "../context/AppContext.jsx";
 
 const BookingCard = ({ booking, index }) => {
-	const { assets, motion, currency, useRef, useInView } = useAppContext();
+	const { assets, motion, currency, useRef, useInView, iconList } =
+		useAppContext();
 	const ref = useRef(null);
 	const inView = useInView(ref, { once: true });
 
@@ -15,7 +16,7 @@ const BookingCard = ({ booking, index }) => {
 				ease: "easeInOut",
 				delay: index * 0.2,
 			}}
-			className="grid grid-cols-1 md:grid-cols-4 gap-6 p-6 rounded-lg mt-5 first:mt-12 backdrop-blur-sm border border-gray-400 dark:bg-linear-to-r dark:from-[#081c24] dark:to-[#334b57] dark:border-gray-300 dark:text-white"
+			className="grid grid-cols-1 md:grid-cols-4 gap-6 p-6 rounded-lg mt-5 first:mt-12 backdrop-blur-sm border border-gray-400 dark:bg-linear-to-r dark:from-main-bg dark:to-second-bg dark:border-gray-300 dark:text-white"
 		>
 			<div className="md:col-span-1 ">
 				<img
@@ -51,11 +52,9 @@ const BookingCard = ({ booking, index }) => {
 				</div>
 
 				<div className="flex items-start gap-2 mt-3">
-					<img
-						src={assets.calendar_icon_colored}
-						alt="calendar-icon"
-						loading="lazy"
-						className="h-4 w-4 mt-2 dark:brightness-500"
+					<iconList.Calendar
+						size={16}
+						className="mt-2 text-primary"
 					/>
 					<div>
 						<p className="text-gray-500 dark:text-gray-400">
@@ -69,12 +68,7 @@ const BookingCard = ({ booking, index }) => {
 				</div>
 
 				<div className="flex items-start gap-2 mt-3">
-					<img
-						src={assets.location_icon_colored}
-						alt="location icon"
-						loading="lazy"
-						className="h-4 w-4 mt-2 dark:brightness-500"
-					/>
+					<iconList.MapPin size={17} className="mt-2 text-primary" />
 					<div>
 						<p className="text-gray-500 dark:text-gray-400">
 							Pickup Location
@@ -83,12 +77,7 @@ const BookingCard = ({ booking, index }) => {
 					</div>
 				</div>
 				<div className="flex items-start gap-2 mt-3">
-					<img
-						src={assets.location_icon_colored}
-						alt="location icon"
-						loading="lazy"
-						className="h-4 w-4 mt-2 dark:brightness-500"
-					/>
+					<iconList.MapPin size={17} className="mt-2 text-primary" />
 					<div>
 						<p className="text-gray-500 dark:text-gray-400">
 							Return Location

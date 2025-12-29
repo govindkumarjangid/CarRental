@@ -6,7 +6,7 @@ import { createContext, useContext, useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 import { useNavigate, useParams } from "react-router-dom";
-import { assets } from "../assets/assets.js";
+import { assets, iconList } from "../assets/assets.jsx";
 import { motion, useInView } from "motion/react";
 
 axios.defaults.baseURL = import.meta.env.VITE_BASE_URL;
@@ -25,6 +25,7 @@ export const AppProvider = ({ children }) => {
 	const [returnDate, setReturnDate] = useState("");
 	const [cars, setCars] = useState([]);
 	const [loading, setLoading] = useState(false);
+	const [showReview, setShowReview] = useState(false);
 
 	//check user login or not
 
@@ -106,6 +107,8 @@ export const AppProvider = ({ children }) => {
 		returnDate,
 		setReturnDate,
 		loading,
+		showReview,
+		setShowReview,
 		setLoading,
 		assets,
 		useEffect,
@@ -119,6 +122,7 @@ export const AppProvider = ({ children }) => {
 		useRef,
 		useParams,
 		CarCard,
+		iconList,
 	};
 
 	return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

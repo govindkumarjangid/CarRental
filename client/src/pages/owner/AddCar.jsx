@@ -7,10 +7,10 @@ const AddCar = () => {
 		loading,
 		setLoading,
 		motion,
-		assets,
 		OwnerTitle,
 		toast,
 		useState,
+		iconList,
 	} = useAppContext();
 
 	const [image, setImage] = useState(null);
@@ -36,7 +36,7 @@ const AddCar = () => {
 	};
 
 	const onSubmithandler = async (e) => {
-		e.preventDefault();
+		e.preventDefault();  
 		setLoading(true);
 		try {
 			const formData = new FormData();
@@ -101,16 +101,16 @@ const AddCar = () => {
 					className="flex gap-4 items-center w-full"
 				>
 					<label htmlFor="car-image">
-						<img
-							src={
-								image
-									? URL.createObjectURL(image)
-									: assets.upload_icon
-							}
-							alt=""
-							loading="lazy"
-							className="h-14 rounded cursor-pointer"
-						/>
+						{image ? (
+							<img
+								src={URL.createObjectURL(image)}
+								alt="car preview"
+								className="h-14 w-26 object-cover rounded-md"
+							/>
+						) : (
+							<iconList.CloudUpload className="h-14 text-primary bg-gray-100 px-4 py-3 rounded-md cursor-pointer w-26 border border-gray-200	" />
+						)}
+
 						<input
 							type="file"
 							id="car-image"
@@ -134,7 +134,7 @@ const AddCar = () => {
 					className="grid grid-cols-1 md:grid-cols-2 gap-6"
 				>
 					<motion.div className="flex flex-col w-full">
-						<label htmlFor="">Brand</label>
+						<label htmlFor="brand">Brand</label>
 						<input
 							type="text"
 							id="brand"
@@ -147,7 +147,7 @@ const AddCar = () => {
 						/>
 					</motion.div>
 					<div className="flex flex-col w-full">
-						<label htmlFor="">Model</label>
+						<label htmlFor="model">Model</label>
 						<input
 							type="text"
 							id="model"
@@ -340,11 +340,7 @@ const AddCar = () => {
 						loading ? "cursor-not-allowed opacity-70" : ""
 					}`}
 				>
-					<img
-						src={assets.tick_icon}
-						loading="lazy"
-						alt="tick icon"
-					/>
+					<iconList.Check size={20} />
 					{loading ? "Listing..." : "List Your Car"}
 				</button>
 			</form>

@@ -13,9 +13,10 @@ import Layout from "./pages/Layout.jsx";
 import Login from "./components/Login.jsx";
 import { Toaster } from "react-hot-toast";
 import { useAppContext } from "./context/AppContext.jsx";
+import TestimonialForm from "./components/TestimonialForm.jsx";
 
 const App = () => {
-	const { showLogin } = useAppContext();
+	const { showLogin, showReview } = useAppContext();
 
 	const isOwnerPath = useLocation().pathname.startsWith("/owner");
 
@@ -43,6 +44,7 @@ const App = () => {
 					/>
 				</Route>
 			</Routes>
+			{showReview && <TestimonialForm />}
 
 			{!isOwnerPath && <Footer />}
 		</>

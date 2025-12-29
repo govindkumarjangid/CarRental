@@ -1,19 +1,19 @@
 import { useAppContext } from "../context/AppContext";
 
 const Banner = () => {
-	const { motion, useInView, navigate, assets, useRef } = useAppContext();
+	const { motion, useInView, navigate, assets, useRef, user, setShowLogin } =
+		useAppContext();
 	const ref = useRef(null);
 	const isInView = useInView(ref, { once: true });
-
 	return (
 		<>
-			<div className=" max-w-8xl m-auto dark:bg-linear-to-r dark:to-[#081c24] dark:from-[#334b57] w-full py-20">
+			<div className=" max-w-8xl m-auto dark:bg-linear-to-r dark:to-main-bg dark:from-second-bg w-full py-20 px-3">
 				<motion.div
 					ref={ref}
 					initial={{ opacity: 0, y: 100 }}
 					animate={isInView ? { opacity: 1, y: 0 } : {}}
 					transition={{ duration: 0.9, ease: "easeInOut" }}
-					className="flex flex-col md:flex-row md:items-center justify-between px-8 md:pl-14 pt-10 bg-linear-to-r from-[#0558FE] to-[#A9CFFF] max-w-7xl mx-3 md:mx-auto rounded-2xl overflow-hidden  dark:bg-linear-to-r dark:from-[#081c24] dark:to-[#334b57]"
+					className="flex flex-col md:flex-row md:items-center justify-between px-8 md:pl-14 pt-10 bg-linear-to-r from-[#0558FE] to-[#A9CFFF] max-w-6xl rounded-2xl overflow-hidden  dark:bg-linear-to-r dark:from-main-bg dark:to-second-bg md:mx-auto"
 				>
 					<div className="md:max-w-lg text-left pb-8">
 						<h2 className="text-3xl md:text-4xl text-white mb-4">
@@ -30,11 +30,15 @@ const Banner = () => {
 						</p>
 						<button
 							onClick={() => {
-								navigate();
+								{
+									user
+										? navigate("/owner/add-car")
+										: setShowLogin(true);
+								}
 							}}
-							className="bg-white text-primary px-6 py-3 rounded-lg hover:bg-gray-100transition-all duration-200  dark:border dark:border-white dark:text-white dark:bg-transparent dark:hover:bg-second-bg active:scale-95"
+							className="bg-white text-primary px-6 py-3 rounded-lg hover:bg-gray-100 transition-all duration-200  dark:border dark:border-white dark:text-white dark:bg-transparent dark:hover:bg-second-bg active:scale-95 cursor-pointer"
 						>
-							List Your Car
+							{user ? "List Your Car" : "Get Started"}
 						</button>
 					</div>
 

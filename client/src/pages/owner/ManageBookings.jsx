@@ -115,8 +115,8 @@ const ManageBookings = () => {
 									{booking.returnDate.split("T")[0]}
 								</td>
 								<td className="p-3 max-md:hidden">
-									{currency}
-									{booking.price}
+									{currency}{" "}
+									{booking.price.toLocaleString("en-IN")}
 								</td>
 								<td className="p-3">
 									<p className="px-2 py-1 text-xs bg-gray-200 rounded-md text-center">

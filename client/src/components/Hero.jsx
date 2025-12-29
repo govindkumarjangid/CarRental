@@ -14,6 +14,7 @@ const Hero = () => {
 		currency,
 		loading,
 		setLoading,
+		iconList,
 	} = useAppContext();
 
 	const [pickupDate, setPickupDate] = useState("");
@@ -54,7 +55,7 @@ const Hero = () => {
 
 	return (
 		<>
-			<div className="max-w-8xl m-auto flex flex-col justify-center items-center gap-8 bg-light text-center dark:bg-linear-to-r dark:to-[#081c24] dark:from-[#334b57]">
+			<div className="max-w-8xl m-auto flex flex-col justify-center items-center gap-8 bg-light text-center dark:bg-linear-to-r dark:bg-main-bg dark:from-second-bg px-1">
 				<motion.h1
 					initial={{ opacity: 0, y: 100 }}
 					animate={{ opacity: 1, y: 0 }}
@@ -69,7 +70,7 @@ const Hero = () => {
 					initial={{ opacity: 0, y: 50 }}
 					animate={{ opacity: 1, y: 0 }}
 					transition={{ duration: 0.7, ease: "easeOut", delay: 0.7 }}
-					className="flex flex-col md:flex-row items-center md:items-center justify-between px-4 py-5 rounded-lg w-full max-w-120 md:max-w-200 bg-white shadow-[0px_8px_20px_rgba(0,0,0,0.1)] mx-2 dark:bg-main-bg dark:shadow-[0px_8px_20px_rgba(255,255,255,0.1)]"
+					className="flex flex-col md:flex-row items-center md:items-center justify-between px-4 py-5 rounded-lg w-full max-w-120 md:max-w-200 bg-white shadow-[0px_8px_20px_rgba(0,0,0,0.1)] dark:bg-main-bg dark:shadow-[0px_8px_20px_rgba(255,255,255,0.1)] "
 				>
 					<div className="flex flex-col md:flex-row items-center md:items-center md:justify-center gap-10 md:ml-8">
 						<div className="flex flex-row items-center gap-2 md:flex-col">
@@ -125,14 +126,14 @@ const Hero = () => {
 						</div>
 						<button
 							type="submit"
-							className="cursor-pointer flex px-6 py-2 bg-primary hover:bg-primary-dull transition-all text-white rounded-lg shadow-[0px_3px_20px_rgba(0,0,0,0.2)]  dark:border dark:border-white dark:text-white dark:bg-transparent dark:hover:bg-second-bg active:scale-95"
+							className={`cursor-pointer flex items-center justify-center gap-1 px-5 py-2  transition-all text-white rounded-lg shadow-[0px_3px_20px_rgba(0,0,0,0.2)]  dark:border dark:border-white dark:text-white dark:bg-transparent dark:hover:bg-second-bg active:scale-95 ${
+								loading
+									? "opacity-50 bg-primary"
+									: "bg-primary hover:bg-primary-dull"
+							}`}
 						>
-							<img
-								src={assets.search_icon}
-								alt="icon"
-								className="mr-2 brightness-300 z-0"
-							/>
-							{loading ? "searching..." : "search"}
+							<iconList.Search size={18} />
+							{loading ? "Searching..." : "Search"}
 						</button>
 					</div>
 				</motion.form>
@@ -143,6 +144,7 @@ const Hero = () => {
 					transition={{ duration: 0.7, ease: "easeOut", delay: 0.5 }}
 					src={assets.main_car}
 					alt="car"
+					loading="lazy"
 					className="max-h-74 mb-18"
 				/>
 
@@ -157,8 +159,7 @@ const Hero = () => {
 								stiffness: 120,
 								damping: 20,
 							}}
-							className="fixed sm:bottom-2 sm:right-2 z-50 bg-white shadow-2xl border rounded-md border-gray-400 overflow-y-scroll  overflow-x-hidden
-               w-full h-fit sm:w-lg no-scrollbar"
+							className="fixed sm:bottom-2 sm:right-2 z-50 bg-white shadow-2xl border rounded-md border-gray-400 overflow-y-scroll  overflow-x-hidden w-full h-fit sm:w-lg no-scrollbar mx-2"
 						>
 							<div className="sticky top-0 bg-white flex justify-between items-center px-2 py-2 border-b border-gray-400">
 								<h3 className="font-semibold">

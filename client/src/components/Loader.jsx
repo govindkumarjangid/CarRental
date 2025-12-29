@@ -1,9 +1,10 @@
-import { LoaderPinwheel } from "lucide-react";
+import { useAppContext } from "../context/AppContext";
 
 const Loader = () => {
+	const { iconList } = useAppContext();
 	return (
 		<div className="flex justify-center items-center h-[80vh]">
-			<LoaderPinwheel className="w-14 h-14  md:w-20 md:h-20 text-primary animate-spin" />
+			<iconList.LoaderPinwheel className="w-14 h-14  md:w-20 md:h-20 text-primary animate-spin" />
 		</div>
 	);
 };

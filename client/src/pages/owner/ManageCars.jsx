@@ -8,12 +8,13 @@ const ManageCars = () => {
 		currency,
 		useEffect,
 		useState,
-		assets,
 		motion,
 		OwnerTitle,
 		Loader,
 		toast,
+		iconList,
 	} = useAppContext();
+
 	const [cars, setCars] = useState([]);
 	const [openConfirm, setOpenConfirm] = useState(false);
 	const [deleteId, setDeleteId] = useState(null);
@@ -128,8 +129,9 @@ const ManageCars = () => {
 								</td>
 
 								<td className="p-3">
-									{currency}
-									{car.pricePerDay}/day
+									{currency}{" "}
+									{car.pricePerDay.toLocaleString("en-IN")}
+									/day
 								</td>
 
 								<td className="p-3 max-md:hidden">
@@ -144,36 +146,47 @@ const ManageCars = () => {
 									)}
 								</td>
 
-								<td className="flex items-center justify-start">
-									<button
-										onClick={() =>
-											toggleCarAvailability(car._id)
-										}
-									>
-										<img
-											src={
-												car.isAvaliable
-													? assets.eye_close_icon
-													: assets.eye_icon
+								<td className="p-4">
+									<div className="flex items-center gap-3">
+										<button
+											onClick={() =>
+												toggleCarAvailability(car._id)
 											}
-											alt="Toggle Availability"
 											className="cursor-pointer"
-											loading="lazy"
-										/>
-									</button>
-									<button
-										onClick={() => {
-											setOpenConfirm(true);
-											setDeleteId(car._id);
-										}}
-									>
-										<img
-											src={assets.delete_icon}
-											alt="Delete"
+										>
+											{car.isAvaliable ? (
+												<iconList.Eye
+													size={18}
+													className="text-green-600"
+												/>
+											) : (
+												<iconList.EyeOff
+													size={18}
+													className="text-red-600"
+												/>
+											)}
+										</button>
+
+										<button
+											onClick={() => {
+												setOpenConfirm(true);
+												setDeleteId(car._id);
+											}}
 											className="cursor-pointer"
-											loading="lazy"
-										/>
-									</button>
+										>
+											<iconList.Trash2
+												size={18}
+												className="text-red-600"
+											/>
+										</button>
+
+										<button className="cursor-pointer">
+											<iconList.EditIcon
+												size={18}
+												className="text-yellow-500"
+											/>
+										</button>
+									</div>
 								</td>
 							</motion.tr>
 						))}
@@ -211,7 +224,7 @@ const ManageCars = () => {
 
 							<div className="flex justify-between gap-4 mt-6">
 								<button
-									className="w-1/2 py-2 rounded-md border bg-primarytext-white cursor-pointer active:scale-95 transition-transform duration-300"
+									className="w-1/2 py-2 rounded-md border bg-primary text-white cursor-pointer active:scale-95 transition-transform duration-300"
 									onClick={() => setOpenConfirm(false)}
 								>
 									Cancel

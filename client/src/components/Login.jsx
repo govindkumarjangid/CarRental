@@ -13,6 +13,7 @@ const Login = () => {
 		motion,
 		toast,
 	} = useAppContext();
+
 	const [state, setState] = useState("login");
 	const [name, setName] = useState("");
 	const [email, setEmail] = useState("");
@@ -60,29 +61,33 @@ const Login = () => {
 				transition={{ duration: 0.4 }}
 				onSubmit={handleSubmit}
 				onClick={(e) => e.stopPropagation()}
-				className="flex flex-col gap-4 m-auto items-start p-8 py-12 w-80 sm:w-[352px] text-gray-500 rounded-lg shadow-xl border border-gray-200 bg-white z-200  dark:bg-[#081c24] dark:text-light"
+				className="flex flex-col gap-4 m-auto items-start p-8 py-12 w-80 sm:w-88 text-gray-500 rounded-lg shadow-xl border border-gray-200 bg-white z-200  dark:bg-main-bg dark:text-light"
 			>
 				<p className="text-3xl font-medium m-auto">
 					<span className="text-primary dark:brightness-500">
 						User
-					</span>{" "}
-					{state === "login" ? "Login" : "Sign Up"}
+					</span>
+					{state === "login" ? " Login" : " Sign Up"}
 				</p>
 				{state === "register" && (
 					<div className="w-full relative">
 						<input
-							onChange={(e) => setName(e.target.value)}
-							value={name}
-							name="name"
-							className="peer w-full border border-gray-200 rounded-lg py-3 px-4 outline-none
-              dark:outline-[#9BFFFF]"
 							type="text"
+							name="name"
+							placeholder=" "
+							value={name}
+							onChange={(e) => setName(e.target.value)}
+							className="peer w-full border border-gray-200 rounded-lg py-3 px-4 outline-none dark:outline-[#9BFFFF]"
 						/>
+
 						<label
 							htmlFor="name"
-							className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none
-             transition-all duration-200 peer-focus:-translate-y-9 peer-focus:text-sm
-              peer-valid:-translate-y-6 peer-valid:text-sm bg-white dark:bg-[#081c24] p-1"
+							className="absolute left-4 text-gray-500 pointer-events-none bg-white dark:bg-main-bg px-1
+							transition-all duration-200
+							top-1/2 -translate-y-1/2
+							peer-focus:top-0 peer-focus:-translate-y-1/2 peer-focus:text-xs
+							peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:text-base
+							peer-not-placeholder-shown:top-0 peer-not-placeholder-shown:-translate-y-1/2 peer-not-placeholder-shown:text-xs"
 						>
 							Name
 						</label>
@@ -91,17 +96,20 @@ const Login = () => {
 				<div className="relative w-full">
 					<input
 						type="email"
+						placeholder=" "
 						value={email}
 						onChange={(e) => setEmail(e.target.value)}
-						className="peer w-full border border-gray-200 rounded-lg py-3 px-4 outline-none
-               dark:outline-[#9BFFFF]"
+						className="peer w-full border border-gray-200 rounded-lg py-3 px-4 outline-none dark:outline-[#9BFFFF]"
 					/>
 
 					<label
 						htmlFor="email"
-						className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none
-            transition-all duration-200 peer-focus:-translate-y-9 peer-focus:text-sm
-            peer-valid:-translate-y-6 peer-valid:text-sm bg-white dark:bg-[#081c24] p-1"
+						className="absolute left-4 text-gray-500 pointer-events-none bg-white dark:bg-main-bg px-1
+						transition-all duration-200
+						top-1/2 -translate-y-1/2
+						peer-focus:top-0 peer-focus:-translate-y-1/2 peer-focus:text-xs
+						peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:text-base
+						peer-not-placeholder-shown:top-0 peer-not-placeholder-shown:-translate-y-1/2 peer-not-placeholder-shown:text-xs"
 					>
 						Email
 					</label>
@@ -110,16 +118,19 @@ const Login = () => {
 					<input
 						type="password"
 						value={password}
+						placeholder=" "
 						onChange={(e) => setPassword(e.target.value)}
-						className="peer w-full border border-gray-200 rounded-lg py-3 px-4 outline-none
-               dark:outline-[#9BFFFF]"
+						className="peer w-full border border-gray-200 rounded-lg py-3 px-4 outline-none dark:outline-[#9BFFFF]"
 					/>
 
 					<label
 						htmlFor="password"
-						className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none
-               transition-all duration-200 peer-focus:-translate-y-9 peer-focus:text-sm
-               peer-valid:-translate-y-6 peer-valid:text-sm bg-white dark:bg-[#081c24] p-1"
+						className="absolute left-4 text-gray-500 pointer-events-none bg-white dark:bg-main-bg px-1
+						transition-all duration-200
+						top-1/2 -translate-y-1/2
+						peer-focus:top-0 peer-focus:-translate-y-1/2 peer-focus:text-xs
+						peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:text-base
+						peer-not-placeholder-shown:top-0 peer-not-placeholder-shown:-translate-y-1/2 peer-not-placeholder-shown:text-xs"
 					>
 						Password
 					</label>
@@ -127,7 +138,7 @@ const Login = () => {
 				<div className="flex items-center justify-center w-full text-sm ">
 					{state === "register" ? (
 						<p>
-							Already have account?{" "}
+							Already have account ?{" "}
 							<span
 								onClick={() => setState("login")}
 								className="text-primary cursor-pointer dark:text-[#9BFFFF] "
@@ -137,7 +148,7 @@ const Login = () => {
 						</p>
 					) : (
 						<p>
-							Create an account?{" "}
+							Create an account ?{" "}
 							<span
 								onClick={() => setState("register")}
 								className="text-primary cursor-pointer dark:text-[#9BFFFF] "
@@ -155,8 +166,8 @@ const Login = () => {
 							? "opacity-50 cursor-not-allowed bg-primary"
 							: "bg-primary hover:bg-primary-dull"
 					} transition-all text-white w-full py-2 rounded-lg mt-2
-     cursor-pointer active:scale-95
-     dark:bg-[#9BFFFF] dark:text-gray-900 dark:hover:bg-[#7EDFFF]`}
+            cursor-pointer active:scale-95
+          dark:bg-[#9BFFFF] dark:text-gray-900 dark:hover:bg-[#7EDFFF]`}
 				>
 					{loading
 						? "Please wait..."

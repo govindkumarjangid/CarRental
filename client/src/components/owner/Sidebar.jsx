@@ -1,14 +1,19 @@
-import React, { useState } from "react";
-import { assets, ownerMenuLinks } from "../../assets/assets.js";
+import { ownerMenuLinks } from "../../assets/assets.jsx";
 import { NavLink, useLocation } from "react-router-dom";
-import { CircleUser } from "lucide-react";
-import { motion } from "motion/react";
+import {} from "lucide-react";
 import { useAppContext } from "../../context/AppContext.jsx";
-import { toast } from "react-hot-toast";
-import { useRef } from "react";
 
 const Sidebar = () => {
-	const { user, axios, fetchUser } = useAppContext();
+	const {
+		user,
+		axios,
+		fetchUser,
+		toast,
+		motion,
+		useState,
+		assets,
+		iconList,
+	} = useAppContext();
 	const location = useLocation();
 	const MotionNavLink = motion(NavLink);
 	const [image, setImage] = useState(null);
@@ -59,7 +64,7 @@ const Sidebar = () => {
 							className="md:h-20 md:w-20 h-12 w-12 rounded-full p-1 mx-auto aspect-square object-cover"
 						/>
 					) : (
-						<CircleUser className="md:h-20 md:w-20 h-12 w-12 text-gray-400" />
+						<iconList.CircleUser className="md:h-20 md:w-20 h-12 w-12 text-gray-400" />
 					)}
 
 					<input
@@ -72,7 +77,7 @@ const Sidebar = () => {
 					/>
 
 					<div className="absolute md:h-20 md:w-20 h-12 w-12 top-0  hidden bg-black/20 rounded-full group-hover:flex items-center justify-center cursor-pointer">
-						<img src={assets.edit_icon} alt="edit" />
+						<iconList.EditIcon size={20} className="text-white" />
 					</div>
 				</label>
 			</motion.div>
@@ -81,10 +86,10 @@ const Sidebar = () => {
 			{image && (
 				<button
 					onClick={updateImage}
-					className="absolute top-0 right-0 flex items-center gap-1 px-3 py-1.5 bg-primary/10 text-primary rounded-md text-xs disabled:opacity-50 cursor-pointer hover:bg-primary/20 transition-colors"
+					className="absolute top-0 right-0 flex items-center gap-1 px-3 py-1.5 bg-primary/10 text-primary rounded-md text-xs disabled:opacity-50 cursor-pointer hover:bg-primary/20 transition-colors "
 				>
 					Save
-					<img src={assets.check_icon} alt="check" width={13} />
+					<iconList.CircleCheckBig className="h-3 w-3 ml-1" />
 				</button>
 			)}
 
@@ -96,7 +101,6 @@ const Sidebar = () => {
 			<motion.div initial="hidden" animate="show" className="w-full">
 				{ownerMenuLinks.map((link) => {
 					const isActive = link.path === location.pathname;
-
 					return (
 						<MotionNavLink
 							key={link.path}
@@ -108,18 +112,11 @@ const Sidebar = () => {
 									: "text-gray-500 hover:bg-gray-100"
 							}`}
 						>
-							<img
-								src={isActive ? link.coloredIcon : link.icon}
-								alt="icon"
-								className="w-5 h-5"
-							/>
+							{link.icon}
 							<span className="max-md:hidden">{link.name}</span>
 
 							{isActive && (
-								<motion.div
-									layoutId="active-indicator"
-									className="absolute right-0 top-2 h-8 w-1.5 bg-primary rounded-l"
-								/>
+								<motion.div className="absolute right-0 top-1.95 h-8 w-1.5 bg-primary rounded-l" />
 							)}
 						</MotionNavLink>
 					);

@@ -11,8 +11,9 @@ const Dashboard = () => {
 		OwnerTitle,
 		useEffect,
 		useState,
-		assets,
+		iconList,
 	} = useAppContext();
+	console.log(iconList);
 
 	const [data, setData] = useState({
 		totalCars: 0,
@@ -28,29 +29,36 @@ const Dashboard = () => {
 		{
 			title: "Total Cars",
 			value: data.totalCars,
-			icon: assets.carIconColored,
+			icon: iconList.Car,
 		},
 		{
 			title: "Total Bookings",
 			value: data.totalBookings,
-			icon: assets.listIconColored,
+			icon: iconList.ClipboardList,
 		},
 		{
 			title: "Pending",
 			value: data.pendingBookings,
-			icon: assets.cautionIconColored,
+			icon: iconList.TriangleAlert,
 		},
 		{
 			title: "Completed",
 			value: data.completedBookings,
-			icon: assets.listIconColored,
+			icon: iconList.List,
 		},
 		{
 			title: "Cancelled",
 			value: data.cancelledBookings,
-			icon: assets.cautionIconColored,
+			icon: iconList.TriangleAlert,
 		},
 	];
+	const colorMap = {
+		"Total Cars": "text-blue-700 bg-blue-700/10",
+		"Total Bookings": "text-green-700 bg-green-700/10",
+		Pending: "text-yellow-700 bg-yellow-700/10",
+		Completed: "text-teal-700 bg-teal-700/10",
+		Cancelled: "text-red-700 bg-red-700/10",
+	};
 
 	const fectchDashboardData = async () => {
 		try {
@@ -80,31 +88,34 @@ const Dashboard = () => {
 				subTitle="Monitor overall platform performance including total cars, bookings, revenue, and recent activities"
 			/>
 			<div className="grid sm:grid-cols-2 md:grid-cols-3  lg:grid-cols-5 gap-6 my-8 max-w-11/12">
-				{dashboardCards.map((card, index) => (
-					<motion.div
-						animate={{ opacity: [0, 1], y: [40, 0] }}
-						transition={{ duration: 0.3, delay: index * 0.2 }}
-						key={index}
-						className="flex gap-2 items-center justify-between p-4 rounded-md border border-gray-500"
-					>
-						<div>
-							<h2 className="text-gray-400 text-sm">
-								{card.title}
-							</h2>
-							<p className="text-lg font-semibold">
-								{card.value}
-							</p>
-						</div>
+				{dashboardCards.map((card, index) => {
+					const Icon = card.icon;
+					return (
+						<motion.div
+							animate={{ opacity: [0, 1], y: [40, 0] }}
+							transition={{ duration: 0.3, delay: index * 0.2 }}
+							key={index}
+							className="flex gap-2 items-center justify-between p-4 rounded-md border border-gray-500"
+						>
+							<div>
+								<h2 className="text-gray-400 text-sm">
+									{card.title}
+								</h2>
+								<p className="text-lg font-semibold">
+									{card.value}
+								</p>
+							</div>
 
-						<div className="flex items-center justify-center w-10 h-10 rounded-full bg-primary/10">
-							<img
-								src={card.icon}
-								alt={card.title}
-								className="h-4 w-4"
-							/>
-						</div>
-					</motion.div>
-				))}
+							<div
+								className={`${
+									colorMap[card.title]
+								} rounded-full p-2 inline-flex`}
+							>
+								<Icon size={25} strokeWidth={1.8} />
+							</div>
+						</motion.div>
+					);
+				})}
 			</div>
 			<div className="flex flex-wrap items-start gap-6 mb-8 w-full">
 				<motion.div
@@ -124,13 +135,16 @@ const Dashboard = () => {
 							className="mt-4 flex items-center justify-between"
 						>
 							<div className="flex items-center gap-2">
-								<div className="hidden md:flex items-center justify-center w-12 h-12 rounded-full bg-primary/10">
-									<img
-										src={assets.listIconColored}
-										alt="icons"
-										loading="lazy"
-										className="h-5 w-5"
-									/>
+								<div
+									className={`hidden md:flex items-center justify-center w-12 h-12 rounded-full	${
+										booking.status === "pending"
+											? "bg-yellow-100 text-yellow-500"
+											: booking.status === "confirmed"
+											? "bg-green-100 text-green-500"
+											: "bg-red-100 text-red-500"
+									} `}
+								>
+									<iconList.ClipboardList size={20} />
 								</div>
 								<div>
 									<p className="line-clamp-1 text-sm">
@@ -142,16 +156,17 @@ const Dashboard = () => {
 								</div>
 							</div>
 							<div className="flex items-center gap-2  font-medium">
-								<p className="text-sm max-sm:hidden text-gray-500 md:text-base">
-									{currency} {booking.price}
+								<p className="text-sm max-sm:hidden text-primary md:text-base">
+									{currency}{" "}
+									{booking.price.toLocaleString("en-IN")}
 								</p>
 								<p
 									className={`px-3 py-0.5 rounded-md text-xs md:text-sm ${
 										booking.status === "pending"
-											? "bg-yellow-200 text-yellow-600"
+											? "bg-yellow-100 text-yellow-500"
 											: booking.status === "confirmed"
-											? "bg-green-200 text-green-600"
-											: "bg-red-200 text-red-600"
+											? "bg-green-100 text-green-500"
+											: "bg-red-100 text-red-500"
 									}`}
 								>
 									{booking.status}
@@ -174,7 +189,7 @@ const Dashboard = () => {
 						Revenue for current month
 					</p>
 					<p className="text-3xl mt-6 text-primary font-semibold">
-						{currency} {data.monthlyRevenue}
+						{currency} {data.monthlyRevenue.toLocaleString("en-IN")}
 					</p>
 				</motion.div>
 			</div>
