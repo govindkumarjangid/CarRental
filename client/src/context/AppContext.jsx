@@ -14,6 +14,7 @@ import {
 	Outlet,
 	Routes,
 	Route,
+	Navigate
 } from "react-router-dom";
 import { assets, iconList } from "../assets/assets.jsx";
 import { motion, AnimatePresence, useInView } from "motion/react";
@@ -35,6 +36,8 @@ export const AppProvider = ({ children }) => {
 	const [cars, setCars] = useState([]);
 	const [loading, setLoading] = useState(false);
 	const [showReview, setShowReview] = useState(false);
+	const [showEditCar, setShowEditCar] = useState(false);
+	const [editCar, setEditCar] = useState(null);
 
 	//check user login or not
 	const fetchUser = async () => {
@@ -42,6 +45,7 @@ export const AppProvider = ({ children }) => {
 			const { data } = await axios.get("/api/user/data");
 			if (data.success) {
 				setUser(data.user);
+				localStorage.setItem("user", JSON.stringify(data.user));
 				setIsOwner(data.user.role === "owner");
 			} else {
 				navigate("/");
@@ -72,7 +76,8 @@ export const AppProvider = ({ children }) => {
 		setIsOwner(false);
 		navigate("/");
 		(axios.defaults.headers.common["Authorization"] = ""),
-			toast.success("Logged out successfully");
+			localStorage.setItem("user", null);
+		toast.success("Logged out successfully");
 	};
 
 	//get token from localstorage
@@ -116,7 +121,6 @@ export const AppProvider = ({ children }) => {
 		setShowReview,
 		setLoading,
 		assets,
-		useEffect,
 		useState,
 		Loader,
 		OwnerTitle,
@@ -137,6 +141,12 @@ export const AppProvider = ({ children }) => {
 		Routes,
 		Route,
 		Toaster,
+		Navigate,
+		useEffect,
+		showEditCar,
+		setShowEditCar,
+		editCar,
+		setEditCar
 	};
 
 	return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

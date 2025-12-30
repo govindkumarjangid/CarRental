@@ -125,14 +125,23 @@ const Hero = () => {
 						</div>
 						<button
 							type="submit"
-							className={`cursor-pointer flex items-center justify-center gap-1 px-5 py-2  transition-all text-white rounded-lg shadow-[0px_3px_20px_rgba(0,0,0,0.2)]  dark:border dark:border-white dark:text-white dark:bg-transparent dark:hover:bg-second-bg active:scale-95 ${
-								loading
-									? "opacity-50 bg-primary"
-									: "bg-primary hover:bg-primary-dull"
-							}`}
+							className={`cursor-pointer flex items-center justify-center gap-1 px-5 py-2  transition-all text-white rounded-lg shadow-[0px_3px_20px_rgba(0,0,0,0.2)]  dark:border dark:border-white dark:text-white dark:bg-transparent dark:hover:bg-second-bg active:scale-95 ${loading
+								? "opacity-50 bg-primary"
+								: "bg-primary hover:bg-primary-dull"
+								}`}
 						>
-							<iconList.Search size={18} />
-							{loading ? "Searching..." : "Search"}
+							{loading ? (<div className="flex items-center gap-2 justify-center">
+								<iconList.LoaderPinwheel
+									size={16}
+									className="h-5 w-5 animate-spin text-white"
+								/>
+								<span>Searching...</span>
+							</div>) : (
+								<div className="flex items-center gap-2 justify-center">
+									<iconList.Search size={18} />
+									<span>Search</span>
+								</div>
+							)}
 						</button>
 					</div>
 				</motion.form>
@@ -158,7 +167,7 @@ const Hero = () => {
 								stiffness: 120,
 								damping: 20,
 							}}
-							className="fixed sm:bottom-2 sm:right-2 z-50 bg-white shadow-2xl border rounded-md border-gray-400 overflow-y-scroll  overflow-x-hidden w-full h-fit sm:w-lg no-scrollbar mx-2"
+							className="fixed sm:bottom-2 sm:right-2 z-50 bg-white shadow-2xl rounded-md overflow-y-scroll  overflow-x-hidden w-full h-fit sm:w-lg no-scrollbar mx-2"
 						>
 							<div className="sticky top-0 bg-white flex justify-between items-center px-2 py-2 border-b border-gray-400">
 								<h3 className="font-semibold">

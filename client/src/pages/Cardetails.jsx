@@ -4,7 +4,6 @@ const Cardetails = () => {
 	const {
 		motion,
 		Loader,
-		assets,
 		navigate,
 		currency,
 		cars,
@@ -268,13 +267,20 @@ const Cardetails = () => {
 							<motion.button
 								type="submit"
 								disabled={loading}
-								className={`w-full transition-all py-3 font-medium text-white rounded-xl hover:scale-102 active:scale-95 ${
-									loading
-										? "bg-primary opacity-50 cursor-not-allowed"
-										: "bg-primary hover:bg-primary-dull cursor-pointer"
-								}`}
+								className={`w-full transition-all py-3 font-medium text-white rounded-xl hover:scale-102 active:scale-95 ${loading
+									? "bg-primary opacity-50 cursor-not-allowed"
+									: "bg-primary hover:bg-primary-dull cursor-pointer"
+									}`}
 							>
-								{loading ? "Processing..." : "Book Now"}
+								{loading ? (
+									<div className="flex items-center gap-2 justify-center">
+										<iconList.LoaderPinwheel
+											size={16}
+											className="h-5 w-5 animate-spin text-white"
+										/>
+										<span>Processing...</span>
+									</div>
+								) : "Book Now"}
 							</motion.button>
 
 							<p className="text-center text-sm text-gray-400 dark:text-300">

@@ -136,10 +136,10 @@ const Dashboard = () => {
 							<div className="flex items-center gap-2">
 								<div
 									className={`hidden md:flex items-center justify-center w-12 h-12 rounded-full	${booking.status === "pending"
-											? "bg-yellow-100 text-yellow-500"
-											: booking.status === "confirmed"
-												? "bg-green-100 text-green-500"
-												: "bg-red-100 text-red-500"
+										? "bg-yellow-100 text-yellow-500"
+										: booking.status === "confirmed"
+											? "bg-green-100 text-green-500"
+											: "bg-red-100 text-red-500"
 										} `}
 								>
 									<iconList.ClipboardList size={20} />
@@ -160,10 +160,10 @@ const Dashboard = () => {
 								</p>
 								<p
 									className={`px-3 py-0.5 rounded-md text-xs md:text-sm ${booking.status === "pending"
-											? "bg-yellow-100 text-yellow-500"
-											: booking.status === "confirmed"
-												? "bg-green-100 text-green-500"
-												: "bg-red-100 text-red-500"
+										? "bg-yellow-100 text-yellow-500"
+										: booking.status === "confirmed"
+											? "bg-green-100 text-green-500"
+											: "bg-red-100 text-red-500"
 										}`}
 								>
 									{booking.status}

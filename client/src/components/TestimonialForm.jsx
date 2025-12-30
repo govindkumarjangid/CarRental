@@ -1,3 +1,4 @@
+import { delay, scale } from "motion/react";
 import { useAppContext } from "../context/AppContext";
 
 const TestimonialForm = () => {
@@ -58,14 +59,23 @@ const TestimonialForm = () => {
 				onClick={(e) => e.stopPropagation()}
 				className="w-full h-screen md:h-fit md:max-w-2xl md:mx-auto p-4 md:py-4 md:px-6 bg-white md:rounded-md shadow-lg overflow-hidden"
 			>
-				<motion.h2
-					initial={{ opacity: 0, y: -50 }}
-					animate={{ opacity: 1, y: 0 }}
-					transition={{ duration: 0.7 }}
-					className="text-xl font-semibold mb-3"
-				>
-					Add Testimonial
-				</motion.h2>
+				<div className="flex items-center justify-between">
+					<motion.h2
+						initial={{ opacity: 0, y: -50 }}
+						animate={{ opacity: 1, y: 0 }}
+						transition={{ duration: 0.7 }}
+						className="text-xl font-semibold mb-3"
+					>
+						Add Testimonial
+					</motion.h2>
+					<button
+						initial={{ opacity: 0, scale: 0 }}
+						animate={{ opacity: 1, scale: 1 }}
+						transition={{ duration: 0.5, delay: 3 }}
+						onClick={() => setShowReview(false)} className="bg-gray-200 p-1 h-8 w-8 rounded-md text-gray-600 hover:text-gray-700 cursor-pointer active:scale-95 transition-transform duration-200">
+						<iconList.X size={25} />
+					</button>
+				</div>
 
 				{/* photo */}
 				<motion.div

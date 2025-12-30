@@ -12,6 +12,7 @@ const Login = () => {
 		useRef,
 		motion,
 		toast,
+		iconList,
 	} = useAppContext();
 
 	const [state, setState] = useState("login");
@@ -161,19 +162,26 @@ const Login = () => {
 				<button
 					type="submit"
 					disabled={loading}
-					className={`${
-						loading
-							? "opacity-50 cursor-not-allowed bg-primary"
-							: "bg-primary hover:bg-primary-dull"
-					} transition-all text-white w-full py-2 rounded-lg mt-2
+					className={`${loading
+						? "opacity-50 cursor-not-allowed bg-primary"
+						: "bg-primary hover:bg-primary-dull"
+						} transition-all text-white w-full py-2 rounded-lg mt-2
             cursor-pointer active:scale-95
           dark:bg-[#9BFFFF] dark:text-gray-900 dark:hover:bg-[#7EDFFF]`}
 				>
-					{loading
-						? "Please wait..."
-						: state === "register"
-						? "Create Account"
-						: "Login"}
+					{loading ? (
+						<div className="flex items-center gap-2 justify-center">
+							<iconList.LoaderPinwheel
+								size={16}
+								className="h-5 w-5 animate-spin text-white"
+							/>
+							<span>Please wait...</span>
+						</div>
+					) : state === "register" ? (
+						"Create Account"
+					) : (
+						"Login"
+					)}
 				</button>
 			</motion.form>
 		</motion.div>

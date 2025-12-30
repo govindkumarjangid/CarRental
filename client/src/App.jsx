@@ -12,9 +12,11 @@ import Layout from "./pages/Layout.jsx";
 import Login from "./components/Login.jsx";
 import { useAppContext } from "./context/AppContext.jsx";
 import TestimonialForm from "./components/TestimonialForm.jsx";
+import ProtectRoute from "./context/ProtectRoute.jsx";
+import EditCarForm from "./components/owner/EditCarForm.jsx";
 
 const App = () => {
-	const { showLogin, showReview, useLocation, Routes, Route, Toaster } =
+	const { showLogin, showReview, useLocation, Routes, Route, Toaster, showEditCar } =
 		useAppContext();
 
 	const isOwnerPath = useLocation().pathname.startsWith("/owner");
@@ -33,17 +35,38 @@ const App = () => {
 				<Route path="/my-bookings" element={<Mybookings />} />
 				<Route path="*" element={<div>404 Not Found</div>} />
 
-				<Route path="/owner" element={<Layout />}>
-					<Route index element={<Dashboard />} />
-					<Route path="add-car" element={<AddCar />} />
-					<Route path="manage-cars" element={<ManageCars />} />
+				<Route path="/owner" element={
+					<ProtectRoute>
+						<Layout />
+					</ProtectRoute>
+				}>
+					<Route index element={
+						<ProtectRoute>
+							<Dashboard />
+						</ProtectRoute>
+					} />
+					<Route path="add-car" element={
+						<ProtectRoute>
+							<AddCar />
+						</ProtectRoute>
+					} />
+					<Route path="manage-cars" element={
+						<ProtectRoute>
+							<ManageCars />
+						</ProtectRoute>
+					} />
 					<Route
 						path="manage-bookings"
-						element={<ManageBookings />}
+						element={
+							<ProtectRoute>
+								<ManageBookings />
+							</ProtectRoute>
+						}
 					/>
 				</Route>
 			</Routes>
 			{showReview && <TestimonialForm />}
+			{showEditCar && <EditCarForm />}
 
 			{!isOwnerPath && <Footer />}
 		</>

@@ -4,7 +4,6 @@ import TestimonialCard from "./TestimonialCard";
 const Testmonial = () => {
 	const {
 		UserTitle,
-		motion,
 		useRef,
 		setShowReview,
 		toast,
@@ -56,9 +55,9 @@ const Testmonial = () => {
 				<div className="flex justify-end">
 					<button
 						onClick={() => setShowReview(true)}
-						className="flex items-center gap-2 mb-6 text-gray-500 cursor-pointer dark:text-gray-200"
+						className="flex items-center gap-1 mb-6 text-gray-500 cursor-pointer dark:text-gray-200 hover:bg-gray-200 px-2 py-1 rounded-md active:scale-95"
 					>
-						Add <iconList.Plus size={25} />
+						Add <iconList.Plus size={20} />
 					</button>
 				</div>
 
@@ -86,15 +85,15 @@ const Testmonial = () => {
 						</button>
 
 						{/* Slider */}
-						<div className="overflow-x-auto no-scrollbar">
+						<div>
 							<div
 								ref={sliderRef}
-								className="flex gap-6 snap-x snap-mandatory overflow-x-auto p-4 scroll-smooth no-scrollbar"
+								className="flex gap-4 snap-x snap-mandatory overflow-x-auto px-6 py-10 scroll-smooth no-scrollbar "
 							>
 								{reviews.map((review, index) => (
 									<div
 										key={index}
-										className="min-w-[90%] sm:min-w-[60%] lg:min-w-[33%] snap-center"
+										className="min-w-full sm:min-w-[50%] lg:min-w-[32.6%] snap-center"
 									>
 										<TestimonialCard review={review} />
 									</div>
@@ -109,6 +108,7 @@ const Testmonial = () => {
 						>
 							<iconList.ChevronRight />
 						</button>
+
 					</div>
 				)}
 			</div>

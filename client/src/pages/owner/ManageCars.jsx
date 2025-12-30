@@ -13,6 +13,8 @@ const ManageCars = () => {
 		Loader,
 		toast,
 		iconList,
+		setShowEditCar,
+		setEditCar
 	} = useAppContext();
 
 	const [cars, setCars] = useState([]);
@@ -107,11 +109,11 @@ const ManageCars = () => {
 								className="border-t border-gray-400 hover:bg-gray-100 hover:scale-101 transition-all duration-300"
 								key={index}
 							>
-								<td className="p-3 flex items-center gap-3">
+								<td className="py-3 pl-2 flex items-center gap-3">
 									<img
 										src={car.image}
 										alt={car.name}
-										className="h-11 aspect-video rounded-md  object-cover"
+										className="h-11 aspect-square sm:aspect-video rounded-md object-cover"
 									/>
 									<div className="max-md:hidden">
 										<p className="font-medium">
@@ -124,7 +126,7 @@ const ManageCars = () => {
 									</div>
 								</td>
 
-								<td className="p-3 max-md:hidden">
+								<td className="py-3 max-md:hidden">
 									{car.category}
 								</td>
 
@@ -146,13 +148,13 @@ const ManageCars = () => {
 									)}
 								</td>
 
-								<td className="p-4">
+								<td className="py-4 pr-2">
 									<div className="flex items-center gap-3">
 										<button
 											onClick={() =>
 												toggleCarAvailability(car._id)
 											}
-											className="cursor-pointer"
+											className="cursor-pointer active:scale-90 transition-transform duration-300"
 										>
 											{car.isAvaliable ? (
 												<iconList.Eye
@@ -172,7 +174,7 @@ const ManageCars = () => {
 												setOpenConfirm(true);
 												setDeleteId(car._id);
 											}}
-											className="cursor-pointer"
+											className="cursor-pointer active:scale-90 transition-transform duration-300"
 										>
 											<iconList.Trash2
 												size={18}
@@ -182,8 +184,12 @@ const ManageCars = () => {
 
 										<button className="cursor-pointer">
 											<iconList.EditIcon
+												onClick={() => {
+													setShowEditCar(true);
+													setEditCar(car);
+												}}
 												size={18}
-												className="text-yellow-500"
+												className="text-yellow-500 active:scale-90 transition-transform duration-300"
 											/>
 										</button>
 									</div>

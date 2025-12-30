@@ -131,6 +131,36 @@ export const deleteCar = async (req, res) => {
   }
 }
 
+//* edit car
+export const editCar = async (req, res) => {
+  try {
+    const { _id } = req.user;
+    const { carId, imageUrl, ...data } = req.body;
+    let finalImage = imageUrl;
+    const car = await Car.findById(carId);
+    if (!car) return res.json({ success: false, message: "Car not found" });
+    if (car.owner.toString() !== _id.toString())
+      return res.json({ success: false, message: "You are not authorized" });
+
+    if (!data.brand || !data.model || !data.year || !data.pricePerDay || !data.category || !data.transmission || !data.fuel_type || !data.seating_capacity || !data.location || !data.description)
+      return res.json({ success: false, message: "All fields are required" });
+
+    if (req.file) {
+      const uploaded = await imagekit.files.upload({
+        file: req.file.buffer.toString("base64"),
+        fileName: req.file.originalname,
+        folder: "/cars",
+      });
+      finalImage = uploaded.url;
+    }
+    await Car.findByIdAndUpdate(carId, { ...data, image: finalImage });
+    return res.json({ success: true, message: "Car updated successfully" });
+  } catch (error) {
+    console.log(error);
+    return res.json({ success: false, message: error.message });
+  }
+};
+
 //* get owner dashboard data
 export const getDashboardData = async (req, res) => {
 
@@ -164,7 +194,6 @@ export const getDashboardData = async (req, res) => {
 }
 
 //* update image
-
 export const updateUserImage = async (req, res) => {
   try {
     const { _id } = req.user;

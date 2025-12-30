@@ -36,7 +36,7 @@ const AddCar = () => {
 	};
 
 	const onSubmithandler = async (e) => {
-		e.preventDefault();  
+		e.preventDefault();
 		setLoading(true);
 		try {
 			const formData = new FormData();
@@ -153,8 +153,7 @@ const AddCar = () => {
 							id="model"
 							name="model"
 							placeholder="e.g. X5, C-Class, A6"
-							className="px-3 py-2.5 mt-1	border border-gray-400 rounded-md
-							outline-none	focus:border-primary focus:ring-2 focus:ring-primary/50"
+							className="px-3 py-2.5 mt-1	border border-gray-400 rounded-md outline-none	focus:border-primary focus:ring-2 focus:ring-primary/50"
 							value={car.model}
 							onChange={handleChange}
 						/>
@@ -336,13 +335,21 @@ const AddCar = () => {
 				<button
 					type="submit"
 					disabled={loading}
-					className={`flex items-center justify-center gap-2 px-6 py-2.5 bg-primary text-white rounded-md w-max mt-4 mb-10 hover:bg-primary/90 active:scale-95 transition cursor-pointer ${
-						loading ? "cursor-not-allowed opacity-70" : ""
-					}`}
+					className={` px-5 py-2.5 mt-4 rounded-md text-white transition-all active:scale-95 mb-10 w-37 ${loading ? "cursor-not-allowed bg-primary" : "bg-primary hover:bg-primary-dull cursor-pointer"}`}
 				>
-					<iconList.Check size={20} />
-					{loading ? "Listing..." : "List Your Car"}
+					{loading ? (
+						<span className="flex items-center gap-2">
+							<iconList.LoaderPinwheel size={18} className="animate-spin" />
+							Listing...
+						</span>
+					) : (
+						<span className="flex items-center gap-2">
+							<iconList.Check size={18} />
+							List Your Car
+						</span>
+					)}
 				</button>
+
 			</form>
 		</div>
 	);

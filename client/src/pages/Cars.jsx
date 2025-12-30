@@ -2,7 +2,6 @@ import { useAppContext } from "../context/AppContext.jsx";
 const Cars = () => {
 	const {
 		motion,
-		assets,
 		useState,
 		useEffect,
 		UserTitle,
@@ -39,7 +38,7 @@ const Cars = () => {
 	if (loading) return <Loader />;
 	return (
 		<>
-			<div className="max-w-8xl m-auto flex flex-col items-center dark:bg-linear-to-r pb-20 dark:to-main-bg dark:from-second-bg relative px-2">
+			<div className="max-w-8xl m-auto flex flex-col items-center dark:bg-linear-to-r pb-20 dark:to-main-bg dark:from-second-bg relative">
 				<motion.div
 					initial={{ opacity: 0, y: 100 }}
 					animate={{ opacity: 1, y: 0 }}
@@ -78,22 +77,20 @@ const Cars = () => {
 					</p>
 					<button
 						onClick={() => setSortOrder("asc")}
-						className={`px-3 py-1 rounded-md border ${
-							sortOrder === "asc"
-								? "bg-primary text-white"
-								: "bg-white"
-						}`}
+						className={`px-3 py-1 rounded-md border ${sortOrder === "asc"
+							? "bg-primary text-white"
+							: "bg-white"
+							}`}
 					>
 						Model A → Z
 					</button>
 
 					<button
 						onClick={() => setSortOrder("desc")}
-						className={`px-3 py-1 rounded-md border ${
-							sortOrder === "desc"
-								? "bg-primary text-white"
-								: "bg-white"
-						}`}
+						className={`px-3 py-1 rounded-md border ${sortOrder === "desc"
+							? "bg-primary text-white"
+							: "bg-white"
+							}`}
 					>
 						Model Z → A
 					</button>

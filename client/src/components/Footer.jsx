@@ -28,7 +28,7 @@ const Footer = () => {
        text-gray-500/80 pt-14 px-6 md:px-16 lg:px-24 xl:px-32
       dark:bg-linear-to-r dark:from-main-bg dark:to-second-bg dark:text-light"
 		>
-			<div className="flex flex-wrap justify-between items-start gap-8 pb-6 md:gap-6">
+			<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 justify-between items-start gap-8 pb-6 md:gap-6">
 				<motion.div variants={fadeUp} className="max-w-80">
 					<motion.img
 						initial={{ opacity: 0, scale: 0.9 }}
