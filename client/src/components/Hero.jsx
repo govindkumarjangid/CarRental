@@ -10,8 +10,6 @@ const Hero = () => {
 		toast,
 		navigate,
 		currency,
-		loading,
-		setLoading,
 		iconList,
 		AnimatePresence,
 	} = useAppContext();
@@ -21,6 +19,7 @@ const Hero = () => {
 	const [pickupLocation, setPickupLocation] = useState("");
 	const [availableCars, setAvailableCars] = useState([]);
 	const [open, setOpen] = useState(true);
+	const [loading, setLoading] = useState(false);
 
 	const checkAvailability = async (e) => {
 		e.preventDefault();
@@ -54,7 +53,7 @@ const Hero = () => {
 
 	return (
 		<>
-			<div className="max-w-8xl m-auto flex flex-col justify-center items-center gap-8 bg-light text-center dark:bg-linear-to-r dark:bg-main-bg dark:from-second-bg px-1">
+			<div className="max-w-8xl m-auto flex flex-col justify-center items-center gap-8 bg-light text-center dark:bg-linear-to-r dark:bg-main-bg dark:from-second-bg px-2">
 				<motion.h1
 					initial={{ opacity: 0, y: 100 }}
 					animate={{ opacity: 1, y: 0 }}

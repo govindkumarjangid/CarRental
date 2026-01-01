@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken'
 import Car from '../models/Car.js'
 import imagekit from "../configs/imagekit.js"
 import Review from "../models/Review.js";
+
 //* JWT token
 const generateToken = (userId) => {
   const payload = userId;
@@ -45,7 +46,6 @@ export const registerUser = async (req, res) => {
   }
 }
 
-
 //*Login User
 export const loginUser = async (req, res) => {
   try {
@@ -77,7 +77,6 @@ export const loginUser = async (req, res) => {
   }
 }
 
-
 //* get user data using Token (JWT)
 export const getUserData = async (req, res) => {
   try {
@@ -105,16 +104,15 @@ export const getCars = async (req, res) => {
 export const addReview = async (req, res) => {
   try {
     const { _id } = req.user;
-    console.log(req.body)
     const { name, email, location, rating, review } = req.body;
     const imageFile = req.file;
 
-    if (!imageFile) {
-      return res.status(400).json({ message: "No image file provided" });
-    }
-
     if (!name || !location || !rating || !review) {
       return res.json({ success: false, message: 'All fields are required' })
+    }
+
+    if (!imageFile) {
+      return res.status(400).json({ message: "No image file provided" });
     }
 
     const response = await imagekit.files.upload({

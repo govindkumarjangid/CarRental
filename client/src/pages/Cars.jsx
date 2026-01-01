@@ -1,3 +1,4 @@
+import CarCardSkeleton from "../components/CarCardSkeleton.jsx";
 import { useAppContext } from "../context/AppContext.jsx";
 const Cars = () => {
 	const {
@@ -9,7 +10,6 @@ const Cars = () => {
 		cars,
 		CarCard,
 		loading,
-		Loader,
 		iconList,
 	} = useAppContext();
 
@@ -35,7 +35,6 @@ const Cars = () => {
 		if (sortOrder === "desc") sortedCars.reverse();
 	}
 
-	if (loading) return <Loader />;
 	return (
 		<>
 			<div className="max-w-8xl m-auto flex flex-col items-center dark:bg-linear-to-r pb-20 dark:to-main-bg dark:from-second-bg relative">
@@ -43,7 +42,7 @@ const Cars = () => {
 					initial={{ opacity: 0, y: 100 }}
 					animate={{ opacity: 1, y: 0 }}
 					transition={{ duration: 0.9, ease: "easeOut" }}
-					className=" bg-light dark:bg-[#081c24] w-full py-20 px-4 flex flex-col justify-center items-center"
+					className=" bg-light dark:bg-main-bg w-full py-20 px-4 flex flex-col justify-center items-center"
 				>
 					<UserTitle
 						title="Avaiable Cars"
@@ -108,7 +107,9 @@ const Cars = () => {
 				</motion.div>
 
 				<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-18 px-7 md:px-30">
-					{sortedCars.map((car, index) => (
+					{loading ? [1, 2, 3, 4, 5].map((_, index) =>
+						<CarCardSkeleton index={index} key={index} />
+					) : sortedCars.map((car, index) => (
 						<div key={car._id}>
 							<CarCard car={car} index={index} />
 						</div>

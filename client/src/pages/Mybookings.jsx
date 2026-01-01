@@ -1,4 +1,6 @@
 import BookingCard from "../components/BookingCard.jsx";
+import BookingCardSkeleton from "../components/BookingCardSkeleton.jsx";
+import EmptyBookings from "../components/EmptyBookings.jsx";
 import { useAppContext } from "../context/AppContext.jsx";
 
 const Mybookings = () => {
@@ -11,7 +13,6 @@ const Mybookings = () => {
 		loading,
 		setLoading,
 		toast,
-		Loader,
 	} = useAppContext();
 
 	const [bookings, setBookings] = useState([]);
@@ -33,7 +34,6 @@ const Mybookings = () => {
 		fetchMyBooking();
 	}, []);
 
-	if (loading) return <Loader />;
 
 	return (
 		<>
@@ -43,16 +43,33 @@ const Mybookings = () => {
 					subTitle="View and manage all your car bookings"
 					align="left"
 				/>
-
 				<div>
-					{bookings.map((booking, index) => (
-						<BookingCard
-							key={booking._id}
-							booking={booking}
-							index={index}
-							currency={currency}
-						/>
-					))}
+					{
+						loading ? (
+							<>
+								{
+									[0, 1, 2].map((_, index) => (
+										<BookingCardSkeleton index={index} key={index} />
+									))
+								}
+							</>
+						) : (
+							<>
+								{
+									bookings.length === 0 ? (
+										<EmptyBookings />
+									) : (bookings.map((booking, index) => (
+										<BookingCard
+											key={booking._id}
+											booking={booking}
+											index={index}
+											currency={currency}
+										/>
+									)))
+								}
+							</>
+						)
+					}
 				</div>
 			</div>
 		</>

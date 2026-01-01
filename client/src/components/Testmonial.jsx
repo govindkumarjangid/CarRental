@@ -1,5 +1,6 @@
 import { useAppContext } from "../context/AppContext";
 import TestimonialCard from "./TestimonialCard";
+import TestimonialSkeleton from "./TestimonialSkeleton";
 
 const Testmonial = () => {
 	const {
@@ -11,13 +12,18 @@ const Testmonial = () => {
 		useEffect,
 		useState,
 		iconList,
+		motion,
+		useInView,
 	} = useAppContext();
 
 	const [reviews, setReviews] = useState([]);
-
+	const [loading, setLoading] = useState(false);
 	const ref = useRef(null);
+	const isInView = useInView(ref, { once: true });
+
 
 	const getReviews = async () => {
+		setLoading(true);
 		try {
 			const { data } = await axios.get("/api/user/get-reviews");
 			if (data.success) {
@@ -26,6 +32,8 @@ const Testmonial = () => {
 		} catch (error) {
 			console.log(error.message);
 			toast.error(error.message);
+		} finally {
+			setLoading(false);
 		}
 	};
 
@@ -33,13 +41,10 @@ const Testmonial = () => {
 		getReviews();
 	}, []);
 
-	const reviewCount = Array.isArray(reviews) ? reviews.length : 0;
 	const sliderRef = useRef(null);
-
 	const scrollLeft = () => {
 		sliderRef.current?.scrollBy({ left: -300, behavior: "smooth" });
 	};
-
 	const scrollRight = () => {
 		sliderRef.current?.scrollBy({ left: 300, behavior: "smooth" });
 	};
@@ -55,62 +60,61 @@ const Testmonial = () => {
 				<div className="flex justify-end">
 					<button
 						onClick={() => setShowReview(true)}
-						className="flex items-center gap-1 mb-6 text-gray-500 cursor-pointer dark:text-gray-200 hover:bg-gray-200 px-2 py-1 rounded-md active:scale-95"
+						className="flex group items-center justify-center gap-2 px-4 py-1 border-2 border-gray-500 text-gray-600 hover:bg-primary rounded-md mt-18 cursor-pointer hover:text-light hover:border-light dark:border-white dark:text-white dark:hover:bg-second-bg active:scale-95 transition-all duration-300"
 					>
-						Add <iconList.Plus size={20} />
+						Add <iconList.Plus size={20} className="group-hover:translate-x-2 transition-transform duration-400" />
 					</button>
 				</div>
 
-				{reviewCount <= 3 && (
-					<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-18 place-items-center">
-						{reviews.map((review, index) => (
-							<TestimonialCard
-								key={index}
-								review={review}
-								index={index}
-								ref={ref}
-							/>
-						))}
-					</div>
-				)}
+				<motion.div
+					ref={ref}
+					initial={{ opacity: 0, y: 100, filter: "blur(10px)" }}
+					animate={isInView ? { opacity: 1, y: 0, filter: "blur(0px)" } : {}}
+					transition={{ duration: 0.6, ease: "easeOut" }}
+					className="relative mt-10">
+					{/* Left button */}
+					<button
+						onClick={scrollLeft}
+						className="hidden sm:flex absolute -left-6 top-1/2 -translate-y-1/2 z-10 bg-white shadow rounded-full p-2 hover:scale-105 transition cursor-pointer"
+					>
+						<iconList.ChevronLeft />
+					</button>
 
-				{reviewCount > 3 && (
-					<div className="relative mt-10">
-						{/* Left button */}
-						<button
-							onClick={scrollLeft}
-							className="hidden sm:flex absolute -left-6 top-1/2 -translate-y-1/2 z-10 bg-white shadow rounded-full p-2 hover:scale-105 transition cursor-pointer"
+					{/* Slider */}
+					<div>
+						<div
+							ref={sliderRef}
+							className="flex gap-4 snap-x snap-mandatory overflow-x-auto px-6 py-10 scroll-smooth no-scrollbar "
 						>
-							<iconList.ChevronLeft />
-						</button>
-
-						{/* Slider */}
-						<div>
-							<div
-								ref={sliderRef}
-								className="flex gap-4 snap-x snap-mandatory overflow-x-auto px-6 py-10 scroll-smooth no-scrollbar "
-							>
-								{reviews.map((review, index) => (
-									<div
-										key={index}
-										className="min-w-full sm:min-w-[50%] lg:min-w-[32.6%] snap-center"
-									>
-										<TestimonialCard review={review} />
-									</div>
-								))}
-							</div>
+							{
+								!loading ? (
+									reviews.map((review, index) => (
+										<div
+											key={index}
+											className="min-w-full sm:min-w-[50%] lg:min-w-[32.6%] snap-center"
+										>
+											<TestimonialCard review={review} />
+										</div>
+									))
+								) : (
+									[1, 2, 3].map(i => (
+										<TestimonialSkeleton key={i} />
+									))
+								)
+							}
 						</div>
-
-						{/* Right button */}
-						<button
-							onClick={scrollRight}
-							className="hidden sm:flex absolute -right-6 top-1/2 -translate-y-1/2 z-10 bg-white shadow rounded-full p-2 hover:scale-105 transition cursor-pointer"
-						>
-							<iconList.ChevronRight />
-						</button>
-
 					</div>
-				)}
+
+					{/* Right button */}
+					<button
+						onClick={scrollRight}
+						className="hidden sm:flex absolute -right-6 top-1/2 -translate-y-1/2 z-10 bg-white shadow rounded-full p-2 hover:scale-105 transition cursor-pointer"
+					>
+						<iconList.ChevronRight />
+					</button>
+
+				</motion.div>
+
 			</div>
 		</>
 	);

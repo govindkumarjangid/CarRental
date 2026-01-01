@@ -7,7 +7,7 @@ import axios from "axios";
 import { toast, Toaster } from "react-hot-toast";
 import {
 	useNavigate,
-	useParams,
+	useParams,     
 	Link,
 	NavLink,
 	useLocation,

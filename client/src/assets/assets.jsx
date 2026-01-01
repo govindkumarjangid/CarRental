@@ -37,6 +37,7 @@ import {
 	Facebook,
 	Twitter,
 	Mail,
+	CalendarX
 } from "lucide-react";
 
 export const cityList = [
@@ -64,6 +65,7 @@ export const iconList = {
 	Fuel,
 	Car,
 	MapPin,
+	CalendarX,
 	Funnel,
 	Calendar,
 	CircleCheckBig,

@@ -57,7 +57,7 @@ const TestimonialForm = () => {
 			<form
 				onSubmit={(e) => handleSubmit(e)}
 				onClick={(e) => e.stopPropagation()}
-				className="w-full h-screen md:h-fit md:max-w-2xl md:mx-auto p-4 md:py-4 md:px-6 bg-white md:rounded-md shadow-lg overflow-hidden"
+				className="w-full h-full md:h-fit md:max-w-2xl md:mx-auto p-4 md:py-4 md:px-6 bg-white md:rounded-md shadow-lg overflow-hidden"
 			>
 				<div className="flex items-center justify-between">
 					<motion.h2

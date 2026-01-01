@@ -54,9 +54,8 @@ const Navbar = () => {
 			initial={{ opacity: 0, y: -40, filter: "blur(10px)" }}
 			animate={isInView ? { opacity: 1, y: 0, filter: "blur(0px)" } : {}}
 			transition={{ duration: 0.5, ease: "easeOut" }}
-			className={`max-w-8xl m-auto flex items-center justify-between h-auto px-4 md:px-16 lg:px-24 xl:px-32 py-4 text-gray-600 border-b border-borderColor border-gray-300 relative z-10 dark:bg-main-bg transition-all duration-300 ${
-				location.pathname === "/" ? "bg-light" : "bg-white"
-			} dark:text-white `}
+			className={`max-w-8xl m-auto flex items-center justify-between h-auto px-4 md:px-16 lg:px-24 xl:px-32 py-4 text-gray-600 border-b border-borderColor border-gray-300 relative z-10 dark:bg-main-bg transition-all duration-300 ${location.pathname === "/" ? "bg-light" : "bg-white"
+				} dark:text-white `}
 		>
 			{/* logo  */}
 			<Link to="/">
@@ -70,11 +69,9 @@ const Navbar = () => {
 
 			{/* menu links  */}
 			<div
-				className={`max-sm:fixed max-sm:h-screen max-sm:w-full max-sm:top-19.5 max-sm:border-t border-gray-400 right-0  flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-8 dark:bg-main-bg max-sm:p-4 transition-all duration-300 z-50  ${
-					location.pathname === "/" ? "bg-light" : "bg-white"
-				} ${
-					open ? "max-sm:translate-x-0" : "max-sm:-translate-x-full"
-				}`}
+				className={`max-sm:fixed max-sm:h-screen max-sm:w-full max-sm:top-19.5 max-sm:border-t border-gray-400 right-0  flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-8 dark:bg-main-bg max-sm:p-4 transition-all duration-300 z-50  ${location.pathname === "/" ? "bg-light" : "bg-white"
+					} ${open ? "max-sm:translate-x-0" : "max-sm:-translate-x-full"
+					}`}
 			>
 				<motion.div className="absolute inset-0 -z-10 bg-linear-to-br dark:from-[#133040] dark:to-[#0a1e29] blur-2xl rounded-3xl" />
 				{menuLinks.map((menuLink, index) => {
@@ -114,7 +111,7 @@ const Navbar = () => {
 					</button>
 				</div>
 
-				<div className="flex items-center gap-5">
+				{/* <div className="flex items-center gap-5">
 					<button
 						onClick={toggleTheme}
 						className=" px-2 py-2 bg-gray-200 dark:bg-second-bg rounded-lg text-sm"
@@ -125,7 +122,7 @@ const Navbar = () => {
 							<iconList.Moon />
 						)}
 					</button>
-				</div>
+				</div> */}
 			</div>
 
 			{/* open & close button  */}

@@ -1,8 +1,10 @@
 import CarCard from "./CarCard.jsx";
 import { useAppContext } from "../context/AppContext.jsx";
+import CarCardSkeleton from "./CarCardSkeleton.jsx";
 
 const FeaturedSection = () => {
-	const { motion, navigate, UserTitle, cars, iconList } = useAppContext();
+	const { motion, navigate, UserTitle, cars, iconList, useState } = useAppContext();
+	const loading = cars.length === 0;
 
 	return (
 		<>
@@ -14,11 +16,17 @@ const FeaturedSection = () => {
 					/>
 				</div>
 				<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-18">
-					{cars.slice(0, 3).map((car, index) => (
-						<motion.div key={car._id}>
-							<CarCard car={car} index={index} />
-						</motion.div>
-					))}
+					{
+						loading ? (
+							[1, 2, 3].map(i => <CarCardSkeleton key={i} />)
+						) : (
+							cars.slice(0, 3).map((car, index) => (
+								<motion.div key={car._id}>
+									<CarCard car={car} index={index} />
+								</motion.div>
+							))
+						)
+					}
 				</div>
 				<motion.button
 					initial={{ scale: 0.8, opacity: 0 }}
@@ -29,7 +37,7 @@ const FeaturedSection = () => {
 						window.scrollTo({
 							top: 0,
 							left: 0,
-							behavior: "smooth",
+							behavior: "smooth", 
 						});
 					}}
 					className="flex group items-center justify-center gap-2 px-6 py-2 border-2 border-gray-500 text-gray-600 hover:bg-primary rounded-md mt-18 cursor-pointer hover:text-light hover:border-light dark:border-white dark:text-white dark:hover:bg-second-bg active:scale-95 transition-all duration-300"

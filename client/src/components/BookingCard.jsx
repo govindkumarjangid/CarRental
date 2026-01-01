@@ -1,12 +1,12 @@
 import { useAppContext } from "../context/AppContext.jsx";
 
 const BookingCard = ({ booking, index }) => {
-	const { assets, motion, currency, useRef, useInView, iconList } =
+	const { motion, currency, useRef, useInView, iconList } =
 		useAppContext();
 	const ref = useRef(null);
 	const inView = useInView(ref, { once: true });
 
-	return (
+	return (   
 		<motion.div
 			ref={ref}
 			initial={{ y: 50, scale: 0.8, opacity: 0 }}

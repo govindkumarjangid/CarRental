@@ -6,8 +6,6 @@ const Login = () => {
 		axios,
 		setToken,
 		navigate,
-		loading,
-		setLoading,
 		useState,
 		useRef,
 		motion,
@@ -19,6 +17,7 @@ const Login = () => {
 	const [name, setName] = useState("");
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
+	const [loading, setLoading] = useState(false);
 	const ref = useRef(null);
 
 	const handleSubmit = async (e) => {
@@ -70,6 +69,8 @@ const Login = () => {
 					</span>
 					{state === "login" ? " Login" : " Sign Up"}
 				</p>
+
+				{/* name field  */}
 				{state === "register" && (
 					<div className="w-full relative">
 						<input
@@ -94,6 +95,8 @@ const Login = () => {
 						</label>
 					</div>
 				)}
+
+				{/* email field  */}
 				<div className="relative w-full">
 					<input
 						type="email"
@@ -115,6 +118,8 @@ const Login = () => {
 						Email
 					</label>
 				</div>
+
+				{/* password field  */}
 				<div className="relative w-full">
 					<input
 						type="password"
@@ -159,6 +164,7 @@ const Login = () => {
 						</p>
 					)}
 				</div>
+				{/* submit button  */}
 				<button
 					type="submit"
 					disabled={loading}

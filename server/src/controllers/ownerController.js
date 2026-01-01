@@ -94,17 +94,13 @@ export const toggleCarAvailability = async (req, res) => {
   try {
     const { _id } = req.user;
     const { carId } = req.body;
-
     const car = await Car.findById(carId);
-
     if (car.owner.toString() !== _id.toString()) {
       return res.json({ success: false, message: "You are not authorized" });
     }
-
     car.isAvaliable = !car.isAvaliable;
     await car.save();
     res.json({ success: true, message: "Car availability Toggled" });
-
   } catch (error) {
     console.log(error.message);
     res.json({ success: false, message: error.message });
@@ -117,14 +113,12 @@ export const deleteCar = async (req, res) => {
     const { _id } = req.user;
     const { carId } = req.body;
     const car = await Car.findById(carId);
-    if (car.owner.toString() !== _id.toString()) {
+    if (car.owner.toString() !== _id.toString())
       return res.json({ success: false, message: "You are not authorized" });
-    }
     car.owner = null;
     car.isAvaliable = false;
     await car.save();
     res.json({ success: true, message: "Car removed successfully" });
-
   } catch (error) {
     console.log(error.message);
     res.json({ success: false, message: error.message });
@@ -163,7 +157,6 @@ export const editCar = async (req, res) => {
 
 //* get owner dashboard data
 export const getDashboardData = async (req, res) => {
-
   try {
     const { _id, role } = req.user;
     if (role !== "owner") {
