@@ -79,7 +79,7 @@ const Login = () => {
 							placeholder=" "
 							value={name}
 							onChange={(e) => setName(e.target.value)}
-							className="peer w-full border border-gray-200 rounded-lg py-3 px-4 outline-none dark:outline-[#9BFFFF]"
+							className="w-full peer border border-gray-200 rounded-lg py-3 px-4 outline-none focus:border-primary focus:ring-2 focus:ring-primary/50 dark:outline-[#9BFFFF] transition-colors duration-200"
 						/>
 
 						<label
@@ -103,7 +103,7 @@ const Login = () => {
 						placeholder=" "
 						value={email}
 						onChange={(e) => setEmail(e.target.value)}
-						className="peer w-full border border-gray-200 rounded-lg py-3 px-4 outline-none dark:outline-[#9BFFFF]"
+						className="peer w-full border border-gray-200 rounded-lg py-3 px-4 outline-none  focus:border-primary focus:ring-2 focus:ring-primary/50 dark:outline-[#9BFFFF]"
 					/>
 
 					<label
@@ -126,7 +126,7 @@ const Login = () => {
 						value={password}
 						placeholder=" "
 						onChange={(e) => setPassword(e.target.value)}
-						className="peer w-full border border-gray-200 rounded-lg py-3 px-4 outline-none dark:outline-[#9BFFFF]"
+						className="peer w-full border border-gray-200 rounded-lg py-3 px-4 outline-none  focus:border-primary focus:ring-2 focus:ring-primary/50 dark:outline-[#9BFFFF]"
 					/>
 
 					<label
@@ -169,7 +169,7 @@ const Login = () => {
 					type="submit"
 					disabled={loading}
 					className={`${loading
-						? "opacity-50 cursor-not-allowed bg-primary"
+						? "opacity-90 cursor-not-allowed bg-primary"
 						: "bg-primary hover:bg-primary-dull"
 						} transition-all text-white w-full py-2 rounded-lg mt-2
             cursor-pointer active:scale-95
@@ -177,7 +177,7 @@ const Login = () => {
 				>
 					{loading ? (
 						<div className="flex items-center gap-2 justify-center">
-							<iconList.LoaderPinwheel
+							<iconList.Loader
 								size={16}
 								className="h-5 w-5 animate-spin text-white"
 							/>

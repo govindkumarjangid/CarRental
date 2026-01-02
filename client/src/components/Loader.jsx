@@ -4,7 +4,7 @@ const Loader = () => {
 	const { iconList } = useAppContext();
 	return (
 		<div className="flex justify-center items-center h-[80vh]">
-			<iconList.LoaderPinwheel className="w-14 h-14  md:w-20 md:h-20 text-primary animate-spin" />
+			<iconList.Loader className="w-14 h-14  md:w-24 md:h-24 text-primary animate-spin" />
 		</div>
 	);
 };

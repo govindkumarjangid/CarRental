@@ -105,7 +105,7 @@ const Sidebar = () => {
 							key={link.path}
 							to={link.path}
 							whileTap={{ scale: 0.97 }}
-							className={`relative flex items-center gap-3 w-full py-3 pl-5 md:pl-4 first:mt-6 rounded-lg transition-colors ${
+							className={`relative flex items-center gap-3 w-full py-3 pl-4 md:pl-4 first:mt-6 rounded-lg transition-colors ${
 								isActive
 									? "bg-primary/20 text-primary font-medium"
 									: "text-gray-500 hover:bg-gray-100"

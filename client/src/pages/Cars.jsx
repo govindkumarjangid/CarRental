@@ -39,15 +39,16 @@ const Cars = () => {
 		<>
 			<div className="max-w-8xl m-auto flex flex-col items-center dark:bg-linear-to-r pb-20 dark:to-main-bg dark:from-second-bg relative">
 				<motion.div
-					initial={{ opacity: 0, y: 100 }}
+					initial={{ opacity: 0, y: 50 }}
 					animate={{ opacity: 1, y: 0 }}
-					transition={{ duration: 0.9, ease: "easeOut" }}
+					transition={{ duration: 0.8, ease: "easeOut" }}
 					className=" bg-light dark:bg-main-bg w-full py-20 px-4 flex flex-col justify-center items-center"
 				>
 					<UserTitle
 						title="Avaiable Cars"
 						subTitle="Browser our selection of premium veficles available for your nest adventure"
 					/>
+
 					<motion.div
 						initial={{ opacity: 0, y: 100 }}
 						animate={{ opacity: 1, y: 0 }}
@@ -63,50 +64,52 @@ const Cars = () => {
 						/>
 						<iconList.Funnel size={18} className="text-gray-500" />
 					</motion.div>
+
 				</motion.div>
 
 				<motion.div
 					initial={{ opacity: 0, scaleX: 0 }}
 					animate={{ opacity: 1, scaleX: 1 }}
 					transition={{ duration: 0.7, ease: "easeOut", delay: 0.7 }}
-					className="flex items-center justify-evenly flex-wrap gap-4 mt-4"
+					className="flex items-center justify-between flex-wrap gap-4 mt-4 w-full px-5 md:px-30"
 				>
-					<p className="dark:text-white border dark:border-borderColor backdrop-blur-sm text-gray-700 px-3 py-1 rounded-md position-sticky top-0">
+					<p className="dark:text-white dark:border-gray-300 text-gray-500 float-left">
 						Showing {sortedCars.length} results
 					</p>
-					<button
-						onClick={() => setSortOrder("asc")}
-						className={`px-3 py-1 rounded-md border ${sortOrder === "asc"
-							? "bg-primary text-white"
-							: "bg-white"
-							}`}
-					>
-						Model A → Z
-					</button>
-
-					<button
-						onClick={() => setSortOrder("desc")}
-						className={`px-3 py-1 rounded-md border ${sortOrder === "desc"
-							? "bg-primary text-white"
-							: "bg-white"
-							}`}
-					>
-						Model Z → A
-					</button>
-					<p className="dark:text-white">Sort By :- </p>
-					<select
-						onChange={(e) => setFilter(e.target.value)}
-						className="border border-gray-300 dark:border-white px-3 py-1.5 rounded-md bg-white dark:bg-main-bg text-gray-800 dark:text-gray-200 shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all"
-					>
-						<option value="">All</option>
-						<option value="SUV">SUV</option>
-						<option value="EV">EV</option>
-						<option value="Wagon">Wagon</option>
-						<option value="Sedan">Sedan</option>
-					</select>
+					<div className="flex gap-2 max-md:hidden items-center">
+						<button
+							onClick={() => setSortOrder("asc")}
+							className={`px-3 py-1 rounded-md border border-gray-400 cursor-pointer ${sortOrder === "asc"
+								? "bg-primary text-gray-100"
+								: "bg-white text-gray-500"
+								}`}
+						>
+							Model A → Z
+						</button>
+						<button
+							onClick={() => setSortOrder("desc")}
+							className={`px-3 py-1 rounded-md border border-gray-400 cursor-pointer ${sortOrder === "desc"
+								? "bg-primary text-gray-100"
+								: "bg-white text-gray-500"
+								}`}
+						>
+							Model Z → A
+						</button>
+						<p className="dark:text-white">Sort By :- </p>
+						<select
+							onChange={(e) => setFilter(e.target.value)}
+							className="border border-gray-300 dark:border-white px-3 py-1.5 rounded-md bg-white dark:bg-main-bg text-gray-800 dark:text-gray-200 shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all"
+						>
+							<option value="">All</option>
+							<option value="SUV">SUV</option>
+							<option value="EV">EV</option>
+							<option value="Wagon">Wagon</option>
+							<option value="Sedan">Sedan</option>
+						</select>
+					</div>
 				</motion.div>
 
-				<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-18 px-7 md:px-30">
+				<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-14 px-5 md:px-30">
 					{loading ? [1, 2, 3, 4, 5].map((_, index) =>
 						<CarCardSkeleton index={index} key={index} />
 					) : sortedCars.map((car, index) => (

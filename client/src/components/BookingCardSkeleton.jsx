@@ -13,7 +13,7 @@ const BookingCardSkeleton = ({ index }) => {
       transition={{
         duration: 0.4,
         ease: "easeInOut",
-        delay: index * 0.2,
+        delay: index * 0.1,
       }}
       className="grid grid-cols-1 md:grid-cols-4 gap-6 p-5 rounded-lg mt-5 first:mt-12 backdrop-blur-sm border border-gray-300 animate-pulse">
       <div className="md:col-span-1">

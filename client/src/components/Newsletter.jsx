@@ -38,7 +38,7 @@ const Newsletter = () => {
 						className="bg-primary text-white rounded-lg h-11 sm:h-12
       px-4 sm:px-8 w-full sm:w-auto flex items-center justify-center
       hover:bg-primary-dull active:scale-95 transition
-      text-sm sm:text-base md:text-lg "
+      text-sm sm:text-base md:text-lg cursor-pointer"
 					>
 						Subscribe
 					</button>

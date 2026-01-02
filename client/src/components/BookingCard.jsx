@@ -14,7 +14,7 @@ const BookingCard = ({ booking, index }) => {
 			transition={{
 				duration: 0.4,
 				ease: "easeInOut",
-				delay: index * 0.2,
+				delay: index * 0.1,
 			}}
 			className="grid grid-cols-1 md:grid-cols-4 gap-6 p-6 rounded-lg mt-5 first:mt-12 backdrop-blur-sm border border-gray-400 dark:bg-linear-to-r dark:from-main-bg dark:to-second-bg dark:border-gray-300 dark:text-white"
 		>

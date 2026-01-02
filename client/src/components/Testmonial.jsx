@@ -79,7 +79,6 @@ const Testmonial = () => {
 					>
 						<iconList.ChevronLeft />
 					</button>
-
 					{/* Slider */}
 					<div>
 						<div
@@ -104,7 +103,6 @@ const Testmonial = () => {
 							}
 						</div>
 					</div>
-
 					{/* Right button */}
 					<button
 						onClick={scrollRight}
@@ -112,7 +110,6 @@ const Testmonial = () => {
 					>
 						<iconList.ChevronRight />
 					</button>
-
 				</motion.div>
 
 			</div>

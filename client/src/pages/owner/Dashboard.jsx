@@ -87,7 +87,7 @@ const Dashboard = () => {
 				title="Admin Dashboard"
 				subTitle="Monitor overall platform performance including total cars, bookings, revenue, and recent activities"
 			/>
-			<div className="grid sm:grid-cols-2 md:grid-cols-3  lg:grid-cols-5 gap-6 my-8 max-w-11/12">
+			<div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 my-8 max-w-12/12">
 				{dashboardCards.map((card, index) => {
 					const Icon = card.icon;
 					return (
@@ -95,7 +95,7 @@ const Dashboard = () => {
 							animate={{ opacity: [0, 1], y: [40, 0] }}
 							transition={{ duration: 0.3, delay: index * 0.2 }}
 							key={index}
-							className="flex gap-2 items-center justify-between p-4 rounded-md border border-gray-500"
+							className="flex gap-2 items-center justify-between p-4 rounded-md border border-gray-500 "
 						>
 							<div>
 								<h2 className="text-gray-400 text-sm">
@@ -116,11 +116,12 @@ const Dashboard = () => {
 					);
 				})}
 			</div>
-			<div className="flex flex-wrap items-start gap-6 mb-8 w-full">
+
+			<div className="flex items-start md:flex-row flex-col gap-6 mb-8 w-full max-w-12/12">
 				<motion.div
 					animate={{ opacity: [0, 1], y: [40, 0] }}
 					transition={{ duration: 0.3, delay: 0.5 }}
-					className="p-4 md:p-6 border border-gray-500 rounded-md max-w-lg w-full"
+					className="p-4 md:p-6 border border-gray-500 rounded-md w-full"
 				>
 					<h1 className="text-md sm:text-lg font-medium">
 						Recent Bookings
@@ -190,6 +191,7 @@ const Dashboard = () => {
 					</p>
 				</motion.div>
 			</div>
+
 		</div>
 	);
 };

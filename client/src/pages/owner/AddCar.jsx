@@ -141,7 +141,7 @@ const AddCar = () => {
 							name="brand"
 							placeholder="e.g. BMW, Mercedes, Audi"
 							className="px-3 py-2.5 mt-1	border border-gray-400 rounded-md
-							outline-none	focus:border-primary focus:ring-2 focus:ring-primary/50"
+							outline-none focus:border-primary focus:ring-2 focus:ring-primary/50"
 							value={car.brand}
 							onChange={handleChange}
 						/>
@@ -335,11 +335,11 @@ const AddCar = () => {
 				<button
 					type="submit"
 					disabled={loading}
-					className={` px-5 py-2.5 mt-4 rounded-md text-white transition-all active:scale-95 mb-10 w-37 ${loading ? "cursor-not-allowed bg-primary" : "bg-primary hover:bg-primary-dull cursor-pointer"}`}
+					className={` px-5 py-2.5 mt-4 rounded-md text-white transition-all active:scale-95 mb-10 w-fit ${loading ? "cursor-not-allowed bg-primary" : "bg-primary hover:bg-primary-dull cursor-pointer"}`}
 				>
 					{loading ? (
 						<span className="flex items-center gap-2">
-							<iconList.LoaderPinwheel size={18} className="animate-spin" />
+							<iconList.Loader size={18} className="animate-spin" />
 							Listing...
 						</span>
 					) : (

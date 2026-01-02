@@ -11,7 +11,7 @@ const NavbarOwner = () => {
 			initial={{ opacity: 0, y: -40, filter: "blur(10px)" }}
 			animate={isInView ? { opacity: 1, y: 0, filter: "blur(0px)" } : {}}
 			transition={{ duration: 0.5, ease: "easeOut" }}
-			className="flex items-center justify-between px-6 md:px-6 py-5 text-gray-500 border-b border-gray-400 relative transition-all"
+			className="flex items-center justify-between px-5 md:px-6 py-5 text-gray-500 border-b border-gray-400 relative transition-all"
 		>
 			<Link to="/">
 				<img

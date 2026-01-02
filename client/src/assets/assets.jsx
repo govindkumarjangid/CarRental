@@ -23,13 +23,12 @@ import {
 	Funnel,
 	Calendar,
 	CircleCheckBig,
-	MoveLeft,
 	Moon,
 	Sun,
 	TextAlignEnd,
 	X,
 	CircleUser,
-	ArrowRight,
+	ArrowRight,   
 	Star,
 	ChevronLeft,
 	ChevronRight,
@@ -37,7 +36,9 @@ import {
 	Facebook,
 	Twitter,
 	Mail,
-	CalendarX
+	CalendarX,
+	Loader,
+	ArrowLeft
 } from "lucide-react";
 
 export const cityList = [
@@ -69,7 +70,6 @@ export const iconList = {
 	Funnel,
 	Calendar,
 	CircleCheckBig,
-	MoveLeft,
 	Moon,
 	Sun,
 	TextAlignEnd,
@@ -84,6 +84,8 @@ export const iconList = {
 	Facebook,
 	Twitter,
 	Mail,
+	Loader,
+	ArrowLeft
 };
 
 export const assets = {

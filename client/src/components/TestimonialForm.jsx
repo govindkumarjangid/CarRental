@@ -218,7 +218,7 @@ const TestimonialForm = () => {
 				>
 					{loading ? (
 						<>
-							<iconList.LoaderPinwheel
+							<iconList.Loader
 								size={10}
 								className="h-5 w-5 animate-spin text-white"
 							/>{" "}

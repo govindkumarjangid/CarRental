@@ -10,8 +10,8 @@ import {
 	useParams,     
 	Link,
 	NavLink,
-	useLocation,
-	Outlet,
+	useLocation,  
+	Outlet,  
 	Routes,
 	Route,
 	Navigate

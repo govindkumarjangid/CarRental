@@ -3,7 +3,6 @@ import { useAppContext } from "../context/AppContext";
 const Cardetails = () => {
 	const {
 		motion,
-		Loader,
 		navigate,
 		currency,
 		cars,
@@ -17,13 +16,13 @@ const Cardetails = () => {
 		returnDate,
 		setReturnDate,
 		toast,
-		loading,
-		setLoading,
 		iconList,
 	} = useAppContext();
 
 	const { id } = useParams();
 	const [car, setCar] = useState(null);
+	const [loading, setLoading] = useState(false);
+
 	const createUserBooking = async (e) => {
 		e.preventDefault();
 		setLoading(true);
@@ -59,8 +58,6 @@ const Cardetails = () => {
 		setCar(cars.find((car) => car._id === id));
 	}, [id]);
 
-	if (loading && !car) return <Loader />;
-
 	return (
 		car && (
 			<>
@@ -77,8 +74,8 @@ const Cardetails = () => {
 						}}
 						className="flex items-center gap-2 mb-6 text-gray-500 cursor-pointer dark:text-gray-200"
 					>
-						<iconList.MoveLeft size={20} />
-						Back to all cars
+						<iconList.ArrowLeft size={20} />
+						<span>Back to Cars</span>
 					</button>
 
 					<div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
@@ -246,7 +243,7 @@ const Cardetails = () => {
 									onChange={(e) =>
 										setPickupDate(e.target.value)
 									}
-									className="border border-borderColor px-3 py-2 rounded-lg"
+									className="outline-none focus:ring-2 focus:border-primary focus:ring-primary/50 border border-borderColor px-3 py-2 rounded-md w-full"
 								/>
 							</div>
 
@@ -259,7 +256,7 @@ const Cardetails = () => {
 									onChange={(e) =>
 										setReturnDate(e.target.value)
 									}
-									className="border border-borderColor px-3 py-2 rounded-lg"
+									className="outline-none focus:ring-2 focus:border-primary focus:ring-primary/50 border border-borderColor px-3 py-2 rounded-md w-full"
 								/>
 							</div>
 
@@ -268,13 +265,13 @@ const Cardetails = () => {
 								type="submit"
 								disabled={loading}
 								className={`w-full transition-all py-3 font-medium text-white rounded-xl hover:scale-102 active:scale-95 ${loading
-									? "bg-primary opacity-50 cursor-not-allowed"
+									? "bg-primary opacity-90 cursor-not-allowed"
 									: "bg-primary hover:bg-primary-dull cursor-pointer"
 									}`}
 							>
 								{loading ? (
 									<div className="flex items-center gap-2 justify-center">
-										<iconList.LoaderPinwheel
+										<iconList.Loader
 											size={16}
 											className="h-5 w-5 animate-spin text-white"
 										/>
@@ -287,6 +284,7 @@ const Cardetails = () => {
 								No credit card required to reserve
 							</p>
 						</motion.form>
+
 					</div>
 				</motion.div>
 			</>

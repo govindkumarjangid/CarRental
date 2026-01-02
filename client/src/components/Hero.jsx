@@ -18,8 +18,8 @@ const Hero = () => {
 	const [returnDate, setReturnDate] = useState("");
 	const [pickupLocation, setPickupLocation] = useState("");
 	const [availableCars, setAvailableCars] = useState([]);
-	const [open, setOpen] = useState(true);
 	const [loading, setLoading] = useState(false);
+	const [open, setOpen] = useState(true);
 
 	const checkAvailability = async (e) => {
 		e.preventDefault();
@@ -33,13 +33,10 @@ const Hero = () => {
 					returnDate,
 				}
 			);
-
 			if (data.success) {
 				setAvailableCars(data.cars);
+				setOpen(true);
 				toast.success(`${data.cars.length} cars available for you!`);
-				setPickupLocation("");
-				setPickupDate("");
-				setReturnDate("");
 			} else {
 				toast.error(data.message);
 			}
@@ -54,6 +51,8 @@ const Hero = () => {
 	return (
 		<>
 			<div className="max-w-8xl m-auto flex flex-col justify-center items-center gap-8 bg-light text-center dark:bg-linear-to-r dark:bg-main-bg dark:from-second-bg px-2">
+
+				{/* heading  */}
 				<motion.h1
 					initial={{ opacity: 0, y: 100 }}
 					animate={{ opacity: 1, y: 0 }}
@@ -63,6 +62,7 @@ const Hero = () => {
 					Luxury cars on Rent
 				</motion.h1>
 
+				{/* check car availability form  */}
 				<motion.form
 					onSubmit={(e) => checkAvailability(e)}
 					initial={{ opacity: 0, y: 50 }}
@@ -81,9 +81,9 @@ const Hero = () => {
 								onChange={(e) =>
 									setPickupLocation(e.target.value)
 								}
-								className="outline-none  bg-gray-100 p-2 px-4 rounded-lg max-w-47"
+								className="outline-none border border-gray-300 bg-gray-100 p-2 px-4 rounded-md max-w-47 focus:border-primary focus:ring-2 focus:ring-primary/50"
 							>
-								<option value="">Pickup Location</option>
+								<option value="" >Pickup Location</option>
 								{cityList.map((city, index) => (
 									<option key={index} value={city}>
 										{city}
@@ -104,7 +104,7 @@ const Hero = () => {
 								id="pickup-date"
 								min={new Date().toISOString().split("T")[0]}
 								onChange={(e) => setPickupDate(e.target.value)}
-								className="text-sm text-gray-500 outline-none  bg-gray-100 p-2 px-4 rounded-lg"
+								className="text-sm text-gray-500 bg-gray-100 p-2 px-4 rounded-md outline-none border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/50"
 							/>
 						</div>
 						<div className="flex flex-row items-center gap-2  md:flex-col">
@@ -119,22 +119,22 @@ const Hero = () => {
 								name="return-date"
 								id="return-date"
 								onChange={(e) => setReturnDate(e.target.value)}
-								className="text-sm text-gray-500 outline-none  bg-gray-100 p-2 px-4 rounded-lg"
+								className="text-sm text-gray-500 bg-gray-100 p-2 px-4 rounded-md outline-none border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/50"
 							/>
 						</div>
 						<button
 							type="submit"
 							className={`cursor-pointer flex items-center justify-center gap-1 px-5 py-2  transition-all text-white rounded-lg shadow-[0px_3px_20px_rgba(0,0,0,0.2)]  dark:border dark:border-white dark:text-white dark:bg-transparent dark:hover:bg-second-bg active:scale-95 ${loading
-								? "opacity-50 bg-primary"
+								? "bg-primary cursor-not-allowed opacity-90"
 								: "bg-primary hover:bg-primary-dull"
 								}`}
 						>
 							{loading ? (<div className="flex items-center gap-2 justify-center">
-								<iconList.LoaderPinwheel
+								<iconList.Loader
 									size={16}
 									className="h-5 w-5 animate-spin text-white"
 								/>
-								<span>Searching...</span>
+								<span>Search...</span>
 							</div>) : (
 								<div className="flex items-center gap-2 justify-center">
 									<iconList.Search size={18} />
@@ -145,6 +145,7 @@ const Hero = () => {
 					</div>
 				</motion.form>
 
+				{/* main car image  */}
 				<motion.img
 					initial={{ opacity: 0, y: 100 }}
 					animate={{ opacity: 1, y: 0 }}
@@ -155,6 +156,7 @@ const Hero = () => {
 					className="max-h-74 mb-18"
 				/>
 
+				{/* available cars modal  */}
 				<AnimatePresence>
 					{availableCars.length > 0 && open && (
 						<motion.div
@@ -166,7 +168,8 @@ const Hero = () => {
 								stiffness: 120,
 								damping: 20,
 							}}
-							className="fixed sm:bottom-2 sm:right-2 z-50 bg-white shadow-2xl rounded-md overflow-y-scroll  overflow-x-hidden w-full h-fit sm:w-lg no-scrollbar mx-2"
+							className="fixed inset-x-0 bottom-0 sm:inset-auto sm:bottom-4 sm:right-4 z-50 bg-white shadow-2xl rounded-t-md sm:rounded-md
+							w-full sm:w-105 md:w-130 md:max-h-[80vh] overflow-y-auto blue-thumb-scrollbar"
 						>
 							<div className="sticky top-0 bg-white flex justify-between items-center px-2 py-2 border-b border-gray-400">
 								<h3 className="font-semibold">
@@ -241,6 +244,7 @@ const Hero = () => {
 						</motion.div>
 					)}
 				</AnimatePresence>
+
 			</div>
 		</>
 	);
