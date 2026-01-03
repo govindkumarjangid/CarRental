@@ -82,7 +82,7 @@ const ManageBookings = () => {
 					"Track all customer bookings, approve or cancel requests, and manage booking statuses."
 				}
 			/>
-			<div className="max-w-4xl w-full rounded-md overflow-hidden mt-6 border border-gray-400">
+			<div className="max-w-4xl w-full rounded-md overflow-y-hidden overflow-x-auto mt-6 border border-gray-400">
 				<motion.table
 					initial={{ opacity: 0, y: 100 }}
 					animate={{ opacity: 1, y: 0 }}
@@ -98,8 +98,8 @@ const ManageBookings = () => {
 							<th className="p-3 font-medium max-md:hidden">
 								Total
 							</th>
-							<th className="p-3 font-medium">Payment Method</th>
-							<th className="p-3 font-medium">Payment Status</th>
+							<th className="p-3 font-medium max-md:hidden">Payment Method</th>
+							<th className="py-3 font-medium">Payment Status</th>
 							<th className="p-3 font-medium">Actions</th>
 						</tr>
 					</thead>
@@ -143,14 +143,14 @@ const ManageBookings = () => {
 								</td>
 
 								{/* payment method  */}
-								<td className="p-3">
+								<td className="p-3 max-md:hidden">
 									<p className="px-2 py-1 text-xs bg-gray-200 rounded-md text-center capitalize">
 										{booking.paymentMethod}
 									</p>
 								</td>
 
 								{/* payment status  */}
-								<td className="p-3">
+								<td className="py-3">
 									{
 										booking.paymentStatus === "pending" ? (<select
 											name="paymentStatus"
