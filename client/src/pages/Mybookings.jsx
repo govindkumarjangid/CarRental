@@ -1,6 +1,6 @@
-import BookingCard from "../components/BookingCard.jsx";
-import BookingCardSkeleton from "../components/BookingCardSkeleton.jsx";
-import EmptyBookings from "../components/EmptyBookings.jsx";
+import BookingCard from "../components/booking/BookingCard.jsx";
+import BookingCardSkeleton from "../components/booking/BookingCardSkeleton.jsx";
+import EmptyBookings from "../components/booking/EmptyBookings.jsx";
 import { useAppContext } from "../context/AppContext.jsx";
 
 const Mybookings = () => {

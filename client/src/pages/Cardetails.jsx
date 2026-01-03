@@ -6,7 +6,6 @@ const Cardetails = () => {
 		navigate,
 		currency,
 		cars,
-		useRef,
 		useEffect,
 		useState,
 		useParams,
@@ -17,32 +16,29 @@ const Cardetails = () => {
 		setReturnDate,
 		toast,
 		iconList,
+		AnimatePresence,
+		loadRazorpay
 	} = useAppContext();
 
 	const { id } = useParams();
 	const [car, setCar] = useState(null);
 	const [loading, setLoading] = useState(false);
+	const [openPopup, setOpenPopup] = useState(false);
 
 	const createUserBooking = async (e) => {
 		e.preventDefault();
 		setLoading(true);
 		try {
-			if (pickupDate === "" || returnDate === "") {
-				toast.error("Please choose pickup and return dates");
-				setLoading(false);
-				return;
-			}
-			// console.log(car, pickupDate, returnDate);
 			const { data } = await axios.post("/api/bookings/create", {
 				car,
 				pickupDate,
 				returnDate,
 			});
-			// console.log(data);
 			if (data.success) {
 				setPickupDate("");
 				setReturnDate("");
 				toast.success("Booking Created");
+				setOpenPopup(false);
 				navigate("/my-bookings");
 			} else {
 				toast.error(data.message);
@@ -53,6 +49,83 @@ const Cardetails = () => {
 			setLoading(false);
 		}
 	};
+
+	const verifyOnServer = async (payload) => {
+		try {
+			const res = await axios.post("/api/bookings/verify-payment", payload);
+			return res.data;
+		} catch (err) {
+			return { success: false };
+		}
+	};
+
+
+	const handleOnlinePayment = async () => {
+		const loaded = await loadRazorpay();
+
+		if (!loaded) {
+			toast.error("Razorpay failed to load");
+			return;
+		}
+
+		const res = await axios.post("/api/bookings/create-online", {
+			car,
+			pickupDate,
+			returnDate,
+		});
+		const { order, amount, key, bookingId } = res.data;
+
+		const options = {
+			key: key,
+			amount: amount,
+			currency: "INR",
+			name: "Car Rental Booking",
+			description: "Car booking payment",
+			order_id: order.id,
+
+			handler: async function (response) {
+				const verify = await verifyOnServer({
+					razorpayOrderId: response.razorpay_order_id,
+					razorpayPaymentId: response.razorpay_payment_id,
+					razorpaySignature: response.razorpay_signature,
+					bookingId,
+				});
+
+				if (verify.data.success) {
+					toast.success("Payment Successful 🎉");
+				} else {
+					toast.error("Payment verification failed");
+				}
+			},
+			modal: {
+				ondismiss: async function () {
+					await verifyOnServer({
+						razorpayOrderId: order.id,
+						status: "failure",
+						bookingId
+					});
+					toast.error("Payment Failed");
+				}
+			},
+			theme: {
+				color: "#3399cc",
+			},
+		}
+
+		const rzp = new window.Razorpay(options);
+		rzp.open();
+
+	}
+
+	const handleBookNow = () => {
+		if (!pickupDate || !returnDate) {
+			toast.error("Please select pickup and return dates");
+			return;
+		} else {
+			setOpenPopup(true);
+		}
+	};
+
 
 	useEffect(() => {
 		setCar(cars.find((car) => car._id === id));
@@ -262,30 +335,76 @@ const Cardetails = () => {
 
 							{/* booking button  */}
 							<motion.button
-								type="submit"
-								disabled={loading}
-								className={`w-full transition-all py-3 font-medium text-white rounded-xl hover:scale-102 active:scale-95 ${loading
-									? "bg-primary opacity-90 cursor-not-allowed"
-									: "bg-primary hover:bg-primary-dull cursor-pointer"
-									}`}
+								type="button"
+								onClick={() => handleBookNow()}
+								className={`w-full transition-all py-3 font-medium text-white rounded-md hover:scale-102 active:scale-95 bg-primary hover:bg-primary-dull cursor-pointer`}
 							>
-								{loading ? (
-									<div className="flex items-center gap-2 justify-center">
-										<iconList.Loader
-											size={16}
-											className="h-5 w-5 animate-spin text-white"
-										/>
-										<span>Processing...</span>
-									</div>
-								) : "Book Now"}
+								Book Now
 							</motion.button>
 
 							<p className="text-center text-sm text-gray-400 dark:text-300">
 								No credit card required to reserve
 							</p>
 						</motion.form>
-
 					</div>
+					{/* ✅ POPUP */}
+					<AnimatePresence>
+						{openPopup && (
+							<motion.div
+								onClick={() => setOpenPopup(false)}
+								className="fixed inset-0 backdrop-blur-sm flex items-center justify-center z-50"
+								initial={{ opacity: 0 }}
+								animate={{ opacity: 1 }}
+								exit={{ opacity: 0 }}
+							>
+								<motion.div
+									initial={{ scale: 0.8, opacity: 0 }}
+									animate={{ scale: 1, opacity: 1 }}
+									exit={{ scale: 0.8, opacity: 0 }}
+									className="bg-white p-6 rounded-md w-80 shadow-xl"
+								>
+									<h2 className="text-lg font-semibold text-center mb-4">
+										Select Payment Method
+									</h2>
+
+									<div className="space-y-3">
+										{/* Online Payment */}
+										<button
+											onClick={handleOnlinePayment}
+											className="w-full py-2 rounded-md bg-blue-600 text-white cursor-pointer"
+										>
+											Pay Online
+										</button>
+
+
+										<button
+											onClick={createUserBooking}
+											className="w-full py-2 rounded-md bg-green-600 text-white cursor-pointer"
+										>
+											{loading ? (
+												<>
+													<iconList.Loader
+														size={16}
+														className="h-5 w-5 animate-spin text-white inline-block mr-2"
+													/>
+													<span>Processing...</span>
+												</>
+											) : 'Pay Offline'}
+										</button>
+
+										{/* Close */}
+										<button
+											onClick={() => setOpenPopup(false)}
+											className="w-full py-2 rounded-md bg-gray-200 cursor-pointer"
+										>
+											Cancel
+										</button>
+
+									</div>
+								</motion.div>
+							</motion.div>
+						)}
+					</AnimatePresence>
 				</motion.div>
 			</>
 		)

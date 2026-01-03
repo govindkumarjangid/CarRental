@@ -1,4 +1,4 @@
-import { useAppContext } from "../context/AppContext";
+import { useAppContext } from "../../context/AppContext";
 const Newsletter = () => {
 	const { motion, useInView, UserTitle, useRef } = useAppContext();
 	const ref = useRef(null);

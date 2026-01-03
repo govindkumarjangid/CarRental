@@ -1,4 +1,4 @@
-import { useAppContext } from "../context/AppContext";
+import { useAppContext } from "../../context/AppContext.jsx";
 export const Title = ({ title, subTitle, align }) => {
 	const { useRef, motion, useInView } = useAppContext();
 	const ref = useRef(null);

@@ -1,17 +1,17 @@
-import Navbar from "./components/Navbar.jsx";
+import Navbar from "./components/UI/Navbar.jsx";
 import Home from "./pages/Home.jsx";
 import Cars from "./pages/Cars.jsx";
 import Mybookings from "./pages/Mybookings.jsx";
 import Cardetails from "./pages/Cardetails.jsx";
-import Footer from "./components/Footer.jsx";
+import Footer from "./components/UI/Footer.jsx";
 import Dashboard from "./pages/owner/Dashboard.jsx";
 import AddCar from "./pages/owner/AddCar.jsx";
 import ManageCars from "./pages/owner/ManageCars.jsx";
 import ManageBookings from "./pages/owner/ManageBookings.jsx";
 import Layout from "./pages/Layout.jsx";
-import Login from "./components/Login.jsx";
+import Login from "./components/UI/Login.jsx";
 import { useAppContext } from "./context/AppContext.jsx";
-import TestimonialForm from "./components/TestimonialForm.jsx";
+import TestimonialForm from "./components/testimonial/TestimonialForm.jsx";
 import ProtectRoute from "./context/ProtectRoute.jsx";
 import EditCarForm from "./components/owner/EditCarForm.jsx";
 

@@ -1,8 +1,8 @@
-import Hero from "../components/Hero.jsx";
-import FeaturedSection from "../components/FeaturedSection.jsx";
-import Banner from "../components/Banner.jsx";
-import Testmonial from "../components/Testmonial.jsx";
-import Newsletter from "../components/Newsletter.jsx";
+import Hero from "../components/Home/Hero.jsx";
+import FeaturedSection from "../components/Home/FeaturedSection.jsx";
+import Banner from "../components/Home/Banner.jsx";
+import Testmonial from "../components/testimonial/Testmonial.jsx";
+import Newsletter from "../components/Home/Newsletter.jsx";
 
 const Home = () => {
 	return (

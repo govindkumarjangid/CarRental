@@ -1,4 +1,4 @@
-import CarCardSkeleton from "../components/CarCardSkeleton.jsx";
+import CarCardSkeleton from '../components/car/CarCardSkeleton.jsx';
 import { useAppContext } from "../context/AppContext.jsx";
 const Cars = () => {
 	const {

@@ -1,17 +1,17 @@
-import Loader from "../components/Loader.jsx";
-import CarCard from "../components/CarCard.jsx";
+import Loader from "../components/UI/Loader.jsx";
+import CarCard from "../components/car/CarCard.jsx";
 import { Title as OwnerTitle } from "../components/owner/Title.jsx";
-import { Title as UserTitle } from "../components/Title.jsx";
+import { Title as UserTitle } from "../components/UI/Title.jsx";
 import { createContext, useContext, useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { toast, Toaster } from "react-hot-toast";
 import {
 	useNavigate,
-	useParams,     
+	useParams,
 	Link,
 	NavLink,
-	useLocation,  
-	Outlet,  
+	useLocation,
+	Outlet,
 	Routes,
 	Route,
 	Navigate
@@ -80,6 +80,18 @@ export const AppProvider = ({ children }) => {
 		toast.success("Logged out successfully");
 	};
 
+	// load razorpay script
+	const loadRazorpay = () => {
+		return new Promise(resolve => {
+			const script = document.createElement("script");
+			script.src = "https://checkout.razorpay.com/v1/checkout.js";
+			script.onload = () => resolve(true);
+			script.onerror = () => resolve(false);
+			document.body.appendChild(script);
+		});
+	};
+
+
 	//get token from localstorage
 	useEffect(() => {
 		const token = localStorage.getItem("token");
@@ -96,6 +108,7 @@ export const AppProvider = ({ children }) => {
 	}, [token]);
 
 	const value = {
+		loadRazorpay,
 		navigate,
 		currency,
 		axios,

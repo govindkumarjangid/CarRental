@@ -1,6 +1,6 @@
-import CarCard from "./CarCard.jsx";
-import { useAppContext } from "../context/AppContext.jsx";
-import CarCardSkeleton from "./CarCardSkeleton.jsx";
+import CarCard from "../car/CarCard.jsx";
+import { useAppContext } from "../../context/AppContext.jsx";
+import CarCardSkeleton from "../car/CarCardSkeleton.jsx";
 
 const FeaturedSection = () => {
 	const { motion, navigate, UserTitle, cars, iconList, useState } = useAppContext();
@@ -37,7 +37,7 @@ const FeaturedSection = () => {
 						window.scrollTo({
 							top: 0,
 							left: 0,
-							behavior: "smooth", 
+							behavior: "smooth",
 						});
 					}}
 					className="flex group items-center justify-center gap-2 px-6 py-2 border-2 border-gray-500 text-gray-600 hover:bg-primary rounded-md mt-18 cursor-pointer hover:text-light hover:border-light dark:border-white dark:text-white dark:hover:bg-second-bg active:scale-95 transition-all duration-300"

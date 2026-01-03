@@ -1,5 +1,5 @@
 import { useAppContext } from "../../context/AppContext";
-import Loader from "../Loader";
+import Loader from "../UI/Loader.jsx";
 
 const EditCarForm = () => {
 
@@ -174,10 +174,10 @@ const EditCarForm = () => {
           </div>
 
           <div>
-            <label htmlFor="price" className="text-sm">Daily Price ₹</label>
+            <label htmlFor="pricePerDay" className="text-sm">Daily Price ₹</label>
             <input
-              id="price"
-              name="price"
+              id="pricePerDay"
+              name="pricePerDay"
               type="number"
               value={car.pricePerDay}
               onChange={handleChange}
@@ -292,7 +292,7 @@ const EditCarForm = () => {
         >
           {loading ? (
             <span className="flex items-center gap-2">
-              <iconList.LoaderPinwheel size={18} className="animate-spin" />
+              <iconList.Loader size={18} className="animate-spin" />
               Updating...
             </span>
           ) : (

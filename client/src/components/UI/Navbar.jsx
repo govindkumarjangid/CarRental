@@ -1,6 +1,6 @@
-import { menuLinks } from "../assets/assets";
-import { useThemeContext } from "../context/ThemeContextProvider";
-import { useAppContext } from "../context/AppContext";
+import { menuLinks } from "../../assets/assets.jsx";
+import { useThemeContext } from "../../context/ThemeContextProvider";
+import { useAppContext } from "../../context/AppContext";
 
 const Navbar = () => {
 	const {
@@ -62,8 +62,8 @@ const Navbar = () => {
 				<img
 					src={assets.logo}
 					alt="logo"
+					className="h-8 object-contain cursor-pointer"
 					loading="lazy"
-					className="h-8 w-auto object-contain dark:brightness-125 hover:scale-105 transition-transform duration-300 cursor-pointer"
 				/>
 			</Link>
 

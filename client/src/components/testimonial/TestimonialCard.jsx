@@ -1,4 +1,4 @@
-import { useAppContext } from "../context/AppContext";
+import { useAppContext } from "../../context/AppContext";
 
 const TestimonialCard = ({ review, index, ref }) => {
 	const { motion, iconList } = useAppContext();

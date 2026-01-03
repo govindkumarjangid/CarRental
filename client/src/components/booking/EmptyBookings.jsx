@@ -1,5 +1,5 @@
 import { delay } from "motion/react";
-import { useAppContext } from "../context/AppContext";
+import { useAppContext } from "../../context/AppContext";
 
 const EmptyBookings = () => {
 

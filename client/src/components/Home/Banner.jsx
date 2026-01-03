@@ -1,4 +1,4 @@
-import { useAppContext } from "../context/AppContext";
+import { useAppContext } from "../../context/AppContext";
 
 const Banner = () => {
 	const { motion, useInView, navigate, assets, useRef, user, setShowLogin } =

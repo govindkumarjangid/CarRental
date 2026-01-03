@@ -1,4 +1,4 @@
-import { useAppContext } from "../context/AppContext";
+import { useAppContext } from "../../context/AppContext.jsx";
 
 const CarCardSkeleton = ({ index }) => {
   const { motion, useRef, useInView } = useAppContext();

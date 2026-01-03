@@ -1,4 +1,4 @@
-import { useAppContext } from "../context/AppContext";
+import { useAppContext } from "../../context/AppContext";
 
 const Footer = () => {
 	const { motion, assets, iconList, Link } = useAppContext();

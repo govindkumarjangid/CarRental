@@ -55,6 +55,23 @@ const ManageBookings = () => {
 		}
 	};
 
+	const changePaymentStatus = async (bookingId, status) => {
+		setLoading(true);
+		try {
+			const { data } = await axios.post("/api/bookings/change-payment-status", {
+				bookingId,
+				status,
+			});
+			if (data.success) {
+				toast.success(data.message);
+				fetchOwnerBookings();
+			}
+		} catch (error) {
+			toast.error(error.message);
+			console.log(error.message);
+		}
+	}
+
 	if (loading) return <Loader />;
 
 	return (
@@ -65,7 +82,7 @@ const ManageBookings = () => {
 					"Track all customer bookings, approve or cancel requests, and manage booking statuses."
 				}
 			/>
-			<div className="max-w-3xl w-full rounded-md overflow-hidden mt-6 border border-gray-400">
+			<div className="max-w-4xl w-full rounded-md overflow-hidden mt-6 border border-gray-400">
 				<motion.table
 					initial={{ opacity: 0, y: 100 }}
 					animate={{ opacity: 1, y: 0 }}
@@ -81,7 +98,8 @@ const ManageBookings = () => {
 							<th className="p-3 font-medium max-md:hidden">
 								Total
 							</th>
-							<th className="p-3 font-medium">Payment</th>
+							<th className="p-3 font-medium">Payment Method</th>
+							<th className="p-3 font-medium">Payment Status</th>
 							<th className="p-3 font-medium">Actions</th>
 						</tr>
 					</thead>
@@ -97,6 +115,7 @@ const ManageBookings = () => {
 								className="border-t border-gray-400 hover:bg-gray-100 hover:scale-101 transition-all duration-300"
 								key={index}
 							>
+								{/* car details  */}
 								<td className="p-3 flex items-center gap-3">
 									<img
 										src={booking.car.image}
@@ -110,19 +129,74 @@ const ManageBookings = () => {
 										</p>
 									</div>
 								</td>
+
+								{/* date range  */}
 								<td className="p-3 max-md:hidden">
 									{booking.pickupDate.split("T")[0]} To{" "}
 									{booking.returnDate.split("T")[0]}
 								</td>
+
+								{/* total price  */}
 								<td className="p-3 max-md:hidden">
 									{currency}{" "}
 									{booking.price.toLocaleString("en-IN")}
 								</td>
+
+								{/* payment method  */}
 								<td className="p-3">
-									<p className="px-2 py-1 text-xs bg-gray-200 rounded-md text-center">
-										Offline
+									<p className="px-2 py-1 text-xs bg-gray-200 rounded-md text-center capitalize">
+										{booking.paymentMethod}
 									</p>
 								</td>
+
+								{/* payment status  */}
+								<td className="p-3">
+									{
+										booking.paymentStatus === "pending" ? (<select
+											name="paymentStatus"
+											id="paymentStatus"
+											value={booking.paymentStatus}
+											onChange={(e) =>
+												changePaymentStatus(
+													booking._id,
+													e.target.value
+												)
+											}
+											className="outline-none bg-amber-300/30 text-amber-500 px-1 py-1 text-xs rounded-md cursor-pointer"
+										>
+											<option
+												value="pending"
+												className="cursor-pointer"
+											>
+												Pending
+											</option>
+											<option
+												value="confirmed"
+												className="cursor-pointer"
+											>
+												Confirmed
+											</option>
+											<option
+												value="failed"
+												className="cursor-pointer"
+											>
+												Failed
+											</option>
+										</select>
+										) : (
+											<span
+												className={`px-3 py-1 rounded-md text-xs font-semibold ${booking.paymentStatus === "completed"
+													? "bg-green-100 text-green-500"
+													: "bg-red-100 text-red-500"
+													}`}
+											>
+												{booking.paymentStatus}
+											</span>
+										)}
+
+								</td>
+
+								{/* booking status  */}
 								<td className="p-3">
 									{booking.status === "pending" ? (
 										<select
@@ -158,11 +232,10 @@ const ManageBookings = () => {
 										</select>
 									) : (
 										<span
-											className={`px-3 py-1 rounded-md text-xs font-semibold ${
-												booking.status === "confirmed"
-													? "bg-green-100 text-green-500"
-													: "bg-red-100 text-red-500"
-											}`}
+											className={`px-3 py-1 rounded-md text-xs font-semibold ${booking.status === "confirmed"
+												? "bg-green-100 text-green-500"
+												: "bg-red-100 text-red-500"
+												}`}
 										>
 											{booking.status}
 										</span>

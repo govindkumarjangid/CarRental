@@ -1,4 +1,4 @@
-import { useAppContext } from "../context/AppContext.jsx";
+import { useAppContext } from "../../context/AppContext.jsx";
 
 const BookingCard = ({ booking, index }) => {
 	const { motion, currency, useRef, useInView, iconList } =

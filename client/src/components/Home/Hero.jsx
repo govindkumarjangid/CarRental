@@ -1,5 +1,5 @@
-import { cityList } from "../assets/assets";
-import { useAppContext } from "../context/AppContext";
+import { cityList } from "../../assets/assets.jsx";
+import { useAppContext } from "../../context/AppContext.jsx";
 
 const Hero = () => {
 	const {
