@@ -15,7 +15,7 @@ const Layout = () => {
 				<Sidebar />
 
 				{/* Outlet - ONLY this scrolls */}
-				<div className="flex-1 overflow-y-auto overflow-x-hidden scroll-smooth blue-thumb-scrollbar">
+				<div className="flex-1 overflow-y-auto overflow-x-auto scroll-smooth blue-thumb-scrollbar">
 					<Outlet />
 				</div>
 			</div>
