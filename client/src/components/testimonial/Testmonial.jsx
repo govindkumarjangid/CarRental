@@ -75,7 +75,7 @@ const Testmonial = () => {
 					{/* Left button */}
 					<button
 						onClick={scrollLeft}
-						className="hidden sm:flex absolute -left-6 top-1/2 -translate-y-1/2 z-10 bg-white shadow rounded-full p-2 hover:scale-105 transition cursor-pointer"
+						className="hidden sm:flex absolute -left-6 top-1/2 -translate-y-1/2 z-10 bg-white shadow rounded-xl p-2 hover:scale-105 transition cursor-pointer"
 					>
 						<iconList.ChevronLeft />
 					</button>
@@ -106,7 +106,7 @@ const Testmonial = () => {
 					{/* Right button */}
 					<button
 						onClick={scrollRight}
-						className="hidden sm:flex absolute -right-6 top-1/2 -translate-y-1/2 z-10 bg-white shadow rounded-full p-2 hover:scale-105 transition cursor-pointer"
+						className="hidden sm:flex absolute -right-6 top-1/2 -translate-y-1/2 z-10 bg-white shadow rounded-xl p-2 hover:scale-105 transition cursor-pointer"
 					>
 						<iconList.ChevronRight />
 					</button>

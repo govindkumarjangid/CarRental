@@ -50,7 +50,7 @@ const Hero = () => {
 
 	return (
 		<>
-			<div className="max-w-8xl m-auto flex flex-col justify-center items-center gap-8 bg-light text-center dark:bg-linear-to-r dark:bg-main-bg dark:from-second-bg px-2">
+			<div className="max-w-8xl m-auto flex flex-col justify-center items-center gap-8 bg-light text-center dark:bg-main-bg px-2">
 
 				{/* heading  */}
 				<motion.h1

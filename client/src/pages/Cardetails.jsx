@@ -61,11 +61,13 @@ const Cardetails = () => {
 
 
 	const handleOnlinePayment = async () => {
+		setLoading(true);
 		const loaded = await loadRazorpay();
-
-		if (!loaded) {
-			toast.error("Razorpay failed to load");
-			return;
+		if (loaded) {
+			toast.success("Razorpay SDK loaded");
+			setLoading(false);
+		} else {
+			toast.error("Failed to load Razorpay SDK");
 		}
 
 		const res = await axios.post("/api/bookings/create-online", {
@@ -93,6 +95,7 @@ const Cardetails = () => {
 
 				if (verify.data.success) {
 					toast.success("Payment Successful 🎉");
+					navigate("/my-bookings");
 				} else {
 					toast.error("Payment verification failed");
 				}
@@ -114,7 +117,7 @@ const Cardetails = () => {
 
 		const rzp = new window.Razorpay(options);
 		rzp.open();
-
+		setLoading(false);
 	}
 
 	const handleBookNow = () => {
@@ -373,7 +376,15 @@ const Cardetails = () => {
 											onClick={handleOnlinePayment}
 											className="w-full py-2 rounded-md bg-blue-600 text-white cursor-pointer"
 										>
-											Pay Online
+											{loading ? (
+												<>
+													<iconList.Loader
+														size={16}
+														className="h-5 w-5 animate-spin text-white inline-block mr-2"
+													/>
+													<span>Processing...</span>
+												</>
+											) : 'Pay Online'}
 										</button>
 
 

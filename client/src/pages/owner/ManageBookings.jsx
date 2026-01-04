@@ -46,7 +46,7 @@ const ManageBookings = () => {
 				toast.success(data.message);
 				fetchOwnerBookings();
 			}
-			console.log(bookingId, status, data);
+			// console.log(bookingId, status, data);
 		} catch (error) {
 			toast.error(error.message);
 			console.log(error.message);
@@ -69,6 +69,8 @@ const ManageBookings = () => {
 		} catch (error) {
 			toast.error(error.message);
 			console.log(error.message);
+		} finally {
+			setLoading(false);
 		}
 	}
 
@@ -82,7 +84,7 @@ const ManageBookings = () => {
 					"Track all customer bookings, approve or cancel requests, and manage booking statuses."
 				}
 			/>
-			<div className="max-w-4xl w-full rounded-md overflow-y-hidden overflow-x-auto mt-6 border border-gray-400">
+			<div className="max-w-4xl w-full rounded-md overflow-hidden mt-6 border border-gray-400">
 				<motion.table
 					initial={{ opacity: 0, y: 100 }}
 					animate={{ opacity: 1, y: 0 }}
@@ -143,8 +145,11 @@ const ManageBookings = () => {
 								</td>
 
 								{/* payment method  */}
-								<td className="p-3 max-md:hidden">
-									<p className="px-2 py-1 text-xs bg-gray-200 rounded-md text-center capitalize">
+								<td className="max-md:hidden md:p-3">
+									<p className={`px-2 py-1 text-xs text-gray-100 rounded-md text-center capitalize ${booking.paymentMethod === "online"
+										? "bg-blue-500"
+										: "bg-green-500"
+										}`}>
 										{booking.paymentMethod}
 									</p>
 								</td>
@@ -197,7 +202,7 @@ const ManageBookings = () => {
 								</td>
 
 								{/* booking status  */}
-								<td className="p-3">
+								<td className="py-3 pr-1.5">
 									{booking.status === "pending" ? (
 										<select
 											name="bookingStatus"

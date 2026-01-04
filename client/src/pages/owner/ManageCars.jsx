@@ -109,11 +109,11 @@ const ManageCars = () => {
 								className="border-t border-gray-400 hover:bg-gray-100 hover:scale-101 transition-all duration-300"
 								key={index}
 							>
-								<td className="py-3 pl-2 flex items-center gap-3">
+								<td className="p-3 flex items-center gap-3">
 									<img
 										src={car.image}
 										alt={car.name}
-										className="h-11 aspect-square sm:aspect-video rounded-md object-cover"
+										className="h-11 aspect-video rounded-md object-cover"
 									/>
 									<div className="max-md:hidden">
 										<p className="font-medium">
@@ -130,7 +130,7 @@ const ManageCars = () => {
 									{car.category}
 								</td>
 
-								<td className="p-3">
+								<td className="md:p-3 md:text-base text-xs font-light">
 									{currency}{" "}
 									{car.pricePerDay.toLocaleString("en-IN")}
 									/day
@@ -148,7 +148,7 @@ const ManageCars = () => {
 									)}
 								</td>
 
-								<td className="py-4 pr-2">
+								<td className="py-3 px-2">
 									<div className="flex items-center gap-3">
 										<button
 											onClick={() =>

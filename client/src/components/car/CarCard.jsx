@@ -20,7 +20,7 @@ const CarCard = ({ car, index }) => {
 				ease: "easeOut",
 				delay: index * 0.1,
 			}}
-			className="h-full w-full group rounded-xl overflow-hidden shadow-lg hover:-translate-y-2 transition-all duration-500 cursor-pointer hover:shadow-[0_4px_24px_rgba(0,0,0,0.35)] dark:hover:shadow-[0_4px_24px_rgba(255,255,255,0.15)] active:scale-95"
+			className="h-full w-full group rounded-xl overflow-hidden shadow-lg hover:-translate-y-2 transition-all duration-500 cursor-pointer hover:shadow-[0_4px_24px_rgba(0,0,0,0.35)] dark:hover:shadow-[0_4px_24px_rgba(255,255,255,0.15)] active:scale-95 bg-light"
 			onClick={handleClick}
 		>
 			{/* image & availability & price  */}
@@ -32,12 +32,12 @@ const CarCard = ({ car, index }) => {
 					className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
 				/>
 				{car.isAvaliable && (
-					<p className="absolute top-4 left-4 bg-primary/90 text-white text-xs px-2.5 py-1 rounded-full dark:bg-second-bg/90">
+					<p className="absolute top-4 left-4 bg-primary/80 text-white text-xs px-2.5 py-1 font-medium rounded-md">
 						Available Now
 					</p>
 				)}
 
-				<div className="absolute bottom-4 right-4 border border-borderColor backdrop-blur-sm text-white px-3 py-2 rounded-full">
+				<div className="absolute bottom-4 right-4 border border-white/80 backdrop-blur-sm text-white/80 px-3 py-2 rounded-xl">
 					<span className="font-semibold">
 						{currency} {car.pricePerDay}
 					</span>
@@ -45,7 +45,7 @@ const CarCard = ({ car, index }) => {
 				</div>
 			</div>
 
-			<div className="p-4 sm:p-5 dark:bg-second-bg dark:text-white">
+			<div className="p-4 sm:p-5 dark:text-white">
 				{/* brand & model & catrgory  */}
 				<div className="flex justify-between items-start mb-2">
 					<div>
@@ -59,7 +59,7 @@ const CarCard = ({ car, index }) => {
 				</div>
 
 				{/* feactures  */}
-				<div className="mt-4 grid grid-cols-2 gap-y-2 text-gray-600 dark:text-white dark:brightness-500">
+				<div className="mt-4 grid grid-cols-2 gap-y-2 text-gray-600 dark:text-white ">
 					<div className="flex items-center text-sm text-muted-foreground">
 						<iconList.Users size={15} className="mr-1" />
 						<span>{car.seating_capacity} Seats</span>
