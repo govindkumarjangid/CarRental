@@ -36,7 +36,7 @@ const Testmonial = () => {
 	}, []);
 
 	return (
-		<div className="max-w-8xl m-auto py-28 md:px-16 lg:px-24">
+		<div className="max-w-8xl m-auto py-28 px-6 md:px-16 lg:px-24">
 
 			<UserTitle
 				title="What Our Customers Say"
@@ -55,13 +55,13 @@ const Testmonial = () => {
 			</div>
 
 			{/* testimonial cards marquee  */}
-			<section className="relative py-10 mt-10 w-full max-w-7xl mx-auto overflow-hidden px-3 sm:px-6">
-				<div className="absolute left-0 top-0 h-full w-6 sm:w-10 z-10 pointer-events-none bg-linear-to-r from-white to-transparent" />
+			<section className="relative py-10 mt-10 w-full max-w-7xl overflow-hidden px-3 sm:px-6 mx-auto">
+				<div className="absolute left-0 top-0 h-full w-10 z-10 pointer-events-none bg-linear-to-r from-white to-transparent" />
 				<div className="space-y-7">
 					<MarqueeRow items={reviews} reverse={false} />
 					<MarqueeRow items={reviews} reverse={true} />
 				</div>
-				<div className="absolute right-0 top-0 h-full w-6 sm:w-10 z-10 pointer-events-none bg-linear-to-l from-white to-transparent" />
+				<div className="absolute right-0 top-0 h-full w-10 z-10 pointer-events-none bg-linear-to-l from-white to-transparent" />
 			</section>
 
 		</div>

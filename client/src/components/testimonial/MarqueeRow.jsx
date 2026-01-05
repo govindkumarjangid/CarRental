@@ -1,20 +1,30 @@
 import { useAppContext } from "../../context/AppContext";
 import TestimonialCard from "./TestimonialCard";
 import TestimonialSkeleton from "./TestimonialSkeleton";
+import { useAnimation } from 'motion/react'
 
 const MarqueeRow = ({ items, reverse }) => {
-  const { motion, reviewLoading } = useAppContext();
+  const { motion, reviewLoading, useEffect } = useAppContext();
+  const controls = useAnimation()
+
+  useEffect(() => {
+    controls.start({
+      x: reverse ? ["-33.33%", "0%"] : ["0%", "-33.33%"],
+      transition: {
+        repeat: Infinity,
+        repeatType: "loop",
+        ease: "linear",
+        duration: 12,
+      },
+    })
+  }, [reverse])
 
   return (
 
     <motion.div
       className="flex gap-4 sm:gap-6 md:gap-8 pointer-events-none"
-      animate={{ x: reverse ? ["-33.33%", "0%"] : ["0%", "-33.33%"] }}
-      transition={{
-        repeat: Infinity,
-        ease: "linear",
-        duration: 10,
-      }}
+      style={{ willChange: "transform" }}
+      animate={controls}
     >
       {
         reviewLoading && items.length === 0 ? (
