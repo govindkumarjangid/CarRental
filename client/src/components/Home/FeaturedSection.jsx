@@ -3,7 +3,7 @@ import { useAppContext } from "../../context/AppContext.jsx";
 import CarCardSkeleton from "../car/CarCardSkeleton.jsx";
 
 const FeaturedSection = () => {
-	const { motion, navigate, UserTitle, cars, iconList, useState } = useAppContext();
+	const { motion, navigate, UserTitle, cars, iconList } = useAppContext();
 	const loading = cars.length === 0;
 
 	return (

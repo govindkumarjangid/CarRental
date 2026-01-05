@@ -103,8 +103,12 @@ const Navbar = () => {
 					</button>
 					<button
 						className="cursor-pointer px-8 py-2 bg-primary hover:bg-primary-dull transition-all text-white rounded-md active:scale-95"
-						onClick={() => {
-							user ? logout() : setShowLogin(true);
+						onClick={async () => {
+							if (user) {
+								await logout();
+							} else {
+								setShowLogin(true);
+							}
 						}}
 					>
 						{user ? "Logout" : "Login"}

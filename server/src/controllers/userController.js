@@ -46,7 +46,7 @@ export const registerUser = async (req, res) => {
   }
 }
 
-//*Login User
+//*Login User`
 export const loginUser = async (req, res) => {
   try {
 

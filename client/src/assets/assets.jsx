@@ -28,7 +28,7 @@ import {
 	TextAlignEnd,
 	X,
 	CircleUser,
-	ArrowRight,   
+	ArrowRight,
 	Star,
 	ChevronLeft,
 	ChevronRight,
@@ -38,7 +38,8 @@ import {
 	Mail,
 	CalendarX,
 	Loader,
-	ArrowLeft
+	ArrowLeft,
+	MessageCircleMore
 } from "lucide-react";
 
 export const cityList = [
@@ -109,4 +110,6 @@ export const ownerMenuLinks = [
 		path: "/owner/manage-bookings",
 		icon: <ClipboardList />,
 	},
+	{ name: "All Users", path: "/owner/users", icon: <Users /> },
+	{ name: "All Chats", path: "/owner/chats", icon: <MessageCircleMore /> }
 ];

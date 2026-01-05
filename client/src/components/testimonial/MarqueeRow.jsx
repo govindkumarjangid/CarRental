@@ -6,8 +6,9 @@ const MarqueeRow = ({ items, reverse }) => {
   const { motion, reviewLoading } = useAppContext();
 
   return (
+
     <motion.div
-      className="flex gap-x-6 gap-y-20 pointer-events-none"
+      className="flex gap-4 sm:gap-6 md:gap-8 pointer-events-none"
       animate={{ x: reverse ? ["-33.33%", "0%"] : ["0%", "-33.33%"] }}
       transition={{
         repeat: Infinity,
@@ -17,30 +18,27 @@ const MarqueeRow = ({ items, reverse }) => {
     >
       {
         reviewLoading && items.length === 0 ? (
-          [...Array(5), ...Array(5), ...Array(5)].map((_, i) => (
+          [...Array(15)].map((_, i) => (
             <div
               key={i}
-              className="pointer-events-auto min-w-80 sm:min-w-90 lg:min-w-105"
+              className="pointer-events-auto shrink-0 w-70 sm:w-80 md:w-90"
             >
               <TestimonialSkeleton />
             </div>
           ))
         ) : (
-          <>
-            {[...items, ...items, ...items].map((review, i) => (
-              <div
-                key={i}
-                className="pointer-events-auto min-w-80 sm:min-w-90 lg:min-w-105"
-              >
-                <TestimonialCard review={review} />
-              </div>
-            ))}
-          </>
+          [...items, ...items, ...items].map((review, i) => (
+            <div
+              key={i}
+              className="pointer-events-auto shrink-0 w-70 sm:w-80 md:w-90"
+            >
+              <TestimonialCard review={review} />
+            </div>
+          ))
         )
       }
-
-
     </motion.div>
+
   );
 };
 

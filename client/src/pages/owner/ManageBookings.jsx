@@ -190,7 +190,7 @@ const ManageBookings = () => {
 										</select>
 										) : (
 											<span
-												className={`px-3 py-1 rounded-md text-xs font-semibold ${booking.paymentStatus === "completed"
+												className={`px-3 py-1 rounded-md text-xs font-semibold ${booking.paymentStatus === "confirmed"
 													? "bg-green-100 text-green-500"
 													: "bg-red-100 text-red-500"
 													}`}

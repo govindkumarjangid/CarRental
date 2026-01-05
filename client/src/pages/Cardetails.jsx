@@ -161,14 +161,13 @@ const Cardetails = () => {
 							<div>
 								<motion.img
 									src={car.image}
-									initial={{ scale: 0, y: 100 }}
-									animate={{ scale: 1, y: 0 }}
+									initial={{ opacity: 0, y: 50 }}
+									animate={{ opacity: 1, y: 0 }}
 									transition={{
 										type: "spring",
 										stiffness: 50,
 										duration: 0.5,
 									}}
-									whileHover={{ scale: 1.03 }}
 									alt="main-car-image"
 									loading="lazy"
 									className="w-full h-auto md:max-h-100 object-cover rounded-xl shadow-md"

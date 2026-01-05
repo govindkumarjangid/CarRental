@@ -14,6 +14,8 @@ import { useAppContext } from "./context/AppContext.jsx";
 import TestimonialForm from "./components/testimonial/TestimonialForm.jsx";
 import ProtectRoute from "./context/ProtectRoute.jsx";
 import EditCarForm from "./components/owner/EditCarForm.jsx";
+import AllUsers from "./pages/owner/AllUsers.jsx"
+import Chats from "./pages/owner/Chats.jsx";
 
 const App = () => {
 	const { showLogin, showReview, useLocation, Routes, Route, Toaster, showEditCar } =
@@ -60,6 +62,22 @@ const App = () => {
 						element={
 							<ProtectRoute>
 								<ManageBookings />
+							</ProtectRoute>
+						}
+					/>
+					<Route
+						path="users"
+						element={
+							<ProtectRoute>
+								<AllUsers />
+							</ProtectRoute>
+						}
+					/>
+					<Route
+						path="chats"
+						element={
+							<ProtectRoute>
+								<Chats />
 							</ProtectRoute>
 						}
 					/>

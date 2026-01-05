@@ -106,13 +106,13 @@ const Cars = () => {
 
 						<button
 							onClick={() => setOpen(!open)}
-							className="w-40 border group border-gray-300 px-3 py-1.5 rounded-md bg-white text-gray-500 shadow-sm flex justify-between items-center cursor-pointer active:scale-95 transition-transform duration-300"
+							className="w-40 border group border-gray-300 px-3 py-1.5 rounded-md shadow-sm flex justify-between items-center cursor-pointer active:scale-95 transition-transform duration-300 bg-primary hover:bg-primary-dull text-light"
 						>
 							Sort & Filter
 
 							<span>
 								<iconList.ChevronRight
-									size={18}
+									size={24}
 									className={`transition-transform duration-300 ${open ? "rotate-90" : "rotate-0"
 										}`}
 								/>
@@ -131,14 +131,13 @@ const Cars = () => {
 									variants={container}
 									initial="hidden"
 									animate="show"
-									className="p-2"
 								>
 									{/* filter by model  */}
 									<motion.p
 										initial={{ opacity: 0, x: -50 }}
 										animate={{ opacity: 1, x: 0 }}
 										transition={{ duration: 0.5 }}
-										className="text-sm text-primary-dull mb-1 font-extrabold">Filter By Model</motion.p>
+										className="text-sm text-primary-dull mb-1 font-extrabold border-b-2 border-gray-300 p-2">Filter By Model</motion.p>
 									{/* each animated item */}
 									{[
 										{ label: "All", value: "" },
@@ -154,7 +153,7 @@ const Cars = () => {
 												setFilter(opt.value);
 												setOpen(false);
 											}}
-											className="cursor-pointer hover:bg-primary px-2 py-1 rounded hover:text-light"
+											className="cursor-pointer hover:bg-primary px-2 py-1 rounded hover:text-light mx-2"
 										>
 											{opt.label}
 										</motion.div>
@@ -165,7 +164,7 @@ const Cars = () => {
 										initial={{ opacity: 0, x: -50 }}
 										animate={{ opacity: 1, x: 0 }}
 										transition={{ duration: 0.5, delay: 0.3 }}
-										className="text-sm text-primary-dull my-1 font-extrabold">Filter By Fuel Type
+										className="text-sm text-primary-dull my-1 font-extrabold border-b-2 border-gray-300 p-2">Filter By Fuel Type
 									</motion.p>
 									{[
 										{ label: "Petrol", value: "Petrol" },
@@ -180,7 +179,7 @@ const Cars = () => {
 												setFilter(opt.value);
 												setOpen(false);
 											}}
-											className="cursor-pointer hover:bg-primary px-2 py-1 rounded hover:text-light"
+											className="cursor-pointer hover:bg-primary px-2 py-1 rounded hover:text-light mx-2"
 										>
 											{opt.label}
 										</motion.div>
@@ -192,14 +191,14 @@ const Cars = () => {
 										initial={{ opacity: 0, x: -50 }}
 										animate={{ opacity: 1, x: 0 }}
 										transition={{ duration: 0.5, delay: 0.6 }}
-										className="text-sm text-primary-dull my-1 font-extrabold">Sort By</motion.p>
+										className="text-sm text-primary-dull my-1 font-extrabold border-b-2 border-gray-300 p-2">Sort By</motion.p>
 									<motion.div
 										variants={item}
 										onClick={() => {
 											setSortOrder("asc");
 											setOpen(false);
 										}}
-										className="cursor-pointer hover:bg-primary px-2 py-1 rounded hover:text-light"
+										className="cursor-pointer hover:bg-primary px-2 py-1 rounded hover:text-light mx-2"
 									>
 										Ascending
 									</motion.div>
@@ -210,7 +209,7 @@ const Cars = () => {
 											setSortOrder("desc");
 											setOpen(false);
 										}}
-										className="cursor-pointer hover:bg-primary px-2 py-1 rounded hover:text-light"
+										className="cursor-pointer hover:bg-primary px-2 py-1 rounded hover:text-light mx-2"
 									>
 										Descending
 									</motion.div>

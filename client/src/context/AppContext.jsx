@@ -72,13 +72,13 @@ export const AppProvider = ({ children }) => {
 	// logout the user
 	const logout = () => {
 		localStorage.removeItem("token");
+		localStorage.removeItem("user");
 		setToken(null);
 		setUser(null);
 		setIsOwner(false);
 		navigate("/");
 		(axios.defaults.headers.common["Authorization"] = ""),
-			localStorage.setItem("user", null);
-		toast.success("Logged out successfully");
+			toast.success("Logged out successfully");
 	};
 
 	// load razorpay script

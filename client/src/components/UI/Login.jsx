@@ -141,6 +141,8 @@ const Login = () => {
 						Password
 					</label>
 				</div>
+
+				{/* toggle login/register  */}
 				<div className="flex items-center justify-center w-full text-sm ">
 					{state === "register" ? (
 						<p>
@@ -164,7 +166,9 @@ const Login = () => {
 						</p>
 					)}
 				</div>
+
 				{/* submit button  */}
+
 				<button
 					type="submit"
 					disabled={loading}
@@ -189,6 +193,7 @@ const Login = () => {
 						"Login"
 					)}
 				</button>
+
 			</motion.form>
 		</motion.div>
 	);
