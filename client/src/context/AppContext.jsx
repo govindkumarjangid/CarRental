@@ -38,6 +38,7 @@ export const AppProvider = ({ children }) => {
 	const [showReview, setShowReview] = useState(false);
 	const [showEditCar, setShowEditCar] = useState(false);
 	const [editCar, setEditCar] = useState(null);
+	const [reviewLoading, setReviewLoading] = useState(false);
 
 	//check user login or not
 	const fetchUser = async () => {
@@ -108,6 +109,8 @@ export const AppProvider = ({ children }) => {
 	}, [token]);
 
 	const value = {
+		reviewLoading,
+		setReviewLoading,
 		loadRazorpay,
 		navigate,
 		currency,

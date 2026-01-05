@@ -90,7 +90,7 @@ export const getUserData = async (req, res) => {
 
 //* get all user cars
 
-export const getCars = async (req, res) => {
+export const getCars = async (_, res) => {
   try {
     const cars = await Car.find({ isAvaliable: true });
     res.json({ success: true, cars });
@@ -107,12 +107,12 @@ export const addReview = async (req, res) => {
     const { name, email, location, rating, review } = req.body;
     const imageFile = req.file;
 
-    if (!name || !location || !rating || !review) {
-      return res.json({ success: false, message: 'All fields are required' })
+    if (!req.file) {
+      return res.status(400).json({ message: "No image file provided" });
     }
 
-    if (!imageFile) {
-      return res.status(400).json({ message: "No image file provided" });
+    if (!name || !location || !rating || !review) {
+      return res.json({ success: false, message: 'All fields are required' })
     }
 
     const response = await imagekit.files.upload({

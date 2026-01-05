@@ -21,6 +21,7 @@ const TestimonialForm = () => {
 		e.preventDefault();
 		setLoading(true);
 		try {
+			if (!image) return toast.error("Please upload an image");
 			const formData = new FormData();
 			formData.append("name", form.name);
 			formData.append("email", form.email);

@@ -1,3 +1,4 @@
+import { scale } from "motion/react";
 import { cityList } from "../../assets/assets.jsx";
 import { useAppContext } from "../../context/AppContext.jsx";
 
@@ -65,8 +66,8 @@ const Hero = () => {
 				{/* check car availability form  */}
 				<motion.form
 					onSubmit={(e) => checkAvailability(e)}
-					initial={{ opacity: 0, y: 50 }}
-					animate={{ opacity: 1, y: 0 }}
+					initial={{ opacity: 0, scale: 0.9, y: 50 }}
+					animate={{ opacity: 1, scale: 1, y: 0 }}
 					transition={{ duration: 0.7, ease: "easeOut", delay: 0.7 }}
 					className="flex flex-col md:flex-row items-center md:items-center justify-between px-4 py-5 rounded-lg w-full max-w-120 md:max-w-200 bg-white shadow-[0px_8px_20px_rgba(0,0,0,0.1)] dark:bg-main-bg dark:shadow-[0px_8px_20px_rgba(255,255,255,0.1)] "
 				>
