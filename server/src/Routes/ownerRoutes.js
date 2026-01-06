@@ -1,5 +1,5 @@
 import express from 'express';
-import { addCar, changeRoleToOwner, deleteCar, editCar, getDashboardData, getOwnerCars, toggleCarAvailability, updateUserImage } from '../controllers/ownerController.js';
+import { addCar, blockUnblockUser, changeRoleToOwner, deleteCar, editCar, getAllUsers, getDashboardData, getOwnerCars, toggleCarAvailability, updateUserImage } from '../controllers/ownerController.js';
 import { protect } from '../middleware/auth.js'
 import upload from '../configs/multer.js';
 const ownerRouter = express.Router();
@@ -11,9 +11,10 @@ ownerRouter.get('/cars', protect, getOwnerCars);
 ownerRouter.post('/toggle-car', protect, toggleCarAvailability);
 ownerRouter.post('/delete-car', protect, deleteCar);
 ownerRouter.post('/edit-car', upload.single("image"), protect, editCar);
-
 ownerRouter.get('/dashboard', protect, getDashboardData)
 ownerRouter.post('/update-image', upload.single('image'), protect, updateUserImage)
+ownerRouter.get('/allusers', protect, getAllUsers);
+ownerRouter.post('/block-unblock', protect, blockUnblockUser);
 
 
 export default ownerRouter;

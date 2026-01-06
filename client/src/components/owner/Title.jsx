@@ -8,7 +8,7 @@ export const Title = ({ title, subTitle }) => {
 				initial={{ opacity: 0, y: 30 }}
 				animate={{ opacity: 1, y: 0 }}
 				transition={{ duration: 0.8, ease: "easeOut" }}
-				className="text-3xl font-medium"
+				className="text-2xl font-medium md:text-3xl"
 			>
 				{title}
 			</motion.h1>

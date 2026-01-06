@@ -94,7 +94,7 @@ const Cars = () => {
 					initial={{ opacity: 0, y: 50 }}
 					animate={{ opacity: 1, y: 0 }}
 					transition={{ duration: 0.7, ease: "easeOut" }}
-					className="flex items-center justify-between flex-wrap gap-4 mt-4 w-full px-5 md:px-30"
+					className="flex items-center justify-between flex-wrap gap-4 mt-4 w-full px-5 md:px-19 max-w-7xl"
 				>
 					<p className="dark:text-white dark:border-gray-300 text-gray-500 float-left">
 						Showing {sortedCars.length} results

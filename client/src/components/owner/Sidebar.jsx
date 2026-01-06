@@ -44,7 +44,7 @@ const Sidebar = () => {
 			initial={{ opacity: 0, x: -400 }}
 			animate={{ opacity: 1, x: 0 }}
 			transition={{ duration: 0.5, ease: "easeOut" }}
-			className="relative min-h-screen md:flex flex-col items-center pt-8 max-w-15 md:max-w-50 w-full border-r border-gray-500 text-sm overflow-x-hidden"
+			className="relative min-h-screen md:flex flex-col items-center pt-8 max-w-15 md:max-w-50 w-full border-r border-gray-400 text-sm overflow-x-hidden"
 		>
 			{/* Profile Image */}
 			<motion.div
@@ -92,9 +92,10 @@ const Sidebar = () => {
 				</button>
 			)}
 
-			<p className="mt-2 text-base max-md:hidden capitalize">
+			<p className="mt-2 text-base max-md:hidden capitalize border-b border-gray-400 pb-4 w-full text-center font-medium">
 				{user?.name}
 			</p>
+
 
 			{/* Menu */}
 			<motion.div initial="hidden" animate="show" className="w-full">
@@ -103,13 +104,12 @@ const Sidebar = () => {
 					return (
 						<MotionNavLink
 							key={link.path}
-							to={link.path}
+							to={{ pathname: link.path, scrollTo: (0, 0) }}
 							whileTap={{ scale: 0.97 }}
-							className={`relative flex items-center gap-3 w-full py-3 pl-4 md:pl-4 first:mt-6 rounded-lg transition-colors ${
-								isActive
-									? "bg-primary/20 text-primary font-semibold"
-									: "text-gray-500 hover:bg-gray-100"
-							}`}
+							className={`relative flex items-center gap-3 w-full py-3 pl-4 md:pl-4 first:mt-6 rounded-lg transition-colors ${isActive
+								? "bg-primary/20 text-primary font-semibold"
+								: "text-gray-500 hover:bg-gray-100"
+								}`}
 						>
 							{link.icon}
 							<span className="max-md:hidden">{link.name}</span>

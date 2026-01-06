@@ -17,7 +17,8 @@ const Cardetails = () => {
 		toast,
 		iconList,
 		AnimatePresence,
-		loadRazorpay
+		loadRazorpay,
+		setShowLogin
 	} = useAppContext();
 
 	const { id } = useParams();
@@ -62,6 +63,24 @@ const Cardetails = () => {
 
 	const handleOnlinePayment = async () => {
 		setLoading(true);
+		const user = JSON.parse(localStorage.getItem("user"));
+
+		if (!user) {
+			toast.error("Please login to continue");
+			setLoading(false);
+			navigate("/");
+			setShowLogin(true);
+			return;
+		}
+
+		if (user) {
+			if (user.isBlocked) {
+				toast.error("Your account is blocked");
+				setLoading(false);
+				navigate("/");
+				return;
+			}
+		}
 		const loaded = await loadRazorpay();
 		if (loaded) {
 			toast.success("Razorpay SDK loaded");
@@ -141,7 +160,7 @@ const Cardetails = () => {
 					initial={{ opacity: 0, y: 50 }}
 					animate={{ opacity: 1, y: 0 }}
 					transition={{ duration: 0.9, ease: "easeOut" }}
-					className="h-auto max-w-8xl m-auto px-6 md:px-16 lg:px-24 xl:px-32 pt-16 pb-16 dark:bg-linear-to-r dark:to-main-bg dark:from-second-bg"
+					className="h-auto max-w-7xl m-auto px-6 md:px-16 lg:px-24 xl:px-32 pt-16 pb-16 dark:bg-linear-to-r dark:to-main-bg dark:from-second-bg"
 				>
 					<button
 						onClick={() => {

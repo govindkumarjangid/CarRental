@@ -37,7 +37,7 @@ const Mybookings = () => {
 
 	return (
 		<>
-			<div className="max-w-8xl m-auto px-6 md:px-16 lg:px-24 xl:px-32 2xl:px-48 pt-16 pb-16 text-sm dark:bg-linear-to-r dark:to-main-bg dark:from-second-bg ">
+			<div className="max-w-7xl m-auto px-6 md:px-16 lg:px-24 xl:px-32 2xl:px-48 pt-16 pb-16 text-sm dark:bg-linear-to-r dark:to-main-bg dark:from-second-bg ">
 				<UserTitle
 					title="My Bookings"
 					subTitle="View and manage all your car bookings"

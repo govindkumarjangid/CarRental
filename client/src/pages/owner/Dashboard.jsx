@@ -82,7 +82,7 @@ const Dashboard = () => {
 	if (loading) return <Loader />;
 
 	return (
-		<div className="px-4 pt-10 md:px-10 flex-1">
+		<div className="px-4 pt-10 md:px-10 flex-1 max-w-7xl pb-10">
 			<OwnerTitle
 				title="Admin Dashboard"
 				subTitle="Monitor overall platform performance including total cars, bookings, revenue, and recent activities"

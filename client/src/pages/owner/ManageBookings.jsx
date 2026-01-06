@@ -117,15 +117,16 @@ const ManageBookings = () => {
 								className="border-t border-gray-400 hover:bg-gray-100 hover:scale-101 transition-all duration-300"
 								key={index}
 							>
+
 								{/* car details  */}
-								<td className="p-3 flex items-center gap-3">
+								<td className="p-3 flex md:flex-row flex-col items-start gap-3 justify-start">
 									<img
 										src={booking.car.image}
 										alt={booking.car.name}
 										className="h-11 aspect-video rounded-md  object-cover"
 									/>
-									<div className="max-md:hidden">
-										<p className="font-medium">
+									<div>
+										<p className="font-medium md:text-base text-xs line-clamp-1">
 											{booking.car.brand}{" "}
 											{booking.car.model}
 										</p>
@@ -137,6 +138,7 @@ const ManageBookings = () => {
 									{booking.pickupDate.split("T")[0]} To{" "}
 									{booking.returnDate.split("T")[0]}
 								</td>
+
 
 								{/* total price  */}
 								<td className="p-3 max-md:hidden">
@@ -167,7 +169,7 @@ const ManageBookings = () => {
 													e.target.value
 												)
 											}
-											className="outline-none bg-amber-300/30 text-amber-500 px-1 py-1 text-xs rounded-md cursor-pointer"
+											className="outline-none bg-yellow-300/30 text-yellow-500 px-1 py-1 text-xs rounded-md cursor-pointer"
 										>
 											<option
 												value="pending"

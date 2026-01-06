@@ -109,17 +109,17 @@ const ManageCars = () => {
 								className="border-t border-gray-400 hover:bg-gray-100 hover:scale-101 transition-all duration-300"
 								key={index}
 							>
-								<td className="p-3 flex items-center gap-3">
+								<td className="p-3 flex  md:flex-row flex-col items-start gap-3 justify-start">
 									<img
 										src={car.image}
 										alt={car.name}
 										className="h-11 aspect-video rounded-md object-cover"
 									/>
-									<div className="max-md:hidden">
-										<p className="font-medium">
+									<div>
+										<p className="font-medium md:text-base text-xs line-clamp-1">
 											{car.brand} {car.model}
 										</p>
-										<p>
+										<p className="max-md:hidden">
 											{car.seating_capacity} seats ●{" "}
 											{car.transmission}
 										</p>
@@ -131,9 +131,8 @@ const ManageCars = () => {
 								</td>
 
 								<td className="md:p-3 md:text-base text-xs font-light">
-									{currency}{" "}
-									{car.pricePerDay.toLocaleString("en-IN")}
-									/day
+									<span>{currency}</span>
+									<span>{car.pricePerDay.toLocaleString("en-IN")}/day</span>
 								</td>
 
 								<td className="p-3 max-md:hidden">

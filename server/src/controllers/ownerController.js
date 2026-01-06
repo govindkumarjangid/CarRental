@@ -159,6 +159,7 @@ export const editCar = async (req, res) => {
 export const getDashboardData = async (req, res) => {
   try {
     const { _id, role } = req.user;
+    
     if (role !== "owner") {
       return res.json({ success: false, message: "You are not authorized" });
     }
@@ -214,6 +215,30 @@ export const updateUserImage = async (req, res) => {
     await User.findByIdAndUpdate(_id, { image });
     res.json({ success: true, message: "Image updated" });
 
+  } catch (error) {
+    console.log(error.message);
+    res.json({ success: false, message: error.message });
+  }
+}
+
+//* get all users (for admin)
+
+export const getAllUsers = async (_, res) => {
+  try {
+    const users = await User.find({ role: 'user' }).select('-password');
+    res.json({ success: true, users });
+  } catch (error) {
+    console.log(error.message);
+    res.json({ success: false, message: error.message });
+  }
+}
+
+//* block unblock user (for admin)
+export const blockUnblockUser = async (req, res) => {
+  try {
+    const { userId, isBlocked } = req.body;
+    await User.findByIdAndUpdate(userId, { isBlocked: isBlocked });
+    res.json({ success: true, message: isBlocked ? "User blocked successfully" : "User unblocked successfully" });
   } catch (error) {
     console.log(error.message);
     res.json({ success: false, message: error.message });

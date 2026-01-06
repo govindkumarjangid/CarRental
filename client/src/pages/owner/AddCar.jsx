@@ -121,8 +121,8 @@ const AddCar = () => {
 						/>
 					</label>
 
-					<p className="text-sm text-gray-500">
-						Upload a picture of your car
+					<p className="text-xs md:text-sm text-gray-500">
+						Upload a image of your car
 					</p>
 				</motion.div>
 
