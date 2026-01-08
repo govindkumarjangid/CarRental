@@ -67,6 +67,9 @@ export const loginUser = async (req, res) => {
     if (!isMatch) {
       return res.json({ success: false, message: 'Invalid Password' });
     }
+    if (user.isBlocked) {
+      return res.json({ success: false, message: "User is blocked" })
+    }
 
     const token = generateToken(user._id.toString());
     res.json({ success: true, token });
@@ -152,4 +155,35 @@ export const getReviews = async (req, res) => {
     console.log(error.message)
     res.json({ success: false, message: error.message })
   }
-} 
+}
+
+//* get user car details
+export const getCarDetails = async (req, res) => {
+  try {
+    const { id } = req.params;
+    // console.log(id)
+    const car = await Car.findById(id);
+    if (!car) {
+      return res.json({ success: false, message: "Car not found", });
+    }
+    return res.json({ success: true, car, });
+  } catch (error) {
+    console.log(error.message)
+    res.json({ success: false, message: error.message })
+  }
+}
+
+
+//* get owner details
+export const getOwnerDetails = async (req, res) => {
+  try {
+    const owner = await User.find({ role: "owner" }).select("-password");
+    if (!owner) {
+      return res.json({ success: false, message: "Owner not found" });
+    }
+    return res.json({ success: true, owner });
+  } catch (error) {
+    console.log(error.message);
+    res.json({ success: false, message: error.message });
+  }
+}

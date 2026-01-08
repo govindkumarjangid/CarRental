@@ -39,6 +39,8 @@ export const AppProvider = ({ children }) => {
 	const [showEditCar, setShowEditCar] = useState(false);
 	const [editCar, setEditCar] = useState(null);
 	const [reviewLoading, setReviewLoading] = useState(false);
+	const [ownerDetails, setOwnerDetails] = useState([]);
+
 
 	//check user login or not
 	const fetchUser = async () => {
@@ -62,6 +64,22 @@ export const AppProvider = ({ children }) => {
 		try {
 			const { data } = await axios.get("/api/user/cars");
 			data.success ? setCars(data.cars) : toast.error(data.message);
+		} catch (error) {
+			toast.error(error.message);
+		} finally {
+			setLoading(false);
+		}
+	};
+
+	const fetchOwnerDetails = async () => {
+		setLoading(true);
+		try {
+			const { data } = await axios.get('/api/user/owner-details');
+			if (data.success) {
+				setOwnerDetails(data.owner);
+			} else {
+				toast.error(data.message);
+			}
 		} catch (error) {
 			toast.error(error.message);
 		} finally {
@@ -105,10 +123,13 @@ export const AppProvider = ({ children }) => {
 		if (token) {
 			axios.defaults.headers.common["Authorization"] = `${token}`;
 			fetchUser();
+			fetchOwnerDetails();
 		}
 	}, [token]);
 
 	const value = {
+		ownerDetails,
+		setOwnerDetails,
 		reviewLoading,
 		setReviewLoading,
 		loadRazorpay,

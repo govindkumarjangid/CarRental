@@ -9,7 +9,7 @@ export const protect = async (req, res, next) => {
     return res.json({ success: false, message: "Not Authorized" });
   }
   try {
-    const userId = jwt.decode(token, process.env.JWT_SECRET);
+    const userId = jwt.verify(token, process.env.JWT_SECRET);
 
     if (!userId) {
       return res.json({ success: false, message: "Not Authorized" });
@@ -20,7 +20,9 @@ export const protect = async (req, res, next) => {
     if (!req.user) {
       return res.json({ success: false, message: "User not found" })
     }
-
+    if (req.user.isBlocked) {
+      return res.json({ success: false, message: "User is blocked" })
+    }
     next();
 
   } catch (error) {

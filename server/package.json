@@ -2,11 +2,11 @@
 	"name": "server",
 	"version": "1.0.0",
 	"description": "",
-	"main": "index.js",
+	"main": "server.js",
 	"type": "module",
 	"scripts": {
-		"dev": "nodemon index.js",
-		"start": "node index.js"
+		"dev": "nodemon server.js",
+		"start": "node server.js"
 	},
 	"keywords": [],
 	"author": "",
@@ -22,6 +22,7 @@
 		"mongoose": "^9.0.0",
 		"multer": "^2.0.2",
 		"primereact": "^10.9.7",
-		"razorpay": "^2.9.6"
+		"razorpay": "^2.9.6",
+		"socket.io": "^4.8.3"
 	}
 }

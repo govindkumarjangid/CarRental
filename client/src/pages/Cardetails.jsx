@@ -1,3 +1,4 @@
+import Loader from "../components/UI/Loader";
 import { useAppContext } from "../context/AppContext";
 
 const Cardetails = () => {
@@ -18,7 +19,8 @@ const Cardetails = () => {
 		iconList,
 		AnimatePresence,
 		loadRazorpay,
-		setShowLogin
+		setShowLogin,
+		fetchCars
 	} = useAppContext();
 
 	const { id } = useParams();
@@ -59,7 +61,6 @@ const Cardetails = () => {
 			return { success: false };
 		}
 	};
-
 
 	const handleOnlinePayment = async () => {
 		setLoading(true);
@@ -150,9 +151,18 @@ const Cardetails = () => {
 
 
 	useEffect(() => {
-		setCar(cars.find((car) => car._id === id));
-	}, [id]);
+		fetchCars();
+	}, []);
 
+	useEffect(() => {
+		if (cars.length > 0) {
+			const found = cars.find(c => c._id === id);
+			setCar(found);
+		}
+	}, [cars, id]);
+
+	if (loading) return <Loader />
+	
 	return (
 		car && (
 			<>
@@ -173,7 +183,7 @@ const Cardetails = () => {
 						<span>Back to Cars</span>
 					</button>
 
-					<div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
+					<div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12 ">
 						{/* LEFT */}
 						<div className="lg:col-span-2">
 							{/* IMAGE WITH SMOOTH HOVER */}
@@ -362,11 +372,11 @@ const Cardetails = () => {
 							>
 								Book Now
 							</motion.button>
-
 							<p className="text-center text-sm text-gray-400 dark:text-300">
 								No credit card required to reserve
 							</p>
 						</motion.form>
+						{/* chat with owner  */}
 					</div>
 					{/* ✅ POPUP */}
 					<AnimatePresence>
@@ -434,6 +444,47 @@ const Cardetails = () => {
 							</motion.div>
 						)}
 					</AnimatePresence>
+
+					{/* chat with owner card  */}
+					<div className="flex items-center justify-end py-5 bg-light mt-10">
+						<div className="w-80 bg-white rounded-xl shadow-md p-4">
+							{/* Image */}
+							<img
+								src={car.image}
+								alt={car.name}
+								className="rounded-xl w-full h-44 object-cover"
+							/>
+
+							{/* Title */}
+							<h2 className="text-xl font-semibold mt-3">
+								{car.brand} {car.model} <span className="font-normal"> {car.year}</span>
+							</h2>
+
+							{/* Specs */}
+							<div className="flex justify-between text-sm text-gray-600 mt-3">
+								<span className="flex items-center gap-1">
+									<iconList.Car className=" text-primary" size={16} />
+									{car.transmission}
+								</span>
+								<span className="flex items-center gap-1">
+									<iconList.Fuel className=" text-primary" size={16} />
+									{car.fuel_type}
+								</span>
+								<span className="flex items-center gap-1">
+									<span className="text-primary text-base">{currency}</span>
+									<span>{car.pricePerDay}/day</span>
+								</span>
+							</div>
+
+							{/* Button */}
+							<button
+								onClick={() => { navigate(`/chatpage/${car._id}`), scrollTo(0, 0) }}
+								className="mt-4 w-full bg-primary hover:bg-primary-dull text-white py-2 rounded-md cursor-pointer"
+							>
+								Chat with Owner
+							</button>
+						</div>
+					</div>
 				</motion.div>
 			</>
 		)

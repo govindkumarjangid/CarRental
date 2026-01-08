@@ -1,14 +1,14 @@
 import CarCardSkeleton from '../components/car/CarCardSkeleton.jsx';
 import { useAppContext } from "../context/AppContext.jsx";
+import { motion } from "motion/react";
+import { useState, useEffect } from "react";
+import CarCard from '../components/car/CarCard.jsx';
+import { Title } from '../components/UI/Title.jsx';
+
 const Cars = () => {
 	const {
-		motion,
-		useState,
-		useEffect,
-		UserTitle,
 		fetchCars,
 		cars,
-		CarCard,
 		loading,
 		iconList,
 	} = useAppContext();
@@ -65,7 +65,7 @@ const Cars = () => {
 					className=" bg-light dark:bg-main-bg w-full py-20 px-4 flex flex-col justify-center items-center"
 				>
 					{/* title  */}
-					<UserTitle
+					<Title
 						title="Avaiable Cars"
 						subTitle="Browser our selection of premium veficles available for your nest adventure"
 					/>
@@ -209,7 +209,7 @@ const Cars = () => {
 											setSortOrder("desc");
 											setOpen(false);
 										}}
-										className="cursor-pointer hover:bg-primary px-2 py-1 rounded hover:text-light mx-2"
+										className="cursor-pointer hover:bg-primary px-2 py-1 rounded hover:text-light mx-2 mb-2"
 									>
 										Descending
 									</motion.div>

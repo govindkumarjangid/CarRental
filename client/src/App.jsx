@@ -16,6 +16,7 @@ import ProtectRoute from "./context/ProtectRoute.jsx";
 import EditCarForm from "./components/owner/EditCarForm.jsx";
 import AllUsers from "./pages/owner/AllUsers.jsx"
 import Chats from "./pages/owner/Chats.jsx";
+import ChatPage from "./pages/ChatPage.jsx";
 
 const App = () => {
 	const { showLogin, showReview, useLocation, Routes, Route, Toaster, showEditCar } =
@@ -34,6 +35,7 @@ const App = () => {
 				<Route path="/" element={<Home />} />
 				<Route path="/cars" element={<Cars />} />
 				<Route path="/car-details/:id" element={<Cardetails />} />
+				<Route path="/chatpage/:id" element={<ChatPage />} />
 				<Route path="/my-bookings" element={<Mybookings />} />
 				<Route path="*" element={<div>404 Not Found</div>} />
 
