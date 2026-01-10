@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useAppContext } from "../context/AppContext";
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
 import CarDetailsSkeleton from "../components/car/CarDetailsSkeleton";
 import ChatMessagesSkeleton from "../components/chat/ChatMessagesSkeleton";
+import socket from '../socket.js';
 
 const ChatPage = () => {
 
@@ -12,30 +13,27 @@ const ChatPage = () => {
     axios,
     toast,
     user,
-    ownerDetails,
     iconList,
     loading,
     setLoading
   } = useAppContext();
   const { id } = useParams();
-  const [carDetails, setCarDetails] = useState(null);
-
-  const [messages, setMessages] = useState([
-    { from: "owner", text: "Hello! How can I help you?" },
-    { from: "user", text: "Hi, I’m interested in renting your car." },
-    { from: "owner", text: "Sure! When do you need the car?" },
-    { from: "user", text: "From this Friday to Sunday." },
-    { from: "owner", text: "Got it. The car is available. Let me know if you have any questions." },
-    { from: "user", text: "Great! I’ll confirm the dates soon." }
-  ]);
-
+  const [carDetails, setCarDetails] = useState({});
+  const [ownerDetails, setOwnerDetails] = useState({});
+  const [owner, setOwner] = useState("");
   const [input, setInput] = useState("");
+  const [chatId, setChatId] = useState(null);
+  const [messages, setMessages] = useState([]);
+  const token = localStorage.getItem('token');
+  const [isTyping, setIsTyping] = useState(false);
 
-  const sendMessage = () => {
-    if (!input.trim()) return;
-    setMessages([...messages, { from: "user", text: input }]);
-    setInput("");
-  };
+  const formattedMessages = messages.map((m) => ({
+    id: m._id,
+    from: m.senderRole,
+    text: m.message,
+  }));
+
+
 
   const fetchUserCarDetails = async () => {
     setLoading(true);
@@ -47,6 +45,7 @@ const ChatPage = () => {
       });
       if (data.success) {
         setCarDetails(data.car);
+        setOwner(data.owner);
       } else {
         toast.error(data.message);
       }
@@ -57,9 +56,152 @@ const ChatPage = () => {
     }
   };
 
+  const fetchOwnerDetails = async () => {
+    setLoading(true);
+    try {
+      const { data } = await axios.get(`/api/owner/owner-details/${owner}`, {
+        headers: {
+          Authorization: localStorage.getItem("token"),
+        },
+      });
+      if (data.success) {
+        setOwnerDetails(data.owner);
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const createChat = async () => {
+    try {
+      const { data } = await axios.post("/api/chat/create-chat",
+        {
+          userId: user._id,
+          ownerId: owner,
+          carId: id
+        },
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+
+      if (data.success) {
+        setChatId(data.chatId);
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
+  const sendMessage = async () => {
+    if (!input.trim()) return;
+    if (!chatId) return toast.error("Chat not ready");
+
+    const tempMessage = {
+      _id: Date.now(),
+      senderRole: user.role,
+      message: input,
+    };
+
+    setMessages((prev) => [...prev, tempMessage]);
+    setInput("");
+    try {
+      const { data } = await axios.post(
+        "/api/chat/send-message",
+        {
+          chatId,
+          from: user.role,
+          text: input,
+        },
+        {
+          headers: { Authorization: token },
+        }
+      );
+
+      if (data.success) {
+        socket.emit("sendMessage", {
+          chatId: chatId,
+          message: data.message,
+        });
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
+  const getMessages = async () => {
+    try {
+      const { data } = await axios.get(`/api/chat/get-messages`, {
+        params: { chatId },
+        headers: {
+          Authorization: token,
+        },
+      })
+      if (data.success) {
+        setMessages(data.messages)
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  }
+
   useEffect(() => {
-    fetchUserCarDetails();
+    socket.connect();
+    socket.on("connect", () => {
+      console.log("FRONTEND SOCKET CONNECTED:", socket.id);
+    });
+    return () => socket.off("connect");
+  }, []);
+
+
+  useEffect(() => {
+    if (!chatId) return;
+    console.log("JOINING CHAT:", chatId);
+    socket.emit("joinChat", chatId);
+  }, [chatId]);
+
+
+  useEffect(() => {
+    socket.on("userTyping", () => setIsTyping(true));
+    socket.on("userStopTyping", () => setIsTyping(false));
+    return () => {
+      socket.off("userTyping");
+      socket.off("userStopTyping");
+    };
+  }, []);
+
+  useEffect(() => {
+    socket.on("receiveMessage", ({ message }) => {
+      console.log("RECEIVED MESSAGE:", message);
+      setMessages((prev) => [...prev, message]);
+    });
+    return () => socket.off("receiveMessage");
+  }, []);
+
+  useEffect(() => {
+    if (id) fetchUserCarDetails();
   }, [id]);
+
+  useEffect(() => {
+    if (owner) fetchOwnerDetails();
+  }, [owner]);
+
+  useEffect(() => {
+    if (user?._id && owner) createChat();
+  }, [user, owner]);
+
+  useEffect(() => {
+    if (chatId) getMessages();
+  }, [chatId]);
+
 
 
   return (
@@ -108,17 +250,21 @@ const ChatPage = () => {
                   )}
                   <div>
                     <div className="font-semibold">{user?.name}</div>
-                    <div className="text-green-500 text-sm">Online</div>
+                    <div className="text-green-500 text-sm">{isTyping ? (
+                      <div className="px-4 pb-1 text-sm text-gray-500 italic">
+                        typing...
+                      </div>
+                    ) : "Online"}</div>
                   </div>
                 </div>
                 <div className="flex gap-3">
                   <img
                     className="w-10 h-10 rounded-full"
-                    src={ownerDetails[0]?.image}
+                    src={ownerDetails?.image}
                     alt="owner"
                   />
                   <div>
-                    <div className="font-semibold">{ownerDetails[0]?.name} (Owner)</div>
+                    <div className="font-semibold">{ownerDetails?.name} (Owner)</div>
                     <h3 className="flex text-md gap-2 text-gray-500">
                       <span>{carDetails?.brand}{" "}{carDetails?.model}</span>
                       <span className="font-semibold">{carDetails?.year}</span>
@@ -127,11 +273,11 @@ const ChatPage = () => {
                 </div>
               </div>
               {/* CHAT BODY */}
-              <div className="flex-1 p-4 overflow-y-auto space-y-3">
-                {messages.map((m, i) => (
+              <div className="flex-1 p-4 overflow-y-auto space-y-3 max-h-96 min-h-96">
+                {formattedMessages.map((m, i) => (
                   <div
                     key={i}
-                    className={`max-w-[70%] px-4 py-2 rounded-xl ${m.from === "user"
+                    className={`max-w-fit px-4 py-2 rounded-xl ${m.from === "user"
                       ? "bg-blue-600 text-white ml-auto"
                       : "bg-gray-200 text-gray-800"
                       }`}
@@ -145,7 +291,22 @@ const ChatPage = () => {
               <div className="p-4 border-t border-gray-400 flex gap-2">
                 <input
                   value={input}
-                  onChange={(e) => setInput(e.target.value)}
+                  onChange={(e) => {
+                    setInput(e.target.value);
+
+                    if (chatId) {
+                      socket.emit("typing", chatId);
+
+                      // debounce stop typing
+                      if (window.typingTimeout) {
+                        clearTimeout(window.typingTimeout);
+                      }
+
+                      window.typingTimeout = setTimeout(() => {
+                        socket.emit("stopTyping", chatId);
+                      }, 1000);
+                    }
+                  }}
                   placeholder="Type a message..."
                   className="w-full border border-gray-400 rounded-full px-4 py-2 outline-none"
                 />

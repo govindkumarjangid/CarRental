@@ -2,6 +2,7 @@ import User from "../models/User.js";
 import imagekit from '../configs/imagekit.js';
 import Car from "../models/Car.js";
 import Booking from "../models/Booking.js";
+import Chat from "../models/Chat.js";
 
 //* change role to owner
 export const changeRoleToOwner = async (req, res) => {
@@ -159,7 +160,7 @@ export const editCar = async (req, res) => {
 export const getDashboardData = async (req, res) => {
   try {
     const { _id, role } = req.user;
-    
+
     if (role !== "owner") {
       return res.json({ success: false, message: "You are not authorized" });
     }
@@ -242,5 +243,42 @@ export const blockUnblockUser = async (req, res) => {
   } catch (error) {
     console.log(error.message);
     res.json({ success: false, message: error.message });
+  }
+}
+
+//* get owner data
+
+export const getOwnerDetails = async (req, res) => {
+  try {
+    const { id } = req.params;
+    // console.log(id)
+    const owner = await User.findById(id).select('-password');
+    res.json({ success: true, owner });
+  } catch (error) {
+    console.log(error.message);
+    res.json({ success: false, message: error.message });
+  }
+}
+
+//* get all chats
+
+export const getMyChats = async (req, res) => {
+  try {
+    const userId = req.user._id;
+
+    const chats = await Chat.find(
+      {
+        $or: [{ user: userId }, { owner: userId }],
+      })
+      .populate("user", "name image")
+      .populate("owner", "name image")
+      .populate("car", "brand model image")
+      .populate({
+        path: "lastMessage",
+        select: "message createdAt",
+      }).sort({ updatedAt: -1 });
+    res.json({ success: true, chats });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
   }
 }

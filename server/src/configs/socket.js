@@ -1,43 +1,41 @@
 import { Server } from "socket.io";
-import Message from "../models/Message.js";
 
 let io;
 
 export const initSocket = (server) => {
   io = new Server(server, {
-    cors: {
-      origin: "*",
-    }
+    cors: { origin: "*" },
   });
 
   io.on("connection", (socket) => {
-    console.log(socket.id);
+    console.log("Socket connected:", socket.id);
 
-    //joining a specific room
-    socket.on("join_room", (roomId) => {
-      socket.join(roomId);
+    // join chat room
+    socket.on("joinChat", (chatId) => {
+      socket.join(chatId);
+      console.log("Joined chat:", chatId);
     });
 
-    //send message
-    socket.on("send_message", async (data) => {
-      await Message.create({
-        chatId: data.chatId,
-        senderId: data.senderId,
-        message: data.message,
-        messageType: data.messageType || 'text'
-      });
+    socket.on("typing", (chatId) => {
+      socket.to(chatId).emit("userTyping", chatId);
+    });
 
-      //send real time 
-      io.to(data.chatId).emit("receive_message", data);
+    // ✋ typing stop
+    socket.on("stopTyping", (chatId) => {
+      socket.to(chatId).emit("userStopTyping", chatId);
+    });
 
+    // realtime message (NO DB SAVE)
+    socket.on("sendMessage", ({ chatId, message }) => {
+      socket.to(chatId).emit("receiveMessage", { message });
+    });
 
-      socket.on("disconnect", () => {
-        console.log("socket disconnected");
-      });
-
+    socket.on("disconnect", () => {
+      console.log("Socket disconnected:", socket.id);
     });
   });
+
   console.log("Socket.io initialized");
-}
+};
 
 export const getIO = () => io;

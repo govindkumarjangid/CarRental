@@ -5,6 +5,7 @@ import connectDB from './src/configs/db.js';
 import userRouter from './src/Routes/userRoutes.js';
 import ownerRouter from './src/Routes/ownerRoutes.js';
 import bookingRouter from './src/Routes/bookingRoutes.js';
+import chatRouter from './src/Routes/chatRoutes.js';
 
 //* Initialize Express App
 const app = express();
@@ -26,6 +27,7 @@ app.get('/', (req, res) => {
 app.use('/api/user', userRouter);
 app.use('/api/owner', ownerRouter);
 app.use('/api/bookings', bookingRouter);
+app.use('/api/chat', chatRouter);
 
 
 export default app;

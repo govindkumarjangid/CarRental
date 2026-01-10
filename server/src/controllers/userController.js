@@ -166,24 +166,9 @@ export const getCarDetails = async (req, res) => {
     if (!car) {
       return res.json({ success: false, message: "Car not found", });
     }
-    return res.json({ success: true, car, });
+    return res.json({ success: true, car, owner: car.owner });
   } catch (error) {
     console.log(error.message)
     res.json({ success: false, message: error.message })
-  }
-}
-
-
-//* get owner details
-export const getOwnerDetails = async (req, res) => {
-  try {
-    const owner = await User.find({ role: "owner" }).select("-password");
-    if (!owner) {
-      return res.json({ success: false, message: "Owner not found" });
-    }
-    return res.json({ success: true, owner });
-  } catch (error) {
-    console.log(error.message);
-    res.json({ success: false, message: error.message });
   }
 }

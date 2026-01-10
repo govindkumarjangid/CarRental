@@ -27,6 +27,7 @@ const Cardetails = () => {
 	const [car, setCar] = useState(null);
 	const [loading, setLoading] = useState(false);
 	const [openPopup, setOpenPopup] = useState(false);
+	const token = localStorage.getItem("token");
 
 	const createUserBooking = async (e) => {
 		e.preventDefault();
@@ -162,7 +163,7 @@ const Cardetails = () => {
 	}, [cars, id]);
 
 	if (loading) return <Loader />
-	
+
 	return (
 		car && (
 			<>
@@ -478,7 +479,9 @@ const Cardetails = () => {
 
 							{/* Button */}
 							<button
-								onClick={() => { navigate(`/chatpage/${car._id}`), scrollTo(0, 0) }}
+								onClick={() => {
+									token ? navigate(`/chatpage/${car._id}`) : toast.error("Not Authorized")
+								}}
 								className="mt-4 w-full bg-primary hover:bg-primary-dull text-white py-2 rounded-md cursor-pointer"
 							>
 								Chat with Owner

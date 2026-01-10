@@ -7,7 +7,6 @@ import {
   getUserData,
   registerUser,
   getCarDetails,
-  getOwnerDetails,
 } from '../controllers/userController.js';
 import { protect } from '../middleware/auth.js';
 import upload from '../configs/multer.js';
@@ -21,6 +20,5 @@ userRouter.get('/cars', getCars);
 userRouter.post('/add-review', upload.single("image"), protect, addReview);
 userRouter.get('/get-reviews', getReviews);
 userRouter.get('/user-cardetails/:id', protect, getCarDetails);
-userRouter.get('/owner-details', protect, getOwnerDetails);
 
 export default userRouter;
