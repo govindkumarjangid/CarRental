@@ -24,6 +24,7 @@ export const getOrCreateChat = async (req, res) => {
 export const sendMessage = async (req, res) => {
   try {
     const { chatId, from, text } = req.body;
+    console.log(req.body);
 
     const chat = await Chat.findById(chatId);
     if (!chat) {
@@ -47,6 +48,7 @@ export const sendMessage = async (req, res) => {
         ? { unreadByOwner: true }
         : { unreadByUser: true }),
     });
+    // console.log(newMessage)
 
     res.status(200).json({
       success: true,

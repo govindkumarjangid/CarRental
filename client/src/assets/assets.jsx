@@ -86,7 +86,8 @@ export const iconList = {
 	Twitter,
 	Mail,
 	Loader,
-	ArrowLeft
+	ArrowLeft,
+	MessageCircleMore
 };
 
 export const assets = {

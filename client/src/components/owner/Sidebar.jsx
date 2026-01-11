@@ -92,7 +92,7 @@ const Sidebar = () => {
 				</button>
 			)}
 
-			<p className="mt-2 text-base max-md:hidden capitalize border-b border-gray-400 pb-4 w-full text-center font-medium">
+			<p className="mt-2 text-base max-md:hidden capitalize border-b border-gray-400 pb-5 w-full text-center font-medium">
 				{user?.name}
 			</p>
 
