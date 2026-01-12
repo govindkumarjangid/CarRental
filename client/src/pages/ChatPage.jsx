@@ -27,6 +27,7 @@ const ChatPage = () => {
   const [isTyping, setIsTyping] = useState(false);
   const [carDetails, setCarDetails] = useState({});
   const [ownerDetails, setOwnerDetails] = useState({});
+  const [scrollOne, setScrollOne] = useState("");
 
   const formattedMessages = messages.map((m) => ({
     id: m._id,
@@ -198,8 +199,12 @@ const ChatPage = () => {
       console.log("RECEIVED MESSAGE:", message);
       setMessages((prev) => [...prev, message]);
       if (message && chatId) getMessages();
+      if (message) setScrollOne(message);
     });
-    return () => socket.off("receiveMessage");
+    return () => {
+      socket.off("receiveMessage");
+      setScrollOne(" ")
+    };
   }, [chatId]);
 
   useEffect(() => {
@@ -218,35 +223,40 @@ const ChatPage = () => {
     if (chatId) getMessages();
   }, [chatId]);
 
+
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({
       behavior: "smooth",
     });
-  }, [formattedMessages]);
+  }, [scrollOne]);
 
 
 
 
   return (
-    <div className="h-auto max-w-7xl m-auto px-6 md:px-16 lg:px-24 xl:px-32 bg-white">
+    <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-8 lg:px-16 xl:px-24 
+    bg-white h-full overflow-hidden">
 
-      <div className="w-full h-full max-h-screen m-auto bg-white flex">
+      <div className="w-full h-full bg-white flex flex-col md:flex-row overflow-hidden">
 
         {/* LEFT SIDE */}
         {
           loading ? (<CarDetailsSkeleton />) : (
-            <div className="w-[30%] border-r border-gray-400 p-4">
+            <div className="w-full md:w-[30%] border-b md:border-b-0 md:border-r border-gray-300 p-4 md:p-5">
               <h2 className="text-lg font-semibold mb-3">Chat</h2>
+
               <img
-                className="rounded-xl mb-3"
+                className="rounded-xl mb-3 w-full h-48 md:h-auto object-cover"
                 src={carDetails?.image}
                 alt="car"
               />
-              <h3 className="flex font-bold text-lg gap-2">
-                <span>{carDetails?.brand}{" "}{carDetails?.model}</span>
+
+              <h3 className="flex font-bold text-lg gap-2 flex-wrap">
+                <span>{carDetails?.brand} {carDetails?.model}</span>
                 <span className="font-semibold">{carDetails?.year}</span>
               </h3>
-              <div className="text-sm text-gray-500 mt-1 flex gap-2 items-center">
+
+              <div className="text-sm text-gray-500 mt-1 flex gap-2 items-center flex-wrap">
                 <span>{carDetails?.transmission}</span>•
                 <span>{carDetails?.fuel_type}</span>•
                 <span>{currency}{carDetails?.pricePerDay}/day</span>
@@ -258,95 +268,103 @@ const ChatPage = () => {
         {/* RIGHT SIDE */}
         {
           loading ? (<ChatMessagesSkeleton />) : (
-            <div className="w-[70%] flex flex-col">
-              {/* HEADER */}
-              <div className="border-b border-gray-400 p-4 flex justify-between">
+            <div className="w-full md:w-[70%] flex flex-col h-80 overflow-hidden">
 
-                {/* user details  */}
-                <div className="flex gap-3">
+              {/* HEADER */}
+              <div className="shrink-0 border-b border-gray-400 p-3 md:p-4 flex flex-col sm:flex-row gap-3 sm:justify-between">
+
+                {/* USER DETAILS */}
+                <div className="flex gap-3 items-center">
                   {user?.image ? (
                     <img
-                      className="w-10 h-10 rounded-full object-cover"
+                      className="w-9 h-9 md:w-10 md:h-10 rounded-full object-cover"
                       src={user.image}
                       alt={user?.name}
                     />
                   ) : (
-                    <iconList.CircleUser className="w-10 h-10 text-gray-400" />
+                    <iconList.CircleUser className="w-9 h-9 md:w-10 md:h-10 text-gray-400" />
                   )}
-                  <div className="font-semibold">{user?.name}</div>
+                  <div className="font-semibold text-sm md:text-base">
+                    {user?.name}
+                  </div>
                 </div>
 
-                {/* owner details  */}
-                <div className="flex gap-3">
+                {/* OWNER DETAILS */}
+                <div className="flex gap-3 items-center">
                   <img
-                    className="w-10 h-10 rounded-full"
+                    className="w-9 h-9 md:w-10 md:h-10 rounded-full object-cover"
                     src={ownerDetails?.image}
                     alt="owner"
                   />
 
-                  {/* car details  */}
                   <div>
-                    <div className="font-semibold">{ownerDetails?.name} (Owner)</div>
-                    <div className="text-green-500 text-sm">
+                    <div className="font-semibold text-sm md:text-base">
+                      {ownerDetails?.name} (Owner)
+                    </div>
+
+                    <div className="text-green-500 text-xs md:text-sm">
                       {
-                        isTyping ? <span>Typing...</span> : <h3 className="flex text-md gap-2 text-gray-500">
-                          <span>{carDetails?.brand}{" "}{carDetails?.model}</span>
-                          <span className="font-semibold">{carDetails?.year}</span>
-                        </h3>
+                        isTyping
+                          ? <span>Typing...</span>
+                          : (
+                            <h3 className="flex gap-2 text-gray-500 flex-wrap">
+                              <span>{carDetails?.brand} {carDetails?.model}</span>
+                              <span className="font-semibold">{carDetails?.year}</span>
+                            </h3>
+                          )
                       }
                     </div>
                   </div>
                 </div>
-
               </div>
 
               {/* CHAT BODY */}
-              <div className="flex-1 p-4 overflow-y-auto space-y-3 max-h-96 min-h-96">
+              <div className="flex-1 overflow-y-auto p-3 md:p-4 space-y-3">
                 {formattedMessages.map((m) => (
                   <div
-                    key={m._id}
-                    className={`max-w-fit px-4 py-1.5 rounded-md ${m.from === "user"
-                      ? "bg-primary text-white ml-auto"
-                      : "bg-gray-200 text-gray-800"
-                      }`}
-                  >
+                    key={m.id}
+                    className={`w-fit max-w-[70%] px-4 py-1.5 rounded-md wrap-break-words text-sm md:text-base ${m.from === "user" ? "bg-primary text-white ml-auto" : "bg-gray-200 text-gray-800"
+                      }`} >
                     {m.text}
                   </div>
                 ))}
                 <div ref={messagesEndRef} />
               </div>
 
-
               {/* INPUT BOX */}
-              <div className="p-4 border-t border-gray-400 flex gap-2">
+              <div className="shrink-0 p-3 md:p-4 border-t border-gray-300 flex gap-2">
                 <input
                   value={input}
                   onChange={(e) => {
                     setInput(e.target.value);
                     if (chatId) {
                       socket.emit("typing", chatId);
-                      if (window.typingTimeout) {
-                        clearTimeout(window.typingTimeout);
-                      }
+                      if (window.typingTimeout) clearTimeout(window.typingTimeout);
                       window.typingTimeout = setTimeout(() => {
                         socket.emit("stopTyping", chatId);
                       }, 1000);
                     }
                   }}
                   placeholder="Type a message..."
-                  className="w-full border border-gray-400 rounded-md px-4 py-2 outline-none"
+                  className="px-3 py-2.5 w-full border border-gray-400 rounded-md outline-none focus:border-primary focus:ring-2 focus:ring-primary/50 text-sm md:text-base"
                 />
+
                 <button
                   onClick={sendMessage}
-                  className="bg-blue-600 active:scale-95 hover:bg-blue-700 text-white px-4 rounded-md"
+                  className="bg-blue-600 text-white px-4 md:px-5 rounded-md
+                   active:scale-90 transition-transform duration-300"
                 >
-                  ➤
+                  <iconList.MousePointer2 className="rotate-135" />
                 </button>
               </div>
-            </div>)
+
+            </div>
+          )
         }
-      </div >
-    </div >
+
+      </div>
+    </div>
+
   );
 };
 

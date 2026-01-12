@@ -39,7 +39,8 @@ import {
 	CalendarX,
 	Loader,
 	ArrowLeft,
-	MessageCircleMore
+	MessageCircleMore,
+	MousePointer2
 } from "lucide-react";
 
 export const cityList = [
@@ -87,7 +88,8 @@ export const iconList = {
 	Mail,
 	Loader,
 	ArrowLeft,
-	MessageCircleMore
+	MessageCircleMore,
+	MousePointer2
 };
 
 export const assets = {

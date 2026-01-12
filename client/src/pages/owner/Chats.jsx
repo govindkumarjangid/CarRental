@@ -11,6 +11,7 @@ const Chats = () => {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [typingChatId, setTypingChatId] = useState(null);
+  const [scrollOne, setScrollOne] = useState(false);
 
   const typingTimeoutRef = useRef(null);
   const token = localStorage.getItem("token");
@@ -127,7 +128,7 @@ const Chats = () => {
 
   useEffect(() => {
     socket.on("receiveMessage", (message) => {
-      // console.log(message)
+      console.log(message)
       if (message.chatId === activeChat?._id) {
         setMessages((prev) => [...prev, message]);
       }
@@ -138,12 +139,15 @@ const Chats = () => {
     messagesEndRef.current?.scrollIntoView({
       behavior: "smooth",
     });
-  }, [messages]);
+  }, [messages.length]);
+
+
 
 
   return (
-    <div className="pt-10 flex-1 flex flex-col">
+    <div className="pt-10 flex-1 flex flex-col overflow-hidden">
 
+      {/* title  */}
       <div className="px-6 md:px-10">
         <OwnerTitle
           title="All Chats"
@@ -153,9 +157,12 @@ const Chats = () => {
 
       <div className="flex flex-1 border-t border-b border-gray-400  overflow-hidden">
 
-        <div className={`w-full md:w-[28%] border-r border-gray-400 bg-white overflow-y-auto ${activeChat ? "hidden md:block" : "block"}`}
+        <div className={`w-full md:w-[28%] border-r border-gray-400 bg-white overflow-y-auto overflow-x-hidden ${activeChat ? "hidden md:block" : "block"}`}
         >
+          {/* chat title  */}
           <h2 className="px-10 py-4 font-bold border-b border-gray-400 text-gray-600">Chats</h2>
+
+          {/* chats list  */}
           {chats.map((chat) => {
             const other = getOtherUser(chat);
             return (
@@ -180,11 +187,12 @@ const Chats = () => {
               </div>
             );
           })}
+
         </div>
 
         {/* CHAT AREA */}
         <div
-          className={`flex flex-col flex-1 bg-white
+          className={`flex flex-col flex-1 bg-white overflow-hidden
           ${activeChat ? "block" : "hidden md:flex"}`}
         >
           {/* HEADER */}
@@ -208,37 +216,38 @@ const Chats = () => {
           </div>
 
           {/* MESSAGES */}
-          <div className="flex-1 p-4 overflow-y-auto min-h-87 max-h-87 space-y-3">
-            {
-              activeChat ? <>
-                {
-                  <>
-                    {
-                      messages.map((m) => (
-                        <div
-                          key={m._id}
-                          className={`max-w-fit px-4 py-2 rounded-md text-sm
-                      ${m.senderRole === user.role
-                              ? "ml-auto bg-primary text-white"
-                              : "bg-gray-200 text-gray-800"
-                            }`}
-                        >
-                          {m.message}
-                        </div>
-                      ))
-                    }
-                    <div ref={messagesEndRef} />
-                  </>
 
-                }
-              </> : (
+          <div className="">
+            {activeChat ? (
+              <div className="flex-1 overflow-y-auto max-h-87 min-h-87 p-4 space-y-3">
+                {messages.map((m) => (
+                  <div
+                    key={m._id}
+                    className={`max-w-fit px-4 py-2 rounded-md text-sm
+                    ${m.senderRole === user.role ? "ml-auto bg-primary text-white" : "bg-gray-200 text-gray-800"
+                      }`}>
+                    {m.message}
+                  </div>
+                ))}
+                <div ref={messagesEndRef} />
+              </div>
+            ) : (
+              <div className="flex-1 overflow-y-auto p-4 space-y-3">
                 <div className="w-full h-full flex flex-col gap-2 items-center justify-center">
-                  <iconList.MessageCircleMore size={100} className="font-light text-gray-400" />
-                  <p className="text-gray-500 text-sm">Select a chat to start messaging with your customers</p>
+                  <iconList.MessageCircleMore
+                    size={100}
+                    className="font-light text-gray-400"
+                  />
+                  <p className="text-gray-500 text-sm text-center">
+                    Select a chat to start messaging with your customers
+                  </p>
                 </div>
-              )
-            }
+              </div>
+            )}
           </div>
+
+
+
 
           {/* INPUT */}
           {activeChat && (
@@ -257,19 +266,19 @@ const Chats = () => {
                   }, 1000);
                 }}
                 placeholder="Type a message..."
-                className="flex-1 border border-gray-400 rounded-md px-4 py-2 outline-none"
+                className="px-3 flex py-2.5 mt-1 w-full	border border-gray-400 rounded-md outline-none	focus:border-primary focus:ring-2 focus:ring-primary/50"
               />
               <button
                 onClick={sendMessage}
-                className="bg-blue-600 text-white px-5 rounded-md active:scale-95 cursor-pointer transition-transform duration-300"
+                className="bg-blue-600 text-white px-5 rounded-md active:scale-90 cursor-pointer transition-transform duration-300"
               >
-                ➤
+                <iconList.MousePointer2 className="rotate-135" />
               </button>
             </div>
           )}
         </div>
       </div>
-    </div>
+    </div >
   );
 };
 
