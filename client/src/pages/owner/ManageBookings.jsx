@@ -107,6 +107,7 @@ const ManageBookings = () => {
 					</thead>
 					<tbody>
 						{bookings.map((booking, index) => (
+							console.log(booking.paymentStatus),
 							<motion.tr
 								initial={{ opacity: 0, y: 20 }}
 								animate={{ opacity: 1, y: 0 }}
@@ -199,6 +200,7 @@ const ManageBookings = () => {
 											>
 												{booking.paymentStatus}
 											</span>
+
 										)}
 
 								</td>

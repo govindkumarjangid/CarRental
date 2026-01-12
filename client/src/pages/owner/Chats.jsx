@@ -1,17 +1,16 @@
 import { useEffect, useRef, useState } from "react";
 import { useAppContext } from "../../context/AppContext";
 import socket from "../../socket.js";
+import ScrollToBottom from "react-scroll-to-bottom";
 
 const Chats = () => {
   const { OwnerTitle, axios, toast, user, iconList } = useAppContext();
 
-  const messagesEndRef = useRef(null);
   const [chats, setChats] = useState([]);
   const [activeChat, setActiveChat] = useState(null);
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [typingChatId, setTypingChatId] = useState(null);
-  const [scrollOne, setScrollOne] = useState(false);
 
   const typingTimeoutRef = useRef(null);
   const token = localStorage.getItem("token");
@@ -75,9 +74,9 @@ const Chats = () => {
     }
   };
 
-  const getOtherUser = (chat) =>
-    chat.user._id === user._id ? chat.owner : chat.user;
-
+  const getOtherUser = (chat) => {
+    return chat.user._id === user._id ? chat.owner : chat.user;
+  }
 
   useEffect(() => {
     getChats();
@@ -97,17 +96,14 @@ const Chats = () => {
   }, []);
 
   useEffect(() => {
-    if (!chats?.length) return;
-    chats.forEach((chat) => {
-      socket.emit("joinChat", chat._id);
-      console.log("OWNER JOINING CHAT:", chat._id);
-    });
+    if (!activeChat?._id) return;
+    socket.emit("joinChat", activeChat._id);
+    console.log("OWNER JOINING CHAT:", activeChat._id);
     return () => {
-      chats.forEach((chat) => {
-        socket.emit("leaveChat", chat._id);
-      });
+      socket.emit("leaveChat", activeChat._id);
     };
-  }, [chats]);
+  }, [activeChat?._id]);
+
 
   useEffect(() => {
     const handleTyping = (incomingChatId) => {
@@ -127,35 +123,36 @@ const Chats = () => {
   }, []);
 
   useEffect(() => {
-    socket.on("receiveMessage", (message) => {
-      console.log(message)
+    const handleReceive = (message) => {
       if (message.chatId === activeChat?._id) {
         setMessages((prev) => [...prev, message]);
       }
-    });
-  }, [activeChat?._id])
+    };
+    socket.on("receiveMessage", handleReceive);
+    return () => {
+      socket.off("receiveMessage", handleReceive);
+    };
+  }, [activeChat?._id]);
 
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({
-      behavior: "smooth",
-    });
-  }, [messages.length]);
-
-
+    if (!activeChat?._id) return;
+    setMessages([]);
+    getMessages(activeChat._id);
+  }, [activeChat?._id]);
 
 
   return (
     <div className="pt-10 flex-1 flex flex-col overflow-hidden">
 
       {/* title  */}
-      <div className="px-6 md:px-10">
+      <div className="px-6 md:px-10 sm:p-0 pb-4">
         <OwnerTitle
           title="All Chats"
           subTitle="Manage all chats with customers"
         />
       </div>
 
-      <div className="flex flex-1 border-t border-b border-gray-400  overflow-hidden">
+      <div className="flex flex-1 border-t border-b border-gray-400  overflow-hidden min-h-[72dvh]">
 
         <div className={`w-full md:w-[28%] border-r border-gray-400 bg-white overflow-y-auto overflow-x-hidden ${activeChat ? "hidden md:block" : "block"}`}
         >
@@ -180,7 +177,7 @@ const Chats = () => {
                       Typing...
                     </div>
                   )}
-                  <div className="text-xs text-gray-500 truncate">
+                  <div className="text-xs text-gray-500 overflow-hidden line-clamp-1">
                     {chat.lastMessage?.message || "No messages yet"}
                   </div>
                 </div>
@@ -217,27 +214,24 @@ const Chats = () => {
 
           {/* MESSAGES */}
 
-          <div className="">
+          <div className="flex flex-col h-full">
             {activeChat ? (
-              <div className="flex-1 overflow-y-auto max-h-87 min-h-87 p-4 space-y-3">
+              <ScrollToBottom className="h-[calc(100vh-310px)] p-4 space-y-3">
                 {messages.map((m) => (
                   <div
                     key={m._id}
-                    className={`max-w-fit px-4 py-2 rounded-md text-sm
-                    ${m.senderRole === user.role ? "ml-auto bg-primary text-white" : "bg-gray-200 text-gray-800"
-                      }`}>
+                    className={`relative max-w-[75%] w-fit px-3 py-1.5 text-sm md:text-base  rounded-2xl leading-snug wrap-break-words ${m.senderRole === user.role ? "ml-auto bg-primary text-gray-100 rounded-br-sm mr-2" : "bg-white text-gray-900 rounded-bl-sm border border-gray-200"
+                      }`}
+                  >
                     {m.message}
                   </div>
+
                 ))}
-                <div ref={messagesEndRef} />
-              </div>
+              </ScrollToBottom>
             ) : (
-              <div className="flex-1 overflow-y-auto p-4 space-y-3">
-                <div className="w-full h-full flex flex-col gap-2 items-center justify-center">
-                  <iconList.MessageCircleMore
-                    size={100}
-                    className="font-light text-gray-400"
-                  />
+              <div className="flex-1 flex items-center justify-center">
+                <div className="flex flex-col items-center gap-2">
+                  <iconList.MessageCircleMore size={100} className="text-gray-400" />
                   <p className="text-gray-500 text-sm text-center">
                     Select a chat to start messaging with your customers
                   </p>
@@ -245,9 +239,6 @@ const Chats = () => {
               </div>
             )}
           </div>
-
-
-
 
           {/* INPUT */}
           {activeChat && (
@@ -264,6 +255,9 @@ const Chats = () => {
                   typingTimeoutRef.current = setTimeout(() => {
                     socket.emit("stopTyping", activeChat._id);
                   }, 1000);
+                }}
+                onKeyDown={(e) => {
+                  e.key == "Enter" && sendMessage();
                 }}
                 placeholder="Type a message..."
                 className="px-3 flex py-2.5 mt-1 w-full	border border-gray-400 rounded-md outline-none	focus:border-primary focus:ring-2 focus:ring-primary/50"

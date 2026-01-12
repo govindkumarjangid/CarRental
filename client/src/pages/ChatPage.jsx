@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import CarDetailsSkeleton from "../components/car/CarDetailsSkeleton";
 import ChatMessagesSkeleton from "../components/chat/ChatMessagesSkeleton";
 import socket from '../socket.js';
+import ScrollToBottom from "react-scroll-to-bottom";
 
 const ChatPage = () => {
 
@@ -268,10 +269,10 @@ const ChatPage = () => {
         {/* RIGHT SIDE */}
         {
           loading ? (<ChatMessagesSkeleton />) : (
-            <div className="w-full md:w-[70%] flex flex-col h-80 overflow-hidden">
+            <div className="w-full h-[80vh] flex flex-col overflow-hidden">
 
               {/* HEADER */}
-              <div className="shrink-0 border-b border-gray-400 p-3 md:p-4 flex flex-col sm:flex-row gap-3 sm:justify-between">
+              <div className="shrink-0 border-b border-gray-300 p-3 md:p-4 flex flex-col sm:flex-row gap-3 sm:justify-between">
 
                 {/* USER DETAILS */}
                 <div className="flex gap-3 items-center">
@@ -290,46 +291,49 @@ const ChatPage = () => {
                 </div>
 
                 {/* OWNER DETAILS */}
-                <div className="flex gap-3 items-center">
+                <div className="flex gap-3 items-center border-t sm:border-t-0 border-gray-300 pt-4">
                   <img
                     className="w-9 h-9 md:w-10 md:h-10 rounded-full object-cover"
                     src={ownerDetails?.image}
                     alt="owner"
                   />
-
                   <div>
                     <div className="font-semibold text-sm md:text-base">
                       {ownerDetails?.name} (Owner)
                     </div>
 
                     <div className="text-green-500 text-xs md:text-sm">
-                      {
-                        isTyping
-                          ? <span>Typing...</span>
-                          : (
-                            <h3 className="flex gap-2 text-gray-500 flex-wrap">
-                              <span>{carDetails?.brand} {carDetails?.model}</span>
-                              <span className="font-semibold">{carDetails?.year}</span>
-                            </h3>
-                          )
-                      }
+                      {isTyping ? (
+                        <span>Typing...</span>
+                      ) : (
+                        <h3 className="flex gap-2 text-gray-500 flex-wrap">
+                          <span>{carDetails?.brand} {carDetails?.model}</span>
+                          <span className="font-semibold">{carDetails?.year}</span>
+                        </h3>
+                      )}
                     </div>
                   </div>
                 </div>
+
               </div>
 
               {/* CHAT BODY */}
-              <div className="flex-1 overflow-y-auto p-3 md:p-4 space-y-3">
-                {formattedMessages.map((m) => (
-                  <div
-                    key={m.id}
-                    className={`w-fit max-w-[70%] px-4 py-1.5 rounded-md wrap-break-words text-sm md:text-base ${m.from === "user" ? "bg-primary text-white ml-auto" : "bg-gray-200 text-gray-800"
-                      }`} >
-                    {m.text}
-                  </div>
-                ))}
-                <div ref={messagesEndRef} />
+              <div className="w-full h-[80vh] flex flex-col overflow-auto">
+                <ScrollToBottom
+                  className="flex-1 overflow-y-auto overflow-x-hidden p-3"
+                  followButtonClassName="hidden"
+                >
+                  {formattedMessages.map((m) => (
+                    <div
+                      key={m.id}
+                      className={`relative w-fit max-w-[75%] px-3 py-2 text-sm md:text-base rounded-2xl leading-snug blue-thumb-scrollbar wrap-break-words shadow-sm ${m.from === "user" ? "ml-auto bg-primary text-gray-100 rounded-br-sm my-1.5" : "bg-white text-gray-900 rounded-bl-sm border border-gray-200 my-1.5"
+                        }`}>
+                      {m.text}
+                    </div>
+                  ))}
+                </ScrollToBottom>
               </div>
+
 
               {/* INPUT BOX */}
               <div className="shrink-0 p-3 md:p-4 border-t border-gray-300 flex gap-2">
@@ -345,20 +349,23 @@ const ChatPage = () => {
                       }, 1000);
                     }
                   }}
+                  onKeyDown={(e) => {
+                    e.key === "Enter" && sendMessage();
+                  }}
                   placeholder="Type a message..."
-                  className="px-3 py-2.5 w-full border border-gray-400 rounded-md outline-none focus:border-primary focus:ring-2 focus:ring-primary/50 text-sm md:text-base"
+                  className="px-3 py-2.5 w-full border border-gray-300 rounded-md outline-none focus:border-primary focus:ring-2 focus:ring-primary/50 text-sm md:text-base"
                 />
 
                 <button
                   onClick={sendMessage}
                   className="bg-blue-600 text-white px-4 md:px-5 rounded-md
-                   active:scale-90 transition-transform duration-300"
-                >
+                    active:scale-90 transition-transform duration-300 cursor-pointer">
                   <iconList.MousePointer2 className="rotate-135" />
                 </button>
               </div>
 
             </div>
+
           )
         }
 
