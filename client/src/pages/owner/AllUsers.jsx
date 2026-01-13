@@ -55,7 +55,7 @@ const AllUsers = () => {
   if (loading) return <Loader />;
 
   return (
-    <div className="px-4 pt-10 md:px-10 flex-1">
+    <div className="px-4 pt-10 md:px-10 flex-1 pb-10">
       <OwnerTitle
         title="All Users"
         subTitle="Manage all users of the car rental system. View, block or unblock users as necessary to maintain an up-to-date user database."

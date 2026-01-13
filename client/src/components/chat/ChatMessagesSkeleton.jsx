@@ -1,9 +1,9 @@
 const ChatMessagesSkeleton = () => {
   return (
-    <div className="w-[70%] flex flex-col animate-pulse">
+    <div className="md:w-[70%] w-full flex flex-col animate-pulse">
 
       {/* HEADER */}
-      <div className="border-b border-gray-300 p-4 flex justify-between">
+      <div className="border-b border-gray-300 p-4 flex sm:flex-row flex-col justify-between">
 
         {/* User */}
         <div className="flex gap-3 items-center">
@@ -36,8 +36,8 @@ const ChatMessagesSkeleton = () => {
 
       {/* INPUT */}
       <div className="p-4 border-t border-gray-300 flex gap-2">
-        <div className="flex-1 h-10 bg-gray-200 rounded-full" />
-        <div className="w-12 h-10 bg-gray-300 rounded-full" />
+        <div className="flex-1 h-10 bg-gray-200 rounded-md" />
+        <div className="w-12 h-10 bg-gray-300 rounded-md" />
       </div>
 
     </div>

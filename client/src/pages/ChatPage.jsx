@@ -16,10 +16,10 @@ const ChatPage = () => {
     user,
     iconList,
     loading,
-    setLoading
+    setLoading,
+    isUserOnline
   } = useAppContext();
   const { id } = useParams();
-  const messagesEndRef = useRef(null);
   const [owner, setOwner] = useState("");
   const [input, setInput] = useState("");
   const [chatId, setChatId] = useState(null);
@@ -28,13 +28,30 @@ const ChatPage = () => {
   const [isTyping, setIsTyping] = useState(false);
   const [carDetails, setCarDetails] = useState({});
   const [ownerDetails, setOwnerDetails] = useState({});
-  const [scrollOne, setScrollOne] = useState("");
+  const [onlineUsers, setOnlineUsers] = useState([]);
 
-  const formattedMessages = messages.map((m) => ({
-    id: m._id,
-    from: m.senderRole,
-    text: m.message,
-  }));
+
+  // const formattedMessages = messages.map((m) => ({
+  //   id: m._id,
+  //   from: m.senderRole,
+  //   text: m.message,
+  // }));
+
+  const formatTime = (time) => {
+    return new Date(time).toLocaleTimeString("en-IN", {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  };
+
+  const formatDate = (date) => {
+    const d = new Date(date);
+    const today = new Date();
+    if (d.toDateString() === today.toDateString()) return "Today";
+    today.setDate(today.getDate() - 1);
+    if (d.toDateString() === today.toDateString()) return "Yesterday";
+    return d.toLocaleDateString("en-IN");
+  };
 
   const fetchUserCarDetails = async () => {
     setLoading(true);
@@ -162,7 +179,6 @@ const ChatPage = () => {
     return () => socket.off("connect");
   }, []);
 
-
   useEffect(() => {
     if (!chatId) return;
     console.log("JOINING CHAT:", chatId);
@@ -172,6 +188,18 @@ const ChatPage = () => {
     };
   }, [chatId]);
 
+  useEffect(() => {
+    if (user?._id) {
+      socket.emit("addUser", user._id);
+    }
+  }, [user]);
+
+  useEffect(() => {
+    socket.on("onlineUsers", (users) => {
+      setOnlineUsers(users);
+    });
+    return () => socket.off("onlineUsers");
+  }, []);
 
   useEffect(() => {
     if (!chatId) return;
@@ -196,15 +224,11 @@ const ChatPage = () => {
 
   useEffect(() => {
     socket.on("receiveMessage", ({ message }) => {
-      console.log(message)
-      console.log("RECEIVED MESSAGE:", message);
       setMessages((prev) => [...prev, message]);
       if (message && chatId) getMessages();
-      if (message) setScrollOne(message);
     });
     return () => {
       socket.off("receiveMessage");
-      setScrollOne(" ")
     };
   }, [chatId]);
 
@@ -225,13 +249,8 @@ const ChatPage = () => {
   }, [chatId]);
 
 
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({
-      behavior: "smooth",
-    });
-  }, [scrollOne]);
-
-
+  const isOnline = onlineUsers.includes(ownerDetails._id);
+  // console.log(ownerDetails._id)
 
 
   return (
@@ -292,11 +311,17 @@ const ChatPage = () => {
 
                 {/* OWNER DETAILS */}
                 <div className="flex gap-3 items-center border-t sm:border-t-0 border-gray-300 pt-4">
-                  <img
-                    className="w-9 h-9 md:w-10 md:h-10 rounded-full object-cover"
-                    src={ownerDetails?.image}
-                    alt="owner"
-                  />
+                  <div className="relative">
+                    <img
+                      className="w-9 h-9 md:w-10 md:h-10 rounded-full object-cover"
+                      src={ownerDetails?.image}
+                      alt="owner"
+                    />
+                    <span
+                      className={`absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-white ${isOnline ? "bg-green-500" : "bg-gray-400"
+                        }`}
+                    />
+                  </div>
                   <div>
                     <div className="font-semibold text-sm md:text-base">
                       {ownerDetails?.name} (Owner)
@@ -320,15 +345,19 @@ const ChatPage = () => {
               {/* CHAT BODY */}
               <div className="w-full h-[80vh] flex flex-col overflow-auto">
                 <ScrollToBottom
-                  className="flex-1 overflow-y-auto overflow-x-hidden p-3"
+                  className="flex-1 overflow-y-auto overflow-x-hidden pl-4"
                   followButtonClassName="hidden"
                 >
-                  {formattedMessages.map((m) => (
+                  {messages.map((m) => (
                     <div
-                      key={m.id}
-                      className={`relative w-fit max-w-[75%] px-3 py-2 text-sm md:text-base rounded-2xl leading-snug blue-thumb-scrollbar wrap-break-words shadow-sm ${m.from === "user" ? "ml-auto bg-primary text-gray-100 rounded-br-sm my-1.5" : "bg-white text-gray-900 rounded-bl-sm border border-gray-200 my-1.5"
-                        }`}>
-                      {m.text}
+                      key={m._id}
+                      className={`relative max-w-[75%] w-fit px-3 py-1.5 text-xs md:text-base  rounded-2xl leading-snug wrap-break-words ${m.senderRole === user.role ? "ml-auto bg-primary text-gray-50 rounded-br-sm mr-2 my-1 text-right" : "bg-white text-gray-900 rounded-bl-sm border border-gray-200 my-1 text-left"
+                        }`}
+                    >
+                      <p>{m.message}</p>
+                      <span className="block text-[10px] mt-1 opacity-70">{formatDate(m.createdAt) === "Today" ? <span className="block text-[10px] mt-1 opacity-70">
+                        {formatTime(m.createdAt)}
+                      </span> : <span className="opacity-70">{formatDate(m.createdAt)} </span>}</span>
                     </div>
                   ))}
                 </ScrollToBottom>
@@ -338,6 +367,7 @@ const ChatPage = () => {
               {/* INPUT BOX */}
               <div className="shrink-0 p-3 md:p-4 border-t border-gray-300 flex gap-2">
                 <input
+                  type="text"
                   value={input}
                   onChange={(e) => {
                     setInput(e.target.value);

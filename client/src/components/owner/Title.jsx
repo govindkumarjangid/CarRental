@@ -16,7 +16,7 @@ export const Title = ({ title, subTitle }) => {
 				initial={{ opacity: 0, y: 50 }}
 				animate={{ opacity: 1, y: 0 }}
 				transition={{ duration: 1, ease: "easeOut" }}
-				className="text-sm md:text-base text-gray-500/90 mt-2 max-w-156"
+				className="text-sm md:text-base text-gray-500/90 mt-2 max-w-156 line-clamp-3"
 			>
 				{subTitle}
 			</motion.p>

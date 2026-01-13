@@ -18,6 +18,7 @@ import {
 } from "react-router-dom";
 import { assets, iconList } from "../assets/assets.jsx";
 import { motion, AnimatePresence, useInView } from "motion/react";
+import socket from "../socket.js";
 
 axios.defaults.baseURL = import.meta.env.VITE_BASE_URL;
 
@@ -109,6 +110,7 @@ export const AppProvider = ({ children }) => {
 			fetchUser();
 		}
 	}, [token]);
+
 
 	const value = {
 		reviewLoading,
