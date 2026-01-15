@@ -6,6 +6,7 @@ import CarDetailsSkeleton from "../components/car/CarDetailsSkeleton";
 import ChatMessagesSkeleton from "../components/chat/ChatMessagesSkeleton";
 import socket from '../socket.js';
 import ScrollToBottom from "react-scroll-to-bottom";
+import { Check, CheckCheck } from "lucide-react";
 
 const ChatPage = () => {
 
@@ -30,27 +31,33 @@ const ChatPage = () => {
   const [ownerDetails, setOwnerDetails] = useState({});
   const [onlineUsers, setOnlineUsers] = useState([]);
 
+  const formatMessageTime = (date) => {
+    const msgDate = new Date(date);
+    const now = new Date();
 
-  // const formattedMessages = messages.map((m) => ({
-  //   id: m._id,
-  //   from: m.senderRole,
-  //   text: m.message,
-  // }));
+    const isToday =
+      msgDate.toDateString() === now.toDateString();
 
-  const formatTime = (time) => {
-    return new Date(time).toLocaleTimeString("en-IN", {
+    const yesterday = new Date();
+    yesterday.setDate(now.getDate() - 1);
+
+    const isYesterday =
+      msgDate.toDateString() === yesterday.toDateString();
+
+    const time = msgDate.toLocaleTimeString("en-IN", {
       hour: "2-digit",
       minute: "2-digit",
     });
-  };
 
-  const formatDate = (date) => {
-    const d = new Date(date);
-    const today = new Date();
-    if (d.toDateString() === today.toDateString()) return "Today";
-    today.setDate(today.getDate() - 1);
-    if (d.toDateString() === today.toDateString()) return "Yesterday";
-    return d.toLocaleDateString("en-IN");
+    if (isToday) return time;
+    if (isYesterday) return `Yesterday • ${time}`;
+
+    const dateStr = msgDate.toLocaleDateString("en-IN", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    });
+    return `${dateStr} • ${time}`;
   };
 
   const fetchUserCarDetails = async () => {
@@ -349,15 +356,31 @@ const ChatPage = () => {
                   followButtonClassName="hidden"
                 >
                   {messages.map((m) => (
+                    // console.log(m),
                     <div
                       key={m._id}
-                      className={`relative max-w-[75%] w-fit px-3 py-1.5 text-xs md:text-base  rounded-2xl leading-snug wrap-break-words ${m.senderRole === user.role ? "ml-auto bg-primary text-gray-50 rounded-br-sm mr-2 my-1 text-right" : "bg-white text-gray-900 rounded-bl-sm border border-gray-200 my-1 text-left"
+                      className={`relative max-w-[75%] w-fit px-3 py-1.5 text-xs md:text-base rounded-2xl leading-snug wrap-break-words ${m.senderRole === user.role
+                        ? "ml-auto bg-primary text-gray-100 rounded-br-sm mr-2 my-1" : "bg-white text-gray-900 rounded-bl-sm border border-gray-200 my-1"
                         }`}
                     >
                       <p>{m.message}</p>
-                      <span className="block text-[10px] mt-1 opacity-70">{formatDate(m.createdAt) === "Today" ? <span className="block text-[10px] mt-1 opacity-70">
-                        {formatTime(m.createdAt)}
-                      </span> : <span className="opacity-70">{formatDate(m.createdAt)} </span>}</span>
+
+                      <div className="flex items-center justify-end gap-1 mt-1 text-[10px] opacity-70">
+                        <span>{formatMessageTime(m.createdAt)}</span>
+
+                        {/* TICKS: only for sender */}
+                        {m.senderRole === user.role && (
+                          <>
+                            {m.seenByReceiver ? (
+                              <CheckCheck size={14} className="text-blue-400" />
+                            ) : m.delivered ? (
+                              <CheckCheck size={14} className="text-gray-300" />
+                            ) : (
+                              <Check size={14} className="text-gray-300" />
+                            )}
+                          </>
+                        )}
+                      </div>
                     </div>
                   ))}
                 </ScrollToBottom>

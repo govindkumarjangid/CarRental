@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import { useAppContext } from "../../context/AppContext";
 import socket from "../../socket.js";
 import ScrollToBottom from "react-scroll-to-bottom";
+import { Check, CheckCheck } from "lucide-react";
+
 
 const Chats = () => {
   const {
@@ -28,23 +30,34 @@ const Chats = () => {
     return chat.user._id === user._id ? chat.owner : chat.user;
   }
 
-  const formatTime = (time) => {
-    return new Date(time).toLocaleTimeString("en-IN", {
+  const formatMessageTime = (date) => {
+    const msgDate = new Date(date);
+    const now = new Date();
+
+    const isToday =
+      msgDate.toDateString() === now.toDateString();
+
+    const yesterday = new Date();
+    yesterday.setDate(now.getDate() - 1);
+
+    const isYesterday =
+      msgDate.toDateString() === yesterday.toDateString();
+
+    const time = msgDate.toLocaleTimeString("en-IN", {
       hour: "2-digit",
       minute: "2-digit",
     });
+
+    if (isToday) return time;
+    if (isYesterday) return `Yesterday • ${time}`;
+
+    const dateStr = msgDate.toLocaleDateString("en-IN", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    });
+    return `${dateStr} • ${time}`;
   };
-
-  const formatDate = (date) => {
-    const d = new Date(date);
-    const today = new Date();
-    if (d.toDateString() === today.toDateString()) return "Today";
-    today.setDate(today.getDate() - 1);
-    if (d.toDateString() === today.toDateString()) return "Yesterday";
-    return d.toLocaleDateString("en-IN");
-  };
-
-
 
   const getChats = async () => {
     try {
@@ -133,6 +146,7 @@ const Chats = () => {
 
   useEffect(() => {
     const handleTyping = (incomingChatId) => {
+      console.log(incomingChatId)
       setTypingChatId(incomingChatId);
     };
     const handleStopTyping = (incomingChatId) => {
@@ -153,11 +167,7 @@ const Chats = () => {
       if (message.chatId === activeChat?._id) {
         setMessages((prev) => [
           ...prev,
-          {
-            message,
-            formattedTime: formatTime(msg.createdAt),
-            formattedDate: formatDate(msg.createdAt),
-          },
+          message,
         ]);
       };
     };
@@ -218,7 +228,7 @@ const Chats = () => {
                 <div className="relative">
                   <iconList.CircleUser size={36} />
                   <span
-                    className={`absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-white ${isOnline ? "bg-green-500" : "bg-gray-400"
+                    className={`absolute bottom-1 right-1 h-3 w-3 rounded-full border-2 border-white ${isOnline ? "bg-green-500" : "bg-gray-400"
                       }`}
                   />
                 </div>
@@ -267,17 +277,31 @@ const Chats = () => {
 
           <div className="flex flex-col h-full pl-4">
             {activeChat ? (
-              <ScrollToBottom className="h-[calc(100vh-385px)] space-y-3">
+              <ScrollToBottom className="h-[calc(100vh-430px)] md:h-[calc(100vh-380px)] space-y-3">
                 {messages.map((m) => (
+                  // console.log(m),
                   <div
                     key={m._id}
-                    className={`relative max-w-[75%] w-fit px-3 py-1.5 text-xs md:text-base  rounded-2xl leading-snug wrap-break-words ${m.senderRole === user.role ? "ml-auto bg-primary text-gray-100 rounded-br-sm mr-2 my-1" : "bg-white text-gray-900 rounded-bl-sm border border-gray-200 my-1"
+                    className={`relative max-w-[75%] w-fit px-3 py-1.5 text-xs md:text-base rounded-2xl leading-snug wrap-break-words ${m.senderRole === user.role
+                      ? "ml-auto bg-primary text-gray-100 rounded-br-sm mr-2 my-1" : "bg-white text-gray-900 rounded-bl-sm border border-gray-200 my-1"
                       }`}
                   >
                     <p>{m.message}</p>
-                    <span className="block text-[10px] text-right mt-1 opacity-70">{formatDate(m.createdAt) === "Today" ? <span className="block text-[10px] text-right mt-1 opacity-70">
-                      {formatTime(m.createdAt)}
-                    </span> : <>{formatDate(m.createdAt)} </>}</span>
+                    <div className="flex items-center justify-end gap-1 mt-1 text-[10px] opacity-70">
+                      <span>{formatMessageTime(m.createdAt)}</span>
+
+                      {m.senderRole === user.role && (
+                        <>
+                          {m.seenByReceiver ? (
+                            <CheckCheck size={14} className="text-blue-400" />
+                          ) : m.delivered ? (
+                            <CheckCheck size={14} className="text-gray-300" />
+                          ) : (
+                            <Check size={14} className="text-gray-300" />
+                          )}
+                        </>
+                      )}
+                    </div>
                   </div>
 
                 ))}
