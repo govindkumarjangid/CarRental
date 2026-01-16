@@ -21,7 +21,6 @@ const Chats = () => {
   const [typingChatId, setTypingChatId] = useState(null);
   const [onlineUsers, setOnlineUsers] = useState([]);
 
-
   const typingTimeoutRef = useRef(null);
   const token = localStorage.getItem("token");
 
@@ -106,7 +105,6 @@ const Chats = () => {
       );
 
       if (data.success) {
-        // console.log(data.data.message)
         socket.emit("sendMessage", {
           chatId: activeChat._id,
           message: data.data.message,
@@ -138,7 +136,7 @@ const Chats = () => {
   useEffect(() => {
     if (!activeChat?._id) return;
     socket.emit("joinChat", activeChat._id);
-    console.log("OWNER JOINING CHAT:", activeChat._id);
+    console.log("JOINING CHAT : ", activeChat._id);
     return () => {
       socket.emit("leaveChat", activeChat._id);
     };
@@ -146,13 +144,14 @@ const Chats = () => {
 
   useEffect(() => {
     const handleTyping = (incomingChatId) => {
-      console.log(incomingChatId)
-      setTypingChatId(incomingChatId);
+      if (incomingChatId === activeChat?._id) {
+        setTypingChatId(incomingChatId);
+      }
     };
     const handleStopTyping = (incomingChatId) => {
-      setTypingChatId((prev) =>
-        prev === incomingChatId ? null : prev
-      );
+      if (incomingChatId === activeChat?._id) {
+        setTypingChatId(null);
+      }
     };
     socket.on("userTyping", handleTyping);
     socket.on("userStopTyping", handleStopTyping);
@@ -160,7 +159,7 @@ const Chats = () => {
       socket.off("userTyping", handleTyping);
       socket.off("userStopTyping", handleStopTyping);
     };
-  }, []);
+  }, [activeChat?._id]);
 
   useEffect(() => {
     const handleReceive = (message) => {
@@ -223,10 +222,10 @@ const Chats = () => {
               <div
                 key={chat._id}
                 onClick={() => setActiveChat(chat)}
-                className={`flex gap-3 pl-4 md:px-6 py-3 cursor-pointer border-b border-gray-400 active:scale-102 hover:bg-gray-100 ${activeChat?._id === chat._id ? "bg-gray-100" : ""}`}
+                className={`flex gap-3 pl-4 md:px-6 py-3 cursor-pointer border-b border-gray-400 active:scale-101 transition-all duration-300 hover:bg-gray-100 ${activeChat?._id === chat._id ? "bg-gray-100" : ""}`}
               >
                 <div className="relative">
-                  <iconList.CircleUser size={36} />
+                  <iconList.CircleUser size={36} className="text-gray-500" />
                   <span
                     className={`absolute bottom-1 right-1 h-3 w-3 rounded-full border-2 border-white ${isOnline ? "bg-green-500" : "bg-gray-400"
                       }`}
@@ -234,11 +233,6 @@ const Chats = () => {
                 </div>
                 <div className="flex-1">
                   <div className="font-semibold truncate">{other.name}</div>
-                  {typingChatId === chat._id && (
-                    <div className="text-xs text-green-600">
-                      Typing...
-                    </div>
-                  )}
                   <div className="text-xs text-gray-500 overflow-hidden line-clamp-1">
                     {chat.lastMessage?.message || "No messages yet"}
                   </div>
@@ -254,7 +248,7 @@ const Chats = () => {
           className={`flex flex-col flex-1 ${activeChat ? "block" : "hidden md:flex"}`}
         >
           {/* HEADER */}
-          <div className="flex items-center gap-3 p-4 border-b border-gray-400">
+          <div className="flex items-center gap-3 px-4 py-2 border-b border-gray-400">
             {!activeChat && <div>
               <h2>Select Chat</h2>
             </div>
@@ -267,8 +261,17 @@ const Chats = () => {
             </button>
             <span className="font-semibold flex items-center gap-2">
               {activeChat ? <>
-                <iconList.CircleUser size={25} />
-                <span>{getOtherUser(activeChat).name}</span>
+                <iconList.CircleUser size={40} className="text-gray-500" />
+                <div className="flex flex-col">
+                  <span>{getOtherUser(activeChat).name}</span>
+                  {
+                    typingChatId && (
+                      <span className=" text-green-500 text-xs italic font-light">
+                        Typing...
+                      </span>
+                    )
+                  }
+                </div>
               </> : ""}
             </span>
           </div>
@@ -277,7 +280,7 @@ const Chats = () => {
 
           <div className="flex flex-col h-full pl-4">
             {activeChat ? (
-              <ScrollToBottom className="h-[calc(100vh-430px)] md:h-[calc(100vh-380px)] space-y-3">
+              <ScrollToBottom className="h-[calc(100vh-430px)] sm:h-[calc(100vh-390px)] md:h-[calc(100vh-380px)] space-y-3">
                 {messages.map((m) => (
                   // console.log(m),
                   <div

@@ -1,9 +1,9 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { useAppContext } from "../context/AppContext";
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
-import CarDetailsSkeleton from "../components/car/CarDetailsSkeleton";
-import ChatMessagesSkeleton from "../components/chat/ChatMessagesSkeleton";
+import CarDetailsSkeleton from "../components/car/CarDetailsSkeleton.jsx";
+import ChatMessagesSkeleton from "../components/chat/ChatMessagesSkeleton.jsx";
 import socket from '../socket.js';
 import ScrollToBottom from "react-scroll-to-bottom";
 import { Check, CheckCheck } from "lucide-react";
@@ -17,8 +17,7 @@ const ChatPage = () => {
     user,
     iconList,
     loading,
-    setLoading,
-    isUserOnline
+    setLoading
   } = useAppContext();
   const { id } = useParams();
   const [owner, setOwner] = useState("");
@@ -226,7 +225,8 @@ const ChatPage = () => {
       socket.off("userTyping", handleTyping);
       socket.off("userStopTyping", handleStopTyping);
     };
-  }, [chatId]);
+  }, [chatId, socket]);
+
 
 
   useEffect(() => {
@@ -336,7 +336,7 @@ const ChatPage = () => {
 
                     <div className="text-green-500 text-xs md:text-sm">
                       {isTyping ? (
-                        <span>Typing...</span>
+                        <span className="italic">Typing...</span>
                       ) : (
                         <h3 className="flex gap-2 text-gray-500 flex-wrap">
                           <span>{carDetails?.brand} {carDetails?.model}</span>
