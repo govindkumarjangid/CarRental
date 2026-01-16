@@ -1,130 +1,151 @@
-🚗 Car Rental Website – MERN Stack
+<h1 align="center">🚗 Car Rental Web Application</h1>
 
-A full-stack car rental platform built using the MERN stack (MongoDB, Express, React, Node.js) that allows users to browse cars, check availability, make bookings, and manage rentals. Admins can manage cars, users, and bookings through a secure dashboard.
+<p align="center">
+  <img src="https://img.shields.io/badge/Status-Active-success" />
+  <img src="https://img.shields.io/badge/Stack-MERN-blue" />
+  <img src="https://img.shields.io/badge/Backend-Node.js-green" />
+</p>
 
-✅ Features
-👤 User Features
+<p align="center">
+  A full-stack <b>Car Rental Web Application</b> that allows users to browse cars,
+  book rentals, manage bookings, and communicate in real time.
+</p>
 
-     -> User authentication (JWT based login & signup)
+<hr/>
 
-     ->Browse cars with filters (brand, price, fuel type, seats, etc.)
+<h2>✨ Features</h2>
+<ul>
+ <li>🚘 Browse available cars with complete details</li>
+      <li>🗺 Location-based car search</li>
+<li>🔍 Search and filter cars by price, category, and availability</li>
+<li>📅 Car booking and rental management system</li>
+<li>👤 User authentication (Login / Signup)</li>
+<li>💳 Secure online payment integration</li>
+<li>⭐ Rating and review system for exprience</li>
+<li>💬 Real-time chat between user and car owner</li>
+<li>📊 Owner dashboard to manage cars, bookings, and earnings</li>
+<li>📱 Fully responsive user interface</li>
 
-     ->View car details & availability
+</ul>
 
-     ->Real-time booking with date selection
+<hr/>
 
-     ->Online payment integration (optional placeholder)
+<h2>🛠 Tech Stack</h2>
 
-     ->Booking history & active rentals
+<h3>Frontend</h3>
+<p>
+  <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/html5/html5-original.svg" width="40" alt="HTML"/>
+  <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/css3/css3-original.svg" width="40" alt="CSS"/>
+  <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/javascript/javascript-original.svg" width="40" alt="JavaScript"/>
+  <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/react/react-original.svg" width="40" alt="React"/>
+<img src="https://img.icons8.com/color/48/tailwind_css.png" width="40" alt="Tailwind CSS"/>
+</p>
 
-     ->Responsive UI (mobile + desktop)
+<h3>Backend</h3>
+<p>
+  <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/nodejs/nodejs-original.svg" width="40" alt="Node.js"/>
+  <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/express/express-original.svg" width="40" alt="Express"/>
+  <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/mongodb/mongodb-original.svg" width="40" alt="MongoDB"/>
+  <img src="https://img.icons8.com/ios-filled/50/000000/api.png" width="40" alt="REST API"/>
+</p>
 
-🛠 Admin Features
+<hr/>
 
-Admin dashboard
+<h2>📂 Project Structure</h2>
 
-Add / Update / Delete cars
+<pre>
+car-rental/
+│
+├── server/
+|   ├── src/
+|   |    |── configs/
+|   |    ├── controllers/
+|   |    |── middleware/
+│   |    ├── models/
+│   |    └── routes/ 
+|   |── package-lock.json
+│   |── package.json
+│   |── index.js  
+│   └── server.js
+│
+├── client/
+|   |── public/
+│   ├── src/
+|   |   |── assets/
+│   │   ├── components/
+│   │   ├── context/
+│   │   ├── pages/
+|   |   |── App.jsx
+|   |   |── index.css
+|   |   |── index.js
+|   |   |── socket.js
+│   │   └── main.jsx
+|   |── package-lock.json
+│   └── package.json
+└── README.md
+</pre>
 
-Manage bookings
+<hr/>
 
-Manage users
+<h2>🚀 Installation & Setup</h2>
 
-Update car availability status
+<pre>
+# Clone repository
+git clone https://github.com/govindkumarjangid/CarRental.git
 
-⭐ Other Features
+# Backend setup
+cd server
+npm install
+npm start
 
-Secure REST APIs
+# Frontend setup
+cd client
+npm install
+npm run dev
+</pre>
 
-Image upload support
+<hr/>
 
-Validation & error handling
+<h2>📸 Screenshots</h2>
 
-Toast notifications
+<p>
+  Add Later
+</p>
 
-Protected routes (Frontend + Backend)
+<hr/>
 
-🧰 Tech Stack
-Frontend
+<h2>🔮 Future Enhancements</h2>
+<ul>
+ <li>📧 Email notifications for bookings and status updates</li>
+ <li>⭐ Rating and review system for cars</li>
+</ul>
 
-React.js
+<hr/>
 
-React Router
+<h2>🤝 Contributing</h2>
+<p>
+  Contributions are welcome! Fork the repository, create a branch, and submit a pull request.
+</p>
 
-Tailwind CSS / CSS / MUI (edit accordingly)
+<hr/>
 
-Axios
+<h2>👨‍💻 Author</h2>
 
-Context API / Redux (edit accordingly)
+<p>
+  <b>Your Name</b><br/>
+  <a href="https://github.com/govindkumarjangid/">
+    <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/github/github-original.svg" width="25"/>
+    GitHub
+  </a>
+  &nbsp;&nbsp;
+  <a href="https://linkedin.com/in/your-profile">
+    <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/linkedin/linkedin-original.svg" width="25"/>
+    LinkedIn
+  </a>
+</p>
 
-Backend
+<hr/>
 
-Node.js
-
-Express.js
-
-MongoDB + Mongoose
-
-JSON Web Token (JWT)
-
-Bcrypt.js
-
-Dev Tools
-
-Nodemon
-
-Cloudinary / ImageKit (optional for images)
-
-Stripe / Razorpay (optional payments)
-
-🧪 Future Improvements
-
-Real-time chat with car owners
-
-Push notifications
-
-Mobile app (React Native)
-
-Multi-language support
-
-Google Maps pickup locations
-
-
-🔌 Available Scripts
-Client
-
-npm run dev – start React app
-
-npm run build – production build
-
-Server
-
-npm run dev – start dev server with nodemon
-
-npm start – production server
-
-🛣 API Endpoints (Sample)
-Auth
-
-POST /api/auth/register
-
-POST /api/auth/login
-
-Cars
-
-GET /api/cars
-
-GET /api/cars/:id
-
-POST /api/cars (admin)
-
-PUT /api/cars/:id (admin)
-
-DELETE /api/cars/:id (admin)
-
-Bookings
-
-POST /api/bookings
-
-GET /api/bookings/user/:id
-
-GET /api/bookings (admin)
+<p align="center">
+  ⭐ If you like this project, don’t forget to star the repository!
+</p>
