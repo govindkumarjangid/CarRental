@@ -1,22 +1,23 @@
-import Navbar from "./components/UI/Navbar.jsx";
 import Home from "./pages/Home.jsx";
 import Cars from "./pages/Cars.jsx";
+import Layout from "./pages/Layout.jsx";
+import ChatPage from "./pages/ChatPage.jsx";
+import Chats from "./pages/owner/Chats.jsx";
+import Login from "./components/UI/Login.jsx";
+import AddCar from "./pages/owner/AddCar.jsx";
+import Navbar from "./components/UI/Navbar.jsx";
 import Mybookings from "./pages/Mybookings.jsx";
 import Cardetails from "./pages/Cardetails.jsx";
 import Footer from "./components/UI/Footer.jsx";
-import Dashboard from "./pages/owner/Dashboard.jsx";
-import AddCar from "./pages/owner/AddCar.jsx";
-import ManageCars from "./pages/owner/ManageCars.jsx";
-import ManageBookings from "./pages/owner/ManageBookings.jsx";
-import Layout from "./pages/Layout.jsx";
-import Login from "./components/UI/Login.jsx";
-import { useAppContext } from "./context/AppContext.jsx";
-import TestimonialForm from "./components/testimonial/TestimonialForm.jsx";
-import ProtectRoute from "./context/ProtectRoute.jsx";
-import EditCarForm from "./components/owner/EditCarForm.jsx";
 import AllUsers from "./pages/owner/AllUsers.jsx"
-import Chats from "./pages/owner/Chats.jsx";
-import ChatPage from "./pages/ChatPage.jsx";
+import Dashboard from "./pages/owner/Dashboard.jsx";
+import ProtectRoute from "./context/ProtectRoute.jsx";
+import ManageCars from "./pages/owner/ManageCars.jsx";
+import { useAppContext } from "./context/AppContext.jsx";
+import NotFound404 from "./components/UI/NotFound404.jsx";
+import EditCarForm from "./components/owner/EditCarForm.jsx";
+import ManageBookings from "./pages/owner/ManageBookings.jsx";
+import TestimonialForm from "./components/testimonial/TestimonialForm.jsx";
 
 const App = () => {
 	const { showLogin, showReview, useLocation, Routes, Route, Toaster, showEditCar } =
@@ -37,7 +38,7 @@ const App = () => {
 				<Route path="/car-details/:id" element={<Cardetails />} />
 				<Route path="/chatpage/:id" element={<ChatPage />} />
 				<Route path="/my-bookings" element={<Mybookings />} />
-				<Route path="*" element={<div>404 Not Found</div>} />
+				<Route path="*" element={<NotFound404 />} />
 
 				<Route path="/owner" element={
 					<ProtectRoute>

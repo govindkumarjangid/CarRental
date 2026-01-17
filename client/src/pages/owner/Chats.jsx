@@ -248,9 +248,9 @@ const Chats = () => {
           className={`flex flex-col flex-1 ${activeChat ? "block" : "hidden md:flex"}`}
         >
           {/* HEADER */}
-          <div className="flex items-center gap-3 px-4 py-2 border-b border-gray-400">
+          <div className="flex items-center gap-3 px-4 py-2 border-b border-gray-400 text-gray-600">
             {!activeChat && <div>
-              <h2>Select Chat</h2>
+              <h2 className="text-md font-semibold py-2">Select Chat</h2>
             </div>
             }
             <button
