@@ -133,6 +133,7 @@ const ChatPage = () => {
       _id: Date.now(),
       senderRole: user.role,
       message: input,
+      createdAt: new Date().toISOString(),
     };
 
     setMessages((prev) => [...prev, tempMessage]);
@@ -226,8 +227,6 @@ const ChatPage = () => {
       socket.off("userStopTyping", handleStopTyping);
     };
   }, [chatId, socket]);
-
-
 
   useEffect(() => {
     socket.on("receiveMessage", ({ message }) => {

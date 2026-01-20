@@ -89,6 +89,7 @@ const Chats = () => {
       _id: Date.now(),
       senderRole: user.role,
       message: input,
+      createdAt: new Date().toISOString(),
     };
     // console.log(temp)
     setMessages((prev) => [...prev, temp]);
@@ -168,6 +169,7 @@ const Chats = () => {
           ...prev,
           message,
         ]);
+        if (message.chatId) getMessages(activeChat?._id);
       };
     };
     socket.on("receiveMessage", handleReceive);
@@ -282,7 +284,7 @@ const Chats = () => {
             {activeChat ? (
               <ScrollToBottom className="h-[calc(100vh-430px)] sm:h-[calc(100vh-390px)] md:h-[calc(100vh-380px)] space-y-3">
                 {messages.map((m) => (
-                  // console.log(m),
+                  console.log(m),
                   <div
                     key={m._id}
                     className={`relative max-w-[75%] w-fit px-3 py-1.5 text-xs md:text-base rounded-2xl leading-snug wrap-break-words ${m.senderRole === user.role
