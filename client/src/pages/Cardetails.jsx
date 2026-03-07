@@ -138,7 +138,7 @@ const Cardetails = () => {
 					initial={{ opacity: 0, y: 50 }}
 					animate={{ opacity: 1, y: 0 }}
 					transition={{ duration: 0.9, ease: "easeOut" }}
-					className="h-auto max-w-7xl m-auto px-6 md:px-16 lg:px-24 xl:px-32 pt-16 pb-16 dark:bg-linear-to-r dark:to-main-bg dark:from-second-bg"
+					className="h-auto max-w-7xl m-auto px-6 md:px-16 lg:px-24 xl:px-32 pt-16 pb-16 dark:bg-main-bg"
 				>
 					<button
 						onClick={() => {
@@ -180,10 +180,10 @@ const Cardetails = () => {
 									transition={{ delay: 0.2 }}
 									className="mt-3"
 								>
-									<h1 className="text-3xl font-bold dark:text-gray-200">
+									<h1 className="text-3xl font-bold dark:text-dark-text">
 										{car.brand} {car.model}
 									</h1>
-									<p className="text-gray-500 text-lg dark:text-gray-300">
+									<p className="text-gray-500 text-lg dark:text-dark-muted">
 										{car.category} ◉ {car.year}
 									</p>
 								</motion.div>
@@ -228,10 +228,10 @@ const Cardetails = () => {
 												stiffness: 200,
 												delay: 0.2 * index,
 											}}
-											className="flex flex-col items-center bg-light dark:bg-main-bg p-4 rounded-lg"
+											className="flex flex-col items-center bg-light dark:bg-card-bg p-4 rounded-lg"
 										>
 											{icon}
-											<p className="dark:text-gray-300">
+											<p className="dark:text-dark-muted">
 												{text}
 											</p>
 										</motion.div>
@@ -244,10 +244,10 @@ const Cardetails = () => {
 									animate={{ opacity: 1, y: 0 }}
 									transition={{ delay: 0.2 }}
 								>
-									<h1 className="text-xl font-medium mb-3 dark:text-gray-200">
+									<h1 className="text-xl font-medium mb-3 dark:text-dark-text">
 										Description
 									</h1>
-									<p className="text-gray-500 dark:text-gray-300">
+									<p className="text-gray-500 dark:text-dark-muted">
 										{car.description}
 									</p>
 								</motion.div>
@@ -258,7 +258,7 @@ const Cardetails = () => {
 									animate={{ opacity: 1, y: 0 }}
 									transition={{ delay: 0.2 }}
 								>
-									<h1 className="text-xl font-medium mb-3 dark:text-gray-200">
+									<h1 className="text-xl font-medium mb-3 dark:text-dark-text">
 										Features
 									</h1>
 									<ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -277,7 +277,7 @@ const Cardetails = () => {
 													size={16}
 													className="mr-2 text-primary"
 												/>
-												<p className="dark:text-gray-300">
+												<p className="dark:text-dark-muted">
 													{item}
 												</p>
 											</li>
@@ -293,10 +293,10 @@ const Cardetails = () => {
 							initial={{ opacity: 0, x: 100 }}
 							animate={{ opacity: 1, x: 0 }}
 							transition={{ duration: 0.6, ease: "easeOut" }}
-							className="shadow-lg h-max sticky top-18 rounded-xl p-6 space-y-6 text-gray-500 dark:bg-second-bg dark:text-gray-300"
+							className="shadow-lg h-max sticky top-18 rounded-xl p-6 space-y-6 text-gray-500 dark:bg-card-bg dark:text-dark-text dark:border dark:border-dark-border"
 						>
 							{/* price per day  */}
-							<p className="flex items-center justify-between text-2xl text-gray-800 font-semibold dark:text-gray-200">
+							<p className="flex items-center justify-between text-2xl text-gray-800 font-semibold dark:text-dark-text">
 								{currency}
 								{car.pricePerDay}
 								<span className="text-base text-gray-400 font-normal">
@@ -315,7 +315,7 @@ const Cardetails = () => {
 									onChange={(e) =>
 										setPickupDate(e.target.value)
 									}
-									className="outline-none focus:ring-2 focus:border-primary focus:ring-primary/50 border border-borderColor px-3 py-2 rounded-md w-full"
+									className="outline-none focus:ring-2 focus:border-primary focus:ring-primary/50 border border-borderColor px-3 py-2 rounded-md w-full dark:bg-surface dark:text-dark-text dark:border-dark-border"
 								/>
 							</div>
 
@@ -328,7 +328,7 @@ const Cardetails = () => {
 									onChange={(e) =>
 										setReturnDate(e.target.value)
 									}
-									className="outline-none focus:ring-2 focus:border-primary focus:ring-primary/50 border border-borderColor px-3 py-2 rounded-md w-full"
+									className="outline-none focus:ring-2 focus:border-primary focus:ring-primary/50 border border-borderColor px-3 py-2 rounded-md w-full dark:bg-surface dark:text-dark-text dark:border-dark-border"
 								/>
 							</div>
 
@@ -336,7 +336,7 @@ const Cardetails = () => {
 							<motion.button
 								type="button"
 								onClick={() => handleBookNow()}
-								className={`w-full transition-all py-3 font-medium text-white rounded-md hover:scale-102 active:scale-95 bg-primary hover:bg-primary-dull cursor-pointer`}
+								className={`w-full transition-all py-3 font-medium text-white rounded-md hover:scale-102 active:scale-95 bg-primary hover:bg-primary-dull cursor-pointer dark:bg-accent dark:hover:bg-accent-dull dark:text-main-bg`}
 							>
 								Book Now
 							</motion.button>
@@ -360,7 +360,7 @@ const Cardetails = () => {
 									initial={{ scale: 0.8, opacity: 0 }}
 									animate={{ scale: 1, opacity: 1 }}
 									exit={{ scale: 0.8, opacity: 0 }}
-									className="bg-white p-6 rounded-md w-80 shadow-xl"
+									className="bg-white dark:bg-second-bg p-6 rounded-md w-80 shadow-xl dark:text-dark-text"
 								>
 									<h2 className="text-lg font-semibold text-center mb-4">
 										Select Payment Method
@@ -402,7 +402,7 @@ const Cardetails = () => {
 										{/* Close */}
 										<button
 											onClick={() => setOpenPopup(false)}
-											className="w-full py-2 rounded-md bg-gray-200 cursor-pointer"
+											className="w-full py-2 rounded-md bg-gray-200 dark:bg-surface dark:text-dark-muted cursor-pointer"
 										>
 											Cancel
 										</button>
@@ -415,7 +415,7 @@ const Cardetails = () => {
 
 					{/* chat with owner card  */}
 					<div className="flex items-center justify-end py-5 mt-10">
-						<div className="w-80 bg-white rounded-xl shadow-md p-4">
+						<div className="w-80 bg-white dark:bg-card-bg rounded-xl shadow-md p-4 dark:text-dark-text dark:border dark:border-dark-border">
 							{/* Image */}
 							<img
 								src={car.image}
@@ -449,7 +449,7 @@ const Cardetails = () => {
 								onClick={() => {
 									token ? navigate(`/chatpage/${car._id}`) : toast.error("Not Authorized")
 								}}
-								className="mt-4 w-full bg-primary hover:bg-primary-dull text-white py-2 rounded-md cursor-pointer"
+								className="mt-4 w-full bg-primary hover:bg-primary-dull dark:bg-accent dark:hover:bg-accent-dull text-white dark:text-main-bg py-2 rounded-md cursor-pointer"
 							>
 								Chat with Owner
 							</button>

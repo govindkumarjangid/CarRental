@@ -4,7 +4,7 @@ import { Outlet } from "react-router-dom";
 
 const Layout = () => {
 	return (
-		<div className="h-screen flex flex-col overflow-hidden">
+		<div className="h-screen flex flex-col overflow-hidden dark:bg-main-bg dark:text-dark-text">
 			{/* Navbar - fixed */}
 			<NavbarOwner />
 

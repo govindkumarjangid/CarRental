@@ -1,7 +1,7 @@
-import { useAppContext } from "../../context/AppContext";
+import {motion, iconList, Link} from "../../index.js"
+import { assets } from "../../assets/assets.jsx";
 
 const Footer = () => {
-	const { motion, assets, iconList, Link } = useAppContext();
 	const fadeUp = {
 		hidden: { opacity: 0, y: 20 },
 		show: {
@@ -26,7 +26,7 @@ const Footer = () => {
 			variants={staggerContainer}
 			className="max-w-8xl m-auto bg-light
        text-gray-500/80 pt-14 px-6 md:px-16 lg:px-24 xl:px-32
-      dark:bg-linear-to-r dark:from-main-bg dark:to-second-bg dark:text-light"
+      dark:bg-main-bg dark:text-dark-muted"
 		>
 			<div className="max-w-7xl m-auto">
 				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 justify-between items-start gap-8 pb-6 md:gap-6">
@@ -58,7 +58,7 @@ const Footer = () => {
 									whileTap={{ scale: 0.95 }}
 									className="cursor-pointer"
 								>
-									<Icon className="w-6 h-6 transition" />
+									<Icon className="w-6 h-6 transition dark:text-dark-muted dark:hover:text-accent" />
 								</motion.div>
 							))}
 						</div>
@@ -66,7 +66,7 @@ const Footer = () => {
 
 					{/* Quick Links */}
 					<motion.div variants={fadeUp}>
-						<p className="text-lg text-gray-800 dark:text-gray-400">
+						<p className="text-lg text-gray-800 dark:text-dark-text">
 							QUICK LINKS
 						</p>
 						<ul className="mt-3 flex flex-col gap-2 text-sm">
@@ -79,7 +79,7 @@ const Footer = () => {
 
 					{/* Resources */}
 					<motion.div variants={fadeUp}>
-						<p className="text-lg text-gray-800 dark:text-gray-400">
+						<p className="text-lg text-gray-800 dark:text-dark-text">
 							RESOURCES
 						</p>
 						<ul className="mt-3 flex flex-col gap-2 text-sm">
@@ -92,7 +92,7 @@ const Footer = () => {
 
 					{/* Contact */}
 					<motion.div variants={fadeUp} className="max-w-80">
-						<p className="text-lg text-gray-800 dark:text-gray-400">
+						<p className="text-lg text-gray-800 dark:text-dark-text">
 							CONTACT
 						</p>
 						<ul className="mt-3 flex flex-col gap-2 text-sm">
@@ -105,7 +105,7 @@ const Footer = () => {
 				</div>
 
 				{/* Divider */}
-				<motion.hr variants={fadeUp} className="border-gray-400 mt-8" />
+				<motion.hr variants={fadeUp} className="border-gray-400 dark:border-dark-border mt-8" />
 
 				{/* Bottom Row */}
 				<motion.div

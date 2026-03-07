@@ -1,8 +1,7 @@
-import { useEffect } from "react";
 import { useAuthStore } from "./store/useAuthStore.js";
 import { useCarStore } from "./store/useCarStore.js";
-import { Routes, Route, useLocation } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
+import { Routes, Route, useLocation, useEffect } from "./index.js";
 import {
 	Home,
 	Cars,

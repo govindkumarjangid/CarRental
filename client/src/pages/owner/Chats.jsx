@@ -1,18 +1,17 @@
-import { useEffect, useRef, useState } from "react";
-import { useAppContext } from "../../context/AppContext";
 import { useAuthStore } from "../../store/useAuthStore.js";
 import { useChatStore } from "../../store/useChatStore.js";
 import socket from "../../socket.js";
-import ScrollToBottom from "react-scroll-to-bottom";
-import { Check, CheckCheck } from "lucide-react";
-
+import {
+  iconList,
+  ScrollToBottom,
+  Check,
+  CheckCheck,
+  OwnerTitle,
+  useEffect, useRef, useState
+} from "../../index.js";
 
 const Chats = () => {
-  const {
-    OwnerTitle,
-    toast,
-    iconList
-  } = useAppContext();
+
   const { user } = useAuthStore();
   const {
     chats,
@@ -82,7 +81,7 @@ const Chats = () => {
   }, [activeChat?._id]);
 
 
-  
+
 
   useEffect(() => {
     socket.connect();
@@ -157,7 +156,7 @@ const Chats = () => {
 
 
   return (
-    <div className="pt-9 md:pt-10 flex-1 flex flex-col overflow-hidden">
+    <div className="pt-9 md:pt-10 flex-1 flex flex-col overflow-hidden dark:bg-main-bg dark:text-dark-text">
 
       {/* title  */}
       <div className="pl-4 md:pl-10 mb-8">
@@ -167,12 +166,12 @@ const Chats = () => {
         />
       </div>
 
-      <div className="flex flex-1 border-t border-b border-gray-400  overflow-hidden min-h-[64dvh] max-h-[64dvh]">
+      <div className="flex flex-1 border-t border-b border-gray-400 dark:border-dark-border  overflow-hidden min-h-[64dvh] max-h-[64dvh]">
 
-        <div className={`w-full md:w-[28%] border-r border-gray-400 bg-white overflow-y-auto overflow-x-hidden ${activeChat ? "hidden md:block" : "block"}`}
+        <div className={`w-full md:w-[28%] border-r border-gray-400 dark:border-dark-border bg-white dark:bg-second-bg overflow-y-auto overflow-x-hidden ${activeChat ? "hidden md:block" : "block"}`}
         >
           {/* chat title  */}
-          <h2 className="pl-4 md:pl-6 py-4 font-bold border-b border-gray-400 text-gray-600">Chats</h2>
+          <h2 className="pl-4 md:pl-6 py-4 font-bold border-b border-gray-400 dark:border-dark-border text-gray-600 dark:text-dark-text">Chats</h2>
 
           {/* chats list  */}
           {chats.map((chat) => {
@@ -182,18 +181,18 @@ const Chats = () => {
               <div
                 key={chat._id}
                 onClick={() => setActiveChat(chat)}
-                className={`flex gap-3 pl-4 md:px-6 py-3 cursor-pointer border-b border-gray-400 active:scale-101 transition-all duration-300 hover:bg-gray-100 ${activeChat?._id === chat._id ? "bg-gray-100" : ""}`}
+                className={`flex gap-3 pl-4 md:px-6 py-3 cursor-pointer border-b border-gray-400 dark:border-dark-border active:scale-101 transition-all duration-300 hover:bg-gray-100 dark:hover:bg-surface ${activeChat?._id === chat._id ? "bg-gray-100 dark:bg-surface" : ""}`}
               >
                 <div className="relative">
                   <iconList.CircleUser size={36} className="text-gray-500" />
                   <span
-                    className={`absolute bottom-1 right-1 h-3 w-3 rounded-full border-2 border-white ${isOnline ? "bg-green-500" : "bg-gray-400"
+                    className={`absolute bottom-1 right-1 h-3 w-3 rounded-full border-2 border-white dark:border-second-bg ${isOnline ? "bg-green-500" : "bg-gray-400"
                       }`}
                   />
                 </div>
                 <div className="flex-1">
-                  <div className="font-semibold truncate">{other.name}</div>
-                  <div className="text-xs text-gray-500 overflow-hidden line-clamp-1">
+                  <div className="font-semibold truncate dark:text-dark-text">{other.name}</div>
+                  <div className="text-xs text-gray-500 dark:text-dark-muted overflow-hidden line-clamp-1">
                     {chat.lastMessage?.message || "No messages yet"}
                   </div>
                 </div>
@@ -208,7 +207,7 @@ const Chats = () => {
           className={`flex flex-col flex-1 ${activeChat ? "block" : "hidden md:flex"}`}
         >
           {/* HEADER */}
-          <div className="flex items-center gap-3 px-4 py-2 border-b border-gray-400 text-gray-600">
+          <div className="flex items-center gap-3 px-4 py-2 border-b border-gray-400 dark:border-dark-border text-gray-600 dark:text-dark-text">
             {!activeChat && <div>
               <h2 className="text-md font-semibold py-2">Select Chat</h2>
             </div>
@@ -242,11 +241,10 @@ const Chats = () => {
             {activeChat ? (
               <ScrollToBottom className="h-[calc(100vh-430px)] sm:h-[calc(100vh-390px)] md:h-[calc(100vh-380px)] space-y-3">
                 {messages.map((m) => (
-                  console.log(m),
                   <div
                     key={m._id}
                     className={`relative max-w-[75%] w-fit px-3 py-1.5 text-xs md:text-base rounded-2xl leading-snug wrap-break-words ${m.senderRole === user.role
-                      ? "ml-auto bg-primary text-gray-100 rounded-br-sm mr-2 my-1" : "bg-white text-gray-900 rounded-bl-sm border border-gray-200 my-1"
+                      ? "ml-auto bg-primary text-gray-100 rounded-br-sm mr-2 my-1" : "bg-white dark:bg-card-bg text-gray-900 dark:text-dark-text rounded-bl-sm border border-gray-200 dark:border-dark-border my-1"
                       }`}
                   >
                     <p>{m.message}</p>
@@ -273,7 +271,7 @@ const Chats = () => {
               <div className="flex-1 flex items-center justify-center">
                 <div className="flex flex-col items-center gap-2">
                   <iconList.MessageCircleMore size={100} className="text-gray-400" />
-                  <p className="text-gray-500 text-sm text-center">
+                  <p className="text-gray-500 dark:text-dark-muted text-sm text-center">
                     Select a chat to start messaging with your customers
                   </p>
                 </div>
@@ -283,7 +281,7 @@ const Chats = () => {
 
           {/* INPUT */}
           {activeChat && (
-            <div className="p-3 border-t border-gray-400 flex gap-2 bg-white">
+            <div className="p-3 border-t border-gray-400 dark:border-dark-border flex gap-2 bg-white dark:bg-second-bg">
               <input
                 type="text"
                 value={input}
@@ -301,11 +299,11 @@ const Chats = () => {
                   e.key == "Enter" && handleSend();
                 }}
                 placeholder="Type a message..."
-                className="px-3 flex py-2.5 mt-1 w-full	border border-gray-400 rounded-md outline-none	focus:border-primary focus:ring-2 focus:ring-primary/50"
+                className="px-3 flex py-2.5 mt-1 w-full	border border-gray-400 dark:border-dark-border rounded-md outline-none	focus:border-primary focus:ring-2 focus:ring-primary/50 dark:bg-card-bg dark:text-dark-text dark:focus:border-accent"
               />
               <button
                 onClick={handleSend}
-                className="bg-blue-600 text-white px-5 rounded-md active:scale-90 cursor-pointer transition-transform duration-300"
+                className="bg-blue-600 dark:bg-accent text-white px-5 rounded-md active:scale-90 cursor-pointer transition-transform duration-300"
               >
                 <iconList.MousePointer2 className="rotate-135" />
               </button>

@@ -9,6 +9,9 @@ export const useCarStore = create((set, get) => ({
     loading: false,
     showEditCar: false,
     editCar: null,
+    carDetails: {},
+    carDetailsLoading: false,
+    carOwner: "",
     setShowEditCar: (val) => set({ showEditCar: val }),
     setEditCar: (car) => set({ editCar: car }),
 
@@ -158,6 +161,26 @@ export const useCarStore = create((set, get) => ({
             }
         } catch (error) {
             toast.error(error.response?.data?.message || error.message || "Failed to delete car");
+        }
+    },
+
+    fetchUserCarDetails: async (carId) => {
+        set({ carDetailsLoading: true });
+        try {
+            const token = localStorage.getItem("token");
+            if (token) {
+                axiosInstance.defaults.headers.common["Authorization"] = token;
+            }
+            const { data } = await axiosInstance.get(`/api/user/user-cardetails/${carId}`);
+            if (data.success) {
+                set({ carDetails: data.car, carOwner: data.owner });
+            } else {
+                toast.error(data.message);
+            }
+        } catch (error) {
+            toast.error(error.response?.data?.message || error.message || "Failed to fetch car details");
+        } finally {
+            set({ carDetailsLoading: false });
         }
     },
 

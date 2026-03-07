@@ -47,13 +47,13 @@ const Cars = () => {
 
 	return (
 		<>
-			<div className="max-w-8xl m-auto flex flex-col items-center dark:bg-linear-to-r pb-20 dark:to-main-bg dark:from-second-bg relative">
+			<div className="max-w-8xl m-auto flex flex-col items-center pb-20 dark:bg-main-bg relative">
 				{/* search bar and title  */}
 				<motion.div
 					initial={{ opacity: 0, y: 50 }}
 					animate={{ opacity: 1, y: 0 }}
 					transition={{ duration: 0.6, ease: "easeOut" }}
-					className=" bg-light dark:bg-main-bg w-full py-20 px-4 flex flex-col justify-center items-center"
+					className=" bg-light dark:bg-second-bg w-full py-20 px-4 flex flex-col justify-center items-center"
 				>
 					{/* title  */}
 					<Title
@@ -66,16 +66,16 @@ const Cars = () => {
 						initial={{ opacity: 0, y: 30 }}
 						animate={{ opacity: 1, y: 0 }}
 						transition={{ duration: 0.7, ease: "easeOut" }}
-						className="mt-8 flex items-center justify-between gap-4 border border-gray-300 dark:border-white px-4 py-1 rounded-lg shadow-xl max-w-96 md:max-w-3xl bg-white w-full"
+						className="mt-8 flex items-center justify-between gap-4 border border-gray-300 dark:border-dark-border px-4 py-1 rounded-lg shadow-xl max-w-96 md:max-w-3xl bg-white dark:bg-card-bg w-full"
 					>
-						<iconList.Search size={18} className="text-gray-500" />
+						<iconList.Search size={18} className="text-gray-500 dark:text-dark-muted" />
 						<input
 							type="text"
 							onChange={(e) => setInput(e.target.value)}
 							placeholder="Search by make, model, or features"
-							className="outline-none py-2 flex-9"
+							className="outline-none py-2 flex-9 dark:bg-card-bg dark:text-dark-text dark:placeholder:text-dark-muted"
 						/>
-						<iconList.Funnel size={18} className="text-gray-500" />
+						<iconList.Funnel size={18} className="text-gray-500 dark:text-dark-muted" />
 					</motion.div>
 
 				</motion.div>
@@ -87,7 +87,7 @@ const Cars = () => {
 					transition={{ duration: 0.7, ease: "easeOut" }}
 					className="flex items-center justify-between flex-wrap gap-4 mt-4 w-full px-5 md:px-19 max-w-7xl"
 				>
-					<p className="dark:text-white dark:border-gray-300 text-gray-500 float-left">
+					<p className="dark:text-dark-muted text-gray-500 float-left">
 						Showing {sortedCars.length} results
 					</p>
 
@@ -115,7 +115,7 @@ const Cars = () => {
 								initial={{ opacity: 0, height: 0 }}
 								animate={{ opacity: 1, height: "auto" }}
 								transition={{ duration: 0.5 }}
-								className="absolute z-50 w-40 bg-white border border-gray-300 rounded-md mt-1 shadow-lg text-gray-500 overflow-hidden"
+								className="absolute z-50 w-40 bg-white dark:bg-card-bg border border-gray-300 dark:border-dark-border rounded-md mt-1 shadow-lg text-gray-500 dark:text-dark-muted overflow-hidden"
 							>
 								{/* parent animation controller */}
 								<motion.div

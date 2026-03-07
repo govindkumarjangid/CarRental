@@ -31,14 +31,14 @@ const ManageCars = () => {
 					"View all listed cars, update their details, or remove them from the booking platform."
 				}
 			/>
-			<div className="max-w-3xl w-full rounded-md overflow-hidden mt-6 border border-gray-400">
+			<div className="max-w-3xl w-full rounded-md overflow-hidden mt-6 border border-gray-400 dark:border-dark-border">
 				<motion.table
 					initial={{ opacity: 0, y: 100 }}
 					animate={{ opacity: 1, y: 0 }}
 					transition={{ duration: 0.5 }}
-					className="w-full border-collapse text-left text-sm text-gray-600"
+					className="w-full border-collapse text-left text-sm text-gray-600 dark:text-dark-text"
 				>
-					<thead className="text-gray-500">
+					<thead className="text-gray-500 dark:text-dark-muted">
 						<tr>
 							<th className="p-3 font-medium">Car</th>
 							<th className="p-3 font-medium max-md:hidden">
@@ -60,7 +60,7 @@ const ManageCars = () => {
 									duration: 0.5,
 									delay: index * 0.1,
 								}}
-								className="border-t border-gray-400 hover:bg-gray-100 hover:scale-101 transition-all duration-300"
+								className="border-t border-gray-400 hover:bg-gray-100 hover:scale-101 transition-all duration-300 dark:border-dark-border dark:hover:bg-surface"
 								key={index}
 							>
 								<td className="p-3 flex  md:flex-row flex-col items-start gap-3 justify-start">

@@ -1,9 +1,8 @@
 import { useAuthStore } from "../../store/useAuthStore.js";
 import { motion, iconList,useState,toast } from "../../index.js";
-import axios from "axios";
 
 const TestimonialForm = () => {
-	const { setShowReview } = useAuthStore();
+	const { setShowReview, addReview } = useAuthStore();
 	const [form, setForm] = useState({
 		name: "",
 		email: "",
@@ -20,9 +19,9 @@ const TestimonialForm = () => {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
+		if (!image) return toast.error("Please upload an image");
 		setLoading(true);
 		try {
-			if (!image) return toast.error("Please upload an image");
 			const formData = new FormData();
 			formData.append("name", form.name);
 			formData.append("email", form.email);
@@ -31,15 +30,8 @@ const TestimonialForm = () => {
 			formData.append("review", form.review);
 			formData.append("image", image);
 
-			const { data } = await axios.post("/api/user/add-review", formData);
-			if (data.success) {
-				toast.success(data.message);
-				setShowReview(false);
-			} else {
-				toast.error(data.message);
-			}
+			await addReview(formData);
 		} catch (error) {
-			console.log(error.message);
 			toast.error(error.message);
 		} finally {
 			setLoading(false);

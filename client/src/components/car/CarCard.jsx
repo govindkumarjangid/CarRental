@@ -20,7 +20,7 @@ const CarCard = ({ car, index }) => {
 				ease: "easeOut",
 				delay: index * 0.1,
 			}}
-			className="h-full w-full group rounded-xl overflow-hidden shadow-lg hover:-translate-y-2 transition-all duration-500 cursor-pointer hover:shadow-[0_4px_24px_rgba(0,0,0,0.35)] dark:hover:shadow-[0_4px_24px_rgba(255,255,255,0.15)] active:scale-95 bg-light"
+			className="h-full w-full group rounded-xl overflow-hidden shadow-lg hover:-translate-y-2 transition-all duration-500 cursor-pointer hover:shadow-[0_4px_24px_rgba(0,0,0,0.35)] dark:hover:shadow-[0_4px_24px_rgba(56,189,248,0.15)] active:scale-95 bg-light dark:bg-card-bg dark:border dark:border-dark-border"
 			onClick={handleClick}
 		>
 			{/* image & availability & price  */}
@@ -45,34 +45,34 @@ const CarCard = ({ car, index }) => {
 				</div>
 			</div>
 
-			<div className="p-4 sm:p-5 dark:text-white">
+			<div className="p-4 sm:p-5 dark:text-dark-text">
 				{/* brand & model & catrgory  */}
 				<div className="flex justify-between items-start mb-2">
 					<div>
 						<h3 className="text-lg font-medium">
 							{car.brand} {car.model}
 						</h3>
-						<p className="text-muted-foreground text-sm">
+						<p className="text-muted-foreground dark:text-dark-muted text-sm">
 							{car.category} ◉ {car.year}
 						</p>
 					</div>
 				</div>
 
 				{/* feactures  */}
-				<div className="mt-4 grid grid-cols-2 gap-y-2 text-gray-600 dark:text-white ">
-					<div className="flex items-center text-sm text-muted-foreground">
+				<div className="mt-4 grid grid-cols-2 gap-y-2 text-gray-600 dark:text-dark-text ">
+					<div className="flex items-center text-sm text-muted-foreground dark:text-dark-muted">
 						<iconList.Users size={15} className="mr-1" />
 						<span>{car.seating_capacity} Seats</span>
 					</div>
-					<div className="flex items-center text-sm text-muted-foreground">
+					<div className="flex items-center text-sm text-muted-foreground dark:text-dark-muted">
 						<iconList.Fuel size={15} className="mr-1" />
 						<span>{car.fuel_type}</span>
 					</div>
-					<div className="flex items-center text-sm text-muted-foreground">
+					<div className="flex items-center text-sm text-muted-foreground dark:text-dark-muted">
 						<iconList.Car size={15} className="mr-1" />
 						<span>{car.transmission}</span>
 					</div>
-					<div className="flex items-center text-sm text-muted-foreground">
+					<div className="flex items-center text-sm text-muted-foreground dark:text-dark-muted">
 						<iconList.MapPin size={15} className="mr-1" />
 						<span>{car.location}</span>
 					</div>

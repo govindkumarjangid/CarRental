@@ -13,7 +13,7 @@ const FeaturedSection = () => {
 
 	return (
 		<>
-			<div className="max-w-8xl m-auto flex flex-col items-center py-24 px-6 md:px-16 lg:px-24 xl:px-32  dark:bg-linear-to-r dark:from-main-bg dark:to-second-bg">
+			<div className="max-w-8xl m-auto flex flex-col items-center py-24 px-6 md:px-16 lg:px-24 xl:px-32  dark:bg-main-bg">
 				<div>
 					<Title
 						title="Featured Vehicles"
@@ -45,7 +45,7 @@ const FeaturedSection = () => {
 							behavior: "smooth",
 						});
 					}}
-					className="flex group items-center justify-center gap-2 px-6 py-2 border-2 border-gray-500 text-gray-600 hover:bg-primary rounded-md mt-18 cursor-pointer hover:text-light hover:border-light dark:border-white dark:text-white dark:hover:bg-second-bg active:scale-95 transition-all duration-300"
+					className="flex group items-center justify-center gap-2 px-6 py-2 border-2 border-gray-500 text-gray-600 hover:bg-primary rounded-md mt-18 cursor-pointer hover:text-light hover:border-light dark:border-accent dark:text-accent dark:hover:bg-accent dark:hover:text-main-bg active:scale-95 transition-all duration-300"
 				>
 					Explore all cars{" "}
 					<iconList.ArrowRight className="w-4 h-4 stroke-2 group-hover:translate-x-2 transition-transform duration-400" />

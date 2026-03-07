@@ -1,6 +1,6 @@
-import { useAppContext } from "../../context/AppContext.jsx";
+import { useRef, motion, useInView} from "../../index.js"
 export const Title = ({ title, subTitle, align }) => {
-	const { useRef, motion, useInView } = useAppContext();
+
 	const ref = useRef(null);
 	const isInView = useInView(ref, { once: true });
 
@@ -17,7 +17,7 @@ export const Title = ({ title, subTitle, align }) => {
 			<h1 className="font-semibold text-4xl md:text-[40px] text-gray-800 dark:text-white">
 				{title}
 			</h1>
-			<p className="text-sm md:text-base text-gray-700/90 mt-4 max-w-156 dark:text-white">
+			<p className="text-sm md:text-base text-gray-700/90 mt-4 max-w-156 dark:text-dark-muted">
 				{subTitle}
 			</p>
 		</motion.div>

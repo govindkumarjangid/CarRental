@@ -1,42 +1,16 @@
 import { ownerMenuLinks } from "../../assets/assets.jsx";
-import { useAppContext } from "../../context/AppContext.jsx";
 import { useAuthStore } from "../../store/useAuthStore.js";
+import { NavLink, useLocation, motion, useState, iconList } from "../../index.js";
 
 const Sidebar = () => {
-	const {
-		axios,
-		toast,
-		motion,
-		useState,
-		iconList,
-		NavLink,
-		useLocation,
-	} = useAppContext();
-	const { user, fetchUser } = useAuthStore();
+	const { user, updateProfileImage } = useAuthStore();
 	const location = useLocation();
 	const MotionNavLink = motion(NavLink);
 	const [image, setImage] = useState(null);
 
-	const updateImage = async () => {
-		try {
-			const formData = new FormData();
-			formData.append("image", image);
-
-			const { data } = await axios.post(
-				"/api/owner/update-image",
-				formData
-			);
-			if (data.success) {
-				fetchUser();
-				toast.success(data.message);
-				setImage("");
-			} else {
-				toast.error(data.message || "Failed to update image");
-			}
-		} catch (error) {
-			console.error(error);
-			toast.error(error?.message || "Server error");
-		}
+	const handleUpdateImage = async () => {
+		const success = await updateProfileImage(image);
+		if (success) setImage(null);
 	};
 
 	return (
@@ -44,7 +18,7 @@ const Sidebar = () => {
 			initial={{ opacity: 0, x: -400 }}
 			animate={{ opacity: 1, x: 0 }}
 			transition={{ duration: 0.5, ease: "easeOut" }}
-			className="relative min-h-screen md:flex flex-col items-center pt-8 max-w-15 md:max-w-50 w-full border-r border-gray-400 text-sm overflow-x-hidden"
+			className="relative min-h-screen md:flex flex-col items-center pt-8 max-w-15 md:max-w-50 w-full border-r border-gray-400 text-sm overflow-x-hidden dark:bg-second-bg dark:border-dark-border"
 		>
 			{/* Profile Image */}
 			<motion.div
@@ -84,7 +58,7 @@ const Sidebar = () => {
 			{/* Save Button */}
 			{image && (
 				<button
-					onClick={updateImage}
+					onClick={handleUpdateImage}
 					className="absolute top-0 right-0 flex items-center gap-1 px-3 py-1.5 bg-primary/10 text-primary rounded-md text-xs disabled:opacity-50 cursor-pointer hover:bg-primary/20 transition-colors "
 				>
 					Save
@@ -92,7 +66,7 @@ const Sidebar = () => {
 				</button>
 			)}
 
-			<p className="mt-2 text-base max-md:hidden capitalize border-b border-gray-400 pb-5 w-full text-center font-medium">
+			<p className="mt-2 text-base max-md:hidden capitalize border-b border-gray-400 pb-5 w-full text-center font-medium dark:text-dark-text dark:border-dark-border">
 				{user?.name}
 			</p>
 
@@ -107,15 +81,15 @@ const Sidebar = () => {
 							to={{ pathname: link.path, scrollTo: (0, 0) }}
 							whileTap={{ scale: 0.97 }}
 							className={`relative flex items-center gap-3 w-full py-3 pl-4 md:pl-4 first:mt-6 rounded-lg transition-colors ${isActive
-								? "bg-primary/20 text-primary font-semibold"
-								: "text-gray-500 hover:bg-gray-100"
+								? "bg-primary/20 text-primary font-semibold dark:bg-accent/15 dark:text-accent"
+								: "text-gray-500 hover:bg-gray-100 dark:text-dark-muted dark:hover:bg-surface"
 								}`}
 						>
 							{link.icon}
 							<span className="max-md:hidden">{link.name}</span>
 
 							{isActive && (
-								<motion.div className="absolute right-0 top-1.95 h-8 w-1.5 bg-primary rounded-l" />
+								<motion.div className="absolute right-0 top-1.95 h-8 w-1.5 bg-primary rounded-l dark:bg-accent" />
 							)}
 						</MotionNavLink>
 					);

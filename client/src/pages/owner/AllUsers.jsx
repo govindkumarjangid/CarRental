@@ -23,16 +23,16 @@ const AllUsers = () => {
         title="All Users"
         subTitle="Manage all users of the car rental system. View, block or unblock users as necessary to maintain an up-to-date user database."
       />
-      <div className="max-w-2xl w-full rounded-md overflow-hidden mt-6 border border-gray-400">
+      <div className="max-w-2xl w-full rounded-md overflow-hidden mt-6 border border-gray-400 dark:border-dark-border">
         <motion.table
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="w-full border-collapse border-spacing-0 rounded-md overflow-hidden shadow-md bg-white"
+          className="w-full border-collapse border-spacing-0 rounded-md overflow-hidden shadow-md bg-white dark:bg-card-bg"
         >
 
           {/* All Users Table */}
-          <thead className="text-gray-500">
+          <thead className="text-gray-500 dark:text-dark-muted">
             <tr className="text-left">
               <th className="py-3 px-4 font-semibold">
                 <div className="flex items-center justify-between">
@@ -46,22 +46,22 @@ const AllUsers = () => {
           </thead>
 
 
-          <tbody className="text-sm text-gray-600">
+          <tbody className="text-sm text-gray-600 dark:text-dark-text">
             {AllUsers.map((user, index) => (
               <motion.tr
                 key={index}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, delay: index * 0.05 }}
-                className="hover:bg-gray-100 transition-all duration-300 text-left border-t border-gray-400"
+                className="hover:bg-gray-100 transition-all duration-300 text-left border-t border-gray-400 dark:border-dark-border dark:hover:bg-surface"
               >
 
                 {/* USER COLUMN */}
                 <td className="flex flex-col px-4 py-1">
 
-                  <span className="text-base md:text-xl font-semibold">{user.name}</span>
+                  <span className="text-base md:text-xl font-semibold dark:text-dark-text">{user.name}</span>
 
-                  <span className="text-base">{user.email}</span>
+                  <span className="text-base dark:text-dark-muted">{user.email}</span>
 
                   {/* status  */}
                   <div className="md:hidden mt-1">

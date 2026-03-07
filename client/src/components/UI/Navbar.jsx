@@ -1,5 +1,5 @@
 import { menuLinks, assets } from "../../assets/assets.jsx";
-import { useThemeContext } from "../../context/ThemeContextProvider";
+import { useThemeStore } from "../../store/useThemeStore.js";
 import { useAuthStore } from "../../store/useAuthStore.js";
 import {
 	Link,
@@ -20,7 +20,7 @@ const Navbar = () => {
 
 	const location = useLocation();
 	const [open, setOpen] = useState(false);
-	const { theme, toggleTheme } = useThemeContext();
+	const { theme, toggleTheme } = useThemeStore();
 
 	useEffect(() => {
 		setOpen(false);
@@ -35,7 +35,7 @@ const Navbar = () => {
 			initial={{ opacity: 0, y: -40, filter: "blur(10px)" }}
 			animate={isInView ? { opacity: 1, y: 0, filter: "blur(0px)" } : {}}
 			transition={{ duration: 0.5, ease: "easeOut" }}
-			className={`max-w-full px-5 md:px-30 py-4 text-gray-600 border-b border-gray-300 relative z-10 transition-all duration-300 dark:border-gray ${location.pathname === "/" ? "bg-light dark:bg-main-bg" : "bg-white dark:bg-second-bg"
+			className={`max-w-full px-5 md:px-30 py-4 text-gray-600 dark:text-dark-muted border-b border-gray-300 dark:border-dark-border relative z-10 transition-all duration-300 ${location.pathname === "/" ? "bg-light dark:bg-main-bg" : "bg-white dark:bg-second-bg"
 				}`}
 		>
 			<div className="max-w-7xl m-auto flex items-center justify-between h-auto ">
@@ -66,7 +66,7 @@ const Navbar = () => {
 							>
 								<Link
 									to={menuLink.path}
-									className="text-gray-600 dark:text-gray"
+									className="text-gray-600 dark:text-dark-text hover:text-primary dark:hover:text-accent"
 								>
 									{menuLink.name}
 								</Link>
@@ -76,7 +76,7 @@ const Navbar = () => {
 
 					<div className="flex max-sm:flex-col items-start sm:items-center gap-6">
 						<button
-							className="cursor-pointer dark:text-gray"
+							className="cursor-pointer dark:text-dark-text hover:text-primary dark:hover:text-accent"
 							onClick={() => {
 								isOwner ? navigate("/owner") : changeRole();
 							}}
@@ -84,7 +84,7 @@ const Navbar = () => {
 							{isOwner ? "Dashboard" : "List cars"}
 						</button>
 						<button
-							className="cursor-pointer px-8 py-2 bg-primary hover:bg-primary-dull transition-all text-white rounded-md active:scale-95"
+							className="cursor-pointer px-8 py-2 bg-primary hover:bg-primary-dull dark:bg-accent dark:hover:bg-accent-dull dark:text-main-bg transition-all text-white rounded-md active:scale-95 font-medium"
 							onClick={async () => {
 								if (user) {
 									await logout(navigate);
@@ -100,7 +100,7 @@ const Navbar = () => {
 					{/* <div className="flex items-center gap-5">
 					<button
 						onClick={toggleTheme}
-						className=" px-2 py-2 bg-gray-200 dark:bg-second-bg rounded-lg text-sm dark:text-gray cursor-pointer transition-all hover:scale-105 active:scale-95"
+						className="text-sm dark:text-dark-text cursor-pointer transition-all hover:scale-105 active:scale-95"
 					>
 						{theme === "dark" ? (
 							<iconList.Sun />
@@ -120,11 +120,11 @@ const Navbar = () => {
 					className="sm:hidden flex items-center justify-center p-2 cursor-pointer"
 				>
 					{open ? (
-						<iconList.X size={30} className="text-gray-500" />
+						<iconList.X size={30} className="text-gray-500 dark:text-dark-text" />
 					) : (
 						<iconList.TextAlignEnd
 							size={30}
-							className="text-gray-500"
+							className="text-gray-500 dark:text-dark-text"
 						/>
 					)}
 				</button>

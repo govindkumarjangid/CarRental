@@ -30,12 +30,14 @@ import BookingCard from "./components/booking/BookingCard.jsx";
 import EmptyBookings from "./components/booking/EmptyBookings.jsx";
 import BookingCardSkeleton from "./components/booking/BookingCardSkeleton.jsx";
 import  {Title as OwnerTitle } from "./components/owner/Title.jsx";
-  
 
-import { Link, useNavigate, useLocation,useParams } from "react-router-dom";
+
+import { Link, useNavigate, useLocation,useParams,NavLink,Routes, Route } from "react-router-dom";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { useState, useEffect, useRef } from "react";
 import { toast } from "react-hot-toast";
+import ScrollToBottom from "react-scroll-to-bottom";
+import { Check, CheckCheck } from "lucide-react";
 
 export {
     Home,
@@ -71,7 +73,9 @@ export {
     OwnerTitle,
 
     Link,
+    NavLink,
     useNavigate,
+    Routes, Route,
     useLocation,
     motion,
     useInView,
@@ -81,6 +85,8 @@ export {
     iconList,
     toast,
     AnimatePresence,
-    useParams
+    useParams,
+    ScrollToBottom,
+    Check, CheckCheck
 
 }

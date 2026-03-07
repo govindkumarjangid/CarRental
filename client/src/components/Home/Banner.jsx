@@ -16,7 +16,7 @@ const Banner = () => {
 					initial={{ opacity: 0, y: 100 }}
 					animate={isInView ? { opacity: 1, y: 0 } : {}}
 					transition={{ duration: 0.9, ease: "easeInOut" }}
-					className="flex flex-col md:flex-row md:items-center justify-between px-8 md:pl-14 pt-10 bg-linear-to-r from-[#0558FE] to-[#A9CFFF] max-w-6xl rounded-2xl overflow-hidden  dark:bg-linear-to-r dark:from-main-bg dark:to-second-bg md:mx-auto"
+					className="flex flex-col md:flex-row md:items-center justify-between px-8 md:pl-14 pt-10 bg-linear-to-r from-[#0558FE] to-[#A9CFFF] max-w-6xl rounded-2xl overflow-hidden  dark:bg-card-bg dark:border dark:border-dark-border md:mx-auto"
 				>
 					<div className="md:max-w-lg text-left pb-8">
 						<h2 className="text-3xl md:text-4xl text-white mb-4">
@@ -36,7 +36,7 @@ const Banner = () => {
 								user ? navigate("/owner/add-car") : setShowLogin(true);
 								scrollTo(0, 0);
 							}}
-							className="bg-white text-primary px-6 py-3 rounded-lg hover:bg-gray-100 transition-all duration-200  dark:border dark:border-white dark:text-white dark:bg-transparent dark:hover:bg-second-bg active:scale-95 cursor-pointer"
+							className="bg-white text-primary px-6 py-3 rounded-lg hover:bg-gray-100 transition-all duration-200  dark:bg-accent dark:hover:bg-accent-dull dark:text-main-bg dark:border-0 active:scale-95 cursor-pointer"
 						>
 							{user ? "List Your Car" : "Get Started"}
 						</button>

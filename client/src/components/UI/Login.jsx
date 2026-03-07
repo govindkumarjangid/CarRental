@@ -1,4 +1,3 @@
-import { useAppContext } from "../../context/AppContext.jsx";
 import { useAuthStore } from "../../store/useAuthStore.js";
 import { useState, useNavigate, useRef, motion, iconList } from "../../index.js";
 
@@ -42,7 +41,7 @@ const Login = () => {
 				transition={{ duration: 0.4 }}
 				onSubmit={handleSubmit}
 				onClick={(e) => e.stopPropagation()}
-				className="flex flex-col gap-4 m-auto items-start p-8 py-12 w-80 sm:w-88 text-gray-500 rounded-lg shadow-xl border border-gray-200 bg-white z-200  dark:bg-main-bg dark:text-light"
+				className="flex flex-col gap-4 m-auto items-start p-8 py-12 w-80 sm:w-88 text-gray-500 rounded-lg shadow-xl border border-gray-200 bg-white z-200  dark:bg-second-bg dark:text-dark-text dark:border-dark-border"
 			>
 				<p className="text-3xl font-medium m-auto">
 					<span className="text-primary dark:brightness-500">
@@ -60,12 +59,12 @@ const Login = () => {
 							placeholder=" "
 							value={name}
 							onChange={(e) => setName(e.target.value)}
-							className="w-full peer border border-gray-200 rounded-lg py-3 px-4 outline-none focus:border-primary focus:ring-2 focus:ring-primary/50 dark:outline-[#9BFFFF] transition-colors duration-200"
+							className="w-full peer border border-gray-200 rounded-lg py-3 px-4 outline-none focus:border-primary focus:ring-2 focus:ring-primary/50 dark:border-dark-border dark:bg-card-bg dark:text-dark-text dark:focus:border-accent dark:focus:ring-accent/50 transition-colors duration-200"
 						/>
 
 						<label
 							htmlFor="name"
-							className="absolute left-4 text-gray-500 pointer-events-none bg-white dark:bg-main-bg px-1
+							className="absolute left-4 text-gray-500 pointer-events-none bg-white dark:bg-second-bg px-1
 							transition-all duration-200
 							top-1/2 -translate-y-1/2
 							peer-focus:top-0 peer-focus:-translate-y-1/2 peer-focus:text-xs
@@ -84,12 +83,12 @@ const Login = () => {
 						placeholder=" "
 						value={email}
 						onChange={(e) => setEmail(e.target.value)}
-						className="peer w-full border border-gray-200 rounded-lg py-3 px-4 outline-none  focus:border-primary focus:ring-2 focus:ring-primary/50 dark:outline-[#9BFFFF]"
+						className="peer w-full border border-gray-200 rounded-lg py-3 px-4 outline-none  focus:border-primary focus:ring-2 focus:ring-primary/50 dark:border-dark-border dark:bg-card-bg dark:text-dark-text dark:focus:border-accent dark:focus:ring-accent/50"
 					/>
 
 					<label
 						htmlFor="email"
-						className="absolute left-4 text-gray-500 pointer-events-none bg-white dark:bg-main-bg px-1
+						className="absolute left-4 text-gray-500 pointer-events-none bg-white dark:bg-second-bg px-1
 						transition-all duration-200
 						top-1/2 -translate-y-1/2
 						peer-focus:top-0 peer-focus:-translate-y-1/2 peer-focus:text-xs
@@ -107,12 +106,12 @@ const Login = () => {
 						value={password}
 						placeholder=" "
 						onChange={(e) => setPassword(e.target.value)}
-						className="peer w-full border border-gray-200 rounded-lg py-3 px-4 outline-none  focus:border-primary focus:ring-2 focus:ring-primary/50 dark:outline-[#9BFFFF]"
+						className="peer w-full border border-gray-200 rounded-lg py-3 px-4 outline-none  focus:border-primary focus:ring-2 focus:ring-primary/50 dark:border-dark-border dark:bg-card-bg dark:text-dark-text dark:focus:border-accent dark:focus:ring-accent/50"
 					/>
 
 					<label
 						htmlFor="password"
-						className="absolute left-4 text-gray-500 pointer-events-none bg-white dark:bg-main-bg px-1
+						className="absolute left-4 text-gray-500 pointer-events-none bg-white dark:bg-second-bg px-1
 						transition-all duration-200
 						top-1/2 -translate-y-1/2
 						peer-focus:top-0 peer-focus:-translate-y-1/2 peer-focus:text-xs
@@ -130,7 +129,7 @@ const Login = () => {
 							Already have account ?{" "}
 							<span
 								onClick={() => setState("login")}
-								className="text-primary cursor-pointer dark:text-[#9BFFFF] "
+								className="text-primary cursor-pointer dark:text-accent "
 							>
 								click here
 							</span>
@@ -140,7 +139,7 @@ const Login = () => {
 							Create an account ?{" "}
 							<span
 								onClick={() => setState("register")}
-								className="text-primary cursor-pointer dark:text-[#9BFFFF] "
+								className="text-primary cursor-pointer dark:text-accent "
 							>
 								click here
 							</span>
@@ -158,7 +157,7 @@ const Login = () => {
 						: "bg-primary hover:bg-primary-dull"
 						} transition-all text-white w-full py-2 rounded-lg mt-2
             cursor-pointer active:scale-95
-          dark:bg-[#9BFFFF] dark:text-gray-900 dark:hover:bg-[#7EDFFF]`}
+          dark:bg-accent dark:text-main-bg dark:hover:bg-accent-dull`}
 				>
 					{isLoading ? (
 						<div className="flex items-center gap-2 justify-center">

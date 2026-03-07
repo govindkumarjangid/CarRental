@@ -64,6 +64,51 @@ export const useAuthStore = create(persist(
             }
         },
 
+        addReview: async (formData) => {
+            try {
+                const token = localStorage.getItem("token");
+                if (token) {
+                    axiosInstance.defaults.headers.common["Authorization"] = token;
+                }
+                const { data } = await axiosInstance.post("/api/user/add-review", formData);
+                if (data.success) {
+                    toast.success(data.message);
+                    set({ showReview: false });
+                    await get().fetchReviews();
+                    return true;
+                } else {
+                    toast.error(data.message);
+                    return false;
+                }
+            } catch (error) {
+                toast.error(error.response?.data?.message || error.message || "Failed to add review");
+                return false;
+            }
+        },
+
+        updateProfileImage: async (imageFile) => {
+            try {
+                const token = localStorage.getItem("token");
+                if (token) {
+                    axiosInstance.defaults.headers.common["Authorization"] = token;
+                }
+                const formData = new FormData();
+                formData.append("image", imageFile);
+                const { data } = await axiosInstance.post("/api/owner/update-image", formData);
+                if (data.success) {
+                    toast.success(data.message);
+                    await get().fetchUser();
+                    return true;
+                } else {
+                    toast.error(data.message || "Failed to update image");
+                    return false;
+                }
+            } catch (error) {
+                toast.error(error.response?.data?.message || error.message || "Server error");
+                return false;
+            }
+        },
+
         fetchUser: async () => {
             set({ isLoading: true, error: null });
             try {
@@ -232,6 +277,29 @@ export const useAuthStore = create(persist(
                 }
             } catch (error) {
                 toast.error(error.response?.data?.message || error.message || "Failed to update user status");
+            }
+        },
+
+        ownerDetails: {},
+        ownerDetailsLoading: false,
+
+        fetchOwnerDetails: async (ownerId) => {
+            set({ ownerDetailsLoading: true });
+            try {
+                const token = localStorage.getItem("token");
+                if (token) {
+                    axiosInstance.defaults.headers.common["Authorization"] = token;
+                }
+                const { data } = await axiosInstance.get(`/api/owner/owner-details/${ownerId}`);
+                if (data.success) {
+                    set({ ownerDetails: data.owner });
+                } else {
+                    toast.error(data.message);
+                }
+            } catch (error) {
+                toast.error(error.response?.data?.message || error.message || "Failed to fetch owner details");
+            } finally {
+                set({ ownerDetailsLoading: false });
             }
         },
 

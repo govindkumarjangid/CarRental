@@ -62,7 +62,7 @@ const AddCar = () => {
 
 			<form
 				onSubmit={onSubmithandler}
-				className="flex flex-col gap-5 text-gray-500 text-sm mt-6 max-w-2xl"
+				className="flex flex-col gap-5 text-gray-500 text-sm mt-6 max-w-2xl dark:text-dark-muted"
 			>
 				{/* car image  */}
 
@@ -80,7 +80,7 @@ const AddCar = () => {
 								className="h-14 w-26 object-cover rounded-md"
 							/>
 						) : (
-							<iconList.CloudUpload className="h-14 text-primary bg-gray-100 px-4 py-3 rounded-md cursor-pointer w-26 border border-gray-200	" />
+							<iconList.CloudUpload className="h-14 text-primary bg-gray-100 px-4 py-3 rounded-md cursor-pointer w-26 border border-gray-200 dark:bg-surface dark:border-dark-border dark:text-accent" />
 						)}
 
 						<input
@@ -113,7 +113,7 @@ const AddCar = () => {
 							name="brand"
 							placeholder="e.g. BMW, Mercedes, Audi"
 							className="px-3 py-2.5 mt-1	border border-gray-400 rounded-md
-							outline-none focus:border-primary focus:ring-2 focus:ring-primary/50"
+							outline-none focus:border-primary focus:ring-2 focus:ring-primary/50 dark:bg-card-bg dark:border-dark-border dark:text-dark-text"
 							value={car.brand}
 							onChange={handleChange}
 						/>
@@ -125,7 +125,7 @@ const AddCar = () => {
 							id="model"
 							name="model"
 							placeholder="e.g. X5, C-Class, A6"
-							className="px-3 py-2.5 mt-1	border border-gray-400 rounded-md outline-none	focus:border-primary focus:ring-2 focus:ring-primary/50"
+							className="px-3 py-2.5 mt-1	border border-gray-400 rounded-md outline-none	focus:border-primary focus:ring-2 focus:ring-primary/50 dark:bg-card-bg dark:border-dark-border dark:text-dark-text"
 							value={car.model}
 							onChange={handleChange}
 						/>
@@ -147,7 +147,7 @@ const AddCar = () => {
 							name="year"
 							placeholder="0"
 							className="px-3 py-2.5 mt-1	border border-gray-400 rounded-md
-							outline-none	focus:border-primary focus:ring-2 focus:ring-primary/50"
+							outline-none	focus:border-primary focus:ring-2 focus:ring-primary/50 dark:bg-card-bg dark:border-dark-border dark:text-dark-text"
 							value={car.year}
 							onChange={handleChange}
 						/>
@@ -160,7 +160,7 @@ const AddCar = () => {
 							name="pricePerDay"
 							placeholder="0"
 							className="px-3 py-2.5 mt-1	border border-gray-400 rounded-md
-							outline-none	focus:border-primary focus:ring-2 focus:ring-primary/50"
+							outline-none	focus:border-primary focus:ring-2 focus:ring-primary/50 dark:bg-card-bg dark:border-dark-border dark:text-dark-text"
 							value={car.pricePerDay}
 							onChange={handleChange}
 						/>
@@ -171,7 +171,7 @@ const AddCar = () => {
 							name="category"
 							id="category"
 							className="px-3 py-2.5 mt-1	border border-gray-400 rounded-md
-							outline-none	focus:border-primary focus:ring-2 focus:ring-primary/50"
+							outline-none	focus:border-primary focus:ring-2 focus:ring-primary/50 dark:bg-card-bg dark:border-dark-border dark:text-dark-text"
 							value={car.category}
 							onChange={handleChange}
 						>
@@ -203,7 +203,7 @@ const AddCar = () => {
 							name="transmission"
 							id="transmission"
 							className="px-3 py-2.5 mt-1	border border-gray-400 rounded-md
-							outline-none	focus:border-primary focus:ring-2 focus:ring-primary/50"
+							outline-none	focus:border-primary focus:ring-2 focus:ring-primary/50 dark:bg-card-bg dark:border-dark-border dark:text-dark-text"
 							value={car.transmission}
 							onChange={handleChange}
 						>
@@ -224,7 +224,7 @@ const AddCar = () => {
 							name="fuel_type"
 							id="fuel_type"
 							className="px-3 py-2.5 mt-1	border border-gray-400 rounded-md
-							outline-none	focus:border-primary focus:ring-2 focus:ring-primary/50"
+							outline-none	focus:border-primary focus:ring-2 focus:ring-primary/50 dark:bg-card-bg dark:border-dark-border dark:text-dark-text"
 							value={car.fuel_type}
 							onChange={handleChange}
 						>
@@ -246,7 +246,7 @@ const AddCar = () => {
 							id="seating_capacity"
 							name="seating_capacity"
 							className="px-3 py-2.5 mt-1	border border-gray-400 rounded-md
-							outline-none	focus:border-primary focus:ring-2 focus:ring-primary/50"
+							outline-none	focus:border-primary focus:ring-2 focus:ring-primary/50 dark:bg-card-bg dark:border-dark-border dark:text-dark-text"
 							value={car.seating_capacity}
 							onChange={handleChange}
 						/>
@@ -266,7 +266,7 @@ const AddCar = () => {
 							name="location"
 							id="location"
 							className="px-3 py-2.5 mt-1	border border-gray-400 rounded-md
-							outline-none	focus:border-primary focus:ring-2 focus:ring-primary/50"
+							outline-none	focus:border-primary focus:ring-2 focus:ring-primary/50 dark:bg-card-bg dark:border-dark-border dark:text-dark-text"
 							value={car.location}
 							onChange={handleChange}
 						>
@@ -297,7 +297,7 @@ const AddCar = () => {
 							id="description"
 							name="description"
 							className="px-3 py-2.5 mt-1	border border-gray-400 rounded-md
-							outline-none	focus:border-primary focus:ring-2 focus:ring-primary/50 resize-none"
+							outline-none	focus:border-primary focus:ring-2 focus:ring-primary/50 resize-none dark:bg-card-bg dark:border-dark-border dark:text-dark-text"
 							value={car.description}
 							onChange={handleChange}
 						></textarea>
@@ -307,7 +307,7 @@ const AddCar = () => {
 				<button
 					type="submit"
 					disabled={loading}
-					className={` px-5 py-2.5 mt-4 rounded-md text-white transition-all active:scale-95 mb-10 w-fit ${loading ? "cursor-not-allowed bg-primary" : "bg-primary hover:bg-primary-dull cursor-pointer"}`}
+					className={` px-5 py-2.5 mt-4 rounded-md text-white transition-all active:scale-95 mb-10 w-fit dark:bg-accent dark:hover:bg-accent-dull dark:text-main-bg ${loading ? "cursor-not-allowed bg-primary" : "bg-primary hover:bg-primary-dull cursor-pointer"}`}
 				>
 					{loading ? (
 						<span className="flex items-center gap-2">
