@@ -54,34 +54,115 @@
 <h2>📂 Project Structure</h2>
 
 <pre>
-car-rental/
+CarRental/
 │
 ├── server/
-|   ├── src/
-|   |    |── configs/
-|   |    ├── controllers/
-|   |    |── middleware/
-│   |    ├── models/
-│   |    └── routes/ 
-|   |── package-lock.json
-│   |── package.json
-│   |── index.js  
-│   └── server.js
+│   ├── src/
+│   │   ├── configs/
+│   │   │   ├── db.js
+│   │   │   ├── imagekit.js
+│   │   │   ├── multer.js
+│   │   │   ├── razorpay.js
+│   │   │   └── socket.js
+│   │   ├── controllers/
+│   │   │   ├── bookingController.js
+│   │   │   ├── chatController.js
+│   │   │   ├── ownerController.js
+│   │   │   └── userController.js
+│   │   ├── middleware/
+│   │   │   └── auth.js
+│   │   ├── models/
+│   │   │   ├── Booking.js
+│   │   │   ├── Car.js
+│   │   │   ├── Chat.js
+│   │   │   ├── Message.js
+│   │   │   ├── Review.js
+│   │   │   └── User.js
+│   │   └── Routes/
+│   │       ├── bookingRoutes.js
+│   │       ├── chatRoutes.js
+│   │       ├── ownerRoutes.js
+│   │       └── userRoutes.js
+│   ├── index.js
+│   ├── server.js
+│   ├── package.json
+│   └── package-lock.json
 │
 ├── client/
-|   |── public/
 │   ├── src/
-|   |   |── assets/
+│   │   ├── assets/
+│   │   │   ├── assets.jsx
+│   │   │   ├── logo.svg
+│   │   │   ├── main_car.png
+│   │   │   └── banner_car_image.png
 │   │   ├── components/
+│   │   │   ├── Home/
+│   │   │   │   ├── Banner.jsx
+│   │   │   │   ├── FeaturedSection.jsx
+│   │   │   │   ├── Hero.jsx
+│   │   │   │   └── Newsletter.jsx
+│   │   │   ├── UI/
+│   │   │   │   ├── Footer.jsx
+│   │   │   │   ├── Loader.jsx
+│   │   │   │   ├── Login.jsx
+│   │   │   │   ├── Navbar.jsx
+│   │   │   │   ├── NotFound404.jsx
+│   │   │   │   └── Title.jsx
+│   │   │   ├── booking/
+│   │   │   │   ├── BookingCard.jsx
+│   │   │   │   ├── BookingCardSkeleton.jsx
+│   │   │   │   └── EmptyBookings.jsx
+│   │   │   ├── car/
+│   │   │   │   ├── CarCard.jsx
+│   │   │   │   ├── CarCardSkeleton.jsx
+│   │   │   │   └── CarDetailsSkeleton.jsx
+│   │   │   ├── chat/
+│   │   │   │   └── ChatMessagesSkeleton.jsx
+│   │   │   ├── owner/
+│   │   │   │   ├── EditCarForm.jsx
+│   │   │   │   ├── NavbarOwner.jsx
+│   │   │   │   ├── Sidebar.jsx
+│   │   │   │   └── Title.jsx
+│   │   │   └── testimonial/
+│   │   │       ├── MarqueeRow.jsx
+│   │   │       ├── Testmonial.jsx
+│   │   │       ├── TestimonialCard.jsx
+│   │   │       ├── TestimonialForm.jsx
+│   │   │       └── TestimonialSkeleton.jsx
 │   │   ├── context/
+│   │   │   └── ProtectRoute.jsx
+│   │   ├── lib/
+│   │   │   └── axios.js
 │   │   ├── pages/
-|   |   |── App.jsx
-|   |   |── index.css
-|   |   |── index.js
-|   |   |── socket.js
-│   │   └── main.jsx
-|   |── package-lock.json
-│   └── package.json
+│   │   │   ├── owner/
+│   │   │   │   ├── AddCar.jsx
+│   │   │   │   ├── AllUsers.jsx
+│   │   │   │   ├── Chats.jsx
+│   │   │   │   ├── Dashboard.jsx
+│   │   │   │   ├── ManageBookings.jsx
+│   │   │   │   └── ManageCars.jsx
+│   │   │   ├── Cardetails.jsx
+│   │   │   ├── Cars.jsx
+│   │   │   ├── ChatPage.jsx
+│   │   │   ├── Home.jsx
+│   │   │   ├── Layout.jsx
+│   │   │   └── Mybookings.jsx
+│   │   ├── store/
+│   │   │   ├── useAuthStore.js
+│   │   │   ├── useBookingStore.js
+│   │   │   ├── useCarStore.js
+│   │   │   ├── useChatStore.js
+│   │   │   └── useThemeStore.js
+│   │   ├── App.jsx
+│   │   ├── index.css
+│   │   ├── index.js
+│   │   ├── main.jsx
+│   │   └── socket.js
+│   ├── index.html
+│   ├── vite.config.js
+│   ├── package.json
+│   └── package-lock.json
+│
 └── README.md
 </pre>
 
