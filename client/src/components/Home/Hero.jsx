@@ -1,52 +1,29 @@
-import { scale } from "motion/react";
-import { cityList } from "../../assets/assets.jsx";
-import { useAppContext } from "../../context/AppContext.jsx";
+import { cityList,assets } from "../../assets/assets.jsx";
+import { useCarStore } from "../../store/useCarStore.js";
+import {
+	useState,
+	motion,
+	iconList,
+	AnimatePresence, useNavigate
+} from "../../index.js"
+
 
 const Hero = () => {
-	const {
-		useState,
-		assets,
-		motion,
-		axios,
-		toast,
-		navigate,
-		currency,
-		iconList,
-		AnimatePresence,
-	} = useAppContext();
+
+	const navigate = useNavigate();
+	const currency = import.meta.env.VITE_CURRENCY;
+
+	const { checkAvailability, availableCars, loading } = useCarStore();
 
 	const [pickupDate, setPickupDate] = useState("");
 	const [returnDate, setReturnDate] = useState("");
 	const [pickupLocation, setPickupLocation] = useState("");
-	const [availableCars, setAvailableCars] = useState([]);
-	const [loading, setLoading] = useState(false);
 	const [open, setOpen] = useState(true);
 
-	const checkAvailability = async (e) => {
+	const handleSubmit = async (e) => {
 		e.preventDefault();
-		setLoading(true);
-		try {
-			const { data } = await axios.post(
-				"/api/bookings/check-availability",
-				{
-					location: pickupLocation,
-					pickupDate,
-					returnDate,
-				}
-			);
-			if (data.success) {
-				setAvailableCars(data.cars);
-				setOpen(true);
-				toast.success(`${data.cars.length} cars available for you!`);
-			} else {
-				toast.error(data.message);
-			}
-		} catch (error) {
-			console.log(error);
-			toast.error("Error checking car availability");
-		} finally {
-			setLoading(false);
-		}
+		await checkAvailability(pickupLocation, pickupDate, returnDate);
+		setOpen(true);
 	};
 
 	return (
@@ -65,7 +42,7 @@ const Hero = () => {
 
 				{/* check car availability form  */}
 				<motion.form
-					onSubmit={(e) => checkAvailability(e)}
+					onSubmit={handleSubmit}
 					initial={{ opacity: 0, scale: 0.9, y: 50 }}
 					animate={{ opacity: 1, scale: 1, y: 0 }}
 					transition={{ duration: 0.7, ease: "easeOut", delay: 0.7 }}

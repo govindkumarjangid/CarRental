@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useAppContext } from "../context/AppContext";
+import { useAuthStore } from "../store/useAuthStore.js";
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
 import CarDetailsSkeleton from "../components/car/CarDetailsSkeleton.jsx";
@@ -11,14 +12,14 @@ import { Check, CheckCheck } from "lucide-react";
 const ChatPage = () => {
 
   const {
-    currency,
     axios,
     toast,
-    user,
     iconList,
-    loading,
-    setLoading
   } = useAppContext();
+
+  const currency = import.meta.env.VITE_CURRENCY;
+  const { user } = useAuthStore();
+  const [loading, setLoading] = useState(false);
   const { id } = useParams();
   const [owner, setOwner] = useState("");
   const [input, setInput] = useState("");
@@ -260,7 +261,7 @@ const ChatPage = () => {
 
 
   return (
-    <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-8 lg:px-16 xl:px-24 
+    <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-8 lg:px-16 xl:px-24
     bg-white h-full overflow-hidden">
 
       <div className="w-full h-full bg-white flex flex-col md:flex-row overflow-hidden">

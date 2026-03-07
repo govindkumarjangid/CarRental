@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useAppContext } from "../../context/AppContext";
+import { useAuthStore } from "../../store/useAuthStore.js";
+import { useChatStore } from "../../store/useChatStore.js";
 import socket from "../../socket.js";
 import ScrollToBottom from "react-scroll-to-bottom";
 import { Check, CheckCheck } from "lucide-react";
@@ -8,21 +10,25 @@ import { Check, CheckCheck } from "lucide-react";
 const Chats = () => {
   const {
     OwnerTitle,
-    axios,
     toast,
-    user,
     iconList
   } = useAppContext();
+  const { user } = useAuthStore();
+  const {
+    chats,
+    messages,
+    getChats,
+    getMessages,
+    sendMessage,
+    setMessages,
+  } = useChatStore();
 
-  const [chats, setChats] = useState([]);
   const [activeChat, setActiveChat] = useState(null);
-  const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [typingChatId, setTypingChatId] = useState(null);
   const [onlineUsers, setOnlineUsers] = useState([]);
 
   const typingTimeoutRef = useRef(null);
-  const token = localStorage.getItem("token");
 
 
   const getOtherUser = (chat) => {
@@ -58,62 +64,11 @@ const Chats = () => {
     return `${dateStr} • ${time}`;
   };
 
-  const getChats = async () => {
-    try {
-      const { data } = await axios.get("/api/owner/owner-chats", {
-        headers: { Authorization: token },
-      });
-      if (data.success) setChats(data.chats);
-    } catch (err) {
-      toast.error(err.message);
-    }
-  };
 
-  const getMessages = async (chatId) => {
-    try {
-      const { data } = await axios.get("/api/chat/get-messages", {
-        params: { chatId },
-        headers: { Authorization: token },
-      });
-      if (data.success) setMessages(data.messages);
-    } catch (err) {
-      toast.error(err.message);
-    }
-  };
-
-  const sendMessage = async () => {
-    if (!input) return toast.error("Please Enter the message!");
-    // console.log(input)
-    if (!input.trim() || !activeChat) return;
-    const temp = {
-      _id: Date.now(),
-      senderRole: user.role,
-      message: input,
-      createdAt: new Date().toISOString(),
-    };
-    // console.log(temp)
-    setMessages((prev) => [...prev, temp]);
+  const handleSend = async () => {
+    const text = input;
     setInput("");
-    try {
-      const { data } = await axios.post(
-        "/api/chat/send-message",
-        {
-          chatId: activeChat._id,
-          from: user.role,
-          text: temp.message,
-        },
-        { headers: { Authorization: token } }
-      );
-
-      if (data.success) {
-        socket.emit("sendMessage", {
-          chatId: activeChat._id,
-          message: data.data.message,
-        });
-      }
-    } catch (err) {
-      toast.error(err.message);
-    }
+    await sendMessage(activeChat, user.role, text, socket);
   };
 
 
@@ -125,6 +80,9 @@ const Chats = () => {
     if (!activeChat?._id) return;
     getMessages(activeChat._id);
   }, [activeChat?._id]);
+
+
+  
 
   useEffect(() => {
     socket.connect();
@@ -340,13 +298,13 @@ const Chats = () => {
                   }, 1000);
                 }}
                 onKeyDown={(e) => {
-                  e.key == "Enter" && sendMessage();
+                  e.key == "Enter" && handleSend();
                 }}
                 placeholder="Type a message..."
                 className="px-3 flex py-2.5 mt-1 w-full	border border-gray-400 rounded-md outline-none	focus:border-primary focus:ring-2 focus:ring-primary/50"
               />
               <button
-                onClick={sendMessage}
+                onClick={handleSend}
                 className="bg-blue-600 text-white px-5 rounded-md active:scale-90 cursor-pointer transition-transform duration-300"
               >
                 <iconList.MousePointer2 className="rotate-135" />

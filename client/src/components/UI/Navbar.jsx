@@ -1,27 +1,22 @@
-import { menuLinks } from "../../assets/assets.jsx";
+import { menuLinks, assets } from "../../assets/assets.jsx";
 import { useThemeContext } from "../../context/ThemeContextProvider";
-import { useAppContext } from "../../context/AppContext";
+import { useAuthStore } from "../../store/useAuthStore.js";
+import {
+	Link,
+	useNavigate,
+	useLocation,
+	motion,
+	useInView,
+	useState,
+	useEffect,
+	useRef,
+	iconList
+} from "../../index.js"
 
 const Navbar = () => {
-	const {
-		setShowLogin,
-		user,
-		logout,
-		isOwner,
-		axios,
-		setIsOwner,
-		navigate,
-		toast,
-		assets,
-		useState,
-		useRef,
-		motion,
-		useInView,
-		useEffect,
-		iconList,
-		Link,
-		useLocation,
-	} = useAppContext();
+
+	const { user, isOwner, logout, setShowLogin, changeRole } = useAuthStore();
+	const navigate = useNavigate();
 
 	const location = useLocation();
 	const [open, setOpen] = useState(false);
@@ -33,20 +28,6 @@ const Navbar = () => {
 
 	const ref = useRef(null);
 	const isInView = useInView(ref, { once: true });
-
-	const changeRole = async () => {
-		try {
-			const { data } = await axios.post("/api/owner/change-role");
-			if (data?.success) {
-				setIsOwner(true);
-				toast.success(data.message || "Role updated successfully");
-			} else {
-				toast.error(data?.message || "Something went wrong");
-			}
-		} catch (error) {
-			toast.error(error?.message || "Server error");
-		}
-	};
 
 	return (
 		<motion.div
@@ -106,7 +87,7 @@ const Navbar = () => {
 							className="cursor-pointer px-8 py-2 bg-primary hover:bg-primary-dull transition-all text-white rounded-md active:scale-95"
 							onClick={async () => {
 								if (user) {
-									await logout();
+									await logout(navigate);
 								} else {
 									setShowLogin(true);
 								}

@@ -1,8 +1,11 @@
-import { useAppContext } from "../../context/AppContext";
+import { useAuthStore } from "../../store/useAuthStore.js";
+import { motion, useInView, useNavigate, useRef } from "../../index.js";
+import { assets } from "../../assets/assets.jsx";
 
 const Banner = () => {
-	const { motion, useInView, navigate, assets, useRef, user, setShowLogin } =
-		useAppContext();
+
+	const { setShowLogin, user } = useAuthStore();
+	const navigate = useNavigate();
 	const ref = useRef(null);
 	const isInView = useInView(ref, { once: true });
 	return (
@@ -30,11 +33,8 @@ const Banner = () => {
 						</p>
 						<button
 							onClick={() => {
-								{
-									user
-										? navigate("/owner/add-car")
-										: setShowLogin(true);
-								}
+								user ? navigate("/owner/add-car") : setShowLogin(true);
+								scrollTo(0, 0);
 							}}
 							className="bg-white text-primary px-6 py-3 rounded-lg hover:bg-gray-100 transition-all duration-200  dark:border dark:border-white dark:text-white dark:bg-transparent dark:hover:bg-second-bg active:scale-95 cursor-pointer"
 						>
@@ -44,11 +44,7 @@ const Banner = () => {
 
 					<motion.div
 						initial={{ opacity: 0, x: 100, filter: "blur(10px)" }}
-						animate={
-							isInView
-								? { opacity: 1, x: 0, filter: "blur(0px)" }
-								: {}
-						}
+						animate={isInView ? { opacity: 1, x: 0, filter: "blur(0px)" } : {}}
 						transition={{
 							duration: 0.9,
 							delay: 0.3,

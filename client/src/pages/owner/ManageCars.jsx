@@ -1,71 +1,25 @@
-import { useAppContext } from "../../context/AppContext.jsx";
+import { useCarStore } from "../../store/useCarStore.js";
+import { useEffect, useState, motion, iconList, OwnerTitle } from "../../index.js"
+import Loader from "../../components/UI/Loader.jsx";
 
 const ManageCars = () => {
+	const currency = import.meta.env.VITE_CURRENCY;
 	const {
-		axios,
+		ownerCars: cars,
 		loading,
-		setLoading,
-		currency,
-		useEffect,
-		useState,
-		motion,
-		OwnerTitle,
-		Loader,
-		toast,
-		iconList,
+		fetchOwnerCars,
+		toggleCarAvailability,
+		deleteCar,
 		setShowEditCar,
 		setEditCar
-	} = useAppContext();
+	} = useCarStore();
 
-	const [cars, setCars] = useState([]);
 	const [openConfirm, setOpenConfirm] = useState(false);
 	const [deleteId, setDeleteId] = useState(null);
-
-	const fetchOwnerCars = async () => {
-		try {
-			setLoading(true);
-			const { data } = await axios.get("/api/owner/cars");
-			if (data.success) {
-				setCars(data.cars);
-			}
-		} catch (error) {
-			toast.error(error.message);
-		} finally {
-			setLoading(false);
-		}
-	};
 
 	useEffect(() => {
 		fetchOwnerCars();
 	}, []);
-
-	const toggleCarAvailability = async (carId) => {
-		try {
-			const { data } = await axios.post("/api/owner/toggle-car", {
-				carId,
-			});
-			if (data.success) {
-				toast.success("Car availability toggled");
-				fetchOwnerCars();
-			}
-		} catch (error) {
-			toast.error(error.message);
-		}
-	};
-
-	const deleteCar = async (carId) => {
-		try {
-			const { data } = await axios.post("/api/owner/delete-car", {
-				carId,
-			});
-			if (data.success) {
-				toast.success("Car deleted successfully");
-				fetchOwnerCars();
-			}
-		} catch (error) {
-			toast.error(error.message);
-		}
-	};
 
 	if (loading) return <Loader />;
 

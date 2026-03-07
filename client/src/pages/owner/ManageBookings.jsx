@@ -1,78 +1,20 @@
-import { useAppContext } from "../../context/AppContext.jsx";
+import { motion, OwnerTitle, useEffect, } from "../../index.js";
+import { useBookingStore } from "../../store/useBookingStore.js";
+import Loader from "../../components/UI/Loader.jsx";
 
 const ManageBookings = () => {
 	const {
-		axios,
-		loading,
-		setLoading,
-		currency,
-		Loader,
-		toast,
-		motion,
-		OwnerTitle,
-		useEffect,
-		useState,
-	} = useAppContext();
-
-	const [bookings, setBookings] = useState([]);
-
-	const fetchOwnerBookings = async () => {
-		try {
-			setLoading(true);
-			const { data } = await axios.get("/api/bookings/owner");
-			if (data.success) {
-				setBookings(data.bookings);
-			}
-		} catch (error) {
-			console.log(error.message);
-			toast.error(error.message);
-		} finally {
-			setLoading(false);
-		}
-	};
+		ownerBookings: bookings,
+		ownerBookingLoading: loading,
+		fetchOwnerBookings,
+		changeBookingStatus,
+		changePaymentStatus,
+	} = useBookingStore();
+	const currency = import.meta.env.VITE_CURRENCY;
 
 	useEffect(() => {
 		fetchOwnerBookings();
 	}, []);
-
-	const changeBookingStatus = async (bookingId, status) => {
-		setLoading(true);
-		try {
-			const { data } = await axios.post("/api/bookings/change-status", {
-				bookingId,
-				status,
-			});
-			if (data.success) {
-				toast.success(data.message);
-				fetchOwnerBookings();
-			}
-			// console.log(bookingId, status, data);
-		} catch (error) {
-			toast.error(error.message);
-			console.log(error.message);
-		} finally {
-			setLoading(false);
-		}
-	};
-
-	const changePaymentStatus = async (bookingId, status) => {
-		setLoading(true);
-		try {
-			const { data } = await axios.post("/api/bookings/change-payment-status", {
-				bookingId,
-				status,
-			});
-			if (data.success) {
-				toast.success(data.message);
-				fetchOwnerBookings();
-			}
-		} catch (error) {
-			toast.error(error.message);
-			console.log(error.message);
-		} finally {
-			setLoading(false);
-		}
-	}
 
 	if (loading) return <Loader />;
 

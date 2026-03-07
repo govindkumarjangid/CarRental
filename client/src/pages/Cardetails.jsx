@@ -1,66 +1,34 @@
 import Loader from "../components/UI/Loader";
-import { useAppContext } from "../context/AppContext";
+import { useAuthStore } from "../store/useAuthStore.js";
+import { useCarStore } from "../store/useCarStore.js";
+import { useBookingStore } from "../store/useBookingStore.js";
+import {
+	iconList, toast, motion, useNavigate, useEffect,
+	useState, AnimatePresence, useParams
+} from "../index.js";
 
 const Cardetails = () => {
-	const {
-		motion,
-		navigate,
-		currency,
-		cars,
-		useEffect,
-		useState,
-		useParams,
-		axios,
-		pickupDate,
-		setPickupDate,
-		returnDate,
-		setReturnDate,
-		toast,
-		iconList,
-		AnimatePresence,
-		loadRazorpay,
-		setShowLogin,
-		fetchCars
-	} = useAppContext();
+
+	const currency = import.meta.env.VITE_CURRENCY;
+	const navigate = useNavigate();
+
+	const { setShowLogin, token, loadRazorpay } = useAuthStore();
+	const { cars, fetchCars, loading: carsLoading } = useCarStore();
+	const { createUserBooking, createOnlineBooking, verifyPayment, bookingLoading } = useBookingStore();
 
 	const { id } = useParams();
 	const [car, setCar] = useState(null);
-	const [loading, setLoading] = useState(false);
 	const [openPopup, setOpenPopup] = useState(false);
-	const token = localStorage.getItem("token");
+	const [loading, setLoading] = useState(false);
+	const [pickupDate, setPickupDate] = useState("");
+	const [returnDate, setReturnDate] = useState("");
 
-	const createUserBooking = async (e) => {
+	const handleOfflineBooking = async (e) => {
 		e.preventDefault();
-		setLoading(true);
-		try {
-			const { data } = await axios.post("/api/bookings/create", {
-				car,
-				pickupDate,
-				returnDate,
-			});
-			if (data.success) {
-				setPickupDate("");
-				setReturnDate("");
-				toast.success("Booking Created");
-				setOpenPopup(false);
-				navigate("/my-bookings");
-			} else {
-				toast.error(data.message);
-			}
-		} catch (error) {
-			toast.error(error.message);
-		} finally {
-			setLoading(false);
-		}
-	};
-
-	const verifyOnServer = async (payload) => {
-		try {
-			const res = await axios.post("/api/bookings/verify-payment", payload);
-			return res.data;
-		} catch (err) {
-			return { success: false };
-		}
+		setOpenPopup(false);
+		await createUserBooking({ car, pickupDate, returnDate }, navigate);
+		setPickupDate("");
+		setReturnDate("");
 	};
 
 	const handleOnlinePayment = async () => {
@@ -75,47 +43,47 @@ const Cardetails = () => {
 			return;
 		}
 
-		if (user) {
-			if (user.isBlocked) {
-				toast.error("Your account is blocked");
-				setLoading(false);
-				navigate("/");
-				return;
-			}
-		}
-		const loaded = await loadRazorpay();
-		if (loaded) {
-			toast.success("Razorpay SDK loaded");
+		if (user.isBlocked) {
+			toast.error("Your account is blocked");
 			setLoading(false);
-		} else {
-			toast.error("Failed to load Razorpay SDK");
+			navigate("/");
+			return;
 		}
 
-		const res = await axios.post("/api/bookings/create-online", {
-			car,
-			pickupDate,
-			returnDate,
-		});
-		const { order, amount, key, bookingId } = res.data;
+		const loaded = await loadRazorpay();
+		if (!loaded) {
+			toast.error("Failed to load Razorpay SDK");
+			setLoading(false);
+			return;
+		}
+
+		const orderData = await createOnlineBooking({ car, pickupDate, returnDate });
+		if (!orderData) {
+			setLoading(false);
+			return;
+		}
+
+		const { order, amount, key, bookingId } = orderData;
 
 		const options = {
-			key: key,
-			amount: amount,
+			key,
+			amount,
 			currency: "INR",
 			name: "Car Rental Booking",
 			description: "Car booking payment",
 			order_id: order.id,
 
 			handler: async function (response) {
-				const verify = await verifyOnServer({
+				const result = await verifyPayment({
 					razorpayOrderId: response.razorpay_order_id,
 					razorpayPaymentId: response.razorpay_payment_id,
 					razorpaySignature: response.razorpay_signature,
 					bookingId,
 				});
 
-				if (verify.data.success) {
-					toast.success("Payment Successful 🎉");
+				if (result.success) {
+					toast.success("Payment Successful");
+					setOpenPopup(false);
 					navigate("/my-bookings");
 				} else {
 					toast.error("Payment verification failed");
@@ -123,23 +91,23 @@ const Cardetails = () => {
 			},
 			modal: {
 				ondismiss: async function () {
-					await verifyOnServer({
+					await verifyPayment({
 						razorpayOrderId: order.id,
 						status: "failure",
-						bookingId
+						bookingId,
 					});
 					toast.error("Payment Failed");
-				}
+				},
 			},
 			theme: {
 				color: "#3399cc",
 			},
-		}
+		};
 
 		const rzp = new window.Razorpay(options);
 		rzp.open();
 		setLoading(false);
-	}
+	};
 
 	const handleBookNow = () => {
 		if (!pickupDate || !returnDate) {
@@ -149,7 +117,6 @@ const Cardetails = () => {
 			setOpenPopup(true);
 		}
 	};
-
 
 	useEffect(() => {
 		fetchCars();
@@ -162,7 +129,7 @@ const Cardetails = () => {
 		}
 	}, [cars, id]);
 
-	if (loading) return <Loader />
+	if (carsLoading) return <Loader />
 
 	return (
 		car && (
@@ -184,7 +151,7 @@ const Cardetails = () => {
 						<span>Back to Cars</span>
 					</button>
 
-					<div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12 ">
+					<div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
 						{/* LEFT */}
 						<div className="lg:col-span-2">
 							{/* IMAGE WITH SMOOTH HOVER */}
@@ -322,7 +289,7 @@ const Cardetails = () => {
 
 						{/* RIGHT / BOOKING FORM */}
 						<motion.form
-							onSubmit={(e) => createUserBooking(e)}
+							onSubmit={(e) => e.preventDefault()}
 							initial={{ opacity: 0, x: 100 }}
 							animate={{ opacity: 1, x: 0 }}
 							transition={{ duration: 0.6, ease: "easeOut" }}
@@ -379,7 +346,7 @@ const Cardetails = () => {
 						</motion.form>
 						{/* chat with owner  */}
 					</div>
-					{/* ✅ POPUP */}
+					{/*  POPUP */}
 					<AnimatePresence>
 						{openPopup && (
 							<motion.div
@@ -418,10 +385,10 @@ const Cardetails = () => {
 
 
 										<button
-											onClick={createUserBooking}
+											onClick={handleOfflineBooking}
 											className="w-full py-2 rounded-md bg-green-600 text-white cursor-pointer"
 										>
-											{loading ? (
+											{bookingLoading ? (
 												<>
 													<iconList.Loader
 														size={16}
@@ -447,7 +414,7 @@ const Cardetails = () => {
 					</AnimatePresence>
 
 					{/* chat with owner card  */}
-					<div className="flex items-center justify-end py-5 bg-light mt-10">
+					<div className="flex items-center justify-end py-5 mt-10">
 						<div className="w-80 bg-white rounded-xl shadow-md p-4">
 							{/* Image */}
 							<img
@@ -488,6 +455,7 @@ const Cardetails = () => {
 							</button>
 						</div>
 					</div>
+
 				</motion.div>
 			</>
 		)

@@ -1,8 +1,8 @@
-import { useAppContext } from "../../context/AppContext";
+import {motion,useRef, useInView, iconList, useNavigate} from "../../index.js"
 
 const CarCard = ({ car, index }) => {
-	const { currency, navigate, motion, useRef, useInView, iconList } =
-		useAppContext();
+	const navigate = useNavigate();
+	const currency = import.meta.env.VITE_CURRENCY;
 	const ref = useRef(null);
 	const inView = useInView(ref, { once: true });
 
@@ -14,8 +14,8 @@ const CarCard = ({ car, index }) => {
 	return (
 		<motion.div
 			ref={ref}
-			initial={{ opacity: 0, filter: "blur(10px)" }}
-			animate={inView ? { opacity: 1, filter: "blur(0px)" } : {}}
+			initial={{ opacity: 0, filter: "blur(10px)", y: 50 }}
+			animate={inView ? { opacity: 1, filter: "blur(0px)", y: 0 } : {}}
 			transition={{
 				ease: "easeOut",
 				delay: index * 0.1,

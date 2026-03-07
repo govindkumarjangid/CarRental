@@ -1,18 +1,12 @@
-import { useAppContext } from "../../context/AppContext.jsx";
+import { useCarStore } from "../../store/useCarStore.js";
+import { motion, OwnerTitle, useState, iconList, } from "../../index.js";
 
 const AddCar = () => {
-	const {
-		axios,
-		currency,
-		loading,
-		setLoading,
-		motion,
-		OwnerTitle,
-		toast,
-		useState,
-		iconList,
-	} = useAppContext();
+	const { addCar } = useCarStore();
 
+	const currency = import.meta.env.VITE_CURRENCY;
+
+	const [loading, setLoading] = useState(false);
 	const [image, setImage] = useState(null);
 	const [car, setCar] = useState({
 		brand: "",
@@ -38,45 +32,23 @@ const AddCar = () => {
 	const onSubmithandler = async (e) => {
 		e.preventDefault();
 		setLoading(true);
-		try {
-			const formData = new FormData();
-			formData.append("image", image);
-			formData.append("brand", car.brand);
-			formData.append("model", car.model);
-			formData.append("year", car.year);
-			formData.append("pricePerDay", car.pricePerDay);
-			formData.append("category", car.category);
-			formData.append("transmission", car.transmission);
-			formData.append("fuel_type", car.fuel_type);
-			formData.append("seating_capacity", car.seating_capacity);
-			formData.append("location", car.location);
-			formData.append("description", car.description);
-
-			const { data } = await axios.post("/api/owner/add-car", formData);
-			if (data.success) {
-				toast.success("Car added successfully");
-				setCar({
-					brand: "",
-					model: "",
-					year: 0,
-					pricePerDay: 0,
-					category: "",
-					transmission: "",
-					fuel_type: "",
-					seating_capacity: 0,
-					location: "",
-					description: "",
-				});
-				setImage(null);
-			} else {
-				toast.error(data.message || "Failed to add car");
-			}
-		} catch (error) {
-			console.error(error);
-			toast.error(error?.message || "Failed to add car");
-		} finally {
-			setLoading(false);
+		const success = await addCar(car, image);
+		if (success) {
+			setCar({
+				brand: "",
+				model: "",
+				year: 0,
+				pricePerDay: 0,
+				category: "",
+				transmission: "",
+				fuel_type: "",
+				seating_capacity: 0,
+				location: "",
+				description: "",
+			});
+			setImage(null);
 		}
+		setLoading(false);
 	};
 
 	return (

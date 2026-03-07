@@ -1,16 +1,21 @@
-import CarCard from "../car/CarCard.jsx";
-import { useAppContext } from "../../context/AppContext.jsx";
-import CarCardSkeleton from "../car/CarCardSkeleton.jsx";
+
+import { useCarStore } from "../../store/useCarStore.js";
+import { iconList, motion, Title, useNavigate, CarCardSkeleton, CarCard, useEffect } from "../../index.js";
+
 
 const FeaturedSection = () => {
-	const { motion, navigate, UserTitle, cars, iconList } = useAppContext();
-	const loading = cars.length === 0;
+	const { loading, cars, fetchCars } = useCarStore();
+	const navigate = useNavigate();
+
+	useEffect(() => {
+		fetchCars();
+	}, []);
 
 	return (
 		<>
 			<div className="max-w-8xl m-auto flex flex-col items-center py-24 px-6 md:px-16 lg:px-24 xl:px-32  dark:bg-linear-to-r dark:from-main-bg dark:to-second-bg">
 				<div>
-					<UserTitle
+					<Title
 						title="Featured Vehicles"
 						subTitle="Explore our selection of premium veficles avaiable for your best adventure"
 					/>
@@ -21,9 +26,9 @@ const FeaturedSection = () => {
 							[1, 2, 3].map(i => <CarCardSkeleton key={i} />)
 						) : (
 							cars.slice(0, 3).map((car, index) => (
-								<motion.div key={car._id}>
+								<div key={car._id}>
 									<CarCard car={car} index={index} />
-								</motion.div>
+								</div>
 							))
 						)
 					}

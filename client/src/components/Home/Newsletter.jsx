@@ -21,24 +21,14 @@ const Newsletter = () => {
 							: {}
 					}
 					transition={{ duration: 0.9, ease: "easeOut" }}
-					className=" flex flex-col sm:flex-row items-stretch sm:items-center
-    justify-between gap-3 sm:gap-2 mt-10 border border-slate-500
-    focus-within:outline focus-within:outline-primary dark:focus-within:outline-white  rounded-xl w-[95%] sm:w-full
-    max-w-3xl p-3 sm:p-4 dark:bg-main-bg bg-white"
+					className=" flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 sm:gap-2 mt-10 border border-slate-500 focus-within:outline focus-within:outline-primary dark:focus-within:outline-white  rounded-xl w-[95%] sm:w-full max-w-3xl p-3 sm:p-4 dark:bg-main-bg bg-white"
 				>
-					<input
-						className=" flex-1  bg-transparent outline-none
-        text-sm sm:text-base md:text-lg dark:text-light text-gray-700
-      placeholder:text-slate-400  px-2 min-h-11"
+					<input className="flex-1  bg-transparent outline-none text-sm sm:text-base md:text-lg dark:text-light text-gray-700 placeholder:text-slate-400  px-2 min-h-11"
 						placeholder="Enter your email address"
 						type="email"
 					/>
 
-					<button
-						className="bg-primary text-white rounded-lg h-11 sm:h-12
-      px-4 sm:px-8 w-full sm:w-auto flex items-center justify-center
-      hover:bg-primary-dull active:scale-95 transition
-      text-sm sm:text-base md:text-lg cursor-pointer"
+					<button	className="bg-primary text-white rounded-lg h-11 sm:h-12 px-4 sm:px-8 w-full sm:w-auto flex items-center justify-center hover:bg-primary-dull active:scale-95 transition text-sm sm:text-base md:text-lg cursor-pointer"
 					>
 						Subscribe
 					</button>

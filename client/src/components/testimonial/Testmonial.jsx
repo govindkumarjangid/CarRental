@@ -1,44 +1,19 @@
-import { useAppContext } from "../../context/AppContext";
-import MarqueeRow from "./MarqueeRow";
+import { useAuthStore } from "../../store/useAuthStore.js";
+import MarqueeRow from "./MarqueeRow.jsx";
+import { iconList, Title } from "../../index.js";
+import { useEffect } from "react";
 
 const Testmonial = () => {
-	const {
-		UserTitle,
-		setShowReview,
-		toast,
-		axios,
-		useEffect,
-		useState,
-		iconList,
-		setReviewLoading
-	} = useAppContext();
-
-	const [reviews, setReviews] = useState([]);
-
-	const getReviews = async () => {
-		setReviewLoading(true);
-		try {
-			const { data } = await axios.get("/api/user/get-reviews");
-			if (data.success) {
-				setReviews(data.reviews);
-				setReviewLoading(false);
-			}
-		} catch (error) {
-			console.log(error.message);
-			toast.error(error.message);
-		} finally {
-			setReviewLoading(true);
-		}
-	};
+	const { reviews, setShowReview, fetchReviews } = useAuthStore();
 
 	useEffect(() => {
-		getReviews();
+		fetchReviews();
 	}, []);
 
 	return (
 		<div className="max-w-8xl m-auto py-28 px-6 md:px-16 lg:px-24">
 
-			<UserTitle
+			<Title
 				title="What Our Customers Say"
 				subTitle="Discover why discerning travelers choose StayVenture for their luxury accomodations around the world."
 			/>

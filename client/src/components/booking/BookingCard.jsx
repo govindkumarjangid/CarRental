@@ -1,12 +1,11 @@
-import { useAppContext } from "../../context/AppContext.jsx";
+import {motion,useRef, useInView, iconList} from "../../index.js"
 
 const BookingCard = ({ booking, index }) => {
-	const { motion, currency, useRef, useInView, iconList } =
-		useAppContext();
+	const currency = import.meta.env.VITE_CURRENCY;
 	const ref = useRef(null);
 	const inView = useInView(ref, { once: true });
 
-	return (   
+	return (
 		<motion.div
 			ref={ref}
 			initial={{ y: 50, scale: 0.8, opacity: 0 }}
@@ -14,7 +13,7 @@ const BookingCard = ({ booking, index }) => {
 			transition={{
 				duration: 0.4,
 				ease: "easeInOut",
-				delay: index * 0.1,
+				delay: index * 0.05,
 			}}
 			className="grid grid-cols-1 md:grid-cols-4 gap-6 p-6 rounded-lg mt-5 first:mt-12 backdrop-blur-sm border border-gray-400 dark:bg-linear-to-r dark:from-main-bg dark:to-second-bg dark:border-gray-300 dark:text-white"
 		>

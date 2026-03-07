@@ -1,12 +1,16 @@
-import { useAppContext } from "../../context/AppContext";
-
 const Loader = () => {
-	const { iconList } = useAppContext();
-	return (
-		<div className="flex justify-center items-center h-[80vh]">
-			<iconList.Loader className="w-14 h-14  md:w-24 md:h-24 text-primary animate-spin" />
-		</div>
-	);
+    return (
+        <div className="flex justify-center items-center h-[80vh]">
+            <div className="relative md:w-[72px] md:h-[72px] w-[48px] h-[48px]">
+                <div className="orbit-dot bg-primary opacity-10"  style={{ animationDelay: '-0s' }}></div>
+                <div className="orbit-dot bg-primary opacity-25"  style={{ animationDelay: '-0.15s' }}></div>
+                <div className="orbit-dot bg-primary opacity-40"  style={{ animationDelay: '-0.30s' }}></div>
+                <div className="orbit-dot bg-primary opacity-60"  style={{ animationDelay: '-0.45s' }}></div>
+                <div className="orbit-dot bg-primary opacity-80"  style={{ animationDelay: '-0.60s' }}></div>
+                <div className="orbit-dot bg-primary opacity-100" style={{ animationDelay: '-0.75s' }}></div>
+            </div>
+        </div>
+    );
 };
 
 export default Loader;

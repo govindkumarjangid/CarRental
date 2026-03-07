@@ -1,29 +1,11 @@
-import { useAppContext } from "../../context/AppContext.jsx";
+import { useAuthStore } from "../../store/useAuthStore.js";
+import { motion, OwnerTitle, useEffect, iconList } from "../../index.js"
+import Loader from "../../components/UI/Loader.jsx";
+
 const Dashboard = () => {
-	const {
-		axios,
-		loading,
-		setLoading,
-		currency,
-		Loader,
-		toast,
-		motion,
-		OwnerTitle,
-		useEffect,
-		useState,
-		iconList,
-	} = useAppContext();
 
-
-	const [data, setData] = useState({
-		totalCars: 0,
-		totalBookings: 0,
-		pendingBookings: 0,
-		completedBookings: 0,
-		cancelledBookings: 0,
-		recentBookings: [],
-		monthlyRevenue: 0,
-	});
+	const { dashboardData: data, dashboardLoading: loading, fetchDashboardData } = useAuthStore();
+	const currency = import.meta.env.VITE_CURRENCY;
 
 	const dashboardCards = [
 		{
@@ -52,6 +34,7 @@ const Dashboard = () => {
 			icon: iconList.TriangleAlert,
 		},
 	];
+
 	const colorMap = {
 		"Total Cars": "text-blue-700 bg-blue-700/10",
 		"Total Bookings": "text-green-700 bg-green-700/10",
@@ -60,23 +43,8 @@ const Dashboard = () => {
 		Cancelled: "text-red-700 bg-red-700/10",
 	};
 
-	const fectchDashboardData = async () => {
-		try {
-			setLoading(true);
-			const { data } = await axios.get("/api/owner/dashboard");
-			if (data.success) {
-				setData(data.dashboardData);
-			}
-			toast.success("Dashboard data loaded");
-		} catch (error) {
-			toast.error("Failed to load dashboard data");
-		} finally {
-			setLoading(false);
-		}
-	};
-
 	useEffect(() => {
-		fectchDashboardData();
+		fetchDashboardData();
 	}, []);
 
 	if (loading) return <Loader />;

@@ -1,9 +1,6 @@
-import { delay } from "motion/react";
-import { useAppContext } from "../../context/AppContext";
+import { Link, iconList, motion } from "../../index.js";
 
 const EmptyBookings = () => {
-
-  const { Link, iconList, motion } = useAppContext();
   return (
     <div className="flex flex-col items-center justify-center py-20">
       <motion.div

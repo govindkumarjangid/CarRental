@@ -1,9 +1,8 @@
 import NavbarOwner from "../components/owner/NavbarOwner";
 import Sidebar from "../components/owner/Sidebar";
-import { useAppContext } from "../context/AppContext";
+import { Outlet } from "react-router-dom";
 
 const Layout = () => {
-	const { Outlet } = useAppContext();
 	return (
 		<div className="h-screen flex flex-col overflow-hidden">
 			{/* Navbar - fixed */}

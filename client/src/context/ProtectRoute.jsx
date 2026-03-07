@@ -1,7 +1,10 @@
-import { useAppContext } from "./AppContext";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuthStore } from "../store/useAuthStore.js";
 
 const ProtectRoute = ({ children }) => {
-  const { navigate, setShowLogin, useEffect } = useAppContext();
+  const navigate = useNavigate();
+  const { setShowLogin } = useAuthStore();
 
   const user = localStorage.getItem("user")
     ? JSON.parse(localStorage.getItem("user"))

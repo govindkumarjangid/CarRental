@@ -104,10 +104,13 @@ export const createOnlineBooking = async (req, res) => {
       currency: "INR",
       receipt: `receipt_order_${Date.now()}`
     });
-    console.log("ORDER CREATED --->", order);
+    // console.log("ORDER CREATED ", order);
 
 
-    const booking = await Booking.create({
+   if(!order)
+    return res.status(500).json({ success: false, message: "Error creating order" });
+   
+     const booking = await Booking.create({
       car,
       user: _id,
       owner: carData[0].owner,
@@ -115,9 +118,10 @@ export const createOnlineBooking = async (req, res) => {
       returnDate,
       price,
       paymentMethod: "online",
-      paymentStatus: "pending",
+      paymentStatus: "confirmed",
       razorpayOrderId: order.id,
     });
+
 
     return res.json({
       success: true,

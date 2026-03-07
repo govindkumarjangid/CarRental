@@ -1,47 +1,28 @@
 import { useAppContext } from "../../context/AppContext.jsx";
+import { useAuthStore } from "../../store/useAuthStore.js";
+import { useState, useNavigate, useRef, motion, iconList } from "../../index.js";
 
 const Login = () => {
-	const {
-		setShowLogin,
-		axios,
-		setToken,
-		navigate,
-		useState,
-		useRef,
-		motion,
-		toast,
-		iconList,
-	} = useAppContext();
+	const { signup, login, isLoading, setShowLogin } = useAuthStore();
 
 	const [state, setState] = useState("login");
 	const [name, setName] = useState("");
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
-	const [loading, setLoading] = useState(false);
+
+	const navigate = useNavigate();
 	const ref = useRef(null);
 
 	const handleSubmit = async (e) => {
-		try {
-			e.preventDefault();
-			setLoading(true);
-			const { data } = await axios.post(`/api/user/${state}`, {
-				name,
-				email,
-				password,
-			});
-			if (data.success) {
-				navigate("/");
-				setToken(data.token);
-				localStorage.setItem("token", data.token);
-				toast.success("Login successful");
-				setShowLogin(false);
-			} else {
-				toast.error(data.message);
-			}
-		} catch (error) {
-			toast.error(error.message);
-		} finally {
-			setLoading(false);
+		e.preventDefault();
+		if (state === "register") {
+			await signup({ name, email, password });
+		} else {
+			await login({ email, password });
+		}
+		if (useAuthStore.getState().isAuthenticated) {
+			setShowLogin(false);
+			navigate("/");
 		}
 	};
 
@@ -171,15 +152,15 @@ const Login = () => {
 
 				<button
 					type="submit"
-					disabled={loading}
-					className={`${loading
+					disabled={isLoading}
+					className={`${isLoading
 						? "opacity-90 cursor-not-allowed bg-primary"
 						: "bg-primary hover:bg-primary-dull"
 						} transition-all text-white w-full py-2 rounded-lg mt-2
             cursor-pointer active:scale-95
           dark:bg-[#9BFFFF] dark:text-gray-900 dark:hover:bg-[#7EDFFF]`}
 				>
-					{loading ? (
+					{isLoading ? (
 						<div className="flex items-center gap-2 justify-center">
 							<iconList.Loader
 								size={16}

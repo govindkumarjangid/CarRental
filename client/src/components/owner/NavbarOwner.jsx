@@ -1,7 +1,9 @@
 import { useAppContext } from "../../context/AppContext.jsx";
+import { useAuthStore } from "../../store/useAuthStore.js";
 
 const NavbarOwner = () => {
-	const { user, motion, useInView, useRef, assets, Link } = useAppContext();
+	const { motion, useInView, useRef, assets, Link } = useAppContext();
+	const { user } = useAuthStore();
 	const ref = useRef(null);
 	const isInView = useInView(ref, { once: true });
 

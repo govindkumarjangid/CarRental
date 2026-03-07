@@ -1,11 +1,10 @@
 import { ownerMenuLinks } from "../../assets/assets.jsx";
 import { useAppContext } from "../../context/AppContext.jsx";
+import { useAuthStore } from "../../store/useAuthStore.js";
 
 const Sidebar = () => {
 	const {
-		user,
 		axios,
-		fetchUser,
 		toast,
 		motion,
 		useState,
@@ -13,6 +12,7 @@ const Sidebar = () => {
 		NavLink,
 		useLocation,
 	} = useAppContext();
+	const { user, fetchUser } = useAuthStore();
 	const location = useLocation();
 	const MotionNavLink = motion(NavLink);
 	const [image, setImage] = useState(null);

@@ -1,7 +1,6 @@
-import { useAppContext } from "../../context/AppContext";
+import {motion, iconList} from "../../index.js"
 
 const TestimonialCard = ({ review, index }) => {
-	const { motion, iconList } = useAppContext();
 	return (
 		<motion.div
 			key={index}

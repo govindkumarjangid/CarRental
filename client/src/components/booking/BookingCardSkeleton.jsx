@@ -1,21 +1,6 @@
-import { useAppContext } from "../../context/AppContext";
-
-const BookingCardSkeleton = ({ index }) => {
-  const { motion, useRef, useInView } =
-    useAppContext();
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true });
+const BookingCardSkeleton = () => {
   return (
-    <motion.div
-      ref={ref}
-      initial={{ y: 50, scale: 0.8, opacity: 0 }}
-      animate={inView ? { y: 0, scale: 1, opacity: 1 } : {}}
-      transition={{
-        duration: 0.4,
-        ease: "easeInOut",
-        delay: index * 0.1,
-      }}
-      className="grid grid-cols-1 md:grid-cols-4 gap-6 p-5 rounded-lg mt-5 first:mt-12 backdrop-blur-sm border border-gray-300 animate-pulse">
+    <div  className="grid grid-cols-1 md:grid-cols-4 gap-6 p-5 rounded-lg mt-5 first:mt-12 backdrop-blur-sm border border-gray-300 animate-pulse">
       <div className="md:col-span-1">
         <div className="w-full h-auto aspect-video object-cover rounded-lg bg-gray-200 mb-4" />
         <div className="h-6 w-34 bg-gray-200 rounded mb-2" />
@@ -42,7 +27,7 @@ const BookingCardSkeleton = ({ index }) => {
         <div className="h-7 w-20 bg-gray-200 rounded" />
         <div className="h-4 w-28 bg-gray-200 rounded" />
       </div>
-    </motion.div>
+    </div>
   );
 };
 

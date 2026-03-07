@@ -1,10 +1,12 @@
-import { useAppContext } from "../../context/AppContext";
+import { useAuthStore } from "../../store/useAuthStore.js";
 import TestimonialCard from "./TestimonialCard";
 import TestimonialSkeleton from "./TestimonialSkeleton";
 import { useAnimation } from 'motion/react'
+import { motion } from "../../index.js";
+import { useEffect } from "react";
 
 const MarqueeRow = ({ items, reverse }) => {
-  const { motion, reviewLoading, useEffect } = useAppContext();
+  const { reviewLoading } = useAuthStore();
   const controls = useAnimation()
 
   useEffect(() => {

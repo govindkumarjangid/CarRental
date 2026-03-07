@@ -1,9 +1,11 @@
-import { useAppContext } from "../../context/AppContext";
+import { useCarStore } from "../../store/useCarStore.js";
 import Loader from "../UI/Loader.jsx";
+import {useState, motion,  iconList, useEffect} from "../../index.js";
+
 
 const EditCarForm = () => {
 
-  const { useState, motion, setShowEditCar, toast, axios, iconList, editCar, useEffect } = useAppContext();
+  const { setShowEditCar, editCar, updateCar } = useCarStore();
 
   const [car, setCar] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -11,7 +13,6 @@ const EditCarForm = () => {
 
   useEffect(() => {
     if (!editCar) return;
-
     setCar({
       brand: editCar.brand || "",
       model: editCar.model || "",
@@ -39,33 +40,8 @@ const EditCarForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    try {
-      const fd = new FormData();
-      fd.append("carId", editCar._id);
-      Object.entries(car).forEach(([key, value]) => {
-        if (key !== "image") {
-          fd.append(key, value);
-        }
-      });
-      if (image) fd.append("image", image);
-      else if (car?.image) fd.append("imageUrl", car.image);
-      const { data } = await axios.post("/api/owner/edit-car", fd, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-
-      if (data.success) {
-        toast.success(data.message);
-        setShowEditCar(false);
-      } else {
-        toast.error(data.message);
-      }
-    } catch (err) {
-      toast.error(err.message);
-    } finally {
-      setLoading(false);
-    }
+    await updateCar(car, image);
+    setLoading(false);
   };
 
 
@@ -75,7 +51,8 @@ const EditCarForm = () => {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.3 }}
-      className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-md"
+      onClick={() => setShowEditCar(false)}
+      className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm"
     >
       <motion.form
         initial={{ scale: 0.8, opacity: 0, y: 40 }}
@@ -83,7 +60,8 @@ const EditCarForm = () => {
         exit={{ scale: 0.8, opacity: 0, y: 40 }}
         transition={{ duration: 0.3 }}
         onSubmit={handleSubmit}
-        className="max-w-4xl mx-auto bg-white px-8 py-4 shadow-2xl overflow-y-auto blue-thumb-scrollbar max-h-full md:max-h-11/12 rounded-md w-full"
+        onClick={(e) => e.stopPropagation()}
+        className="max-w-4xl mx-auto bg-white px-8 py-4 shadow-2xl overflow-y-auto blue-thumb-scrollbar max-h-full md:max-h-11/12 rounded-md w-full z-51"
       >
 
         {/* title and close button  */}

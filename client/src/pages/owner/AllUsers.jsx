@@ -1,56 +1,19 @@
 import Loader from '../../components/UI/Loader';
-import { useAppContext } from '../../context/AppContext';
+import { useAuthStore } from '../../store/useAuthStore';
+import { motion, OwnerTitle, useEffect } from '../../index.js';
 
 const AllUsers = () => {
 
   const {
-    OwnerTitle,
-    motion,
-    useState,
-    useEffect,
-    axios,
-    toast,
-    setLoading,
-    loading } = useAppContext();
-  const [AllUsers, setAllUsers] = useState([]);
-
-
-  const handleBlockToggle = async (userId, isBlocked) => {
-    try {
-      const { data } = await axios.post("/api/owner/block-unblock", {
-        userId,
-        isBlocked,
-      });
-      if (data.success) {
-        toast.success(data.message);
-        fetchAllUsers();
-      } else {
-        toast.error("Failed to update user status");
-      }
-    } catch (error) {
-      toast.error(error.message);
-    }
-  }
-
-  const fetchAllUsers = async () => {
-    setLoading(true);
-    try {
-      const { data } = await axios.get('/api/owner/allusers');
-      if (data.success) {
-        setAllUsers(data.users);
-      } else {
-        toast.error("Failed to fetch users");
-      }
-    } catch (error) {
-      toast.error(error.message);
-    } finally {
-      setLoading(false);
-    }
-  }
+    allUsers: AllUsers,
+    allUsersLoading: loading,
+    fetchAllUsers,
+    handleBlockToggle,
+  } = useAuthStore();
 
   useEffect(() => {
     fetchAllUsers();
-  }, [])
+  }, []);
 
   if (loading) return <Loader />;
 

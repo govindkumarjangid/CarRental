@@ -1,8 +1,9 @@
-import { useAppContext } from "../../context/AppContext";
+import { useAuthStore } from "../../store/useAuthStore.js";
+import { motion, iconList,useState,toast } from "../../index.js";
+import axios from "axios";
 
 const TestimonialForm = () => {
-	const { toast, useState, motion, iconList, axios, setShowReview } =
-		useAppContext();
+	const { setShowReview } = useAuthStore();
 	const [form, setForm] = useState({
 		name: "",
 		email: "",

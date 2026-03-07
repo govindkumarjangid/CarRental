@@ -1,17 +1,9 @@
-import CarCardSkeleton from '../components/car/CarCardSkeleton.jsx';
-import { useAppContext } from "../context/AppContext.jsx";
-import { motion } from "motion/react";
-import { useState, useEffect } from "react";
-import CarCard from '../components/car/CarCard.jsx';
-import { Title } from '../components/UI/Title.jsx';
+import { CarCard, CarCardSkeleton, Title } from "../index.js";
+import { useCarStore } from "../store/useCarStore.js";
+import {iconList, useState, useEffect, motion} from "../index.js";
 
 const Cars = () => {
-	const {
-		fetchCars,
-		cars,
-		loading,
-		iconList,
-	} = useAppContext();
+	const { cars, loading, fetchCars } = useCarStore();
 
 	const [filter, setFilter] = useState("");
 	const [input, setInput] = useState("");
@@ -38,7 +30,6 @@ const Cars = () => {
 		if (sortOrder === "desc") sortedCars.reverse();
 	}
 
-	// Animation variants
 	const container = {
 		hidden: { opacity: 0 },
 		show: {
@@ -223,7 +214,7 @@ const Cars = () => {
 
 				{/* cards grid  */}
 				<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-14 px-5 md:px-30">
-					{loading ? [1, 2, 3, 4, 5].map((_, index) =>
+					{loading ? [1, 2, 3, 4, 5, 6].map((_, index) =>
 						<CarCardSkeleton index={index} key={index} />
 					) : sortedCars.map((car, index) => (
 						<div key={car._id}>
@@ -231,6 +222,7 @@ const Cars = () => {
 						</div>
 					))}
 				</div>
+
 			</div >
 		</>
 	);
