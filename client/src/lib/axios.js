@@ -2,6 +2,6 @@ import axios from 'axios';
 
 export const axiosInstance = axios.create({
     baseURL: import.meta.env.MODE === 'development' ?
-        'http://localhost:8080' : 'https://carrental-nezp.onrender.com',
+       import.meta.env.VITE_BASE_URL : import.meta.env.VITE_BASE_SERVER_URL,
     withCredentials: true,
 });

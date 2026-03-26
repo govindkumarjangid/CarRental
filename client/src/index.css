@@ -13,7 +13,7 @@ body::selection {
 @theme {
       --color-primary: #2563EB;
       --color-primary-dull: #1F58D8;
-      --color-light: #F1F5F9;
+      --color-light: #EEF7FF;
       --color-main-bg: #131414;
       --color-second-bg: #333435;
 }
