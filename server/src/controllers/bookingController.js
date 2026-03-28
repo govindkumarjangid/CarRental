@@ -109,7 +109,7 @@ export const createOnlineBooking = async (req, res) => {
 
    if(!order)
     return res.status(500).json({ success: false, message: "Error creating order" });
-   
+
      const booking = await Booking.create({
       car,
       user: _id,
@@ -235,7 +235,7 @@ export const verifyPayment = async (req, res) => {
       razorpayOrderId: razorpayOrderId,
       razorpayPaymentId: razorpayPaymentId,
       razorpaySignature: razorpaySignature,
-      paymentStatus: "completed",
+      paymentStatus: "confirmed",
       status: "confirmed",
     })
     res.json({ success: true, message: "Payment verified" });

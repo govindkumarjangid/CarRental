@@ -34,9 +34,7 @@ const App = () => {
 	}, []);
 
 	useEffect(() => {
-		if (token) {
-			fetchUser();
-		}
+		if (token) fetchUser();
 	}, [token]);
 
 	return (

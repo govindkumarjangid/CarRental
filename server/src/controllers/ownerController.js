@@ -51,7 +51,7 @@ export const addCar = async (req, res) => {
     });
 
     // Optimized Image URL
-    const optimizedImageUrl = response.url + "?tr=w-1280,q-auto,f-webp";
+    const optimizedImageUrl = response.url + "?tr=w-1280,q-auto,f-avif";
 
     const image = optimizedImageUrl;
 
