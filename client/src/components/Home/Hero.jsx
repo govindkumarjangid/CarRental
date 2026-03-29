@@ -1,4 +1,4 @@
-import { cityList,assets } from "../../assets/assets.jsx";
+import { cityList, assets } from "../../assets/assets.jsx";
 import { useCarStore } from "../../store/useCarStore.js";
 import {
 	useState,
@@ -28,17 +28,22 @@ const Hero = () => {
 
 	return (
 		<>
-			<div className="max-w-8xl m-auto flex flex-col justify-center items-center gap-8 bg-light text-center dark:bg-main-bg px-2">
+			<div className="max-w-8xl m-auto flex flex-col justify-center items-center gap-6 bg-light text-center dark:bg-main-bg px-2">
 
 				{/* heading  */}
 				<motion.h1
 					initial={{ opacity: 0, y: 100 }}
 					animate={{ opacity: 1, y: 0 }}
 					transition={{ duration: 0.7, ease: "easeOut", delay: 0.1 }}
-					className="text-4xl md:text-5xl font-semibold text-gray-800 dark:text-white mt-15 mb-2"
+					className="text-4xl md:text-5xl font-semibold text-gray-800 dark:text-white mt-15"
 				>
 					Luxury cars on Rent
 				</motion.h1>
+				<motion.p
+					initial={{ opacity: 0, y: 100 }}
+					animate={{ opacity: 1, y: 0 }}
+					transition={{ duration: 0.7, ease: "easeOut", delay: 0.3 }}
+					className='text-md text-gray-600'>Experience the pninacle of automotive excellence, curted for your journey.</motion.p>
 
 				{/* check car availability form  */}
 				<motion.form
