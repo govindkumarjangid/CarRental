@@ -1,6 +1,6 @@
 import { CarCard, CarCardSkeleton, Title } from "../index.js";
 import { useCarStore } from "../store/useCarStore.js";
-import {iconList, useState, useEffect, motion} from "../index.js";
+import { iconList, useState, useEffect, motion } from "../index.js";
 
 const Cars = () => {
 	const { cars, loading, fetchCars } = useCarStore();
@@ -9,10 +9,20 @@ const Cars = () => {
 	const [input, setInput] = useState("");
 	const [sortOrder, setSortOrder] = useState(null);
 	const [open, setOpen] = useState(false);
+	const [visibleCount, setVisibleCount] = useState(6);
+	const [isLoadingMore, setIsLoadingMore] = useState(false);
 
 	useEffect(() => {
 		fetchCars();
 	}, []);
+
+	const handleLoadMore = () => {
+		setIsLoadingMore(true);
+		setTimeout(() => {
+			setVisibleCount(prev => prev + 6);
+			setIsLoadingMore(false);
+		}, 800);
+	};
 
 	const filteredCars = cars.filter((car) => {
 		const matchesBrand = car.brand
@@ -216,12 +226,42 @@ const Cars = () => {
 				<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-14 px-5 md:px-30">
 					{loading ? [1, 2, 3, 4, 5, 6].map((_, index) =>
 						<CarCardSkeleton index={index} key={index} />
-					) : sortedCars.map((car, index) => (
+					) : sortedCars.slice(0, visibleCount).map((car, index) => (
 						<div key={car._id}>
 							<CarCard car={car} index={index} />
 						</div>
 					))}
 				</div>
+
+				{/* Load More Button Container */}
+				{!loading && visibleCount < sortedCars.length && (
+					<div className="flex justify-center mt-10 mb-5">
+						<motion.button
+							initial={{ opacity: 0, y: 50 }}
+							animate={{ opacity: 1, y: 0 }}
+							transition={{ duration: 0.8, ease: "easeIn" }}
+							onClick={handleLoadMore}
+							disabled={isLoadingMore}
+							className={`flex group items-center justify-center gap-2 px-6 py-2 border-2  rounded-md mt-18 transition-all duration-300
+								${isLoadingMore
+								? 'border-gray-300 text-gray-600 cursor-wait'
+								: 'border-gray-500 text-gray-600 hover:bg-primary cursor-pointer hover:text-light hover:border-light active:scale-95'
+								}`}
+						>
+							{isLoadingMore ? (
+								<>
+									Loading...
+									<iconList.Loader size={22} className="animate-spin" />
+								</>
+							) : (
+								<>
+									Load More
+									<iconList.ArrowDown size={25} className="animate-bounce pt-2" />
+								</>
+							)}
+						</motion.button>
+					</div>
+				)}
 
 			</div >
 		</>

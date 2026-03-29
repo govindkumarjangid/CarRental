@@ -1,5 +1,5 @@
 import { useAuthStore } from "../../store/useAuthStore.js";
-import { motion, iconList,useState,toast } from "../../index.js";
+import { motion, iconList, useState, toast } from "../../index.js";
 
 const TestimonialForm = () => {
 	const { setShowReview, addReview } = useAuthStore();
@@ -40,16 +40,23 @@ const TestimonialForm = () => {
 
 	return (
 		<motion.div
-			onClick={() => setShowReview(false)}
 			initial={{ opacity: 0 }}
 			animate={{ opacity: 1 }}
-			exit={{ opacity: 0 }}
-			transition={{ duration: 0.3 }}
-			className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-md"
+			exit={{ opacity: 0 , scale: 0}}
+			onClick={() => setShowReview(false)}
+			className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-xs"
 		>
-			<form
+			<motion.form
 				onSubmit={(e) => handleSubmit(e)}
 				onClick={(e) => e.stopPropagation()}
+				initial={{ opacity: 0, scale: 0 }}
+				animate={{ opacity: 1, scale: 1 }}
+				exit={{ opacity: 0, scale: 0 }}
+				transition={{
+					type: "spring",
+					stiffness: 250,
+					damping: 25
+				}}
 				className="w-full h-full md:h-fit md:max-w-2xl md:mx-auto p-4 md:py-4 md:px-6 bg-white md:rounded-md shadow-lg overflow-hidden"
 			>
 				<div className="flex items-center justify-between">
@@ -221,7 +228,7 @@ const TestimonialForm = () => {
 						<>Submit Review</>
 					)}
 				</motion.button>
-			</form>
+			</motion.form>
 		</motion.div>
 	);
 };

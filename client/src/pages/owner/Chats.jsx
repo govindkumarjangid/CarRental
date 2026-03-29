@@ -31,7 +31,7 @@ const Chats = () => {
 
 
   const getOtherUser = (chat) => {
-    return chat.user._id === user._id ? chat.owner : chat.user;
+    return chat?.user?._id === user?._id ? chat?.owner : chat?.user;
   }
 
   const formatMessageTime = (date) => {
@@ -79,7 +79,6 @@ const Chats = () => {
     if (!activeChat?._id) return;
     getMessages(activeChat._id);
   }, [activeChat?._id]);
-
 
 
 
@@ -184,7 +183,7 @@ const Chats = () => {
                 className={`flex gap-3 pl-4 md:px-6 py-3 cursor-pointer border-b border-gray-400 dark:border-dark-border active:scale-101 transition-all duration-300 hover:bg-gray-100 dark:hover:bg-surface ${activeChat?._id === chat._id ? "bg-gray-100 dark:bg-surface" : ""}`}
               >
                 <div className="relative">
-                  <iconList.CircleUser size={36} className="text-gray-500" />
+                  <iconList.CircleUser size={36} className="text-primary" />
                   <span
                     className={`absolute bottom-1 right-1 h-3 w-3 rounded-full border-2 border-white dark:border-second-bg ${isOnline ? "bg-green-500" : "bg-gray-400"
                       }`}
@@ -220,7 +219,7 @@ const Chats = () => {
             </button>
             <span className="font-semibold flex items-center gap-2">
               {activeChat ? <>
-                <iconList.CircleUser size={40} className="text-gray-500" />
+                <iconList.CircleUser size={40} className="text-primary" />
                 <div className="flex flex-col">
                   <span>{getOtherUser(activeChat).name}</span>
                   {
