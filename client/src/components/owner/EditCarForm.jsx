@@ -1,6 +1,6 @@
 import { useCarStore } from "../../store/useCarStore.js";
 import Loader from "../UI/Loader.jsx";
-import {useState, motion,  iconList, useEffect} from "../../index.js";
+import { useState, motion, iconList, useEffect } from "../../index.js";
 
 
 const EditCarForm = () => {
@@ -44,7 +44,6 @@ const EditCarForm = () => {
     setLoading(false);
   };
 
-
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -55,10 +54,15 @@ const EditCarForm = () => {
       className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm"
     >
       <motion.form
-        initial={{ scale: 0.8, opacity: 0, y: 40 }}
-        animate={{ scale: 1, opacity: 1, y: 0 }}
-        exit={{ scale: 0.8, opacity: 0, y: 40 }}
-        transition={{ duration: 0.3 }}
+        initial={{ opacity: 0, scale: 0 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 0 }}
+        transition={{
+          duration: 0.5,
+          type: "spring",
+          stiffness: 200,
+          damping: 20,
+        }}
         onSubmit={handleSubmit}
         onClick={(e) => e.stopPropagation()}
         className="max-w-4xl mx-auto bg-white px-8 py-4 shadow-2xl overflow-y-auto blue-thumb-scrollbar max-h-full md:max-h-11/12 rounded-md w-full z-51"

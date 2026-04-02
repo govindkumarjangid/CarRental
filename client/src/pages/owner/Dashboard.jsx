@@ -60,8 +60,16 @@ const Dashboard = () => {
 					const Icon = card.icon;
 					return (
 						<motion.div
-							animate={{ opacity: [0, 1], y: [40, 0] }}
-							transition={{ duration: 0.3, delay: index * 0.2 }}
+							initial={{ opacity: 0, scale: 0 }}
+							animate={{ opacity: 1, scale: 1 }}
+							exit={{ opacity: 0, scale: 0 }}
+							transition={{
+								duration: 0.5,
+								type: "spring",
+								stiffness: 200,
+								damping: 20,
+								delay: index * 0.2
+							}}
 							key={index}
 							className="flex gap-2 items-center justify-between p-4 rounded-md border border-gray-500 dark:border-dark-border dark:bg-card-bg"
 						>
@@ -87,8 +95,15 @@ const Dashboard = () => {
 
 			<div className="flex items-start md:flex-row flex-col gap-6 mb-8 w-full max-w-12/12">
 				<motion.div
-					animate={{ opacity: [0, 1], y: [40, 0] }}
-					transition={{ duration: 0.3, delay: 0.5 }}
+					initial={{ opacity: 0, scale: 0 }}
+					animate={{ opacity: 1, scale: 1 }}
+					exit={{ opacity: 0, scale: 0 }}
+					transition={{
+						duration: 0.5,
+						type: "spring",
+						stiffness: 200,
+						damping: 30,
+					}}
 					className="p-4 md:p-6 border border-gray-500 rounded-md w-full dark:border-dark-border dark:bg-card-bg"
 				>
 					<h1 className="text-md sm:text-lg font-medium dark:text-dark-text">
@@ -108,7 +123,9 @@ const Dashboard = () => {
 										? "bg-yellow-100 text-yellow-500"
 										: booking.status === "confirmed"
 											? "bg-green-100 text-green-500"
-											: "bg-red-100 text-red-500"
+											: booking.status === "completed" ?
+												"bg-blue-100 text-blue-500"
+												: "bg-red-100 text-red-500"
 										} `}
 								>
 									<iconList.ClipboardList size={20} />
@@ -128,11 +145,13 @@ const Dashboard = () => {
 									{booking.price.toLocaleString("en-IN")}
 								</p>
 								<p
-									className={`px-3 py-0.5 rounded-md text-xs md:text-sm ${booking.status === "pending"
-										? "bg-yellow-100 text-yellow-500"
-										: booking.status === "confirmed"
-											? "bg-green-100 text-green-500"
-											: "bg-red-100 text-red-500"
+									className={`px-3 py-0.5 rounded-md text-xs md:text-sm ${booking.status === "confirmed"
+										? "bg-green-100 text-green-500"
+										: booking.status === "completed"
+											? "bg-blue-100 text-blue-500"
+											: booking.status === "cancelled" ?
+												"bg-red-100 text-red-500"
+												: "bg-yellow-100 text-yellow-500"
 										}`}
 								>
 									{booking.status}
@@ -144,8 +163,15 @@ const Dashboard = () => {
 
 				{/* monthly revenue chart placeholder */}
 				<motion.div
-					animate={{ opacity: [0, 1], y: [40, 0] }}
-					transition={{ duration: 0.3, delay: 0.9 }}
+					initial={{ opacity: 0, scale: 0 }}
+					animate={{ opacity: 1, scale: 1 }}
+					exit={{ opacity: 0, scale: 0 }}
+					transition={{
+						duration: 0.5,
+						type: "spring",
+						stiffness: 200,
+						damping: 30,
+					}}
 					className="p-4 md:p-6 border border-gray-500 rounded-md max-w-lg w-full dark:border-dark-border dark:bg-card-bg"
 				>
 					<h1 className="text-md sm:text-lg font-medium dark:text-dark-text">

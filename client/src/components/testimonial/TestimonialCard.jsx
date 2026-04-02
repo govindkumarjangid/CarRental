@@ -1,9 +1,13 @@
-import {motion, iconList} from "../../index.js"
+import { motion, iconList } from "../../index.js"
 
 const TestimonialCard = ({ review, index }) => {
 	return (
 		<motion.div
-			key={index}
+		    key={index}
+			initial={{ x: 100, opacity: 0 }}
+			whileInView={{ x: 0, opacity: 1 }}
+			viewport={{ once: true }}
+			transition={{ delay: index * 0.15, type: "spring", stiffness: 320, damping: 70, mass: 1 }}
 			className="bg-white p-4 rounded-lg hover:-translate-y-2 hover:shadow-lg transition-all duration-300 border-2 border-light w-full h-full"
 		>
 			<div className="flex items-center gap-3">

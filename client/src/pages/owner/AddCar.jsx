@@ -304,7 +304,14 @@ const AddCar = () => {
 					</div>
 				</motion.div>
 
-				<button
+				<motion.button
+					initial={{ y: 50, opacity: 0 }}
+					animate={{ y: 0, opacity: 1 }}
+					transition={{
+						type: "spring",
+						stiffness: 200,
+						damping: 20,
+					}}
 					type="submit"
 					disabled={loading}
 					className={` px-5 py-2.5 mt-4 rounded-md text-white transition-all active:scale-95 mb-10 w-fit dark:bg-accent dark:hover:bg-accent-dull dark:text-main-bg ${loading ? "cursor-not-allowed bg-primary" : "bg-primary hover:bg-primary-dull cursor-pointer"}`}
@@ -320,7 +327,7 @@ const AddCar = () => {
 							List Your Car
 						</span>
 					)}
-				</button>
+				</motion.button>
 
 			</form>
 		</div>

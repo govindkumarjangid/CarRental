@@ -9,6 +9,7 @@ import {
   OwnerTitle,
   useEffect, useRef, useState
 } from "../../index.js";
+import ChatSkeletonList from "../../components/chat/ChatSkeletonList.jsx";
 
 const Chats = () => {
 
@@ -20,6 +21,7 @@ const Chats = () => {
     getMessages,
     sendMessage,
     setMessages,
+    chatLoading
   } = useChatStore();
 
   const [activeChat, setActiveChat] = useState(null);
@@ -173,31 +175,36 @@ const Chats = () => {
           <h2 className="pl-4 md:pl-6 py-4 font-bold border-b border-gray-400 dark:border-dark-border text-gray-600 dark:text-dark-text">Chats</h2>
 
           {/* chats list  */}
-          {chats.map((chat) => {
-            const other = getOtherUser(chat);
-            const isOnline = onlineUsers.includes(chat.user._id);
-            return (
-              <div
-                key={chat._id}
-                onClick={() => setActiveChat(chat)}
-                className={`flex gap-3 pl-4 md:px-6 py-3 cursor-pointer border-b border-gray-400 dark:border-dark-border active:scale-101 transition-all duration-300 hover:bg-gray-100 dark:hover:bg-surface ${activeChat?._id === chat._id ? "bg-gray-100 dark:bg-surface" : ""}`}
-              >
-                <div className="relative">
-                  <iconList.CircleUser size={36} className="text-primary" />
-                  <span
-                    className={`absolute bottom-1 right-1 h-3 w-3 rounded-full border-2 border-white dark:border-second-bg ${isOnline ? "bg-green-500" : "bg-gray-400"
-                      }`}
-                  />
-                </div>
-                <div className="flex-1">
-                  <div className="font-semibold truncate dark:text-dark-text">{other.name}</div>
-                  <div className="text-xs text-gray-500 dark:text-dark-muted overflow-hidden line-clamp-1">
-                    {chat.lastMessage?.message || "No messages yet"}
+          {chatLoading ?
+            [1, 2, 3, 4].map((chat) => (
+              <ChatSkeletonList />
+            ))
+            :
+            chats.map((chat) => {
+              const other = getOtherUser(chat);
+              const isOnline = onlineUsers.includes(chat.user._id);
+              return (
+                <div
+                  key={chat._id}
+                  onClick={() => setActiveChat(chat)}
+                  className={`flex gap-3 pl-4 md:px-6 py-3 cursor-pointer border-b border-gray-400 dark:border-dark-border active:scale-101 transition-all duration-300 hover:bg-gray-100 dark:hover:bg-surface ${activeChat?._id === chat._id ? "bg-gray-100 dark:bg-surface" : ""}`}
+                >
+                  <div className="relative">
+                    <iconList.CircleUser size={36} className="text-primary" />
+                    <span
+                      className={`absolute bottom-1 right-1 h-3 w-3 rounded-full border-2 border-white dark:border-second-bg ${isOnline ? "bg-green-500" : "bg-gray-400"
+                        }`}
+                    />
+                  </div>
+                  <div className="flex-1">
+                    <div className="font-semibold truncate dark:text-dark-text">{other.name}</div>
+                    <div className="text-xs text-gray-500 dark:text-dark-muted overflow-hidden line-clamp-1">
+                      {chat.lastMessage?.message || "No messages yet"}
+                    </div>
                   </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
 
         </div>
 

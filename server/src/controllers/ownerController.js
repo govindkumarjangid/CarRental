@@ -167,9 +167,9 @@ export const getDashboardData = async (req, res) => {
     const cars = await Car.find({ owner: _id });
     const bookings = await Booking.find({ owner: _id }).populate('car').sort({ createdAt: -1 });
     const pendingBookings = await Booking.find({ owner: _id, status: 'pending' });
-    const completedBookings = await Booking.find({ owner: _id, status: 'confirmed' });
+    const completedBookings = await Booking.find({ owner: _id, status: 'completed' });
     const cancelledBookings = await Booking.find({ owner: _id, status: 'cancelled' });
-    const monthlyRevenue = bookings.slice().filter(booking => booking.status === 'confirmed').reduce((acc, booking) => (acc + booking.price), 0);
+    const monthlyRevenue = bookings.slice().filter(booking => booking.status === 'completed').reduce((acc, booking) => (acc + booking.price), 0);
 
     const dashboardData = {
       totalCars: cars.length,

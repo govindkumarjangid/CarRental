@@ -14,7 +14,12 @@ const app = express();
 await connectDB();
 
 //* Middleware
-app.use(cors({ origin: ['http://localhost:5173', 'https://car-rental-delta-rosy.vercel.app'], credentials: true }));
+app.use(cors({
+  origin: [
+    'http://localhost:5173',
+    'https://car-rental-delta-rosy.vercel.app'
+  ], credentials: true
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

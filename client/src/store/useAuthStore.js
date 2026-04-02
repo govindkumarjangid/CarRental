@@ -10,15 +10,8 @@ export const useAuthStore = create(persist(
         isLoading: false,
         error: null,
         isOwner: false,
-        allUsers: [],
-        allUsersLoading: false,
         token: localStorage.getItem("token") || null,
-        showLogin: false,
-        setShowLogin: (value) => set({ showLogin: value }),
-        showReview: false,
-        setShowReview: (value) => set({ showReview: value }),
-        reviews: [],
-        reviewLoading: false,
+
         dashboardData: {
             totalCars: 0,
             totalBookings: 0,
@@ -49,6 +42,11 @@ export const useAuthStore = create(persist(
                 set({ dashboardLoading: false });
             }
         },
+
+        showReview: false,
+        setShowReview: (value) => set({ showReview: value }),
+        reviews: [],
+        reviewLoading: false,
 
         fetchReviews: async () => {
             set({ reviewLoading: true });
@@ -166,6 +164,9 @@ export const useAuthStore = create(persist(
             }
         },
 
+        showLogin: false,
+        setShowLogin: (value) => set({ showLogin: value }),
+
         login: async (credentials) => {
             set({ isLoading: true, error: null });
             try {
@@ -238,6 +239,9 @@ export const useAuthStore = create(persist(
                 document.body.appendChild(script);
             });
         },
+
+        allUsers: [],
+        allUsersLoading: false,
 
         fetchAllUsers: async () => {
             set({ allUsersLoading: true });

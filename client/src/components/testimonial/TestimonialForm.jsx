@@ -1,8 +1,8 @@
 import { useAuthStore } from "../../store/useAuthStore.js";
-import { motion, iconList, useState, toast } from "../../index.js";
+import { motion, iconList, useState, toast, useEffect } from "../../index.js";
 
 const TestimonialForm = () => {
-	const { setShowReview, addReview } = useAuthStore();
+	const { showReview, setShowReview, addReview } = useAuthStore();
 	const [form, setForm] = useState({
 		name: "",
 		email: "",
@@ -38,11 +38,17 @@ const TestimonialForm = () => {
 		}
 	};
 
+	useEffect(() => {
+		if (showReview) document.body.style.overflow = "hidden";
+		else document.body.style.overflow = "auto";
+		return () => document.body.style.overflow = "auto";
+	}, [showReview]);
+
 	return (
 		<motion.div
 			initial={{ opacity: 0 }}
 			animate={{ opacity: 1 }}
-			exit={{ opacity: 0 , scale: 0}}
+			exit={{ opacity: 0, scale: 0 }}
 			onClick={() => setShowReview(false)}
 			className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-xs"
 		>

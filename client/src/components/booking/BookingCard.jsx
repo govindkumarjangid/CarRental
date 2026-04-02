@@ -1,4 +1,4 @@
-import {motion,useRef, useInView, iconList} from "../../index.js"
+import { motion, useRef, useInView, iconList } from "../../index.js"
 
 const BookingCard = ({ booking, index }) => {
 	const currency = import.meta.env.VITE_CURRENCY;
@@ -40,10 +40,10 @@ const BookingCard = ({ booking, index }) => {
 					</p>
 					<p
 						className={`px-3 py-1 text-sm rounded ${booking?.status === "confirmed"
-							? "bg-green-400/15 text-gray-600 dark:bg-green-400/70 dark:text-dark-text"
+							? "bg-green-400/15 text-gray-600 "
 							: booking?.status === "cancelled"
-								? " bg-red-400/15 dark:bg-red-400/70 text-red-900"
-								: "bg-yellow-400/15 dark:bg-yellow-400/70 text-yellow-900"
+								? " bg-red-400/15 text-red-900"
+								: booking?.status === "completed" ? "bg-blue-400/15 text-blue-600" : "bg-yellow-400/15 dark:bg-yellow-400/70 text-yellow-900"
 							}`}
 					>
 						{booking?.status}

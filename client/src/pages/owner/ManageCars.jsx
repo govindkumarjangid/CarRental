@@ -155,21 +155,14 @@ const ManageCars = () => {
 				{openConfirm && (
 					<div className="fixed inset-0 backdrop-blur-sm flex items-center justify-center z-50">
 						<motion.div
-							initial={{
-								scale: 0.8,
-								opacity: 0,
-								y: 40,
+							initial={{ opacity: 0, scale: 0 }}
+							animate={{ opacity: 1, scale: 1 }}
+							exit={{ opacity: 0, scale: 0 }}
+							transition={{
+								type: "spring",
+								stiffness: 250,
+								damping: 20
 							}}
-							animate={{
-								scale: 1,
-								opacity: 1,
-								y: 0,
-							}}
-							exit={{
-								scale: 0.8,
-								opacity: 0,
-							}}
-							transition={{ duration: 0.25 }}
 							className="bg-white dark:bg-gray-900 rounded-md shadow-2xl w-[90%] max-w-md p-6"
 						>
 							<h2 className="text-xl font-semibold text-center dark:text-white">
@@ -181,27 +174,28 @@ const ManageCars = () => {
 								action cannot be undone.
 							</p>
 
-							<div className="flex justify-between gap-4 mt-6">
+							<div className="flex justify-between gap-6 mt-6 md:px-10 px-4">
 								<button
-									className="w-1/2 py-2 rounded-md border bg-primary text-white cursor-pointer active:scale-95 transition-transform duration-300"
+									className="w-1/2 py-2 rounded-md border bg-primary hover:bg-primary-dull text-white cursor-pointer active:scale-90 hover:scale-105 transition-transform duration-300 flex justify-center items-center gap-4"
 									onClick={() => setOpenConfirm(false)}
 								>
-									Cancel
+									Cancel <iconList.X size={20}/>
 								</button>
 
 								<button
-									className="w-1/2 py-2 rounded-md bg-red-600 text-white cursor-pointer active:scale-95 transition-transform duration-300"
+									className="w-1/2 py-2 rounded-md bg-red-500 hover:bg-red-600 text-white cursor-pointer active:scale-90 hover:scale-105 transition-transform duration-300 flex justify-center items-center gap-4"
 									onClick={() => {
 										deleteCar(deleteId);
 										setOpenConfirm(false);
 									}}
 								>
-									Delete
+									Delete <iconList.Trash2 size={18}/>
 								</button>
 							</div>
 						</motion.div>
 					</div>
 				)}
+
 			</div>
 		</div>
 	);

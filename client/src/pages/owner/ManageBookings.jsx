@@ -1,6 +1,7 @@
-import { motion, OwnerTitle, useEffect, } from "../../index.js";
+import { motion, OwnerTitle, useEffect, useState, AnimatePresence } from "../../index.js";
 import { useBookingStore } from "../../store/useBookingStore.js";
 import Loader from "../../components/UI/Loader.jsx";
+import BookingPopup from "../../components/owner/BookingPopup.jsx";
 
 const ManageBookings = () => {
 	const {
@@ -11,6 +12,9 @@ const ManageBookings = () => {
 		changePaymentStatus,
 	} = useBookingStore();
 	const currency = import.meta.env.VITE_CURRENCY;
+
+	const [selectedBooking, setSelectedBooking] = useState(null);
+
 
 	useEffect(() => {
 		fetchOwnerBookings();
@@ -50,13 +54,14 @@ const ManageBookings = () => {
 					<tbody>
 						{bookings.map((booking, index) => (
 							<motion.tr
+								onClick={() => setSelectedBooking(booking)}
 								initial={{ opacity: 0, y: 20 }}
 								animate={{ opacity: 1, y: 0 }}
 								transition={{
 									duration: 0.5,
 									delay: index * 0.1,
 								}}
-								className="border-t border-gray-400 hover:bg-gray-100 hover:scale-101 transition-all duration-300 dark:border-dark-border dark:hover:bg-surface"
+								className="border-t border-gray-400 hover:bg-gray-100 hover:scale-101 transition-all duration-300 dark:border-dark-border dark:hover:bg-surface cursor-pointer"
 								key={index}
 							>
 
@@ -76,7 +81,7 @@ const ManageBookings = () => {
 								</td>
 
 								{/* date range  */}
-								<td className="p-3 max-md:hidden">
+								<td className="p-3 max-md:hidden text-xs">
 									{booking.pickupDate.split("T")[0]} To{" "}
 									{booking.returnDate.split("T")[0]}
 								</td>
@@ -105,6 +110,7 @@ const ManageBookings = () => {
 											name="paymentStatus"
 											id="paymentStatus"
 											value={booking.paymentStatus}
+											onClick={(e) => e.stopPropagation()}
 											onChange={(e) =>
 												changePaymentStatus(
 													booking._id,
@@ -148,43 +154,48 @@ const ManageBookings = () => {
 
 								{/* booking status  */}
 								<td className="py-3 pr-1.5">
-									{booking.status === "pending" ? (
+									{["pending", "confirmed"].includes(booking.status) ? (
 										<select
 											name="bookingStatus"
 											id="bookingStatus"
 											value={booking.status}
+											onClick={(e) => e.stopPropagation()}
 											onChange={(e) =>
-												changeBookingStatus(
-													booking._id,
-													e.target.value
-												)
+												changeBookingStatus(booking._id, e.target.value)
 											}
-											className="outline-none bg-amber-300/30 text-amber-500 px-1 py-1 text-xs rounded-md cursor-pointer"
+
+											className={`outline-none px-2 py-1 text-xs font-semibold rounded-md cursor-pointer capitalize ${booking.status === "completed"
+												? "bg-blue-100 text-blue-600"
+												: booking.status === "confirmed"
+													? "bg-green-100 text-green-500"
+													: booking.status === "pending"
+														? "bg-yellow-100 text-yellow-500"
+														: "bg-red-100 text-red-600"
+												}`}
 										>
-											<option
-												value="pending"
-												className="cursor-pointer"
-											>
+											<option value="pending" className="cursor-pointer">
 												Pending
 											</option>
-											<option
-												value="cancelled"
-												className="cursor-pointer"
-											>
-												Cancelled
+											<option value="confirmed" className="cursor-pointer">
+												Confirmed
 											</option>
-											<option
-												value="confirmed"
-												className="cursor-pointer"
-											>
-												Confirm
+											<option value="completed" className="cursor-pointer">
+												Completed
+											</option>
+											<option value="cancelled" className="cursor-pointer">
+												Cancelled
 											</option>
 										</select>
 									) : (
 										<span
-											className={`px-3 py-1 rounded-md text-xs font-semibold ${booking.status === "confirmed"
-												? "bg-green-100 text-green-500"
-												: "bg-red-100 text-red-500"
+											className={`px-3 py-1 rounded-md text-xs font-semibold capitalize
+												 ${booking.status === "completed"
+													? "bg-blue-100 text-blue-600"
+													: booking.status === "confirmed"
+														? "bg-green-100 text-green-500"
+														: booking.status === "pending"
+															? "bg-yellow-100 text-yellow-500"
+															: "bg-red-100 text-red-600"
 												}`}
 										>
 											{booking.status}
@@ -195,8 +206,18 @@ const ManageBookings = () => {
 						))}
 					</tbody>
 				</motion.table>
+
+				{/* booking details popup  */}
+				<AnimatePresence>
+					{selectedBooking && (
+						<BookingPopup
+							selectedBooking={selectedBooking}
+							setSelectedBooking={setSelectedBooking}
+						/>
+					)}
+				</AnimatePresence>
 			</div>
-		</div>
+		</div >
 	);
 };
 
