@@ -1,25 +1,22 @@
 
 const ChatSkeletonList = () => {
     return (
-        <div className="animate-pulse bg-white rounded-xl shadow p-4 space-y-4">
+        <div className="animate-pulse bg-white shadow-lg px-4 md:px-6 py-3 cursor-pointer border-b border-gray-400 w-full flex items-center gap-4 rounded-xl">
 
             {/* Image */}
-            <div className="h-40 w-full bg-gray-300 rounded-lg"></div>
+            <div className="h-10 w-10 bg-gray-300 rounded-full shrink-0"></div>
 
-            {/* Title */}
-            <div className="h-4 bg-gray-300 rounded w-3/4"></div>
+            {/* Text Container */}
+            <div className="flex flex-col gap-2 w-full">
 
-            {/* Subtitle */}
-            <div className="h-3 bg-gray-200 rounded w-1/2"></div>
+                {/* Title */}
+                <div className="h-3 bg-gray-300 rounded w-3/4"></div>
 
-            {/* Info Row */}
-            <div className="flex justify-between">
-                <div className="h-3 bg-gray-200 rounded w-1/4"></div>
-                <div className="h-3 bg-gray-200 rounded w-1/4"></div>
+                {/* Subtitle */}
+                <div className="h-3 bg-gray-200 rounded w-1/2"></div>
+
             </div>
 
-            {/* Button */}
-            <div className="h-8 bg-gray-300 rounded w-full"></div>
         </div>
     )
 }

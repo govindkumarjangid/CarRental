@@ -41,7 +41,7 @@ import {
 	ArrowLeft,
 	MessageCircleMore,
 	MousePointer2,
-	ArrowDown ,
+	ArrowDown,
 } from "lucide-react";
 
 export const cityList = [

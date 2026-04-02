@@ -10,6 +10,7 @@ import {
   useEffect, useRef, useState
 } from "../../index.js";
 import ChatSkeletonList from "../../components/chat/ChatSkeletonList.jsx";
+import OwnerChatMessageSkeleton from "../../components/chat/OwnerChatMessageSkeleton.jsx";
 
 const Chats = () => {
 
@@ -21,7 +22,8 @@ const Chats = () => {
     getMessages,
     sendMessage,
     setMessages,
-    chatLoading
+    chatLoading,
+    messageLoading
   } = useChatStore();
 
   const [activeChat, setActiveChat] = useState(null);
@@ -176,8 +178,8 @@ const Chats = () => {
 
           {/* chats list  */}
           {chatLoading ?
-            [1, 2, 3, 4].map((chat) => (
-              <ChatSkeletonList />
+            [1, 2, 3, 4, 5].map((chat, index) => (
+              <ChatSkeletonList key={index} />
             ))
             :
             chats.map((chat) => {
@@ -187,7 +189,7 @@ const Chats = () => {
                 <div
                   key={chat._id}
                   onClick={() => setActiveChat(chat)}
-                  className={`flex gap-3 pl-4 md:px-6 py-3 cursor-pointer border-b border-gray-400 dark:border-dark-border active:scale-101 transition-all duration-300 hover:bg-gray-100 dark:hover:bg-surface ${activeChat?._id === chat._id ? "bg-gray-100 dark:bg-surface" : ""}`}
+                  className={`flex gap-3 pl-4 md:px-6 py-3 cursor-pointer border-b border-gray-400 rounded-xl shadow-lg dark:border-dark-border active:scale-101 transition-all duration-300 hover:bg-gray-100 dark:hover:bg-surface ${activeChat?._id === chat._id ? "bg-gray-100 dark:bg-surface" : ""}`}
                 >
                   <div className="relative">
                     <iconList.CircleUser size={36} className="text-primary" />
@@ -209,113 +211,118 @@ const Chats = () => {
         </div>
 
         {/* CHAT AREA */}
-        <div
-          className={`flex flex-col flex-1 ${activeChat ? "block" : "hidden md:flex"}`}
-        >
-          {/* HEADER */}
-          <div className="flex items-center gap-3 px-4 py-2 border-b border-gray-400 dark:border-dark-border text-gray-600 dark:text-dark-text">
-            {!activeChat && <div>
-              <h2 className="text-md font-semibold py-2">Select Chat</h2>
-            </div>
-            }
-            <button
-              onClick={() => setActiveChat(null)}
-              className="md:hidden text-xl text-gray-500 cursor-pointer active:scale-90"
+        {
+          messageLoading
+          ?  <OwnerChatMessageSkeleton />
+          :
+            (<div
+              className={`flex flex-col flex-1 ${activeChat ? "block" : "hidden md:flex"}`}
             >
-              <iconList.ArrowLeft size={20} />
-            </button>
-            <span className="font-semibold flex items-center gap-2">
-              {activeChat ? <>
-                <iconList.CircleUser size={40} className="text-primary" />
-                <div className="flex flex-col">
-                  <span>{getOtherUser(activeChat).name}</span>
-                  {
-                    typingChatId && (
-                      <span className=" text-green-500 text-xs italic font-light">
-                        Typing...
-                      </span>
-                    )
-                  }
+              {/* HEADER */}
+              <div className="flex items-center gap-3 px-4 py-2 border-b border-gray-400 dark:border-dark-border text-gray-600 dark:text-dark-text">
+                {!activeChat && <div>
+                  <h2 className="text-md font-semibold py-2">Select Chat</h2>
                 </div>
-              </> : ""}
-            </span>
-          </div>
+                }
+                <button
+                  onClick={() => setActiveChat(null)}
+                  className="md:hidden text-xl text-gray-500 cursor-pointer active:scale-90"
+                >
+                  <iconList.ArrowLeft size={20} />
+                </button>
+                <span className="font-semibold flex items-center gap-2">
+                  {activeChat ? <>
+                    <iconList.CircleUser size={40} className="text-primary" />
+                    <div className="flex flex-col">
+                      <span>{getOtherUser(activeChat).name}</span>
+                      {
+                        typingChatId && (
+                          <span className=" text-green-500 text-xs italic font-light">
+                            Typing...
+                          </span>
+                        )
+                      }
+                    </div>
+                  </> : ""}
+                </span>
+              </div>
 
-          {/* MESSAGES */}
+              {/* MESSAGES */}
 
-          <div className="flex flex-col h-full pl-4">
-            {activeChat ? (
-              <ScrollToBottom className="h-[calc(100vh-430px)] sm:h-[calc(100vh-390px)] md:h-[calc(100vh-380px)] space-y-3">
-                {messages.map((m) => (
-                  <div
-                    key={m._id}
-                    className={`relative max-w-[75%] w-fit px-3 py-1.5 text-xs md:text-base rounded-2xl leading-snug wrap-break-words ${m.senderRole === user.role
-                      ? "ml-auto bg-primary text-gray-100 rounded-br-sm mr-2 my-1" : "bg-white dark:bg-card-bg text-gray-900 dark:text-dark-text rounded-bl-sm border border-gray-200 dark:border-dark-border my-1"
-                      }`}
-                  >
-                    <p>{m.message}</p>
-                    <div className="flex items-center justify-end gap-1 mt-1 text-[10px] opacity-70">
-                      <span>{formatMessageTime(m.createdAt)}</span>
+              <div className="flex flex-col h-full pl-4">
+                {activeChat ? (
+                  <ScrollToBottom className="h-[calc(100vh-430px)] sm:h-[calc(100vh-390px)] md:h-[calc(100vh-380px)] space-y-3">
+                    {messages.map((m) => (
+                      <div
+                        key={m._id}
+                        className={`relative max-w-[75%] w-fit px-3 py-1.5 text-xs md:text-base rounded-2xl leading-snug wrap-break-words ${m.senderRole === user.role
+                          ? "ml-auto bg-primary text-gray-100 rounded-br-sm mr-2 my-1" : "bg-white dark:bg-card-bg text-gray-900 dark:text-dark-text rounded-bl-sm border border-gray-200 dark:border-dark-border my-1"
+                          }`}
+                      >
+                        <p>{m.message}</p>
+                        <div className="flex items-center justify-end gap-1 mt-1 text-[10px] opacity-70">
+                          <span>{formatMessageTime(m.createdAt)}</span>
 
-                      {m.senderRole === user.role && (
-                        <>
-                          {m.seenByReceiver ? (
-                            <CheckCheck size={14} className="text-blue-400" />
-                          ) : m.delivered ? (
-                            <CheckCheck size={14} className="text-gray-300" />
-                          ) : (
-                            <Check size={14} className="text-gray-300" />
+                          {m.senderRole === user.role && (
+                            <>
+                              {m.seenByReceiver ? (
+                                <CheckCheck size={14} className="text-blue-400" />
+                              ) : m.delivered ? (
+                                <CheckCheck size={14} className="text-gray-300" />
+                              ) : (
+                                <Check size={14} className="text-gray-300" />
+                              )}
+                            </>
                           )}
-                        </>
-                      )}
+                        </div>
+                      </div>
+
+                    ))}
+                  </ScrollToBottom>
+                ) : (
+                  <div className="flex-1 flex items-center justify-center">
+                    <div className="flex flex-col items-center gap-2">
+                      <iconList.MessageCircleMore size={100} className="text-gray-400" />
+                      <p className="text-gray-500 dark:text-dark-muted text-sm text-center">
+                        Select a chat to start messaging with your customers
+                      </p>
                     </div>
                   </div>
-
-                ))}
-              </ScrollToBottom>
-            ) : (
-              <div className="flex-1 flex items-center justify-center">
-                <div className="flex flex-col items-center gap-2">
-                  <iconList.MessageCircleMore size={100} className="text-gray-400" />
-                  <p className="text-gray-500 dark:text-dark-muted text-sm text-center">
-                    Select a chat to start messaging with your customers
-                  </p>
-                </div>
+                )}
               </div>
-            )}
-          </div>
 
-          {/* INPUT */}
-          {activeChat && (
-            <div className="p-3 border-t border-gray-400 dark:border-dark-border flex gap-2 bg-white dark:bg-second-bg">
-              <input
-                type="text"
-                value={input}
-                onChange={(e) => {
-                  setInput(e.target.value);
-                  if (!activeChat?._id) return;
-                  socket.emit("typing", activeChat._id);
-                  if (typingTimeoutRef.current)
-                    clearTimeout(typingTimeoutRef.current);
-                  typingTimeoutRef.current = setTimeout(() => {
-                    socket.emit("stopTyping", activeChat._id);
-                  }, 1000);
-                }}
-                onKeyDown={(e) => {
-                  e.key == "Enter" && handleSend();
-                }}
-                placeholder="Type a message..."
-                className="px-3 flex py-2.5 mt-1 w-full	border border-gray-400 dark:border-dark-border rounded-md outline-none	focus:border-primary focus:ring-2 focus:ring-primary/50 dark:bg-card-bg dark:text-dark-text dark:focus:border-accent"
-              />
-              <button
-                onClick={handleSend}
-                className="bg-blue-600 dark:bg-accent text-white px-5 rounded-md active:scale-90 cursor-pointer transition-transform duration-300"
-              >
-                <iconList.MousePointer2 className="rotate-135" />
-              </button>
-            </div>
-          )}
-        </div>
+              {/* INPUT */}
+              {activeChat && (
+                <div className="p-3 border-t border-gray-400 dark:border-dark-border flex gap-2 bg-white dark:bg-second-bg">
+                  <input
+                    type="text"
+                    value={input}
+                    onChange={(e) => {
+                      setInput(e.target.value);
+                      if (!activeChat?._id) return;
+                      socket.emit("typing", activeChat._id);
+                      if (typingTimeoutRef.current)
+                        clearTimeout(typingTimeoutRef.current);
+                      typingTimeoutRef.current = setTimeout(() => {
+                        socket.emit("stopTyping", activeChat._id);
+                      }, 1000);
+                    }}
+                    onKeyDown={(e) => {
+                      e.key == "Enter" && handleSend();
+                    }}
+                    placeholder="Type a message..."
+                    className="px-3 flex py-2.5 mt-1 w-full	border border-gray-400 dark:border-dark-border rounded-md outline-none	focus:border-primary focus:ring-2 focus:ring-primary/50 dark:bg-card-bg dark:text-dark-text dark:focus:border-accent"
+                  />
+                  <button
+                    onClick={handleSend}
+                    className="bg-blue-600 dark:bg-accent text-white px-5 rounded-md active:scale-90 cursor-pointer transition-transform duration-300"
+                  >
+                    <iconList.MousePointer2 className="rotate-135" />
+                  </button>
+                </div>
+              )}
+            </div>)
+        }
       </div>
     </div >
   );

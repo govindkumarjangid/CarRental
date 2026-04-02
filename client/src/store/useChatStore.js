@@ -6,9 +6,11 @@ export const useChatStore = create((set, get) => ({
     chats: [],
     messages: [],
     chatLoading: false,
+    messageLoading: false,
 
     getChats: async (endpoint = "/api/owner/owner-chats") => {
         try {
+            set({chatLoading : true})
             const token = localStorage.getItem("token");
             if (token) {
                 axiosInstance.defaults.headers.common["Authorization"] = token;
@@ -16,6 +18,7 @@ export const useChatStore = create((set, get) => ({
             const { data } = await axiosInstance.get(endpoint);
             if (data.success) {
                 set({ chats: data.chats });
+                set({chatLoading: false})
             }
         } catch (err) {
             toast.error(err.response?.data?.message || err.message || "Failed to fetch chats");
@@ -24,6 +27,7 @@ export const useChatStore = create((set, get) => ({
 
     getMessages: async (chatId) => {
         try {
+            set({messageLoading:true});
             const token = localStorage.getItem("token");
             if (token) {
                 axiosInstance.defaults.headers.common["Authorization"] = token;
@@ -33,6 +37,7 @@ export const useChatStore = create((set, get) => ({
             });
             if (data.success) {
                 set({ messages: data.messages });
+                set({messageLoading :false})
             }
         } catch (err) {
             toast.error(err.response?.data?.message || err.message || "Failed to fetch messages");
