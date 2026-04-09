@@ -1,61 +1,65 @@
-<h1 align="center">🚗 Car Rental Web Application</h1>
+# Car Rental Platform
 
-<p align="center">
-  <img src="https://img.shields.io/badge/Status-Active-success" />
-  <img src="https://img.shields.io/badge/Stack-MERN-blue" />
-  <img src="https://img.shields.io/badge/Backend-Node.js-green" />
-</p>
+A production-style full stack car rental platform with user booking flow, owner dashboard, online payments, media upload, and real-time chat.
 
-<p align="center">
-  A full-stack <b>Car Rental Web Application</b> that allows users to browse cars,
-  book rentals, manage bookings, and communicate in real time.
-</p>
+## Highlights
 
-<hr/>
+- Role-based experience for users and car owners
+- Car listing with availability toggling and owner controls
+- Offline and Razorpay online booking flow
+- Real-time messaging with Socket.IO
+- Image uploads via Multer + ImageKit
+- Testimonial/review support with optional image
+- Zustand-based frontend state management
 
-<h2>✨ Features</h2>
-<ul>
- <li>🚘 Browse available cars with complete details</li>
-      <li>🗺 Location-based car search</li>
-<li>🔍 Search and filter cars by price, category, and availability</li>
-<li>📅 Car booking and rental management system</li>
-<li>👤 User authentication (Login / Signup)</li>
-<li>💳 Secure online payment integration</li>
-<li>⭐ Rating and review system for exprience</li>
-<li>💬 Real-time chat between user and car owner</li>
-<li>📊 Owner dashboard to manage cars, bookings, and earnings</li>
-<li>📱 Fully responsive user interface</li>
+## Tech Stack
 
-</ul>
+### Frontend
 
-<hr/>
+- React 19
+- Vite
+- Tailwind CSS
+- Zustand
+- Axios
+- Socket.IO Client
 
-<h2>🛠 Tech Stack</h2>
+### Backend
 
-<h3>Frontend</h3>
-<p>
-  <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/html5/html5-original.svg" width="40" alt="HTML"/>
-  <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/css3/css3-original.svg" width="40" alt="CSS"/>
-  <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/javascript/javascript-original.svg" width="40" alt="JavaScript"/>
-  <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/react/react-original.svg" width="40" alt="React"/>
-<img src="https://img.icons8.com/color/48/tailwind_css.png" width="40" alt="Tailwind CSS"/>
-</p>
+- Node.js
+- Express
+- MongoDB + Mongoose
+- JWT Authentication
+- Socket.IO
+- Razorpay
+- ImageKit
 
-<h3>Backend</h3>
-<p>
-  <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/nodejs/nodejs-original.svg" width="40" alt="Node.js"/>
-  <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/express/express-original.svg" width="40" alt="Express"/>
-  <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/mongodb/mongodb-original.svg" width="40" alt="MongoDB"/>
-  <img src="https://img.icons8.com/ios-filled/50/000000/api.png" width="40" alt="REST API"/>
-</p>
+## Project Structure
 
-<hr/>
-
-<h2>📂 Project Structure</h2>
-
-<pre>
+```txt
 CarRental/
-│
+├── client/
+│   ├── public/
+│   ├── src/
+│   │   ├── assets/
+│   │   ├── components/
+│   │   │   ├── Home/
+│   │   │   ├── UI/
+│   │   │   ├── booking/
+│   │   │   ├── car/
+│   │   │   ├── chat/
+│   │   │   ├── owner/
+│   │   │   └── testimonial/
+│   │   ├── context/
+│   │   ├── lib/
+│   │   ├── pages/
+│   │   │   └── owner/
+│   │   ├── store/
+│   │   ├── App.jsx
+│   │   ├── main.jsx
+│   │   └── socket.js
+│   ├── index.html
+│   ├── package.json
+│   └── vite.config.js
 ├── server/
 │   ├── src/
 │   │   ├── configs/
@@ -65,169 +69,169 @@ CarRental/
 │   │   │   ├── razorpay.js
 │   │   │   └── socket.js
 │   │   ├── controllers/
-│   │   │   ├── bookingController.js
-│   │   │   ├── chatController.js
-│   │   │   ├── ownerController.js
-│   │   │   └── userController.js
 │   │   ├── middleware/
-│   │   │   └── auth.js
 │   │   ├── models/
-│   │   │   ├── Booking.js
-│   │   │   ├── Car.js
-│   │   │   ├── Chat.js
-│   │   │   ├── Message.js
-│   │   │   ├── Review.js
-│   │   │   └── User.js
 │   │   └── Routes/
-│   │       ├── bookingRoutes.js
-│   │       ├── chatRoutes.js
-│   │       ├── ownerRoutes.js
-│   │       └── userRoutes.js
 │   ├── index.js
 │   ├── server.js
-│   ├── package.json
-│   └── package-lock.json
-│
-├── client/
-│   ├── src/
-│   │   ├── assets/
-│   │   │   ├── assets.jsx
-│   │   │   ├── logo.svg
-│   │   │   ├── main_car.png
-│   │   │   └── banner_car_image.png
-│   │   ├── components/
-│   │   │   ├── Home/
-│   │   │   │   ├── Banner.jsx
-│   │   │   │   ├── FeaturedSection.jsx
-│   │   │   │   ├── Hero.jsx
-│   │   │   │   └── Newsletter.jsx
-│   │   │   ├── UI/
-│   │   │   │   ├── Footer.jsx
-│   │   │   │   ├── Loader.jsx
-│   │   │   │   ├── Login.jsx
-│   │   │   │   ├── Navbar.jsx
-│   │   │   │   ├── NotFound404.jsx
-│   │   │   │   └── Title.jsx
-│   │   │   ├── booking/
-│   │   │   │   ├── BookingCard.jsx
-│   │   │   │   ├── BookingCardSkeleton.jsx
-│   │   │   │   └── EmptyBookings.jsx
-│   │   │   ├── car/
-│   │   │   │   ├── CarCard.jsx
-│   │   │   │   ├── CarCardSkeleton.jsx
-│   │   │   │   └── CarDetailsSkeleton.jsx
-│   │   │   ├── chat/
-│   │   │   │   └── ChatMessagesSkeleton.jsx
-│   │   │   ├── owner/
-│   │   │   │   ├── EditCarForm.jsx
-│   │   │   │   ├── NavbarOwner.jsx
-│   │   │   │   ├── Sidebar.jsx
-│   │   │   │   └── Title.jsx
-│   │   │   └── testimonial/
-│   │   │       ├── MarqueeRow.jsx
-│   │   │       ├── Testmonial.jsx
-│   │   │       ├── TestimonialCard.jsx
-│   │   │       ├── TestimonialForm.jsx
-│   │   │       └── TestimonialSkeleton.jsx
-│   │   ├── context/
-│   │   │   └── ProtectRoute.jsx
-│   │   ├── lib/
-│   │   │   └── axios.js
-│   │   ├── pages/
-│   │   │   ├── owner/
-│   │   │   │   ├── AddCar.jsx
-│   │   │   │   ├── AllUsers.jsx
-│   │   │   │   ├── Chats.jsx
-│   │   │   │   ├── Dashboard.jsx
-│   │   │   │   ├── ManageBookings.jsx
-│   │   │   │   └── ManageCars.jsx
-│   │   │   ├── Cardetails.jsx
-│   │   │   ├── Cars.jsx
-│   │   │   ├── ChatPage.jsx
-│   │   │   ├── Home.jsx
-│   │   │   ├── Layout.jsx
-│   │   │   └── Mybookings.jsx
-│   │   ├── store/
-│   │   │   ├── useAuthStore.js
-│   │   │   ├── useBookingStore.js
-│   │   │   ├── useCarStore.js
-│   │   │   ├── useChatStore.js
-│   │   │   └── useThemeStore.js
-│   │   ├── App.jsx
-│   │   ├── index.css
-│   │   ├── index.js
-│   │   ├── main.jsx
-│   │   └── socket.js
-│   ├── index.html
-│   ├── vite.config.js
-│   ├── vercel.json
-│   ├── package.json
-│   └── package-lock.json
-│
+│   └── package.json
 └── README.md
-</pre>
+```
 
-<hr/>
+## Features
 
-<h2>🚀 Installation & Setup</h2>
+### User Side
 
-<pre>
-# Clone repository
-git clone https://github.com/govindkumarjangid/CarRental.git
+- Register/login and protected profile data access
+- Browse all cars and open specific car details
+- Check availability before booking
+- Create bookings (offline or online)
+- View own bookings and payment status
+- Give reviews/testimonials
+- Chat with owners in real time
 
-# Backend setup
+### Owner Side
+
+- Upgrade user role to owner
+- Add, edit, delete, and toggle car availability
+- View owner dashboard metrics
+- Access owner booking list and update booking/payment status
+- Access owner chat list and messages
+- Manage users (view all and block/unblock)
+
+## API Routes
+
+Base API path is served from server and mounted as below.
+
+### User Routes (`/api/user`)
+
+- `POST /register` - Register new user
+- `POST /login` - Login user
+- `GET /data` - Get logged-in user data (protected)
+- `GET /cars` - Get all listed cars
+- `POST /add-review` - Add review with optional image (protected)
+- `GET /get-reviews` - Get all reviews
+- `GET /user-cardetails/:id` - Get single car details (protected)
+
+### Owner Routes (`/api/owner`)
+
+- `POST /change-role` - Change user role to owner (protected)
+- `POST /add-car` - Add car with image upload (protected)
+- `GET /cars` - Get owner cars (protected)
+- `POST /toggle-car` - Toggle car availability (protected)
+- `POST /delete-car` - Delete car (protected)
+- `POST /edit-car` - Edit car details/image (protected)
+- `GET /dashboard` - Owner dashboard stats (protected)
+- `POST /update-image` - Update owner profile image (protected)
+- `GET /allusers` - Get all users (protected)
+- `POST /block-unblock` - Block/unblock user (protected)
+- `GET /owner-details/:id` - Get owner details (protected)
+- `GET /owner-chats` - Get owner chats (protected)
+
+### Booking Routes (`/api/bookings`)
+
+- `POST /check-availability` - Check car availability
+- `POST /create` - Create offline booking (protected)
+- `POST /create-online` - Create online booking order (protected)
+- `POST /verify-payment` - Verify Razorpay payment (protected)
+- `GET /user` - Get logged-in user bookings (protected)
+- `GET /owner` - Get owner bookings (protected)
+- `POST /change-status` - Change booking status (protected)
+- `POST /change-payment-status` - Change payment status (protected)
+
+### Chat Routes (`/api/chat`)
+
+- `POST /create-chat` - Create/get chat between users (protected)
+- `POST /send-message` - Send message (protected)
+- `GET /get-messages` - Get messages by chat (protected)
+
+## Environment Variables
+
+Create a `.env` file inside `server/`:
+
+```env
+PORT=8080
+MONGO_URI=your_mongodb_connection_string_without_db_name
+JWT_SECRET=your_jwt_secret
+
+IMAGEKIT_PUBLIC_KEY=your_imagekit_public_key
+IMAGEKIT_PRIVATE_KEY=your_imagekit_private_key
+IMAGEKIT_URL_ENDPOINT=your_imagekit_url_endpoint
+
+RAZORPAY_KEY_ID=your_razorpay_key_id
+RAZORPAY_KEY_SECRET=your_razorpay_key_secret
+```
+
+Create a `.env` file inside `client/`:
+
+```env
+VITE_BASE_URL=http://localhost:8080
+VITE_CURRENCY=INR
+```
+
+## Installation and Running
+
+### 1) Clone repository
+
+```bash
+git clone <your-repository-url>
+cd CarRental
+```
+
+### 2) Install backend dependencies
+
+```bash
 cd server
 npm install
-npm start
+```
 
-# Frontend setup
-cd client
+### 3) Install frontend dependencies
+
+```bash
+cd ../client
 npm install
+```
+
+### 4) Run backend (Terminal 1)
+
+```bash
+cd ../server
 npm run dev
-</pre>
+```
 
-<hr/>
+### 5) Run frontend (Terminal 2)
 
-<h2>📸 Screenshots</h2>
+```bash
+cd ../client
+npm run dev
+```
 
-<p>
-  Add Later
-</p>
+Frontend default: `http://localhost:5173`
 
-<hr/>
+Backend default (from `.env`): `http://localhost:8080`
 
-<h2>🔮 Future Enhancements</h2>
-<ul>
- <li>📧 Email notifications for bookings and status updates</li>
- <li>⭐ Rating and review system for cars</li>
-</ul>
+## Scripts
 
-<hr/>
+### Server
 
-<h2>🤝 Contributing</h2>
-<p>
-  Contributions are welcome! Fork the repository, create a branch, and submit a pull request.
-</p>
+- `npm run dev` - Start backend with nodemon
+- `npm start` - Start backend with node
 
-<hr/>
+### Client
 
-<h2>👨‍💻 Author</h2>
+- `npm run dev` - Start Vite dev server
+- `npm run build` - Production build
+- `npm run preview` - Preview built app
+- `npm run lint` - Run ESLint
 
-<p>
-  <b>Your Name</b><br/>
-  <a href="https://github.com/govindkumarjangid/">
-    <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/github/github-original.svg" width="25"/>
-    GitHub
-  </a>
-  &nbsp;&nbsp;
-  <a href="https://linkedin.com/in/your-profile">
-    <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/linkedin/linkedin-original.svg" width="25"/>
-    LinkedIn
-  </a>
-</p>
+## Notes
 
-<hr/>
+- Update frontend API base URL from `client/src/lib/axios.js` or move it to `VITE_BASE_URL` consistently for all requests.
+- Configure CORS origins in `server/index.js` for your deployed frontend domain.
 
-<p align="center">
-  ⭐ If you like this project, don’t forget to star the repository!
-</p>
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Commit your changes
+4. Open a pull request
