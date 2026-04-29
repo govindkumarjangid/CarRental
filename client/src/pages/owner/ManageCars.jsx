@@ -1,6 +1,6 @@
 import { useCarStore } from "../../store/useCarStore.js";
 import { useEffect, useState, motion, iconList, OwnerTitle } from "../../index.js"
-import Loader from "../../components/UI/Loader.jsx";
+import TableSkeleton from "../../components/UI/TableSkeleton.jsx";
 
 const ManageCars = () => {
 	const currency = import.meta.env.VITE_CURRENCY;
@@ -21,7 +21,7 @@ const ManageCars = () => {
 		fetchOwnerCars();
 	}, []);
 
-	if (loading) return <Loader />;
+	if (loading) return <TableSkeleton />;
 
 	return (
 		<div className="px-4 pt-10 md:px-10 flex-1 pb-10">
@@ -31,14 +31,14 @@ const ManageCars = () => {
 					"View all listed cars, update their details, or remove them from the booking platform."
 				}
 			/>
-			<div className="max-w-3xl w-full rounded-md overflow-hidden mt-6 border border-gray-400 dark:border-dark-border">
+			<div className="max-w-[1000px] w-full bg-white dark:bg-second-bg shadow-sm rounded-xl overflow-hidden mt-6 border border-gray-200 dark:border-dark-border">
 				<motion.table
-					initial={{ opacity: 0, y: 100 }}
+					initial={{ opacity: 0, y: 10 }}
 					animate={{ opacity: 1, y: 0 }}
-					transition={{ duration: 0.5 }}
+					transition={{ type: "spring", stiffness: 300, damping: 30 }}
 					className="w-full border-collapse text-left text-sm text-gray-600 dark:text-dark-text"
 				>
-					<thead className="text-gray-500 dark:text-dark-muted">
+					<thead className="bg-gray-50 dark:bg-card-bg text-gray-500 dark:text-dark-muted border-b border-gray-200 dark:border-dark-border">
 						<tr>
 							<th className="p-3 font-medium">Car</th>
 							<th className="p-3 font-medium max-md:hidden">
@@ -54,13 +54,12 @@ const ManageCars = () => {
 					<tbody>
 						{cars.map((car, index) => (
 							<motion.tr
-								initial={{ opacity: 0, y: 20 }}
-								animate={{ opacity: 1, y: 0 }}
+								initial={{ opacity: 0 }}
+								animate={{ opacity: 1 }}
 								transition={{
-									duration: 0.5,
-									delay: index * 0.1,
+									type: "spring", stiffness: 300, damping: 30
 								}}
-								className="border-t border-gray-400 hover:bg-gray-100 hover:scale-101 transition-all duration-300 dark:border-dark-border dark:hover:bg-surface"
+								className="border-b last:border-b-0 border-gray-100 hover:bg-gray-50/80 transition-colors duration-200 dark:border-dark-border dark:hover:bg-surface/50"
 								key={index}
 							>
 								<td className="p-3 flex  md:flex-row flex-col items-start gap-3 justify-start">
@@ -91,11 +90,11 @@ const ManageCars = () => {
 
 								<td className="p-3 max-md:hidden">
 									{car.isAvaliable ? (
-										<span className="text-green-600 font-medium bg-green-400/20 px-2 py-1 rounded-md">
+										<span className="text-green-600 dark:text-green-400 font-medium bg-green-500/10 dark:bg-green-500/20 px-2.5 py-1 rounded-md text-[13px]">
 											Available
 										</span>
 									) : (
-										<span className="text-red-600 font-medium  bg-red-400/20 px-2 py-1 rounded-md">
+										<span className="text-red-500 font-medium bg-red-500/10 dark:bg-red-500/20 px-2.5 py-1 rounded-md text-[13px]">
 											Unavailable
 										</span>
 									)}
@@ -155,13 +154,11 @@ const ManageCars = () => {
 				{openConfirm && (
 					<div className="fixed inset-0 backdrop-blur-sm flex items-center justify-center z-50">
 						<motion.div
-							initial={{ opacity: 0, scale: 0 }}
+							initial={{ opacity: 0, scale: 0.95 }}
 							animate={{ opacity: 1, scale: 1 }}
-							exit={{ opacity: 0, scale: 0 }}
+							exit={{ opacity: 0, scale: 0.95 }}
 							transition={{
-								type: "spring",
-								stiffness: 250,
-								damping: 20
+								type: "spring", stiffness: 300, damping: 30
 							}}
 							className="bg-white dark:bg-gray-900 rounded-md shadow-2xl w-[90%] max-w-md p-6"
 						>

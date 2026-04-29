@@ -4,17 +4,17 @@ export const Title = ({ title, subTitle }) => {
 	return (
 		<>
 			<motion.h1
-				initial={{ opacity: 0, y: 30 }}
+				initial={{ opacity: 0, y: 10 }}
 				animate={{ opacity: 1, y: 0 }}
-				transition={{ duration: 0.8, ease: "easeOut" }}
+				transition={{ type: "spring", stiffness: 300, damping: 30 }}
 				className="text-2xl font-medium md:text-3xl dark:text-dark-text"
 			>
 				{title}
 			</motion.h1>
 			<motion.p
-				initial={{ opacity: 0, y: 50 }}
+				initial={{ opacity: 0, y: 10 }}
 				animate={{ opacity: 1, y: 0 }}
-				transition={{ duration: 1, ease: "easeOut" }}
+				transition={{ type: "spring", stiffness: 300, damping: 30, delay: 0.05 }}
 				className="text-sm md:text-base text-gray-500/90 mt-2 max-w-156 line-clamp-3 dark:text-dark-muted"
 			>
 				{subTitle}

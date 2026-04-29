@@ -1,4 +1,4 @@
-import Loader from '../../components/UI/Loader';
+import UserTableSkeleton from '../../components/UI/UserTableSkeleton';
 import { useAuthStore } from '../../store/useAuthStore';
 import { motion, OwnerTitle, useEffect } from '../../index.js';
 
@@ -15,7 +15,7 @@ const AllUsers = () => {
     fetchAllUsers();
   }, []);
 
-  if (loading) return <Loader />;
+  if (loading) return <UserTableSkeleton />;
 
   return (
     <div className="px-4 pt-10 md:px-10 flex-1 pb-10">
@@ -23,16 +23,16 @@ const AllUsers = () => {
         title="All Users"
         subTitle="Manage all users of the car rental system. View, block or unblock users as necessary to maintain an up-to-date user database."
       />
-      <div className="max-w-2xl w-full rounded-md overflow-hidden mt-6 border border-gray-400 dark:border-dark-border">
+      <div className="max-w-[1000px] w-full bg-white dark:bg-second-bg shadow-sm rounded-xl overflow-hidden mt-6 border border-gray-200 dark:border-dark-border">
         <motion.table
-          initial={{ opacity: 0, y: 40 }}
+          initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="w-full border-collapse border-spacing-0 rounded-md overflow-hidden shadow-md bg-white dark:bg-card-bg"
+          transition={{ type: "spring", stiffness: 300, damping: 30 }}
+          className="w-full border-collapse border-spacing-0"
         >
 
           {/* All Users Table */}
-          <thead className="text-gray-500 dark:text-dark-muted">
+          <thead className="bg-gray-50 dark:bg-card-bg text-gray-500 dark:text-dark-muted border-b border-gray-200 dark:border-dark-border">
             <tr className="text-left">
               <th className="py-3 px-4 font-semibold">
                 <div className="flex items-center justify-between">
@@ -50,10 +50,10 @@ const AllUsers = () => {
             {AllUsers.map((user, index) => (
               <motion.tr
                 key={index}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: index * 0.05 }}
-                className="hover:bg-gray-100 transition-all duration-300 text-left border-t border-gray-400 dark:border-dark-border dark:hover:bg-surface"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                className="hover:bg-gray-50/80 transition-colors duration-200 text-left border-b last:border-b-0 border-gray-100 dark:border-dark-border dark:hover:bg-surface/50"
               >
 
                 {/* USER COLUMN */}

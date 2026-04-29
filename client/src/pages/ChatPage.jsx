@@ -8,7 +8,8 @@ import {
   iconList,
   Check,
   CheckCheck,
-  useEffect, useRef, useState, useParams
+  useEffect, useRef, useState, useParams,
+  motion, AnimatePresence
 } from "../index.js";
 
 
@@ -25,7 +26,7 @@ const ChatPage = () => {
   const [chatId, setChatId] = useState(null);
   const [isTyping, setIsTyping] = useState(false);
   const [onlineUsers, setOnlineUsers] = useState([]);
-  
+
   const scrollContainerRef = useRef(null);
   const prevMessagesLength = useRef(0);
 
@@ -81,6 +82,7 @@ const ChatPage = () => {
   };
 
   const handleSendMessage = async () => {
+    if(!input.trim()) return;
     const text = input;
     setInput("");
     await sendUserMessage(chatId, user.role, text, socket);
@@ -139,11 +141,30 @@ const ChatPage = () => {
   useEffect(() => {
     socket.on("receiveMessage", ({ message }) => {
       setMessages((prev) => [...prev, message]);
-      if (message && chatId) getMessages(chatId);
     });
     return () => {
       socket.off("receiveMessage");
     };
+  }, [chatId]);
+
+  // Read receipts logic
+  useEffect(() => {
+    if (chatId && messages.length > 0) {
+      const hasUnread = messages.some(m => m.senderRole !== user.role && !m.seenByReceiver);
+      if (hasUnread) {
+        socket.emit("markAsRead", { chatId, role: user.role });
+      }
+    }
+  }, [chatId, messages]);
+
+  useEffect(() => {
+    const handleMessagesRead = ({ chatId: readChatId }) => {
+      if (readChatId === chatId) {
+        setMessages(prev => prev.map(m => m.senderRole === user.role ? { ...m, seenByReceiver: true } : m));
+      }
+    };
+    socket.on("messagesRead", handleMessagesRead);
+    return () => socket.off("messagesRead", handleMessagesRead);
   }, [chatId]);
 
   useEffect(() => {
@@ -172,32 +193,38 @@ const ChatPage = () => {
 
 
   return (
-    <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-8 lg:px-16 xl:px-24
-    bg-white dark:bg-main-bg dark:text-dark-text h-full overflow-hidden">
+    <div className="max-w-8xl mx-auto md:px-8 lg:px-16 xl:px-24
+    bg-gray-50/50 dark:bg-[#0f1014] dark:text-dark-text h-[calc(100vh-60px)] md:h-[calc(100vh-75px)] overflow-hidden flex flex-col">
 
-      <div className="w-full h-full bg-white dark:bg-main-bg flex flex-col md:flex-row overflow-hidden">
+      <div className="w-full h-full bg-white dark:bg-second-bg flex flex-col md:flex-row overflow-hidden shadow-sm border border-gray-200 dark:border-dark-border">
 
         {/* LEFT SIDE */}
         {
-          (carDetailsLoading || ownerDetailsLoading) ? (<CarDetailsSkeleton />) : (
-            <div className="w-full md:w-[30%] border-b md:border-b-0 md:border-r border-gray-300 dark:border-dark-border p-4 md:p-5">
-              <h2 className="text-lg font-semibold mb-3 dark:text-dark-text">Chat</h2>
+          (carDetailsLoading || ownerDetailsLoading) ? (
+            <div className="w-full md:w-[30%] shrink-0">
+              <CarDetailsSkeleton />
+            </div>
+          ) : (
+            <div className="w-full md:w-[30%] shrink-0 border-b md:border-b-0 md:border-r border-gray-200 dark:border-dark-border p-3 md:p-6 flex flex-row md:flex-col items-center md:items-start gap-4 md:bg-gray-50/30 dark:md:bg-main-bg/20">
+              <h2 className="hidden md:block text-lg font-bold mb-2 dark:text-dark-text tracking-tight">Booking Details</h2>
 
               <img
-                className="rounded-xl mb-3 w-full h-48 md:h-auto object-cover"
+                className="rounded-lg md:rounded-xl w-20 h-16 md:w-full md:h-48 object-cover shadow-sm border border-gray-100 dark:border-dark-border"
                 src={carDetails?.image}
                 alt="car"
               />
 
-              <h3 className="flex font-bold text-lg gap-2 flex-wrap">
-                <span>{carDetails?.brand} {carDetails?.model}</span>
-                <span className="font-semibold">{carDetails?.year}</span>
-              </h3>
+              <div className="flex flex-col min-w-0">
+                <h3 className="flex font-bold text-base md:text-xl gap-1.5 flex-wrap text-gray-800 dark:text-dark-text leading-tight truncate">
+                  <span>{carDetails?.brand} {carDetails?.model}</span>
+                  <span className="text-primary dark:text-accent font-semibold">{carDetails?.year}</span>
+                </h3>
 
-              <div className="text-sm text-gray-500 dark:text-dark-muted mt-1 flex gap-2 items-center flex-wrap">
-                <span>{carDetails?.transmission}</span>•
-                <span>{carDetails?.fuel_type}</span>•
-                <span>{currency}{carDetails?.pricePerDay}/day</span>
+                <div className="text-xs md:text-sm text-gray-500 dark:text-dark-muted mt-1.5 flex gap-1.5 items-center flex-wrap font-medium">
+                  <span className="bg-gray-100 dark:bg-surface px-2 py-0.5 rounded-md">{carDetails?.transmission}</span>
+                  <span className="bg-gray-100 dark:bg-surface px-2 py-0.5 rounded-md">{carDetails?.fuel_type}</span>
+                  <span className="text-emerald-600 dark:text-emerald-400 font-bold ml-1">{currency}{carDetails?.pricePerDay}/day</span>
+                </div>
               </div>
             </div>
           )
@@ -205,96 +232,107 @@ const ChatPage = () => {
 
         {/* RIGHT SIDE */}
         {
-          (carDetailsLoading || ownerDetailsLoading) ? (<ChatMessagesSkeleton />) : (
-            <div className="w-full h-[80vh] flex flex-col overflow-hidden">
-
+          (carDetailsLoading || ownerDetailsLoading) ? (
+            <div className="flex-1 flex items-center justify-center">
+              <ChatMessagesSkeleton />
+            </div>
+          ) : (
+            <div className="w-full flex-1 flex flex-col min-w-0 overflow-hidden bg-[#efe7de] dark:bg-[#0b141a]">
               {/* HEADER */}
-              <div className="shrink-0 border-b border-gray-300 dark:border-dark-border p-3 md:p-4 flex flex-col sm:flex-row gap-3 sm:justify-between">
-
-                {/* USER DETAILS */}
-                <div className="flex gap-3 items-center">
-                  {user?.image ? (
-                    <img
-                      className="w-9 h-9 md:w-10 md:h-10 rounded-full object-cover"
-                      src={user.image}
-                      alt={user?.name}
-                    />
-                  ) : (
-                    <iconList.CircleUser className="w-9 h-9 md:w-10 md:h-10 text-gray-400" />
-                  )}
-                  <div className="font-semibold text-sm md:text-base dark:text-dark-text">
-                    {user?.name}
-                  </div>
-                </div>
+              <div className="shrink-0 bg-white/95 dark:bg-second-bg/95 backdrop-blur-md border-b border-gray-200 dark:border-dark-border p-2 md:p-3 flex flex-row items-center justify-between shadow-sm z-10">
 
                 {/* OWNER DETAILS */}
-                <div className="flex gap-3 items-center border-t sm:border-t-0 border-gray-300 dark:border-dark-border pt-4">
+                <div className="flex gap-3.5 items-center">
                   <div className="relative">
                     <img
-                      className="w-9 h-9 md:w-10 md:h-10 rounded-full object-cover"
+                      className="w-10 h-10 md:w-11 md:h-11 rounded-full object-cover shadow-sm border border-gray-200 dark:border-dark-border"
                       src={ownerDetails?.image}
                       alt="owner"
                     />
                     <span
-                      className={`absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-white dark:border-main-bg ${isOnline ? "bg-green-500" : "bg-gray-400"
+                      className={`absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-white dark:border-second-bg ${isOnline ? "bg-green-500" : "bg-gray-400"
                         }`}
                     />
                   </div>
-                  <div>
-                    <div className="font-semibold text-sm md:text-base dark:text-dark-text">
-                      {ownerDetails?.name} (Owner)
+                  <div className="flex flex-col">
+                    <div className="font-bold text-[15px] md:text-base text-gray-800 dark:text-dark-text leading-tight">
+                      {ownerDetails?.name} <span className="text-xs font-medium text-gray-400 bg-gray-100 dark:bg-surface px-1.5 py-0.5 rounded ml-1">Owner</span>
                     </div>
 
-                    <div className="text-green-500 text-xs md:text-sm">
+                    <div className="text-xs md:text-[13px] mt-0.5">
                       {isTyping ? (
-                        <span className="italic">Typing...</span>
+                        <span className="text-primary dark:text-accent font-medium animate-pulse">typing...</span>
                       ) : (
-                        <h3 className="flex gap-2 text-gray-500 dark:text-dark-muted flex-wrap">
-                          <span>{carDetails?.brand} {carDetails?.model}</span>
-                          <span className="font-semibold">{carDetails?.year}</span>
-                        </h3>
+                        <span className="text-gray-500 dark:text-dark-muted font-medium">
+                          {isOnline ? "Online now" : "Offline"}
+                        </span>
                       )}
                     </div>
                   </div>
                 </div>
 
+                {/* USER PROFILE INFO */}
+                <div className="flex items-center gap-2 pr-2">
+                  <div className="hidden sm:flex flex-col items-end mr-2">
+                    <span className="text-xs text-gray-500 dark:text-dark-muted">Logged in as</span>
+                    <span className="font-semibold text-sm text-gray-800 dark:text-dark-text">{user?.name}</span>
+                  </div>
+                  {user?.image ? (
+                    <img
+                      className="w-8 h-8 rounded-full object-cover border border-gray-200 dark:border-dark-border"
+                      src={user.image}
+                      alt={user?.name}
+                    />
+                  ) : (
+                    <iconList.CircleUser className="w-8 h-8 text-gray-400" />
+                  )}
+                </div>
+
               </div>
 
-              {/* CHAT BODY */}
-              <div ref={scrollContainerRef} className="w-full h-[80vh] flex flex-col overflow-y-auto p-4 custom-scrollbar">
-                <div className="flex flex-col justify-end min-h-full">
-                  {messages.map((m) => (
-                    // console.log(m),
-                    <div
-                      key={m._id}
-                      className={`relative max-w-[85%] md:max-w-[70%] w-fit px-3 py-1.5 text-[14px] rounded-xl leading-snug wrap-break-words shadow-sm ${m.senderRole === user.role
-                          ? "ml-auto bg-primary text-white rounded-tr-sm"
-                          : "bg-white dark:bg-card-bg text-gray-800 dark:text-dark-text rounded-tl-sm border border-gray-100 dark:border-dark-border"
-                        }`}
-                    >
-                      <p>{m.message}</p>
-                      <div className={`flex items-center justify-end gap-1 mt-1 text-[10px] font-medium ${m.senderRole === user.role ? "text-primary-foreground/80" : "text-gray-400 dark:text-dark-muted"}`}>
-                        <span>{formatMessageTime(m.createdAt).split('•').pop().trim()}</span>
-                        {m.senderRole === user.role && (
-                          <span className="ml-0.5">
-                            {m.seenByReceiver ? (
-                              <CheckCheck size={14} className="text-green-300" />
-                            ) : m.delivered ? (
-                              <CheckCheck size={14} className="text-white/70" />
-                            ) : (
-                              <Check size={14} className="text-white/70" />
+              {/* CHAT BODY AREA */}
+              <div className="flex-1 min-h-0 relative">
+                <div ref={scrollContainerRef} className="absolute inset-0 overflow-y-auto p-4 md:p-6 custom-scrollbar bg-[url('https://i.pinimg.com/736x/8c/98/99/8c98994518b575bfd8c949e91d20548b.jpg')] bg-repeat bg-bg-size-[400px] dark:opacity-90 dark:bg-blend-overlay dark:bg-black/20">
+                  <div className="flex flex-col justify-start min-h-full space-y-3">
+                    <AnimatePresence>
+                      {messages.map((m) => (
+                        <motion.div
+                          initial={{ opacity: 0, y: 10, scale: 0.98 }}
+                          animate={{ opacity: 1, y: 0, scale: 1 }}
+                          transition={{ duration: 0.2 }}
+                          key={m._id}
+                          className={`relative max-w-[85%] md:max-w-[65%] w-fit px-3.5 py-2 text-[14.5px] rounded-2xl shadow-sm wrap-break-words ${m.senderRole === user.role
+                            ? "ml-auto bg-[#d9fdd3] dark:bg-[#005c4b] text-[#111b21] dark:text-[#e9edef] rounded-br-sm"
+                            : "bg-white dark:bg-[#202c33] text-[#111b21] dark:text-[#e9edef] rounded-bl-sm border border-transparent dark:border-none shadow-sm"
+                            }`}
+                        >
+                          <p className="whitespace-pre-wrap">{m.message}</p>
+                          <div className={`flex items-center justify-end gap-1.5 mt-1 text-[10px] font-medium ${m.senderRole === user.role ? "text-[#667781] dark:text-[#8696a0]" : "text-[#667781] dark:text-[#8696a0]"}`}>
+                            <span>{formatMessageTime(m.createdAt).split('•').pop().trim()}</span>
+                            {m.senderRole === user.role && (
+                              <span className="ml-0.5">
+                                {m.status === 'sending' ? (
+                                  <iconList.Clock size={11} className="text-[#667781] dark:text-[#8696a0]" />
+                                ) : m.seenByReceiver ? (
+                                  <CheckCheck size={15} className="text-[#53bdeb]" />
+                                ) : m.delivered ? (
+                                  <CheckCheck size={15} className="text-[#8696a0]" />
+                                ) : (
+                                  <Check size={15} className="text-[#8696a0]" />
+                                )}
+                              </span>
                             )}
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                  ))}
+                          </div>
+                        </motion.div>
+                      ))}
+                    </AnimatePresence>
+                  </div>
                 </div>
               </div>
 
 
               {/* INPUT BOX */}
-              <div className="shrink-0 p-3 md:p-4 border-t border-gray-300 dark:border-dark-border flex gap-2">
+              <div className="shrink-0 p-3 md:p-4 bg-[#f0f2f5] dark:bg-[#202c33] border-t border-gray-200 dark:border-dark-border flex gap-2 z-10">
                 <input
                   type="text"
                   value={input}
@@ -312,26 +350,26 @@ const ChatPage = () => {
                     e.key === "Enter" && handleSendMessage();
                   }}
                   placeholder="Type a message..."
-                  className="px-3 py-2.5 w-full border border-gray-300 rounded-md outline-none focus:border-primary focus:ring-2 focus:ring-primary/50 text-sm md:text-base dark:bg-card-bg dark:text-dark-text dark:border-dark-border dark:focus:border-accent dark:focus:ring-accent/50"
+                  className="px-4 py-3 w-full border-none rounded-full outline-none text-sm md:text-base bg-white dark:bg-[#2a3942] dark:text-[#d1d7db] transition-all shadow-sm"
                 />
 
                 <button
                   onClick={handleSendMessage}
-                  className="bg-blue-600 dark:bg-accent text-white px-4 md:px-5 rounded-md
-                    active:scale-90 transition-transform duration-300 cursor-pointer dark:hover:bg-accent-dull">
-                  <iconList.MousePointer2 className="rotate-135" />
+                  disabled={!input.trim()}
+                  className="bg-primary dark:bg-accent text-white dark:text-main-bg h-[48px] w-[48px] md:h-[50px] md:w-[50px] rounded-full
+                            active:scale-95 transition-all duration-300 cursor-pointer hover:bg-primary-dull dark:hover:bg-accent-dull disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center shadow-md shrink-0">
+                  <iconList.Send size={20} className="ml-1" />
                 </button>
               </div>
 
             </div>
-
           )
         }
 
       </div>
     </div>
-
   );
 };
+
 
 export default ChatPage;

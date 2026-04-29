@@ -1,6 +1,6 @@
 import { motion, OwnerTitle, useEffect, useState, AnimatePresence } from "../../index.js";
 import { useBookingStore } from "../../store/useBookingStore.js";
-import Loader from "../../components/UI/Loader.jsx";
+import TableSkeleton from "../../components/UI/TableSkeleton.jsx";
 import BookingPopup from "../../components/owner/BookingPopup.jsx";
 
 const ManageBookings = () => {
@@ -20,7 +20,7 @@ const ManageBookings = () => {
 		fetchOwnerBookings();
 	}, []);
 
-	if (loading) return <Loader />;
+	if (loading) return <TableSkeleton />;
 
 	return (
 		<div className="px-4 pt-10 pb-15 md:px-10 flex-1">
@@ -30,14 +30,14 @@ const ManageBookings = () => {
 					"Track all customer bookings, approve or cancel requests, and manage booking statuses."
 				}
 			/>
-			<div className="max-w-4xl w-full rounded-md overflow-hidden mt-6 border border-gray-400 dark:border-dark-border">
+			<div className="max-w-[1000px] w-full bg-white dark:bg-second-bg shadow-sm rounded-xl overflow-hidden mt-6 border border-gray-200 dark:border-dark-border">
 				<motion.table
-					initial={{ opacity: 0, y: 100 }}
+					initial={{ opacity: 0, y: 10 }}
 					animate={{ opacity: 1, y: 0 }}
-					transition={{ duration: 0.5 }}
+					transition={{ type: "spring", stiffness: 300, damping: 30 }}
 					className="w-full border-collapse text-left text-sm text-gray-600 dark:text-dark-text"
 				>
-					<thead className="text-gray-500 dark:text-dark-muted">
+					<thead className="bg-gray-50 dark:bg-card-bg text-gray-500 dark:text-dark-muted border-b border-gray-200 dark:border-dark-border">
 						<tr>
 							<th className="p-3 font-medium">Car</th>
 							<th className="p-3 font-medium max-md:hidden">
@@ -55,13 +55,12 @@ const ManageBookings = () => {
 						{bookings.map((booking, index) => (
 							<motion.tr
 								onClick={() => setSelectedBooking(booking)}
-								initial={{ opacity: 0, y: 20 }}
-								animate={{ opacity: 1, y: 0 }}
+								initial={{ opacity: 0 }}
+								animate={{ opacity: 1 }}
 								transition={{
-									duration: 0.5,
-									delay: index * 0.1,
+									type: "spring", stiffness: 300, damping: 30
 								}}
-								className="border-t border-gray-400 hover:bg-gray-100 hover:scale-101 transition-all duration-300 dark:border-dark-border dark:hover:bg-surface cursor-pointer"
+								className="border-b last:border-b-0 border-gray-100 hover:bg-gray-50/80 transition-colors duration-200 dark:border-dark-border dark:hover:bg-surface/50 cursor-pointer"
 								key={index}
 							>
 

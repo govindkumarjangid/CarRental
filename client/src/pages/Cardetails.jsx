@@ -1,4 +1,4 @@
-import Loader from "../components/UI/Loader";
+import CarDetailsPageSkeleton from "../components/UI/CarDetailsPageSkeleton";
 import { useAuthStore } from "../store/useAuthStore.js";
 import { useCarStore } from "../store/useCarStore.js";
 import { useBookingStore } from "../store/useBookingStore.js";
@@ -127,7 +127,7 @@ const Cardetails = () => {
 		}
 	}, [cars, id]);
 
-	if (carsLoading) return <Loader />
+	if (carsLoading || !car) return <CarDetailsPageSkeleton />;
 
 	return (
 		car && (

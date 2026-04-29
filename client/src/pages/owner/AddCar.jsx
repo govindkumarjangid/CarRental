@@ -67,9 +67,9 @@ const AddCar = () => {
 				{/* car image  */}
 
 				<motion.div
-					initial={{ opacity: 0, y: 50 }}
+					initial={{ opacity: 0, y: 10 }}
 					animate={{ opacity: 1, y: 0 }}
-					transition={{ duration: 0.7 }}
+					transition={{ type: "spring", stiffness: 300, damping: 30 }}
 					className="flex gap-4 items-center w-full"
 				>
 					<label htmlFor="car-image">
@@ -100,9 +100,9 @@ const AddCar = () => {
 
 				{/* car brand and model  */}
 				<motion.div
-					initial={{ opacity: 0, y: 50 }}
+					initial={{ opacity: 0, y: 10 }}
 					animate={{ opacity: 1, y: 0 }}
-					transition={{ duration: 0.7, delay: 0.2 }}
+					transition={{ type: "spring", stiffness: 300, damping: 30, delay: 0.05 }}
 					className="grid grid-cols-1 md:grid-cols-2 gap-6"
 				>
 					<motion.div className="flex flex-col w-full">
@@ -134,9 +134,9 @@ const AddCar = () => {
 
 				{/* year , price and category  */}
 				<motion.div
-					initial={{ opacity: 0, y: 50 }}
+					initial={{ opacity: 0, y: 10 }}
 					animate={{ opacity: 1, y: 0 }}
-					transition={{ duration: 0.7, delay: 0.3 }}
+					transition={{ type: "spring", stiffness: 300, damping: 30, delay: 0.1 }}
 					className="grid grid-cols-1 md:grid-cols-3 gap-6"
 				>
 					<div className="flex flex-col w-full">
@@ -192,9 +192,9 @@ const AddCar = () => {
 
 				{/* transmission , fuel type and seating capacity  */}
 				<motion.div
-					initial={{ opacity: 0, y: 50 }}
+					initial={{ opacity: 0, y: 10 }}
 					animate={{ opacity: 1, y: 0 }}
-					transition={{ duration: 0.7, delay: 0.4 }}
+					transition={{ type: "spring", stiffness: 300, damping: 30, delay: 0.15 }}
 					className="grid grid-cols-1 md:grid-cols-3 gap-6"
 				>
 					<div className="flex flex-col w-full">
@@ -255,9 +255,9 @@ const AddCar = () => {
 
 				{/* location and description  */}
 				<motion.div
-					initial={{ opacity: 0, y: 50 }}
+					initial={{ opacity: 0, y: 10 }}
 					animate={{ opacity: 1, y: 0 }}
-					transition={{ duration: 0.7, delay: 0.5 }}
+					transition={{ type: "spring", stiffness: 300, damping: 30, delay: 0.2 }}
 					className="grid grid-cols-1 gap-6"
 				>
 					<div className="flex flex-col w-full">
@@ -284,9 +284,9 @@ const AddCar = () => {
 				</motion.div>
 
 				<motion.div
-					initial={{ opacity: 0, y: 50 }}
+					initial={{ opacity: 0, y: 10 }}
 					animate={{ opacity: 1, y: 0 }}
-					transition={{ duration: 0.7, delay: 0.7 }}
+					transition={{ type: "spring", stiffness: 300, damping: 30, delay: 0.25 }}
 					className="grid grid-cols-1 gap-6"
 				>
 					<div className="flex flex-col w-full">
@@ -305,13 +305,9 @@ const AddCar = () => {
 				</motion.div>
 
 				<motion.button
-					initial={{ y: 50, opacity: 0 }}
-					animate={{ y: 0, opacity: 1 }}
-					transition={{
-						type: "spring",
-						stiffness: 200,
-						damping: 20,
-					}}
+					initial={{ opacity: 0, y: 10 }}
+					animate={{ opacity: 1, y: 0 }}
+					transition={{ type: "spring", stiffness: 300, damping: 30, delay: 0.3 }}
 					type="submit"
 					disabled={loading}
 					className={` px-5 py-2.5 mt-4 rounded-md text-white transition-all active:scale-95 mb-10 w-fit dark:bg-accent dark:hover:bg-accent-dull dark:text-main-bg ${loading ? "cursor-not-allowed bg-primary" : "bg-primary hover:bg-primary-dull cursor-pointer"}`}

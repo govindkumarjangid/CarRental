@@ -27,7 +27,9 @@ import {
 const App = () => {
 	const { showLogin, showReview, token, fetchUser } = useAuthStore();
 	const { fetchCars, showEditCar } = useCarStore();
-	const isOwnerPath = useLocation().pathname.startsWith("/owner");
+	const location = useLocation();
+	const isOwnerPath = location.pathname.startsWith("/owner");
+	const isChatPath = location.pathname.startsWith("/chatpage");
 
 	useEffect(() => {
 		fetchCars();
@@ -98,7 +100,7 @@ const App = () => {
 			{showReview && <TestimonialForm />}
 			{showEditCar && <EditCarForm />}
 
-			{!isOwnerPath && <Footer />}
+			{!isOwnerPath && !isChatPath && <Footer />}
 		</>
 	);
 };

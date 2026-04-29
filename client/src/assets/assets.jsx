@@ -43,6 +43,7 @@ import {
 	MousePointer2,
 	ArrowDown,
 	Send,
+	Menu,
 } from "lucide-react";
 
 export const cityList = [
@@ -93,7 +94,8 @@ export const iconList = {
 	MessageCircleMore,
 	MousePointer2,
 	ArrowDown,
-	Send
+	Send,
+	Menu
 };
 
 export const assets = {

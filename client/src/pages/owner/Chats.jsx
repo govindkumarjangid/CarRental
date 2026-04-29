@@ -6,7 +6,8 @@ import {
   Check,
   CheckCheck,
   OwnerTitle,
-  useEffect, useRef, useState
+  useEffect, useRef, useState,
+  motion, AnimatePresence
 } from "../../index.js";
 import ChatSkeletonList from "../../components/chat/ChatSkeletonList.jsx";
 import OwnerChatMessageSkeleton from "../../components/chat/OwnerChatMessageSkeleton.jsx";
@@ -38,12 +39,12 @@ const Chats = () => {
   useEffect(() => {
     if (scrollContainerRef.current) {
       const isInitialLoad = prevMessagesLength.current === 0 && messages.length > 0;
-      
+
       scrollContainerRef.current.scrollTo({
         top: scrollContainerRef.current.scrollHeight,
         behavior: isInitialLoad ? "auto" : "smooth"
       });
-      
+
       prevMessagesLength.current = messages.length;
     }
   }, [messages]);
@@ -158,8 +159,8 @@ const Chats = () => {
           ...prev,
           message,
         ]);
-        if (message.chatId) getMessages(activeChat?._id);
-      };
+      }
+      getChats(); // Always update recent chats preview
     };
     socket.on("receiveMessage", handleReceive);
     return () => {
@@ -179,6 +180,26 @@ const Chats = () => {
     }
   }, [user]);
 
+  // Read receipts logic
+  useEffect(() => {
+    if (activeChat?._id && messages.length > 0) {
+      const hasUnread = messages.some(m => m.senderRole !== user.role && !m.seenByReceiver);
+      if (hasUnread) {
+        socket.emit("markAsRead", { chatId: activeChat._id, role: user.role });
+      }
+    }
+  }, [activeChat?._id, messages]);
+
+  useEffect(() => {
+    const handleMessagesRead = ({ chatId }) => {
+      if (chatId === activeChat?._id) {
+        setMessages(prev => prev.map(m => m.senderRole === user.role ? { ...m, seenByReceiver: true } : m));
+      }
+    };
+    socket.on("messagesRead", handleMessagesRead);
+    return () => socket.off("messagesRead", handleMessagesRead);
+  }, [activeChat?._id]);
+
   useEffect(() => {
     socket.on("onlineUsers", (users) => {
       setOnlineUsers(users);
@@ -188,20 +209,20 @@ const Chats = () => {
 
 
   return (
-    <div className="flex-1 flex flex-col h-[calc(100vh-64px)] md:h-[calc(100vh-80px)] overflow-hidden bg-gray-50/30 dark:bg-main-bg text-gray-800 dark:text-dark-text">
+    <div className="absolute inset-0 flex flex-col overflow-hidden bg-gray-50/30 dark:bg-main-bg text-gray-800 dark:text-dark-text">
 
       {/* title  */}
-      <div className={`px-4 pt-4 md:px-8 md:pt-6 mb-2 md:mb-4 flex-shrink-0 transition-all ${activeChat ? "hidden md:block" : "block"}`}>
+      <div className={`px-4 pt-4 md:px-8 md:pt-6 mb-2 md:mb-4 shrink-0 transition-all ${activeChat ? "hidden md:block" : "block"}`}>
         <OwnerTitle
           title="Messages"
           subTitle="Manage and respond to all customer conversations from one place."
         />
       </div>
 
-      <div className={`flex flex-1 overflow-hidden md:mx-8 md:mb-6 md:border md:border-gray-200 dark:md:border-dark-border md:rounded-2xl shadow-sm bg-white dark:bg-second-bg ${activeChat ? "border-t border-gray-200 dark:border-dark-border" : "border-t border-gray-200 dark:border-dark-border md:border-t"}`}>
+      <div className={`flex flex-1 w-full overflow-hidden shadow-sm bg-white dark:bg-second-bg border-t border-gray-200 dark:border-dark-border`}>
 
         {/* CHAT LIST */}
-        <div className={`w-full md:w-80 lg:w-[360px] flex-shrink-0 border-r border-gray-200 dark:border-dark-border flex flex-col bg-white dark:bg-second-bg ${activeChat ? "hidden md:flex" : "flex"}`}>
+        <div className={`w-full md:w-80 lg:w-[360px] shrink-0 border-r border-gray-200 dark:border-dark-border flex flex-col bg-white dark:bg-second-bg ${activeChat ? "hidden md:flex" : "flex"}`}>
           {/* chat list header  */}
           <div className="h-16 flex items-center px-5 border-b border-gray-100 dark:border-dark-border shrink-0 bg-gray-50/50 dark:bg-second-bg">
             <h2 className="text-lg font-bold text-gray-800 dark:text-dark-text">Recent Chats</h2>
@@ -258,16 +279,16 @@ const Chats = () => {
             <OwnerChatMessageSkeleton />
           </div>
         ) : (
-          <div className={`flex flex-col flex-1 bg-slate-50/50 dark:bg-[#0a0a0a] ${activeChat ? "flex" : "hidden md:flex"}`}>
+          <div className={`flex flex-col flex-1 bg-[#efe7de] dark:bg-[#0b141a] ${activeChat ? "flex" : "hidden md:flex"}`}>
 
             {/* HEADER */}
             {activeChat ? (
               <div className="h-16 flex items-center gap-3 px-4 bg-white/80 backdrop-blur-md dark:bg-second-bg/90 border-b border-gray-200 dark:border-dark-border shadow-sm z-10 shrink-0">
                 <button
                   onClick={() => setActiveChat(null)}
-                  className="md:hidden p-2 -ml-2 rounded-full hover:bg-gray-100 dark:hover:bg-surface text-gray-600 dark:text-dark-muted transition-colors active:scale-95"
+                  className="md:hidden p-2 -ml-2 rounded-full hover:bg-gray-100 dark:hover:bg-surface text-gray-600 dark:text-dark-muted transition-colors active:scale-95 cursor-pointer"
                 >
-                  <iconList.ArrowLeft size={22} />
+                  <iconList.ArrowLeft size={18} />
                 </button>
 
                 <div className="flex items-center gap-3">
@@ -302,37 +323,44 @@ const Chats = () => {
             {/* MESSAGES */}
             <div className="flex-1 min-h-0 relative">
               {activeChat ? (
-                <div ref={scrollContainerRef} className="h-full w-full overflow-y-auto custom-scrollbar">
+                <div ref={scrollContainerRef} className="h-full w-full overflow-y-auto custom-scrollbar bg-[url('https://i.pinimg.com/736x/8c/98/99/8c98994518b575bfd8c949e91d20548b.jpg')] bg-repeat bg-bg-size-[400px] dark:opacity-90 dark:bg-blend-overlay dark:bg-black/20">
                   <div className="p-4 md:p-6 space-y-4 flex flex-col justify-end min-h-full">
-                    {messages.map((m) => (
-                      <div
-                        key={m._id}
-                        className={`relative max-w-[85%] md:max-w-[70%] w-fit px-3 py-1.5 text-[14px] rounded-xl leading-snug wrap-break-words shadow-sm ${m.senderRole === user.role
-                            ? "ml-auto bg-primary text-white rounded-tr-sm"
-                            : "bg-white dark:bg-card-bg text-gray-800 dark:text-dark-text rounded-tl-sm border border-gray-100 dark:border-dark-border"
-                          }`}
-                      >
-                        <p>{m.message}</p>
-                        <div className={`flex items-center justify-end gap-1 mt-1 text-[10px] font-medium ${m.senderRole === user.role ? "text-primary-foreground/80" : "text-gray-400 dark:text-dark-muted"}`}>
-                          <span>{formatMessageTime(m.createdAt).split('•').pop().trim()}</span>
-                          {m.senderRole === user.role && (
-                            <span className="ml-0.5">
-                              {m.seenByReceiver ? (
-                                <CheckCheck size={14} className="text-green-300" />
-                              ) : m.delivered ? (
-                                <CheckCheck size={14} className="text-white/70" />
-                              ) : (
-                                <Check size={14} className="text-white/70" />
-                              )}
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                    ))}
+                    <AnimatePresence>
+                      {messages.map((m) => (
+                        <motion.div
+                          initial={{ opacity: 0, y: 10, scale: 0.98 }}
+                          animate={{ opacity: 1, y: 0, scale: 1 }}
+                          transition={{ duration: 0.2 }}
+                          key={m._id}
+                          className={`relative max-w-[85%] md:max-w-[70%] w-fit px-3 py-1.5 text-[14px] rounded-xl leading-snug wrap-break-words shadow-sm ${m.senderRole === user.role
+                            ? "ml-auto bg-[#d9fdd3] dark:bg-[#005c4b] text-[#111b21] dark:text-[#e9edef] rounded-br-sm"
+                            : "bg-white dark:bg-[#202c33] text-[#111b21] dark:text-[#e9edef] rounded-bl-sm border border-transparent dark:border-none shadow-sm"
+                            }`}
+                        >
+                          <p>{m.message}</p>
+                          <div className={`flex items-center justify-end gap-1 mt-1 text-[10px] font-medium ${m.senderRole === user.role ? "text-[#667781] dark:text-[#8696a0]" : "text-[#667781] dark:text-[#8696a0]"}`}>
+                            <span>{formatMessageTime(m.createdAt).split('•').pop().trim()}</span>
+                            {m.senderRole === user.role && (
+                              <span className="ml-0.5">
+                                {m.status === 'sending' ? (
+                                  <iconList.Clock size={11} className="text-[#667781] dark:text-[#8696a0]" />
+                                ) : m.seenByReceiver ? (
+                                  <CheckCheck size={15} className="text-[#53bdeb]" />
+                                ) : m.delivered ? (
+                                  <CheckCheck size={15} className="text-[#8696a0]" />
+                                ) : (
+                                  <Check size={15} className="text-[#8696a0]" />
+                                )}
+                              </span>
+                            )}
+                          </div>
+                        </motion.div>
+                      ))}
+                    </AnimatePresence>
                   </div>
                 </div>
               ) : (
-                <div className="h-full flex items-center justify-center bg-slate-50/50 dark:bg-main-bg">
+                <div className="h-full flex items-center justify-center bg-white">
                   <div className="flex flex-col items-center gap-4 max-w-xs text-center">
                     <div className="h-24 w-24 bg-blue-50 dark:bg-surface rounded-full flex items-center justify-center mb-2">
                       <iconList.MessageCircleMore size={48} className="text-primary/60 dark:text-accent/60" />
@@ -348,9 +376,9 @@ const Chats = () => {
 
             {/* INPUT */}
             {activeChat && (
-              <div className="p-3 md:p-4 bg-white dark:bg-second-bg border-t border-gray-200 dark:border-dark-border shrink-0">
+              <div className="p-3 md:p-4 bg-[#f0f2f5] dark:bg-[#202c33] border-t border-gray-200 dark:border-dark-border shrink-0">
                 <div className="flex items-end gap-2 max-w-4xl mx-auto">
-                  <div className="flex-1 bg-gray-100 dark:bg-card-bg rounded-3xl flex items-center px-5 py-0.5 border border-transparent focus-within:border-primary/40 focus-within:bg-white dark:focus-within:bg-second-bg transition-colors shadow-inner dark:shadow-none">
+                  <div className="flex-1 bg-white dark:bg-[#2a3942] rounded-3xl flex items-center px-5 py-0.5 border border-transparent focus-within:border-transparent transition-colors shadow-sm">
                     <input
                       type="text"
                       value={input}
@@ -368,15 +396,15 @@ const Chats = () => {
                         if (e.key === "Enter" && input.trim()) handleSend();
                       }}
                       placeholder="Type your message..."
-                      className="w-full bg-transparent border-none outline-none py-3 text-[15px] text-gray-800 dark:text-dark-text placeholder-gray-500 dark:placeholder-gray-400"
+                      className="w-full bg-transparent border-none outline-none py-3 text-[15px] text-gray-800 dark:text-[#d1d7db] placeholder-gray-500 dark:placeholder-gray-400"
                     />
                   </div>
                   <button
                     onClick={() => { if (input.trim()) handleSend() }}
                     disabled={!input.trim()}
-                    className={`h-[50px] w-[50px] flex-shrink-0 rounded-full flex items-center justify-center transition-all duration-200 ${input.trim()
-                        ? "bg-primary hover:bg-blue-700 text-white shadow-md hover:shadow-lg hover:-translate-y-0.5 active:scale-95 active:translate-y-0 cursor-pointer"
-                        : "bg-gray-200 dark:bg-dark-border text-gray-400 cursor-not-allowed"
+                    className={`h-[48px] w-[48px] md:h-[50px] md:w-[50px] shrink-0 rounded-full flex items-center justify-center transition-all duration-200 ${input.trim()
+                      ? "bg-primary dark:bg-accent text-white dark:text-main-bg shadow-md hover:shadow-lg hover:-translate-y-0.5 active:scale-95 active:translate-y-0 cursor-pointer"
+                      : "bg-gray-200 dark:bg-[#2a3942] text-gray-400 dark:text-gray-500 cursor-not-allowed"
                       }`}
                   >
                     <iconList.Send size={20} className="ml-1" />

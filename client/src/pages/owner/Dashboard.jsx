@@ -1,6 +1,6 @@
 import { useAuthStore } from "../../store/useAuthStore.js";
 import { motion, OwnerTitle, useEffect, iconList } from "../../index.js"
-import Loader from "../../components/UI/Loader.jsx";
+import DashboardSkeleton from "../../components/UI/DashboardSkeleton.jsx";
 
 const Dashboard = () => {
 
@@ -47,7 +47,7 @@ const Dashboard = () => {
 		fetchDashboardData();
 	}, []);
 
-	if (loading) return <Loader />;
+	if (loading) return <DashboardSkeleton />;
 
 	return (
 		<div className="px-4 pt-10 md:px-10 flex-1 max-w-7xl pb-10 dark:text-dark-text">
@@ -60,16 +60,10 @@ const Dashboard = () => {
 					const Icon = card.icon;
 					return (
 						<motion.div
-							initial={{ opacity: 0, scale: 0 }}
+							initial={{ opacity: 0, scale: 0.95 }}
 							animate={{ opacity: 1, scale: 1 }}
-							exit={{ opacity: 0, scale: 0 }}
-							transition={{
-								duration: 0.5,
-								type: "spring",
-								stiffness: 200,
-								damping: 20,
-								delay: index * 0.2
-							}}
+							exit={{ opacity: 0, scale: 0.95 }}
+							transition={{ type: "spring", stiffness: 300, damping: 30, delay: index * 0.05 }}
 							key={index}
 							className="flex gap-2 items-center justify-between p-4 rounded-md border border-gray-500 dark:border-dark-border dark:bg-card-bg"
 						>
@@ -95,14 +89,12 @@ const Dashboard = () => {
 
 			<div className="flex items-start md:flex-row flex-col gap-6 mb-8 w-full max-w-12/12">
 				<motion.div
-					initial={{ opacity: 0, scale: 0 }}
-					animate={{ opacity: 1, scale: 1 }}
-					exit={{ opacity: 0, scale: 0 }}
+					initial={{ opacity: 0, y: 10 }}
+					animate={{ opacity: 1, y: 0 }}
+					exit={{ opacity: 0, y: 10 }}
 					transition={{
-						duration: 0.5,
-						type: "spring",
-						stiffness: 200,
-						damping: 30,
+						duration: 0.2,
+						ease: "easeOut"
 					}}
 					className="p-4 md:p-6 border border-gray-500 rounded-md w-full dark:border-dark-border dark:bg-card-bg"
 				>
@@ -163,14 +155,12 @@ const Dashboard = () => {
 
 				{/* monthly revenue chart placeholder */}
 				<motion.div
-					initial={{ opacity: 0, scale: 0 }}
-					animate={{ opacity: 1, scale: 1 }}
-					exit={{ opacity: 0, scale: 0 }}
+					initial={{ opacity: 0, y: 10 }}
+					animate={{ opacity: 1, y: 0 }}
+					exit={{ opacity: 0, y: 10 }}
 					transition={{
-						duration: 0.5,
-						type: "spring",
-						stiffness: 200,
-						damping: 30,
+						duration: 0.2,
+						ease: "easeOut"
 					}}
 					className="p-4 md:p-6 border border-gray-500 rounded-md max-w-lg w-full dark:border-dark-border dark:bg-card-bg"
 				>
