@@ -56,10 +56,6 @@ export const useCarStore = create((set, get) => ({
     fetchOwnerCars: async () => {
         set({ loading: true });
         try {
-            const token = localStorage.getItem("token");
-            if (token) {
-                axiosInstance.defaults.headers.common["Authorization"] = token;
-            }
             const { data } = await axiosInstance.get("/api/owner/cars");
             if (data.success) {
                 set({ ownerCars: data.cars, loading: false });
@@ -75,10 +71,6 @@ export const useCarStore = create((set, get) => ({
 
     toggleCarAvailability: async (carId) => {
         try {
-            const token = localStorage.getItem("token");
-            if (token) {
-                axiosInstance.defaults.headers.common["Authorization"] = token;
-            }
             const { data } = await axiosInstance.post("/api/owner/toggle-car", { carId });
             if (data.success) {
                 toast.success("Car availability toggled");
@@ -91,10 +83,6 @@ export const useCarStore = create((set, get) => ({
 
     updateCar: async (carData, image) => {
         try {
-            const token = localStorage.getItem("token");
-            if (token) {
-                axiosInstance.defaults.headers.common["Authorization"] = token;
-            }
             const fd = new FormData();
             fd.append("carId", get().editCar._id);
             Object.entries(carData).forEach(([key, value]) => {
@@ -125,10 +113,6 @@ export const useCarStore = create((set, get) => ({
 
     addCar: async (carData, image) => {
         try {
-            const token = localStorage.getItem("token");
-            if (token) {
-                axiosInstance.defaults.headers.common["Authorization"] = token;
-            }
             const formData = new FormData();
             formData.append("image", image);
             Object.entries(carData).forEach(([key, value]) => {
@@ -150,10 +134,6 @@ export const useCarStore = create((set, get) => ({
 
     deleteCar: async (carId) => {
         try {
-            const token = localStorage.getItem("token");
-            if (token) {
-                axiosInstance.defaults.headers.common["Authorization"] = token;
-            }
             const { data } = await axiosInstance.post("/api/owner/delete-car", { carId });
             if (data.success) {
                 toast.success("Car deleted successfully");
@@ -167,10 +147,6 @@ export const useCarStore = create((set, get) => ({
     fetchUserCarDetails: async (carId) => {
         set({ carDetailsLoading: true });
         try {
-            const token = localStorage.getItem("token");
-            if (token) {
-                axiosInstance.defaults.headers.common["Authorization"] = token;
-            }
             const { data } = await axiosInstance.get(`/api/user/user-cardetails/${carId}`);
             if (data.success) {
                 set({ carDetails: data.car, carOwner: data.owner });

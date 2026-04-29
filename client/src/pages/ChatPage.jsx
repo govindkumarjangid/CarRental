@@ -6,10 +6,9 @@ import ChatMessagesSkeleton from "../components/chat/ChatMessagesSkeleton.jsx";
 import socket from '../socket.js';
 import {
   iconList,
-  ScrollToBottom,
   Check,
   CheckCheck,
-  useEffect, useState, useParams
+  useEffect, useRef, useState, useParams
 } from "../index.js";
 
 
@@ -26,6 +25,24 @@ const ChatPage = () => {
   const [chatId, setChatId] = useState(null);
   const [isTyping, setIsTyping] = useState(false);
   const [onlineUsers, setOnlineUsers] = useState([]);
+  
+  const scrollContainerRef = useRef(null);
+  const prevMessagesLength = useRef(0);
+
+  useEffect(() => {
+    if (scrollContainerRef.current) {
+      const isInitialLoad = prevMessagesLength.current === 0 && messages.length > 0;
+      scrollContainerRef.current.scrollTo({
+        top: scrollContainerRef.current.scrollHeight,
+        behavior: isInitialLoad ? "auto" : "smooth"
+      });
+      prevMessagesLength.current = messages.length;
+    }
+  }, [messages]);
+
+  useEffect(() => {
+    prevMessagesLength.current = 0;
+  }, [chatId]);
 
   const formatMessageTime = (date) => {
     const msgDate = new Date(date);
@@ -244,40 +261,35 @@ const ChatPage = () => {
               </div>
 
               {/* CHAT BODY */}
-              <div className="w-full h-[80vh] flex flex-col overflow-auto">
-                <ScrollToBottom
-                  className="flex-1 overflow-y-auto overflow-x-hidden pl-4"
-                  followButtonClassName="hidden"
-                >
+              <div ref={scrollContainerRef} className="w-full h-[80vh] flex flex-col overflow-y-auto p-4 custom-scrollbar">
+                <div className="flex flex-col justify-end min-h-full">
                   {messages.map((m) => (
                     // console.log(m),
                     <div
                       key={m._id}
-                      className={`relative max-w-[75%] w-fit px-3 py-1.5 text-xs md:text-base rounded-2xl leading-snug wrap-break-words ${m.senderRole === user.role
-                        ? "ml-auto bg-primary text-gray-100 rounded-br-sm mr-2 my-1" : "bg-white dark:bg-card-bg text-gray-900 dark:text-dark-text rounded-bl-sm border border-gray-200 dark:border-dark-border my-1"
+                      className={`relative max-w-[85%] md:max-w-[70%] w-fit px-3 py-1.5 text-[14px] rounded-xl leading-snug wrap-break-words shadow-sm ${m.senderRole === user.role
+                          ? "ml-auto bg-primary text-white rounded-tr-sm"
+                          : "bg-white dark:bg-card-bg text-gray-800 dark:text-dark-text rounded-tl-sm border border-gray-100 dark:border-dark-border"
                         }`}
                     >
                       <p>{m.message}</p>
-
-                      <div className="flex items-center justify-end gap-1 mt-1 text-[10px] opacity-70">
-                        <span>{formatMessageTime(m.createdAt)}</span>
-
-                        {/* TICKS: only for sender */}
+                      <div className={`flex items-center justify-end gap-1 mt-1 text-[10px] font-medium ${m.senderRole === user.role ? "text-primary-foreground/80" : "text-gray-400 dark:text-dark-muted"}`}>
+                        <span>{formatMessageTime(m.createdAt).split('•').pop().trim()}</span>
                         {m.senderRole === user.role && (
-                          <>
+                          <span className="ml-0.5">
                             {m.seenByReceiver ? (
-                              <CheckCheck size={14} className="text-blue-400" />
+                              <CheckCheck size={14} className="text-green-300" />
                             ) : m.delivered ? (
-                              <CheckCheck size={14} className="text-gray-300" />
+                              <CheckCheck size={14} className="text-white/70" />
                             ) : (
-                              <Check size={14} className="text-gray-300" />
+                              <Check size={14} className="text-white/70" />
                             )}
-                          </>
+                          </span>
                         )}
                       </div>
                     </div>
                   ))}
-                </ScrollToBottom>
+                </div>
               </div>
 
 

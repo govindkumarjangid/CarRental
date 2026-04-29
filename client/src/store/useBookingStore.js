@@ -15,10 +15,6 @@ export const useBookingStore = create((set, get) => ({
     fetchUserBookings: async () => {
         set({ bookingLoading: true });
         try {
-            const token = localStorage.getItem("token");
-            if (token) {
-                axiosInstance.defaults.headers.common["Authorization"] = token;
-            }
             const { data } = await axiosInstance.get("/api/bookings/user");
             if (data.success) {
                 set({ bookings: data.bookings, bookingLoading: false });
@@ -35,10 +31,6 @@ export const useBookingStore = create((set, get) => ({
     createUserBooking: async (bookingData, navigate) => {
         set({ bookingLoading: true });
         try {
-            const token = localStorage.getItem("token");
-            if (token) {
-                axiosInstance.defaults.headers.common["Authorization"] = token;
-            }
             const { data } = await axiosInstance.post("/api/bookings/create", bookingData);
             if (data.success) {
                 toast.success("Booking Created");
@@ -57,10 +49,6 @@ export const useBookingStore = create((set, get) => ({
     createOnlineBooking: async (bookingData) => {
         set({ bookingLoading: true });
         try {
-            const token = localStorage.getItem("token");
-            if (token) {
-                axiosInstance.defaults.headers.common["Authorization"] = token;
-            }
             const { data } = await axiosInstance.post("/api/bookings/create-online", bookingData);
             if (data.success) {
                 set({ bookingLoading: false });
@@ -79,10 +67,6 @@ export const useBookingStore = create((set, get) => ({
 
     verifyPayment: async (payload) => {
         try {
-            const token = localStorage.getItem("token");
-            if (token) {
-                axiosInstance.defaults.headers.common["Authorization"] = token;
-            }
             const { data } = await axiosInstance.post("/api/bookings/verify-payment", payload);
             return data;
         } catch (error) {
@@ -93,10 +77,6 @@ export const useBookingStore = create((set, get) => ({
     fetchOwnerBookings: async () => {
         set({ ownerBookingLoading: true });
         try {
-            const token = localStorage.getItem("token");
-            if (token) {
-                axiosInstance.defaults.headers.common["Authorization"] = token;
-            }
             const { data } = await axiosInstance.get("/api/bookings/owner");
             if (data.success) {
                 set({ ownerBookings: data.bookings, ownerBookingLoading: false });
@@ -113,10 +93,6 @@ export const useBookingStore = create((set, get) => ({
     changeBookingStatus: async (bookingId, status) => {
         set({ ownerBookingLoading: true });
         try {
-            const token = localStorage.getItem("token");
-            if (token) {
-                axiosInstance.defaults.headers.common["Authorization"] = token;
-            }
             const { data } = await axiosInstance.post("/api/bookings/change-status", {
                 bookingId,
                 status,
@@ -137,10 +113,6 @@ export const useBookingStore = create((set, get) => ({
     changePaymentStatus: async (bookingId, status) => {
         set({ ownerBookingLoading: true });
         try {
-            const token = localStorage.getItem("token");
-            if (token) {
-                axiosInstance.defaults.headers.common["Authorization"] = token;
-            }
             const { data } = await axiosInstance.post("/api/bookings/change-payment-status", {
                 bookingId,
                 status,

@@ -11,10 +11,6 @@ export const useChatStore = create((set, get) => ({
     getChats: async (endpoint = "/api/owner/owner-chats") => {
         try {
             set({chatLoading : true})
-            const token = localStorage.getItem("token");
-            if (token) {
-                axiosInstance.defaults.headers.common["Authorization"] = token;
-            }
             const { data } = await axiosInstance.get(endpoint);
             if (data.success) {
                 set({ chats: data.chats });
@@ -28,10 +24,6 @@ export const useChatStore = create((set, get) => ({
     getMessages: async (chatId) => {
         try {
             set({messageLoading:true});
-            const token = localStorage.getItem("token");
-            if (token) {
-                axiosInstance.defaults.headers.common["Authorization"] = token;
-            }
             const { data } = await axiosInstance.get("/api/chat/get-messages", {
                 params: { chatId },
             });
@@ -64,10 +56,6 @@ export const useChatStore = create((set, get) => ({
         set((state) => ({ messages: [...state.messages, temp] }));
 
         try {
-            const token = localStorage.getItem("token");
-            if (token) {
-                axiosInstance.defaults.headers.common["Authorization"] = token;
-            }
             const { data } = await axiosInstance.post("/api/chat/send-message", {
                 chatId: activeChat._id,
                 from: userRole,
@@ -87,10 +75,6 @@ export const useChatStore = create((set, get) => ({
 
     createChat: async (userId, ownerId, carId) => {
         try {
-            const token = localStorage.getItem("token");
-            if (token) {
-                axiosInstance.defaults.headers.common["Authorization"] = token;
-            }
             const { data } = await axiosInstance.post("/api/chat/create-chat", {
                 userId,
                 ownerId,
@@ -123,10 +107,6 @@ export const useChatStore = create((set, get) => ({
         set((state) => ({ messages: [...state.messages, temp] }));
 
         try {
-            const token = localStorage.getItem("token");
-            if (token) {
-                axiosInstance.defaults.headers.common["Authorization"] = token;
-            }
             const { data } = await axiosInstance.post("/api/chat/send-message", {
                 chatId,
                 from: userRole,

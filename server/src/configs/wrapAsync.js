@@ -5,7 +5,6 @@ const wrapAsync = (controller) => {
         } catch (error) {
             next(error);
         }
-
     };
 };
 

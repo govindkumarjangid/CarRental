@@ -42,6 +42,7 @@ import {
 	MessageCircleMore,
 	MousePointer2,
 	ArrowDown,
+	Send,
 } from "lucide-react";
 
 export const cityList = [
@@ -91,7 +92,8 @@ export const iconList = {
 	ArrowLeft,
 	MessageCircleMore,
 	MousePointer2,
-	ArrowDown
+	ArrowDown,
+	Send
 };
 
 export const assets = {

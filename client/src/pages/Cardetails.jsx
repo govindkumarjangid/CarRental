@@ -12,7 +12,7 @@ const Cardetails = () => {
 	const currency = import.meta.env.VITE_CURRENCY;
 	const navigate = useNavigate();
 
-	const { setShowLogin, token, loadRazorpay } = useAuthStore();
+	const { setShowLogin, token, user, loadRazorpay } = useAuthStore();
 	const { cars, fetchCars, loading: carsLoading } = useCarStore();
 	const { createUserBooking, createOnlineBooking, verifyPayment, bookingLoading } = useBookingStore();
 
@@ -33,8 +33,6 @@ const Cardetails = () => {
 
 	const handleOnlinePayment = async () => {
 		setLoading(true);
-		const user = JSON.parse(localStorage.getItem("user"));
-
 		if (!user) {
 			toast.error("Please login to continue");
 			setLoading(false);

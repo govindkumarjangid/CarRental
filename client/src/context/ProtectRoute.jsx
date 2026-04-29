@@ -4,11 +4,7 @@ import { useAuthStore } from "../store/useAuthStore.js";
 
 const ProtectRoute = ({ children }) => {
   const navigate = useNavigate();
-  const { setShowLogin } = useAuthStore();
-
-  const user = localStorage.getItem("user")
-    ? JSON.parse(localStorage.getItem("user"))
-    : null;
+  const { user, setShowLogin } = useAuthStore();
 
   useEffect(() => {
     if (!user) {
@@ -25,3 +21,4 @@ const ProtectRoute = ({ children }) => {
 };
 
 export default ProtectRoute;
+

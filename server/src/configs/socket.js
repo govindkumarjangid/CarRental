@@ -1,4 +1,5 @@
 import { Server } from "socket.io";
+import Message from "../models/message.model.js";
 
 let io;
 
@@ -43,6 +44,20 @@ export const initSocket = (server) => {
     socket.on("sendMessage", ({ chatId, message }) => {
       console.log(chatId, message);
       socket.to(chatId).emit("receiveMessage", { message, chatId });
+    });
+
+    // mark messages as read
+    socket.on("markAsRead", async ({ chatId, role }) => {
+      try {
+        await Message.updateMany(
+          { chatId, senderRole: { $ne: role }, seenByReceiver: false },
+          { $set: { seenByReceiver: true } }
+        );
+        // Notify the other user in the room that messages were read
+        socket.to(chatId).emit("messagesRead", { chatId });
+      } catch (err) {
+        console.error("Error marking messages as read:", err);
+      }
     });
 
     //diconnect socket
