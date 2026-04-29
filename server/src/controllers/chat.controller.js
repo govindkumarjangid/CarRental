@@ -1,5 +1,5 @@
-import Chat from '../models/Chat.js';
-import Message from '../models/Message.js';
+import Chat from '../models/chat.model.js';
+import Message from '../models/message.model.js';
 
 // Create or get chat between user and owner
 export const getOrCreateChat = async (req, res) => {

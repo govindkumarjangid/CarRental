@@ -1,15 +1,10 @@
-import User from "../models/User.js";
+import User from "../models/user.model.js";
 import bcrypt from 'bcrypt'
-import jwt from 'jsonwebtoken'
-import Car from '../models/Car.js'
-import imagekit from "../configs/imagekit.js"
-import Review from "../models/Review.js";
-
-//* JWT token
-const generateToken = (userId) => {
-  const payload = userId;
-  return jwt.sign(payload, process.env.JWT_SECRET);
-}
+import Car from '../models/car.model.js'
+import imagekit from "../utils/imagekit.js"
+import Review from "../models/review.model.js";
+import { sendEmail } from "../utils/sendEmail.js";
+import { generateToken } from "../configs/generateToken.js";
 
 //* Register user
 export const registerUser = async (req, res) => {
@@ -37,6 +32,16 @@ export const registerUser = async (req, res) => {
     const hashPassword = await bcrypt.hash(password, 10);
     const user = await User.create({ name, email, password: hashPassword });
     const token = generateToken(user._id.toString());
+
+    await sendEmail({
+      email: email,
+      subject: 'Welcome to Our App!',
+      htmlMessage: `
+        <h2>Welcome ${name}!</h2>
+        <p>Humari app join karne ke liye shukriya. Apne account ko verify karne ke liye yahan click karein:</p>
+        <a href="http://localhost:3000/verify">Verify Account</a>
+      `
+    });
 
     res.json({ success: true, token });
 

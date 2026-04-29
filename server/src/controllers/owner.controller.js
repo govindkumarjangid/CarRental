@@ -1,8 +1,8 @@
-import User from "../models/User.js";
-import imagekit from '../configs/imagekit.js';
-import Car from "../models/Car.js";
-import Booking from "../models/Booking.js";
-import Chat from "../models/Chat.js";
+import User from "../models/user.model.js";
+import imagekit from '../utils/imagekit.js';
+import Car from "../models/car.model.js";
+import Booking from "../models/booking.model.js";
+import Chat from "../models/chat.model.js";
 
 //* change role to owner
 export const changeRoleToOwner = async (req, res) => {

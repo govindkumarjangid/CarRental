@@ -7,8 +7,8 @@ import {
   getUserData,
   registerUser,
   getCarDetails,
-} from '../controllers/userController.js';
-import { protect } from '../middleware/auth.js';
+} from '../controllers/user.controller.js';
+import { protect } from '../middleware/auth.middleware.js';
 import upload from '../configs/multer.js';
 
 const userRouter = express.Router();

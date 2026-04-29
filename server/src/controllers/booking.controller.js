@@ -1,6 +1,6 @@
-import Booking from "../models/Booking.js";
-import Car from '../models/Car.js'
-import razorpay from '../configs/razorpay.js'
+import Booking from "../models/booking.model.js";
+import Car from '../models/car.model.js'
+import razorpay from '../utils/razorpay.js'
 import crypto from "crypto";
 import dotenv from 'dotenv';
 dotenv.config();
