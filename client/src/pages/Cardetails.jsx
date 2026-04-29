@@ -2,10 +2,11 @@ import CarDetailsPageSkeleton from "../components/UI/CarDetailsPageSkeleton";
 import { useAuthStore } from "../store/useAuthStore.js";
 import { useCarStore } from "../store/useCarStore.js";
 import { useBookingStore } from "../store/useBookingStore.js";
-import {
-	iconList, toast, motion, useNavigate, useEffect,
-	useState, AnimatePresence, useParams
-} from "../index.js";
+import { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
+import { toast } from "react-hot-toast";
+import { iconList } from "../assets/assets.jsx";
 
 const Cardetails = () => {
 

@@ -1,6 +1,9 @@
 import { ownerMenuLinks } from "../../assets/assets.jsx";
 import { useAuthStore } from "../../store/useAuthStore.js";
-import { NavLink, useLocation, motion, useState, iconList, AnimatePresence } from "../../index.js";
+import { useState } from "react";
+import { NavLink, useLocation } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
+import { iconList } from "../../assets/assets.jsx";
 
 const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
 	const { user, updateProfileImage } = useAuthStore();
@@ -54,7 +57,7 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
 				</button>
 			)}
 
-			<p className="mt-4 text-lg capitalize pb-5 w-full px-6 text-center font-bold text-gray-800 dark:text-dark-text border-b border-gray-100 dark:border-dark-border">
+			<p className="mt-4 text-lg capitalize pb-5 w-full px-6 text-center font-bold text-gray-800 ">
 				{user?.name}
 			</p>
 
@@ -106,7 +109,7 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
 								animate={{ clipPath: "inset(0% 0% 0% 0%)", opacity: 1 }}
 								exit={{ clipPath: "inset(0% 0% 100% 0%)", opacity: 0.5 }}
 								transition={{ duration: 0.4, ease: "easeOut" }}
-								className="absolute top-0 left-0 right-0 z-50 bg-white dark:bg-second-bg shadow-xl pt-6 pb-2 border-b border-gray-200 max-h-screen flex flex-col pointer-events-auto"
+								className="absolute top-0 left-0 right-0 z-50 bg-white dark:bg-second-bg pt-6 pb-2 border-b border-gray-200 max-h-screen flex flex-col pointer-events-auto"
 							>
 								<SidebarContent />
 							</motion.div>
@@ -116,7 +119,7 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
 			</div>
 
 			{/* Desktop Sidebar */}
-			<div className="hidden md:flex relative z-50 h-full flex-col items-center pt-8 w-[240px] bg-white border-r border-gray-200 shadow-sm text-sm overflow-x-hidden dark:bg-second-bg dark:border-dark-border shrink-0">
+			<div className="hidden md:flex relative z-50 h-full flex-col items-center pt-8 w-[240px] bg-white border-r border-gray-200 text-sm overflow-x-hidden dark:bg-second-bg dark:border-dark-border shrink-0">
 				<SidebarContent />
 			</div>
 		</>

@@ -1,14 +1,11 @@
 import { useAuthStore } from "../../store/useAuthStore.js";
 import { useChatStore } from "../../store/useChatStore.js";
 import socket from "../../socket.js";
-import {
-  iconList,
-  Check,
-  CheckCheck,
-  OwnerTitle,
-  useEffect, useRef, useState,
-  motion, AnimatePresence
-} from "../../index.js";
+import { useEffect, useRef, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Check, CheckCheck } from "lucide-react";
+import { iconList } from "../../assets/assets.jsx";
+import { Title as OwnerTitle } from "../../components/owner/Title.jsx";
 import ChatSkeletonList from "../../components/chat/ChatSkeletonList.jsx";
 import OwnerChatMessageSkeleton from "../../components/chat/OwnerChatMessageSkeleton.jsx";
 
@@ -153,14 +150,10 @@ const Chats = () => {
   }, [activeChat?._id]);
 
   useEffect(() => {
-    const handleReceive = (message) => {
-      if (message.chatId === activeChat?._id) {
-        setMessages((prev) => [
-          ...prev,
-          message,
-        ]);
-      }
-      getChats(); // Always update recent chats preview
+    const handleReceive = ({ message, chatId }) => {
+      if (chatId === activeChat?._id)
+        setMessages((prev) => [...prev, message]);
+      getChats();
     };
     socket.on("receiveMessage", handleReceive);
     return () => {
@@ -175,26 +168,21 @@ const Chats = () => {
   }, [activeChat?._id]);
 
   useEffect(() => {
-    if (user?._id) {
-      socket.emit("addUser", user._id);
-    }
+    if (user?._id) socket.emit("addUser", user._id);
   }, [user]);
 
-  // Read receipts logic
   useEffect(() => {
     if (activeChat?._id && messages.length > 0) {
       const hasUnread = messages.some(m => m.senderRole !== user.role && !m.seenByReceiver);
-      if (hasUnread) {
+      if (hasUnread)
         socket.emit("markAsRead", { chatId: activeChat._id, role: user.role });
-      }
     }
   }, [activeChat?._id, messages]);
 
   useEffect(() => {
     const handleMessagesRead = ({ chatId }) => {
-      if (chatId === activeChat?._id) {
+      if (chatId === activeChat?._id)
         setMessages(prev => prev.map(m => m.senderRole === user.role ? { ...m, seenByReceiver: true } : m));
-      }
     };
     socket.on("messagesRead", handleMessagesRead);
     return () => socket.off("messagesRead", handleMessagesRead);
@@ -207,6 +195,14 @@ const Chats = () => {
     return () => socket.off("onlineUsers");
   }, []);
 
+
+  const [searchQuery, setSearchQuery] = useState("");
+  const [showSearch, setShowSearch] = useState(false);
+
+  const filteredChats = chats.filter(chat => {
+    const other = getOtherUser(chat);
+    return other?.name?.toLowerCase().includes(searchQuery.toLowerCase());
+  });
 
   return (
     <div className="absolute inset-0 flex flex-col overflow-hidden bg-gray-50/30 dark:bg-main-bg text-gray-800 dark:text-dark-text">
@@ -224,8 +220,49 @@ const Chats = () => {
         {/* CHAT LIST */}
         <div className={`w-full md:w-80 lg:w-[360px] shrink-0 border-r border-gray-200 dark:border-dark-border flex flex-col bg-white dark:bg-second-bg ${activeChat ? "hidden md:flex" : "flex"}`}>
           {/* chat list header  */}
-          <div className="h-16 flex items-center px-5 border-b border-gray-100 dark:border-dark-border shrink-0 bg-gray-50/50 dark:bg-second-bg">
-            <h2 className="text-lg font-bold text-gray-800 dark:text-dark-text">Recent Chats</h2>
+          <div className="h-16 flex items-center justify-between px-5 border-b border-gray-100 dark:border-dark-border shrink-0 bg-gray-50/50 dark:bg-second-bg relative overflow-hidden">
+            <AnimatePresence mode="wait">
+              {!showSearch ? (
+                <motion.h2
+                  key="title"
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  className="text-lg font-bold text-gray-800 dark:text-dark-text"
+                >
+                  Recent Chats
+                </motion.h2>
+              ) : (
+                <motion.div
+                  key="search"
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: 20 }}
+                  className="flex-1 flex items-center bg-gray-100 dark:bg-card-bg rounded-full px-3 py-1.5"
+                >
+                  <iconList.Search size={16} className="text-gray-400 mr-2" />
+                  <input
+                    autoFocus
+                    type="text"
+                    placeholder="Search chats..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="flex-1 bg-transparent border-none outline-none text-sm dark:text-dark-text"
+                  />
+                  <button onClick={() => { setShowSearch(false); setSearchQuery(""); }}>
+                    <iconList.X size={16} className="text-gray-400 cursor-pointer" />
+                  </button>
+                </motion.div>
+              )}
+            </AnimatePresence>
+            {!showSearch && (
+              <button
+                onClick={() => setShowSearch(true)}
+                className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-surface text-gray-500 transition-colors cursor-pointer"
+              >
+                <iconList.Search size={20} />
+              </button>
+            )}
           </div>
 
           {/* chats list  */}
@@ -235,7 +272,7 @@ const Chats = () => {
                 <ChatSkeletonList key={index} />
               ))
               :
-              chats.map((chat) => {
+              filteredChats.map((chat) => {
                 const other = getOtherUser(chat);
                 const isOnline = onlineUsers.includes(chat.user._id);
                 const isActive = activeChat?._id === chat._id;
@@ -244,8 +281,12 @@ const Chats = () => {
                   <div
                     key={chat._id}
                     onClick={() => setActiveChat(chat)}
-                    className={`flex items-center gap-3 px-4 py-3 cursor-pointer border-b border-gray-50 dark:border-dark-border/50 transition-colors hover:bg-gray-50 dark:hover:bg-surface ${isActive ? "bg-blue-50/60 dark:bg-surface border-l-4 border-l-primary" : "border-l-4 border-l-transparent"}`}
+                    className={`flex items-center gap-3 px-4 py-3 cursor-pointer border-b border-gray-50 dark:border-dark-border/50 transition-colors hover:bg-gray-100 rounded-md relative ${isActive ? "bg-primary/10 text-primary" : ""}`}
                   >
+
+                    {isActive && (
+                      <motion.div className="absolute left-0 top-2 h-13 w-1.5 bg-primary rounded-r dark:bg-accent" />
+                    )}
                     <div className="relative shrink-0">
                       <iconList.CircleUser size={46} strokeWidth={1.5} className={isActive ? "text-primary" : "text-gray-400 dark:text-gray-500"} />
                       <span
@@ -378,7 +419,7 @@ const Chats = () => {
             {activeChat && (
               <div className="p-3 md:p-4 bg-[#f0f2f5] dark:bg-[#202c33] border-t border-gray-200 dark:border-dark-border shrink-0">
                 <div className="flex items-end gap-2 max-w-4xl mx-auto">
-                  <div className="flex-1 bg-white dark:bg-[#2a3942] rounded-3xl flex items-center px-5 py-0.5 border border-transparent focus-within:border-transparent transition-colors shadow-sm">
+                  <div className="flex-1 bg-white dark:bg-[#2a3942] rounded-3xl flex items-center px-5 py-0.5 border-2 border-transparent focus-within:border-transparent transition-colors shadow-sm">
                     <input
                       type="text"
                       value={input}
@@ -396,7 +437,7 @@ const Chats = () => {
                         if (e.key === "Enter" && input.trim()) handleSend();
                       }}
                       placeholder="Type your message..."
-                      className="w-full bg-transparent border-none outline-none py-3 text-[15px] text-gray-800 dark:text-[#d1d7db] placeholder-gray-500 dark:placeholder-gray-400"
+                      className="w-full bg-transparent border-none outline-none py-3 text-[15px] text-gray-800 dark:text-[#d1d7db] placeholder-gray-500 dark:placeholder-gray-400 "
                     />
                   </div>
                   <button

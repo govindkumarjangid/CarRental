@@ -15,7 +15,7 @@ const BookingCard = ({ booking, index }) => {
 				ease: "easeInOut",
 				delay: index * 0.05,
 			}}
-			className="grid grid-cols-1 md:grid-cols-4 gap-6 p-6 rounded-lg mt-5 first:mt-12 backdrop-blur-sm border border-gray-400 dark:bg-card-bg dark:border-dark-border dark:text-dark-text"
+			className="grid grid-cols-1 md:grid-cols-4 gap-6 p-6 rounded-lg mt-5 first:mt-12 backdrop-blur-sm border border-gray-200 dark:bg-card-bg dark:border-dark-border dark:text-dark-text"
 		>
 			<div className="md:col-span-1 ">
 				<img

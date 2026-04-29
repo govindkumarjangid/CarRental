@@ -66,12 +66,12 @@ export const useChatStore = create((set, get) => ({
 
             if (data.success) {
                 set((state) => ({
-                    messages: state.messages.map(m => m._id === tempId ? data.data.message : m)
+                    messages: state.messages.map(m => m._id === tempId ? data.data : m)
                 }));
 
                 socket.emit("sendMessage", {
                     chatId: activeChat._id,
-                    message: data.data.message,
+                    message: data.data,
                 });
             }
         } catch (err) {
@@ -124,14 +124,10 @@ export const useChatStore = create((set, get) => ({
                 text,
             });
             if (data.success) {
-                // Replace temp message with real message from DB
-                set((state) => ({
-                    messages: state.messages.map(m => m._id === tempId ? data.data.message : m)
-                }));
-
+                set((state) => ({ messages: state.messages.map(m => m._id === tempId ? data.data : m) }));
                 socketInstance.emit("sendMessage", {
                     chatId,
-                    message: data.data.message,
+                    message: data.data,
                 });
             }
         } catch (error) {

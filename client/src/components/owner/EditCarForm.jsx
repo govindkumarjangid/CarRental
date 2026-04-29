@@ -1,13 +1,27 @@
 import { useCarStore } from "../../store/useCarStore.js";
 import FormSkeleton from "../UI/FormSkeleton.jsx";
-import { useState, motion, iconList, useEffect } from "../../index.js";
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import { iconList } from "../../assets/assets.jsx";
 
 
 const EditCarForm = () => {
 
   const { setShowEditCar, editCar, updateCar } = useCarStore();
 
-  const [car, setCar] = useState(null);
+  const [car, setCar] = useState(editCar ? {
+    brand: editCar.brand || "",
+    model: editCar.model || "",
+    year: editCar.year || "",
+    pricePerDay: editCar.pricePerDay || "",
+    category: editCar.category || "",
+    transmission: editCar.transmission || "",
+    fuel_type: editCar.fuel_type || "",
+    seating_capacity: editCar.seating_capacity || "",
+    location: editCar.location || "",
+    description: editCar.description || "",
+    image: editCar.image || "",
+  } : null);
   const [loading, setLoading] = useState(false);
   const [image, setImage] = useState(null);
 
@@ -45,15 +59,22 @@ const EditCarForm = () => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-0 md:p-4 pointer-events-none">
+    <motion.div
+      onClick={() => setShowEditCar(false)}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.3 }}
+      className="fixed inset-0 z-50 flex items-center justify-center p-0 md:p-4 backdrop-blur-sm cursor-pointer overflow-hidden"
+    >
       <motion.form
-        initial={{ clipPath: "inset(100% 0% 0% 0%)", opacity: 0.5 }}
-        animate={{ clipPath: "inset(0% 0% 0% 0%)", opacity: 1 }}
-        exit={{ clipPath: "inset(100% 0% 0% 0%)", opacity: 0.5 }}
-        transition={{ duration: 0.4, ease: "easeOut" }}
+        initial={{ scale: 0.9, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        exit={{ scale: 0.9, opacity: 0 }}
+        transition={{ type: "spring", stiffness: 300, damping: 25 }}
         onSubmit={handleSubmit}
         onClick={(e) => e.stopPropagation()}
-        className="relative max-w-4xl mx-auto bg-white dark:bg-second-bg px-5 md:px-8 py-5 md:py-6 shadow-2xl overflow-y-auto blue-thumb-scrollbar h-full md:h-auto md:max-h-[85vh] md:rounded-xl w-full z-51 border-none md:border border-gray-200 dark:border-dark-border pointer-events-auto"
+        className="relative max-w-4xl mx-auto bg-white dark:bg-second-bg px-5 md:px-8 py-5 md:py-6 shadow-2xl overflow-y-auto blue-thumb-scrollbar h-full md:h-auto md:max-h-[85vh] md:rounded-xl w-full z-51 border-none md:border border-gray-200 dark:border-dark-border cursor-default"
       >
 
         {/* title and close button  */}
@@ -267,7 +288,7 @@ const EditCarForm = () => {
         </button>
 
       </motion.form>
-    </div>
+    </motion.div>
   );
 }
 

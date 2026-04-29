@@ -1,6 +1,9 @@
 import { useAuthStore } from "../../store/useAuthStore.js";
 import { assets } from "../../assets/assets.jsx";
-import {motion, useInView, useRef, Link, iconList} from "../../index.js"
+import { useRef } from "react";
+import { Link } from "react-router-dom";
+import { motion, useInView } from "framer-motion";
+import { iconList } from "../../assets/assets.jsx";
 
 const NavbarOwner = ({ toggleSidebar, isSidebarOpen }) => {
 	const { user } = useAuthStore();
@@ -13,7 +16,7 @@ const NavbarOwner = ({ toggleSidebar, isSidebarOpen }) => {
 			initial={{ opacity: 0, y: -10 }}
 			animate={isInView ? { opacity: 1, y: 0 } : {}}
 			transition={{ duration: 0.3, ease: "easeOut" }}
-			className="flex items-center justify-between px-4 md:px-8 py-3 md:py-4 bg-white md:bg-white/80 md:backdrop-blur-md shadow-sm border-b border-gray-200 sticky top-0 z-50 transition-all dark:bg-[#0f1014] md:dark:bg-[#0f1014]/90 dark:border-dark-border"
+			className="flex items-center justify-between px-4 md:px-8 py-3 md:py-4 bg-white md:bg-white/80 md:backdrop-blur-md border-b border-gray-200 sticky top-0 z-50 transition-all"
 		>
 			<Link to="/">
 				<img

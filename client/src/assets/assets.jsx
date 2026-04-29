@@ -44,6 +44,8 @@ import {
 	ArrowDown,
 	Send,
 	Menu,
+	Clock,
+	CheckCheck,
 } from "lucide-react";
 
 export const cityList = [
@@ -95,7 +97,9 @@ export const iconList = {
 	MousePointer2,
 	ArrowDown,
 	Send,
-	Menu
+	Menu,
+	Clock,
+	CheckCheck
 };
 
 export const assets = {

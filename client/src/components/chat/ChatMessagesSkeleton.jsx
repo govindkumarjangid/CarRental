@@ -1,37 +1,36 @@
 const ChatMessagesSkeleton = () => {
   return (
-    <div className="w-full h-[80vh] flex flex-col animate-pulse bg-white dark:bg-main-bg">
-      {/* HEADER */}
-      <div className="shrink-0 border-b border-gray-300 dark:border-dark-border p-3 md:p-4 flex flex-col sm:flex-row gap-3 sm:justify-between">
-        {/* User Details Skeleton */}
-        <div className="flex gap-3 items-center">
-          <div className="w-9 h-9 md:w-10 md:h-10 bg-gray-200 dark:bg-dark-border rounded-full shrink-0" />
-          <div className="h-4 bg-gray-200 dark:bg-dark-border rounded w-24" />
-        </div>
-        
-        {/* Owner Details Skeleton */}
-        <div className="flex gap-3 items-center border-t sm:border-t-0 border-gray-300 dark:border-dark-border pt-4 sm:pt-0">
-          <div className="w-9 h-9 md:w-10 md:h-10 bg-gray-200 dark:bg-dark-border rounded-full shrink-0" />
-          <div className="space-y-2">
-            <div className="h-4 bg-gray-200 dark:bg-dark-border rounded w-32" />
-            <div className="h-3 bg-gray-200 dark:bg-dark-border rounded w-48" />
+    <div className="w-full flex-1 flex flex-col min-w-0 overflow-hidden bg-[#efe7de] dark:bg-[#0b141a] animate-pulse">
+      {/* HEADER SKELETON */}
+      <div className="shrink-0 bg-white/95 dark:bg-second-bg/95 backdrop-blur-md border-b border-gray-200 dark:border-dark-border p-2 md:p-3 flex flex-row items-center justify-between shadow-sm z-10">
+        <div className="flex gap-3.5 items-center">
+          <div className="w-10 h-10 md:w-11 md:h-11 rounded-full bg-gray-200 dark:bg-dark-border" />
+          <div className="space-y-1.5">
+            <div className="h-4 bg-gray-200 dark:bg-dark-border rounded w-24" />
+            <div className="h-3 bg-gray-200 dark:bg-dark-border rounded w-16" />
           </div>
         </div>
+        <div className="flex items-center gap-2 pr-2">
+          <div className="hidden sm:flex flex-col items-end mr-2 space-y-1">
+            <div className="h-2.5 bg-gray-200 dark:bg-dark-border rounded w-12" />
+            <div className="h-3.5 bg-gray-200 dark:bg-dark-border rounded w-20" />
+          </div>
+          <div className="w-8 h-8 rounded-full bg-gray-200 dark:bg-dark-border" />
+        </div>
       </div>
 
-      {/* CHAT BODY */}
-      <div className="flex-1 p-4 space-y-6 overflow-y-auto custom-scrollbar flex flex-col justify-end">
-        <div className="h-12 bg-gray-100 dark:bg-card-bg rounded-2xl rounded-tl-sm w-[60%] sm:w-[40%] self-start" />
-        <div className="h-16 bg-blue-100 dark:bg-surface rounded-2xl rounded-tr-sm w-[70%] sm:w-[50%] self-end" />
-        <div className="h-12 bg-gray-100 dark:bg-card-bg rounded-2xl rounded-tl-sm w-[50%] sm:w-[35%] self-start" />
-        <div className="h-20 bg-blue-100 dark:bg-surface rounded-2xl rounded-tr-sm w-[80%] sm:w-[60%] self-end" />
-        <div className="h-12 bg-gray-100 dark:bg-card-bg rounded-2xl rounded-tl-sm w-[60%] sm:w-[45%] self-start" />
+      {/* CHAT BODY SKELETON */}
+      <div className="flex-1 p-4 md:p-6 space-y-4 overflow-hidden bg-[url('https://i.pinimg.com/736x/8c/98/99/8c98994518b575bfd8c949e91d20548b.jpg')] bg-repeat bg-bg-size-[400px] opacity-20">
+        <div className="h-10 bg-white dark:bg-[#202c33] rounded-2xl rounded-bl-sm w-[60%] md:w-[40%] self-start" />
+        <div className="h-12 bg-[#d9fdd3] dark:bg-[#005c4b] rounded-2xl rounded-br-sm w-[70%] md:w-[50%] ml-auto" />
+        <div className="h-10 bg-white dark:bg-[#202c33] rounded-2xl rounded-bl-sm w-[50%] md:w-[35%] self-start" />
+        <div className="h-14 bg-[#d9fdd3] dark:bg-[#005c4b] rounded-2xl rounded-br-sm w-[80%] md:w-[60%] ml-auto" />
       </div>
 
-      {/* INPUT */}
-      <div className="shrink-0 p-3 md:p-4 border-t border-gray-300 dark:border-dark-border flex gap-2">
-        <div className="flex-1 h-11 bg-gray-100 dark:bg-card-bg rounded-md" />
-        <div className="w-16 h-11 bg-gray-200 dark:bg-surface rounded-md" />
+      {/* INPUT BOX SKELETON */}
+      <div className="shrink-0 p-3 md:p-4 bg-[#f0f2f5] dark:bg-[#202c33] border-t border-gray-200 dark:border-dark-border flex gap-2">
+        <div className="flex-1 h-12 bg-white dark:bg-[#2a3942] rounded-full" />
+        <div className="w-12 h-12 md:w-[50px] md:h-[50px] bg-gray-200 dark:bg-[#2a3942] rounded-full" />
       </div>
     </div>
   );

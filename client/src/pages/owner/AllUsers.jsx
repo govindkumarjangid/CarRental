@@ -1,6 +1,8 @@
 import UserTableSkeleton from '../../components/UI/UserTableSkeleton';
 import { useAuthStore } from '../../store/useAuthStore';
-import { motion, OwnerTitle, useEffect } from '../../index.js';
+import { useEffect } from 'react';
+import { motion } from 'framer-motion';
+import { Title as OwnerTitle } from '../../components/owner/Title.jsx';
 
 const AllUsers = () => {
 

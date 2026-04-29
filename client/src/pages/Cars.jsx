@@ -1,6 +1,10 @@
-import { CarCard, CarCardSkeleton, Title } from "../index.js";
 import { useCarStore } from "../store/useCarStore.js";
-import { iconList, useState, useEffect, motion } from "../index.js";
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import CarCard from "../components/car/CarCard.jsx";
+import CarCardSkeleton from "../components/car/CarCardSkeleton.jsx";
+import { Title } from "../components/UI/Title.jsx";
+import { iconList } from "../assets/assets.jsx";
 
 const Cars = () => {
 	const { cars, loading, fetchCars } = useCarStore();
@@ -244,7 +248,7 @@ const Cars = () => {
 							disabled={isLoadingMore}
 							className={`flex group items-center justify-center gap-2 px-6 py-2 border-2  rounded-md mt-18 transition-all duration-300
 								${isLoadingMore
-								? 'border-gray-300 text-gray-600 cursor-wait'
+								? 'border-gray-300 text-gray-400 cursor-wait'
 								: 'border-gray-500 text-gray-600 hover:bg-primary cursor-pointer hover:text-light hover:border-light active:scale-95'
 								}`}
 						>

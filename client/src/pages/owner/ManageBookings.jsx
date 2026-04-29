@@ -1,4 +1,6 @@
-import { motion, OwnerTitle, useEffect, useState, AnimatePresence } from "../../index.js";
+import { useEffect, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Title as OwnerTitle } from "../../components/owner/Title.jsx";
 import { useBookingStore } from "../../store/useBookingStore.js";
 import TableSkeleton from "../../components/UI/TableSkeleton.jsx";
 import BookingPopup from "../../components/owner/BookingPopup.jsx";

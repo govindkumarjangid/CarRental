@@ -1,5 +1,8 @@
 import { useAuthStore } from "../../store/useAuthStore.js";
-import { motion, OwnerTitle, useEffect, iconList } from "../../index.js"
+import { useEffect } from "react";
+import { motion } from "framer-motion";
+import { iconList } from "../../assets/assets.jsx";
+import { Title as OwnerTitle } from "../../components/owner/Title.jsx";
 import DashboardSkeleton from "../../components/UI/DashboardSkeleton.jsx";
 
 const Dashboard = () => {
@@ -65,7 +68,7 @@ const Dashboard = () => {
 							exit={{ opacity: 0, scale: 0.95 }}
 							transition={{ type: "spring", stiffness: 300, damping: 30, delay: index * 0.05 }}
 							key={index}
-							className="flex gap-2 items-center justify-between p-4 rounded-md border border-gray-500 dark:border-dark-border dark:bg-card-bg"
+							className="flex gap-2 items-center justify-between p-4 rounded-md border border-gray-300 dark:border-dark-border dark:bg-card-bg"
 						>
 							<div>
 								<h2 className="text-gray-400 text-sm dark:text-dark-muted">
@@ -96,7 +99,7 @@ const Dashboard = () => {
 						duration: 0.2,
 						ease: "easeOut"
 					}}
-					className="p-4 md:p-6 border border-gray-500 rounded-md w-full dark:border-dark-border dark:bg-card-bg"
+					className="p-4 md:p-6 border border-gray-300 rounded-md w-full "
 				>
 					<h1 className="text-md sm:text-lg font-medium dark:text-dark-text">
 						Recent Bookings
@@ -162,7 +165,7 @@ const Dashboard = () => {
 						duration: 0.2,
 						ease: "easeOut"
 					}}
-					className="p-4 md:p-6 border border-gray-500 rounded-md max-w-lg w-full dark:border-dark-border dark:bg-card-bg"
+					className="p-4 md:p-6 border border-gray-300 rounded-md max-w-lg w-full dark:border-dark-border dark:bg-card-bg"
 				>
 					<h1 className="text-md sm:text-lg font-medium dark:text-dark-text">
 						Monthly Revenue

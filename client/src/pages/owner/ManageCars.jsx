@@ -1,5 +1,8 @@
 import { useCarStore } from "../../store/useCarStore.js";
-import { useEffect, useState, motion, iconList, OwnerTitle } from "../../index.js"
+import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import { iconList } from "../../assets/assets.jsx";
+import { Title as OwnerTitle } from "../../components/owner/Title.jsx";
 import TableSkeleton from "../../components/UI/TableSkeleton.jsx";
 
 const ManageCars = () => {

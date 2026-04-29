@@ -4,13 +4,11 @@ import { useChatStore } from "../store/useChatStore.js";
 import CarDetailsSkeleton from "../components/car/CarDetailsSkeleton.jsx";
 import ChatMessagesSkeleton from "../components/chat/ChatMessagesSkeleton.jsx";
 import socket from '../socket.js';
-import {
-  iconList,
-  Check,
-  CheckCheck,
-  useEffect, useRef, useState, useParams,
-  motion, AnimatePresence
-} from "../index.js";
+import { useEffect, useRef, useState } from "react";
+import { useParams } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
+import { Check, CheckCheck } from "lucide-react";
+import { iconList } from "../assets/assets.jsx";
 
 
 const ChatPage = () => {
@@ -82,7 +80,7 @@ const ChatPage = () => {
   };
 
   const handleSendMessage = async () => {
-    if(!input.trim()) return;
+    if (!input.trim()) return;
     const text = input;
     setInput("");
     await sendUserMessage(chatId, user.role, text, socket);
@@ -139,15 +137,17 @@ const ChatPage = () => {
   }, [chatId, socket]);
 
   useEffect(() => {
-    socket.on("receiveMessage", ({ message }) => {
-      setMessages((prev) => [...prev, message]);
-    });
+    const handleReceive = ({ message, chatId: incomingChatId }) => {
+      if (incomingChatId === chatId) {
+        setMessages((prev) => [...prev, message]);
+      }
+    };
+    socket.on("receiveMessage", handleReceive);
     return () => {
-      socket.off("receiveMessage");
+      socket.off("receiveMessage", handleReceive);
     };
   }, [chatId]);
 
-  // Read receipts logic
   useEffect(() => {
     if (chatId && messages.length > 0) {
       const hasUnread = messages.some(m => m.senderRole !== user.role && !m.seenByReceiver);
@@ -194,9 +194,9 @@ const ChatPage = () => {
 
   return (
     <div className="max-w-8xl mx-auto md:px-8 lg:px-16 xl:px-24
-    bg-gray-50/50 dark:bg-[#0f1014] dark:text-dark-text h-[calc(100vh-60px)] md:h-[calc(100vh-75px)] overflow-hidden flex flex-col">
+    bg-gray-50/50 dark:bg-[#0f1014] dark:text-dark-text h-full overflow-hidden flex flex-col">
 
-      <div className="w-full h-full bg-white dark:bg-second-bg flex flex-col md:flex-row overflow-hidden shadow-sm border border-gray-200 dark:border-dark-border">
+      <div className="w-full h-full bg-white dark:bg-second-bg flex flex-col md:flex-row overflow-hidden">
 
         {/* LEFT SIDE */}
         {
