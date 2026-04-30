@@ -129,7 +129,7 @@ const BookingPopup = ({ setSelectedBooking, selectedBooking, isFullPage = false 
                             </p>
                         </div>
                     </div>
-                    <button 
+                    <button
                         onClick={handleChat}
                         className="bg-white dark:bg-white/5 w-12 h-12 rounded-full flex items-center justify-center shadow-sm border border-gray-100 dark:border-white/5 text-primary hover:bg-primary hover:text-white transition-all shrink-0"
                     >

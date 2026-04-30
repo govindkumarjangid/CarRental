@@ -57,6 +57,7 @@ import {
 	ClipboardCheck,
 	MessageCircle,
 	User,
+	CarFront
 } from "lucide-react";
 
 export const cityList = [
@@ -122,6 +123,7 @@ export const iconList = {
 	ClipboardCheck,
 	MessageCircle,
 	User,
+	CarFront
 };
 
 export const assets = {

@@ -1,6 +1,7 @@
 import { menuLinks, assets } from "../../assets/assets.jsx";
 import { useThemeStore } from "../../store/useThemeStore.js";
 import { useAuthStore } from "../../store/useAuthStore.js";
+import { useBookingStore } from "../../store/useBookingStore.js";
 import {
 	Link,
 	useNavigate,
@@ -13,22 +14,55 @@ import {
 	iconList
 } from "../../index.js"
 import { AnimatePresence } from 'framer-motion'
+import { Divide, LogOut } from "lucide-react";
 
 const Navbar = () => {
 
-	const { user, isOwner, logout, setShowLogin, changeRole } = useAuthStore();
+	const [openPopup, setOpenPopup] = useState(false);
+	const [image, setImage] = useState(null);
+	const [open, setOpen] = useState(false);
+
+	const { theme, toggleTheme } = useThemeStore();
+	const { user, isOwner, logout, setShowLogin, changeRole, updateProfileImage } = useAuthStore();
+	const { bookings, fetchUserBookings } = useBookingStore();
 	const navigate = useNavigate();
 
 	const location = useLocation();
-	const [open, setOpen] = useState(false);
-	const { theme, toggleTheme } = useThemeStore();
 
 	useEffect(() => {
 		setOpen(false);
+		setOpenPopup(false);
 	}, [location.pathname]);
+
+	useEffect(() => {
+		if (user && !isOwner) {
+			fetchUserBookings();
+		}
+	}, [user, isOwner]);
+
+	const handleUserChatClick = () => {
+		if (bookings && bookings.length > 0) {
+			navigate(`/chatpage/${bookings[0].car?._id}`);
+		} else {
+			navigate("/chats");
+		}
+	};
+
+
 
 	const ref = useRef(null);
 	const isInView = useInView(ref, { once: true });
+
+
+	const handleImageUpload = async () => {
+		if (image) await updateProfileImage(image);
+		setImage(null);
+	}
+
+	const handleLogout = async () => {
+		await logout(navigate);
+		setOpenPopup(false);
+	}
 
 	return (
 		<motion.div
@@ -51,89 +85,180 @@ const Navbar = () => {
 				</Link>
 
 				{/* menu links  */}
-				<AnimatePresence>
-					{(open || window.innerWidth >= 640) && (
-						<motion.div
-							initial={window.innerWidth < 640 ? { clipPath: "inset(0% 0% 100% 0%)", opacity: 0 } : {}}
-							animate={window.innerWidth < 640 ? { clipPath: "inset(0% 0% 0% 0%)", opacity: 1 } : {}}
-							exit={window.innerWidth < 640 ? { clipPath: "inset(0% 0% 100% 0%)", opacity: 0 } : {}}
-							transition={{ duration: 0.4, ease: "easeOut" }}
-							className={`max-sm:fixed max-sm:h-screen max-sm:w-full max-sm:top-[65px] md:max-sm:top-[61px] max-sm:border-t border-gray-200 dark:border-dark-border right-0 flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-8 max-sm:p-6 z-50  sm:bg-transparent bg-light`}
-						>
-							<motion.div className="absolute inset-0 -z-10 blur-2xl rounded-3xl" />
-							{menuLinks.map((menuLink, index) => {
-								const isActive = location.pathname === menuLink.path;
-								return (
-									<motion.div
-										key={index}
-										initial={open ? { opacity: 0, y: 10 } : {}}
-										animate={open ? { opacity: 1, y: 0 } : {}}
-										transition={{ delay: index * 0.1 }}
-										className="relative"
+				<div className="flex items-center gap-4 sm:gap-8">
+					<div
+						className={`max-sm:fixed max-sm:h-screen max-sm:w-full max-sm:top-16 max-sm:border-t border-gray-200 dark:border-dark-border right-0 flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-8 max-sm:p-6 z-40 sm:bg-transparent bg-white dark:bg-dark-bg relative max-sm:transition-all max-sm:duration-300 ${open ? 'max-sm:opacity-100 max-sm:translate-y-0' : 'max-sm:opacity-0 max-sm:-translate-y-4 max-sm:pointer-events-none'}`}
+					>
+						<div className="absolute inset-0 -z-10 blur-2xl rounded-3xl pointer-events-none" />
+						{menuLinks.map((menuLink, index) => {
+							const isActive = location.pathname === menuLink.path;
+							return (
+								<motion.div
+									key={index}
+									initial={open ? { opacity: 0, scaleY: 0 } : {}}
+									animate={open ? { opacity: 1, scale: 1 } : {}}
+									transition={{ delay: index * 0.1 }}
+									className="relative"
+								>
+									<Link
+										to={menuLink.path}
+										className={`font-medium transition-colors duration-200 ${isActive
+											? "text-primary dark:text-accent"
+											: "text-gray-600 dark:text-dark-text hover:text-primary dark:hover:text-accent"
+											}`}
 									>
-										<Link
-											to={menuLink.path}
-											className={`font-medium transition-colors duration-200 ${isActive
-												? "text-primary dark:text-accent"
-												: "text-gray-600 dark:text-dark-text hover:text-primary dark:hover:text-accent"
-												}`}
-										>
-											{menuLink.name}
-										</Link>
-										{isActive && (
-											<motion.div
-												layoutId="activeTab"
-												className="absolute -bottom-1 left-0 right-0 h-0.5 bg-primary dark:bg-accent rounded-full hidden sm:block"
-												transition={{ type: "spring", stiffness: 380, damping: 30 }}
-											/>
-										)}
-									</motion.div>
-								);
-							})}
+										{menuLink.name}
+									</Link>
+									{isActive && (
+										<motion.div
+											layoutId="activeTab"
+											className="absolute -bottom-1 left-0 right-0 h-0.5 bg-primary dark:bg-accent rounded-full hidden sm:block"
+											transition={{ type: "spring", stiffness: 380, damping: 30 }}
+										/>
+									)}
+								</motion.div>
+							);
+						})}
 
+						{isOwner ? (
 							<div className="flex max-sm:flex-col items-start sm:items-center gap-6">
 								<button
-									className="cursor-pointer dark:text-dark-text hover:text-primary dark:hover:text-accent font-medium"
-									onClick={() => {
-										isOwner ? navigate("/owner") : changeRole();
-									}}
+									className="cursor-pointer dark:text-dark-text hover:text-primary dark:hover:text-accent font-medium transition-colors"
+									onClick={() => navigate("/owner")}
 								>
-									{isOwner ? "Dashboard" : "List cars"}
-								</button>
-								<button
-									className="cursor-pointer px-8 py-2 bg-primary hover:bg-primary-dull dark:bg-accent dark:hover:bg-accent-dull dark:text-main-bg transition-all text-white rounded-md active:scale-95 font-medium shadow-sm"
-									onClick={async () => {
-										if (user) {
-											await logout(navigate);
-										} else {
-											setShowLogin(true);
-										}
-									}}
-								>
-									{user ? "Logout" : "Login"}
+									Dashboard
 								</button>
 							</div>
-						</motion.div>
+						) : user && (
+							<div className="flex max-sm:flex-col items-start sm:items-center gap-6">
+								<button
+									className="cursor-pointer dark:text-dark-text hover:text-primary dark:hover:text-accent font-medium transition-colors"
+									onClick={handleUserChatClick}
+								>
+									Chat with owner
+								</button>
+							</div>
+						)}
+					</div>
+
+					{/* Action Buttons & User Popup Trigger */}
+					<div className="flex items-center gap-2 sm:gap-4">
+						{!user ? (
+							<button
+								className="cursor-pointer px-4 sm:px-8 py-1.5 sm:py-2 bg-primary hover:bg-primary-dull dark:bg-accent dark:hover:bg-accent-dull dark:text-main-bg transition-all text-white rounded-lg active:scale-95 font-medium shadow-sm text-sm sm:text-base"
+								onClick={() => setShowLogin(true)}
+							>
+								Login
+							</button>
+						) : (
+							<div
+								className="cursor-pointer flex items-center gap-2 text-gray-500 dark:text-dark-text hover:text-primary dark:hover:text-accent font-medium active:scale-95 transition-all"
+								onClick={() => {
+									setOpenPopup(!openPopup);
+									setOpen(false);
+								}}
+							>
+								<iconList.User size={34} className="rounded-full bg-primary/10 text-primary dark:bg-accent/10 dark:text-accent p-1.5 hover:bg-primary hover:text-white transition-all duration-300" />
+							</div>
+						)}
+
+						{/* Mobile toggle button  */}
+						<button
+							onClick={() => setOpen(!open)}
+							className="sm:hidden flex items-center justify-center p-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-dark-border rounded-lg transition-colors"
+						>
+							{open ? (
+								<iconList.X size={24} className="text-gray-600 dark:text-dark-text" />
+							) : (
+								<iconList.TextAlignEnd
+									size={24}
+									className="text-gray-600 dark:text-dark-text"
+								/>
+							)}
+						</button>
+					</div>
+				</div>
+
+
+				{/* User Profile Popup */}
+				<AnimatePresence>
+					{openPopup && user && (
+						<>
+							{/* Backdrop — transparent on desktop, dark on mobile */}
+							<motion.div
+								key="backdrop"
+								initial={{ opacity: 0 }}
+								animate={{ opacity: 1 }}
+								exit={{ opacity: 0 }}
+								transition={{ duration: 0.2 }}
+								className="fixed inset-0 z-998 max-sm:backdrop-blur-sm"
+								onClick={() => setOpenPopup(false)}
+							/>
+
+							{/* Popup Card */}
+							<motion.div
+								key="popup"
+								initial={{ opacity: 0, scale: 0.95 }}
+								animate={{ opacity: 1, scale: 1 }}
+								exit={{ opacity: 0, scale: 0.95 }}
+								transition={{ duration: 0.2, ease: 'easeOut' }}
+								className="flex flex-col gap-4 p-6 bg-white dark:bg-second-bg border border-gray-100 dark:border-dark-border shadow-2xl fixed z-999 cursor-default sm:w-[320px] sm:top-18 sm:right-4 sm:rounded-md sm:items-center max-sm:bottom-0 max-sm:left-0 max-sm:right-0 max-sm:pb-10 max-sm:rounded-t-xl"
+								onClick={(e) => e.stopPropagation()}
+							>
+								{/* Drag handle — mobile only */}
+								<div className="w-10 h-1 bg-gray-300 dark:bg-gray-600 rounded-full mx-auto -mt-2 mb-1 sm:hidden" />
+
+								<div className="w-full flex items-center gap-4">
+									<label htmlFor="image" className="relative group cursor-pointer shrink-0">
+										{image || user?.image ? (
+											<img
+												src={image ? URL.createObjectURL(image) : user?.image}
+												alt="profile"
+												className="h-16 w-16 rounded-full border-2 border-primary/20 aspect-square object-cover group-hover:border-primary/40 transition-all"
+											/>
+										) : (
+											<div className="h-16 w-16 rounded-full bg-gray-100 dark:bg-dark-border flex items-center justify-center">
+												<iconList.CircleUser size={40} className="text-gray-400 dark:text-gray-600" />
+											</div>
+										)}
+										<input type="file" id="image" name="image" accept="image/*" hidden onChange={(e) => setImage(e.target.files[0])} />
+										<div className="absolute inset-0 hidden bg-black/40 rounded-full group-hover:flex items-center justify-center transition-all">
+											<iconList.EditIcon size={20} className="text-white" />
+										</div>
+									</label>
+									<div className="flex flex-col overflow-hidden">
+										<span className="text-base font-bold text-gray-800 dark:text-gray-100 truncate">{user?.name}</span>
+										<p className="text-xs text-gray-500 dark:text-dark-muted truncate">{user?.email}</p>
+										<div className="mt-1.5">
+											<span className="text-[10px] px-2 py-0.5 bg-primary/10 text-primary dark:bg-accent/10 dark:text-accent rounded-full font-bold uppercase tracking-wider">
+												{isOwner ? 'Owner' : 'Customer'}
+											</span>
+										</div>
+									</div>
+								</div>
+
+								<div className="w-full h-px bg-gray-100 dark:bg-dark-border" />
+
+								<button
+									onClick={handleLogout}
+									className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-primary hover:bg-primary-dull dark:bg-accent dark:hover:bg-accent-dull rounded-xl text-sm cursor-pointer text-white active:scale-[0.98] font-bold transition-all shadow-md group">
+									<LogOut size={18} className="group-hover:-translate-x-0.5 transition-transform" />
+									Logout Account
+								</button>
+
+								{image && (
+									<button
+										onClick={handleImageUpload}
+										className="flex items-center justify-center gap-1 text-xs font-bold shadow-lg transition-all bg-green-500 text-white hover:bg-green-600 px-4 py-2 sm:absolute sm:-top-3 sm:-right-3 sm:rounded-full max-sm:w-full max-sm:rounded-xl max-sm:text-sm"
+									>
+										<iconList.CircleCheckBig size={14} />
+										Save Avatar
+									</button>
+								)}
+							</motion.div>
+						</>
 					)}
 				</AnimatePresence>
-
-				{/* open & close button  */}
-				<button
-					onClick={() => setOpen(!open)}
-					initial={{ opacity: 0, scale: 0 }}
-					animate={{ opacity: 1, scale: 1 }}
-					transition={{ duration: 0.3, ease: "easeOut" }}
-					className="sm:hidden flex items-center justify-center p-2 cursor-pointer"
-				>
-					{open ? (
-						<iconList.X size={25} className="text-gray-500 dark:text-dark-text" />
-					) : (
-						<iconList.TextAlignEnd
-							size={25}
-							className="text-gray-500 dark:text-dark-text"
-						/>
-					)}
-				</button>
 			</div>
 		</motion.div>
 	);

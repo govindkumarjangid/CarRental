@@ -8,6 +8,7 @@ const Login = () => {
 	const [name, setName] = useState("");
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
+	const [role, setRole] = useState("user");
 
 	const navigate = useNavigate();
 	const ref = useRef(null);
@@ -15,7 +16,7 @@ const Login = () => {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		if (state === "register") {
-			await signup({ name, email, password });
+			await signup({ name, email, password, role });
 		} else {
 			await login({ email, password });
 		}
@@ -73,6 +74,39 @@ const Login = () => {
 						>
 							Name
 						</label>
+					</div>
+				)}
+
+				{/* role selector */}
+				{state === "register" && (
+					<div className="w-full">
+						<p className="text-xs text-gray-400 mb-2 font-medium">Register as</p>
+						<div className="flex gap-3 w-full">
+							<button
+								type="button"
+								onClick={() => setRole("user")}
+								className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg border-2 text-sm font-semibold cursor-pointer transition-all duration-200 ${
+									role === "user"
+										? "border-primary bg-primary/10 text-primary dark:border-accent dark:bg-accent/10 dark:text-accent"
+										: "border-gray-200 text-gray-400 hover:border-gray-300 dark:border-dark-border dark:hover:border-gray-500"
+								}`}
+							>
+								<iconList.User size={16} />
+								User
+							</button>
+							<button
+								type="button"
+								onClick={() => setRole("owner")}
+								className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg border-2 text-sm font-semibold cursor-pointer transition-all duration-200 ${
+									role === "owner"
+										? "border-primary bg-primary/10 text-primary dark:border-accent dark:bg-accent/10 dark:text-accent"
+										: "border-gray-200 text-gray-400 hover:border-gray-300 dark:border-dark-border dark:hover:border-gray-500"
+								}`}
+							>
+								<iconList.CarFront size={16} />
+								Owner
+							</button>
+						</div>
 					</div>
 				)}
 

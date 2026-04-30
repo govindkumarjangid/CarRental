@@ -32,7 +32,7 @@ const App = () => {
 	const { fetchCars, showEditCar } = useCarStore();
 	const location = useLocation();
 	const isOwnerPath = location.pathname.startsWith("/owner");
-	const isChatPath = location.pathname.startsWith("/chatpage");
+	const isChatPath = location.pathname.startsWith("/chatpage") || location.pathname.startsWith("/chats") || location.pathname.startsWith("/owner/chats");
 
 	useEffect(() => {
 		fetchCars();
@@ -55,6 +55,11 @@ const App = () => {
 					<Route path="/car-details/:id" element={<Cardetails />} />
 					<Route path="/chatpage/:id" element={<ChatPage />} />
 					<Route path="/my-bookings" element={<Mybookings />} />
+					<Route path="/chats/:userId?" element={
+						<ProtectRoute>
+							<Chats />
+						</ProtectRoute>
+					} />
 					<Route path="*" element={<NotFound404 />} />
 					<Route path="/owner" element={
 						<ProtectRoute>
@@ -100,6 +105,7 @@ const App = () => {
 								</ProtectRoute>
 							}
 						/>
+
 					</Route>
 				</Routes>
 				{!isOwnerPath && !isChatPath && <Footer />}

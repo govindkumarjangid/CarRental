@@ -10,7 +10,7 @@ import { welcomeEmailTemplate } from "../utils/emailTemplates.js";
 
 //* Register user
 export const registerUser = wrapAsync(async (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, role } = req.body;
 
   if (!name || !email || !password) {
     return res.json({ success: false, message: 'All fields are required' })
@@ -30,8 +30,9 @@ export const registerUser = wrapAsync(async (req, res) => {
     return res.json({ success: false, message: 'User already exists.' });
   }
 
+  const validRole = ['user', 'owner'].includes(role) ? role : 'user';
   const hashPassword = await bcrypt.hash(password, 10);
-  const user = await User.create({ name, email, password: hashPassword });
+  const user = await User.create({ name, email, password: hashPassword, role: validRole });
   const token = generateToken(user._id.toString());
 
   await sendEmail({

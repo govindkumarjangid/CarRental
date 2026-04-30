@@ -8,12 +8,16 @@ import { iconList } from "../../assets/assets.jsx";
 import { Title as OwnerTitle } from "../../components/owner/Title.jsx";
 import ChatSkeletonList from "../../components/chat/ChatSkeletonList.jsx";
 import OwnerChatMessageSkeleton from "../../components/chat/OwnerChatMessageSkeleton.jsx";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 
 const Chats = () => {
   const { userId } = useParams();
   const navigate = useNavigate();
+  const { pathname } = useLocation();
   const { user } = useAuthStore();
+
+  const navPrefix = pathname.startsWith("/owner") ? "/owner/chats" : "/chats";
+
   const {
     chats,
     messages,
@@ -55,7 +59,7 @@ const Chats = () => {
     if (scrollContainerRef.current) {
       const container = scrollContainerRef.current;
       const isInitialLoad = prevMessagesLength.current === 0 && messages.length > 0;
-      
+
       // Check if user is near bottom (within 200px)
       const isNearBottom = container.scrollHeight - container.scrollTop - container.clientHeight < 200;
 
@@ -298,13 +302,13 @@ const Chats = () => {
               :
               filteredChats.map((chat) => {
                 const other = getOtherUser(chat);
-                const isOnline = onlineUsers.includes(chat.user._id);
+                const isOnline = other?._id ? onlineUsers.includes(other._id) : false;
                 const isActive = activeChat?._id === chat._id;
 
                 return (
                   <div
                     key={chat._id}
-                    onClick={() => navigate(`/owner/chats/${other._id}`)}
+                    onClick={() => navigate(`${navPrefix}/${other?._id || ""}`)}
                     className={`flex items-center gap-3 px-4 py-3 cursor-pointer border-b border-gray-50 dark:border-dark-border/50 transition-colors hover:bg-gray-100 rounded-md relative ${isActive ? "bg-primary/10 text-primary" : ""}`}
                   >
 
@@ -320,7 +324,7 @@ const Chats = () => {
                     <div className="flex-1 min-w-0">
                       <div className="flex justify-between items-baseline mb-0.5">
                         <div className="font-semibold truncate text-[15px] text-gray-900 dark:text-dark-text">
-                          {other.name}
+                          {other?.name || "Unknown"}
                         </div>
                         {chat.lastMessage && (
                           <span className="text-[11px] font-medium text-gray-400 dark:text-dark-muted shrink-0 ml-2">
@@ -350,7 +354,7 @@ const Chats = () => {
             {activeChat ? (
               <div className="h-16 flex items-center gap-3 px-4 bg-white/80 backdrop-blur-md dark:bg-second-bg/90 border-b border-gray-200 dark:border-dark-border shadow-sm z-10 shrink-0">
                 <button
-                  onClick={() => navigate("/owner/chats")}
+                  onClick={() => navigate(navPrefix)}
                   className="md:hidden p-2 -ml-2 rounded-full hover:bg-gray-100 dark:hover:bg-surface text-gray-600 dark:text-dark-muted transition-colors active:scale-95 cursor-pointer"
                 >
                   <iconList.ArrowLeft size={18} />
@@ -359,13 +363,13 @@ const Chats = () => {
                 <div className="flex items-center gap-3">
                   <div className="relative">
                     <iconList.CircleUser size={40} strokeWidth={1.5} className="text-gray-500 dark:text-gray-400" />
-                    {onlineUsers.includes(getOtherUser(activeChat)._id) && (
+                    {activeChat && onlineUsers.includes(getOtherUser(activeChat)?._id) && (
                       <span className="absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-white dark:border-second-bg bg-green-500" />
                     )}
                   </div>
                   <div className="flex flex-col">
                     <span className="font-bold text-[15px] text-gray-900 dark:text-dark-text leading-tight">
-                      {getOtherUser(activeChat).name}
+                      {getOtherUser(activeChat)?.name || "Unknown User"}
                     </span>
                     {typingChatId ? (
                       <span className="text-green-500 text-[12px] italic font-medium mt-0.5">
@@ -373,7 +377,7 @@ const Chats = () => {
                       </span>
                     ) : (
                       <span className="text-[12px] text-gray-500 dark:text-dark-muted mt-0.5">
-                        {onlineUsers.includes(getOtherUser(activeChat)._id) ? "Online" : "Offline"}
+                        {onlineUsers.includes(getOtherUser(activeChat)?._id) ? "Online" : "Offline"}
                       </span>
                     )}
                   </div>
@@ -391,7 +395,7 @@ const Chats = () => {
                 <div ref={scrollContainerRef} className="h-full w-full overflow-y-auto custom-scrollbar bg-[url('https://i.pinimg.com/736x/8c/98/99/8c98994518b575bfd8c949e91d20548b.jpg')] bg-repeat bg-bg-size-[400px] dark:opacity-90 dark:bg-blend-overlay dark:bg-black/20">
                   {/* Spacer to push messages to bottom when there are few of them */}
                   <div className="flex flex-col min-h-full">
-                    <div className="flex-1" /> 
+                    <div className="flex-1" />
                     <div className="p-4 md:p-6 space-y-4 flex flex-col">
                       <AnimatePresence initial={false}>
                         {messages.map((m) => (
