@@ -5,7 +5,7 @@ import razorpay from '../utils/razorpay.js'
 import crypto from "crypto";
 import wrapAsync from "../configs/wrapAsync.js";
 import { sendEmail } from "../utils/sendEmail.js";
-import { bookingEmailTemplate, bookingConfirmationTemplate } from "../utils/emailTemplates.js";
+import { bookingEmailTemplate, bookingConfirmationTemplate, bookingCancellationTemplate, bookingCompletedTemplate } from "../utils/emailTemplates.js";
 
 //* check avaliablity
 export const checkAvailability = async (car, pickupDate, returnDate) => {
@@ -250,6 +250,33 @@ export const changeBookingStatus = wrapAsync(async (req, res) => {
     });
   }
 
+  if (status === 'cancelled' && booking.user?.email) {
+    const car = booking.car;
+    await sendEmail({
+      email: booking.user.email,
+      subject: `Booking Cancelled — ${car.brand} ${car.model} ❌`,
+      htmlMessage: bookingCancellationTemplate({
+        userName: booking.user.name,
+        carName: `${car.brand} ${car.model}`,
+        bookingId: booking._id.toString(),
+        reason: "Cancelled by owner"
+      }),
+    });
+  }
+
+  if (status === 'completed' && booking.user?.email) {
+    const car = booking.car;
+    await sendEmail({
+      email: booking.user.email,
+      subject: `Trip Completed — ${car.brand} ${car.model} 🏁`,
+      htmlMessage: bookingCompletedTemplate({
+        userName: booking.user.name,
+        carName: `${car.brand} ${car.model}`,
+        bookingId: booking._id.toString(),
+      }),
+    });
+  }
+
   res.json({ success: true, message: 'Booking status updated' });
 });
 
@@ -283,6 +310,19 @@ export const verifyPayment = wrapAsync(async (req, res) => {
       paymentStatus: "failed",
       status: "cancelled",
     });
+    const booking = await Booking.findById(bookingId).populate('car user');
+    if (booking?.user?.email) {
+      await sendEmail({
+        email: booking.user.email,
+        subject: `Booking Cancelled — ${booking.car.brand} ${booking.car.model} ❌`,
+        htmlMessage: bookingCancellationTemplate({
+          userName: booking.user.name,
+          carName: `${booking.car.brand} ${booking.car.model}`,
+          bookingId: booking._id.toString(),
+          reason: "Payment verification failed"
+        }),
+      });
+    }
     return res.status(400).json({
       success: false,
       message: "Invalid signature",

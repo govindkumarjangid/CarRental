@@ -4,336 +4,298 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { iconList } from "../../assets/assets.jsx";
 
+const EditCarForm = ({ car: propCar, onClose, isFullPage = false }) => {
+    const { setShowEditCar, editCar, updateCar } = useCarStore();
+    const targetCar = propCar || editCar;
 
-const EditCarForm = () => {
+    const [car, setCar] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [image, setImage] = useState(null);
 
-  const { setShowEditCar, editCar, updateCar } = useCarStore();
+    useEffect(() => {
+        if (!targetCar) return;
+        setCar({
+            _id: targetCar._id,
+            brand: targetCar.brand || "",
+            model: targetCar.model || "",
+            year: targetCar.year || "",
+            pricePerHour: targetCar.pricePerHour || "",
+            lateFeePerHour: targetCar.lateFeePerHour || "",
+            category: targetCar.category || "",
+            transmission: targetCar.transmission || "",
+            fuel_type: targetCar.fuel_type || "",
+            seating_capacity: targetCar.seating_capacity || "",
+            location: targetCar.location || "",
+            description: targetCar.description || "",
+            image: targetCar.image || "",
+            cleaningTime: targetCar.cleaningTime || 30,
+            maintenanceTime: targetCar.maintenanceTime || 60,
+        });
+    }, [targetCar]);
 
-  const [car, setCar] = useState(editCar ? {
-    brand: editCar.brand || "",
-    model: editCar.model || "",
-    year: editCar.year || "",
-    pricePerHour: editCar.pricePerHour || "",
-    lateFeePerHour: editCar.lateFeePerHour || "",
-    category: editCar.category || "",
-    transmission: editCar.transmission || "",
-    fuel_type: editCar.fuel_type || "",
-    seating_capacity: editCar.seating_capacity || "",
-    location: editCar.location || "",
-    description: editCar.description || "",
-    image: editCar.image || "",
-    cleaningTime: editCar.cleaningTime || 30,
-    maintenanceTime: editCar.maintenanceTime || 60,
-  } : null);
-  const [loading, setLoading] = useState(false);
-  const [image, setImage] = useState(null);
+    if (!car) return <FormSkeleton />;
 
-  useEffect(() => {
-    if (!editCar) return;
-    setCar({
-      brand: editCar.brand || "",
-      model: editCar.model || "",
-      year: editCar.year || "",
-      pricePerHour: editCar.pricePerHour || "",
-      lateFeePerHour: editCar.lateFeePerHour || "",
-      category: editCar.category || "",
-      transmission: editCar.transmission || "",
-      fuel_type: editCar.fuel_type || "",
-      seating_capacity: editCar.seating_capacity || "",
-      location: editCar.location || "",
-      description: editCar.description || "",
-      image: editCar.image || "",
-      cleaningTime: editCar.cleaningTime || 30,
-      maintenanceTime: editCar.maintenanceTime || 60,
-    });
-  }, [editCar]);
+    const handleChange = (e) => {
+        setCar((prev) => ({
+            ...prev,
+            [e.target.name]: e.target.value,
+        }));
+    };
 
-  if (!car) return <FormSkeleton />;
+    const handleClose = () => {
+        if (onClose) onClose();
+        else setShowEditCar(false);
+    };
 
-  const handleChange = (e) => {
-    setCar((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
-  };
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setLoading(true);
+        const res = await updateCar(car, image);
+        setLoading(false);
+        if (res?.success) {
+            handleClose();
+        }
+    };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    await updateCar(car, image);
-    setLoading(false);
-  };
-
-  return (
-    <motion.div
-      onClick={() => setShowEditCar(false)}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.3 }}
-      className="fixed inset-0 z-50 flex items-center justify-center p-0 md:p-4 backdrop-blur-sm cursor-pointer overflow-hidden"
-    >
-      <motion.form
-        initial={{ scale: 0.9, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        exit={{ scale: 0.9, opacity: 0 }}
-        transition={{ type: "spring", stiffness: 300, damping: 25 }}
-        onSubmit={handleSubmit}
-        onClick={(e) => e.stopPropagation()}
-        className="relative max-w-4xl mx-auto bg-white dark:bg-second-bg px-5 md:px-8 py-5 md:py-6 shadow-2xl overflow-y-auto blue-thumb-scrollbar h-full md:h-auto md:max-h-[85vh] md:rounded-xl w-full z-51 border-none md:border border-gray-200 dark:border-dark-border cursor-default"
-      >
-
-        {/* title and close button  */}
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-xl md:text-2xl font-bold dark:text-dark-text">Edit Your Car</h2>
-          <button
-            type="button"
-            onClick={() => setShowEditCar(false)}
-            className="p-2 rounded-md hover:bg-gray-100 dark:hover:bg-surface transition-all active:scale-95 text-gray-500 dark:text-dark-text"
-          >
-            <iconList.X size={22} className="cursor-pointer" />
-          </button>
-        </div>
-
-        {/* upload */}
-        <div className="flex gap-4 items-center w-full mb-2">
-          <label htmlFor="car-image">
-            {image ? (
-              <img
-                src={URL.createObjectURL(image)}
-                alt="car preview"
-                className="h-14 w-26 object-cover rounded-md"
-              />
-            ) : car?.image ? (
-              <img
-                src={car.image}
-                alt="preview"
-                className="h-14 w-26 object-cover rounded-md"
-              />
-            ) : (
-              <iconList.CloudUpload className="h-14 text-primary bg-gray-100 dark:bg-surface dark:text-accent px-4 py-3 rounded-md cursor-pointer w-26 border border-gray-200 dark:border-dark-border" />
-            )}
-
-            <input
-              type="file"
-              id="car-image"
-              name="car-image"
-              accept="image/*"
-              hidden
-              onChange={(e) => setImage(e.target.files[0])}
-            />
-          </label>
-
-          <p className="text-sm text-gray-500 dark:text-dark-muted">
-            Upload a picture of your car
-          </p>
-        </div>
-
-        {/* grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-4 my-4">
-          <div>
-            <label htmlFor="brand" className="text-sm dark:text-dark-muted">Brand</label>
-            <input
-              id="brand"
-              name="brand"
-              value={car.brand}
-              onChange={handleChange}
-              className="px-3 py-2 w-full mt-1 border border-gray-400 rounded-md outline-none focus:border-primary focus:ring-2 focus:ring-primary/50 text-gray-700 dark:bg-card-bg dark:border-dark-border dark:text-dark-text"
-              placeholder="BMW, Audi, Mercedes"
-            />
-          </div>
-
-          <div>
-            <label htmlFor="model" className="text-sm dark:text-dark-muted">Model</label>
-            <input
-              id="model"
-              name="model"
-              value={car.model}
-              onChange={handleChange}
-              className="px-3 py-2 w-full mt-1 border border-gray-400 rounded-md outline-none focus:border-primary focus:ring-2 focus:ring-primary/50 text-gray-700 dark:bg-card-bg dark:border-dark-border dark:text-dark-text"
-              placeholder="X5, A6, C-Class"
-            />
-          </div>
-
-          <div>
-            <label htmlFor="year" className="text-sm dark:text-dark-muted">Year</label>
-            <input
-              id="year"
-              name="year"
-              type="number"
-              value={car.year}
-              onChange={handleChange}
-              className="px-3 py-2 w-full mt-1 border border-gray-400 rounded-md outline-none focus:border-primary focus:ring-2 focus:ring-primary/50 text-gray-700 dark:bg-card-bg dark:border-dark-border dark:text-dark-text"
-            />
-          </div>
-
-          <div>
-            <label htmlFor="pricePerHour" className="text-sm dark:text-dark-muted">Hourly Price ₹</label>
-            <input
-              id="pricePerHour"
-              name="pricePerHour"
-              type="number"
-              value={car.pricePerHour}
-              onChange={handleChange}
-              className="px-3 py-2 w-full mt-1 border border-gray-400 rounded-md outline-none focus:border-primary focus:ring-2 focus:ring-primary/50 text-gray-700 dark:bg-card-bg dark:border-dark-border dark:text-dark-text"
-            />
-          </div>
-
-          <div>
-            <label htmlFor="lateFeePerHour" className="text-sm dark:text-dark-muted">Late Fee /Hr ₹</label>
-            <input
-              id="lateFeePerHour"
-              name="lateFeePerHour"
-              type="number"
-              value={car.lateFeePerHour}
-              onChange={handleChange}
-              className="px-3 py-2 w-full mt-1 border border-gray-400 rounded-md outline-none focus:border-primary focus:ring-2 focus:ring-primary/50 text-gray-700 dark:bg-card-bg dark:border-dark-border dark:text-dark-text"
-            />
-          </div>
-
-          <div>
-            <label htmlFor="category" className="text-sm dark:text-dark-muted">Category</label>
-            <select
-              id="category"
-              name="category"
-              value={car.category}
-              onChange={handleChange}
-              className="px-3 py-2 w-full mt-1 border border-gray-400 rounded-md outline-none focus:border-primary focus:ring-2 focus:ring-primary/50 text-gray-700 dark:bg-card-bg dark:border-dark-border dark:text-dark-text"
-            >
-              <option value="" disabled>Select Category</option>
-              <option value="Sedan">Sedan</option>
-              <option value="SUV">SUV</option>
-              <option value="MUV">MUV</option>
-              <option value="EV">EV</option>
-              <option value="Wagon">Wagon</option>
-              <option value="Van">Van</option>
-              <option value="Jeep">Jeep</option>
-              <option value="Hatchback">Hatchback</option>
-            </select>
-          </div>
-
-          <div>
-            <label htmlFor="transmission" className="text-sm dark:text-dark-muted">Transmission</label>
-            <select
-              id="transmission"
-              name="transmission"
-              value={car.transmission}
-              onChange={handleChange}
-              className="px-3 py-2 w-full mt-1 border border-gray-400 rounded-md outline-none focus:border-primary focus:ring-2 focus:ring-primary/50 text-gray-700 dark:bg-card-bg dark:border-dark-border dark:text-dark-text"
-            >
-              <option value="" disabled>Select</option>
-              <option value="Automatic">Automatic</option>
-              <option value="Semi-Automatic">Semi-Automatic</option>
-              <option value="Manual">Manual</option>
-            </select>
-          </div>
-
-          <div>
-            <label htmlFor="fuel_type" className="text-sm dark:text-dark-muted">Fuel Type</label>
-            <select
-              id="fuel_type"
-              name="fuel_type"
-              value={car.fuel_type}
-              onChange={handleChange}
-              className="px-3 py-2 w-full mt-1 border border-gray-400 rounded-md outline-none focus:border-primary focus:ring-2 focus:ring-primary/50 text-gray-700 dark:bg-card-bg dark:border-dark-border dark:text-dark-text"
-            >
-              <option value="" disabled>Select Fuel Type</option>
-              <option value="Gas">Gas</option>
-              <option value="Petrol">Petrol</option>
-              <option value="Diesel">Diesel</option>
-              <option value="Electric">Electric</option>
-              <option value="Hybrid">Hybrid</option>
-            </select>
-          </div>
-
-          <div>
-            <label htmlFor="seating_capacity" className="text-sm dark:text-dark-muted">Seating Capacity</label>
-            <input
-              id="seating_capacity"
-              name="seating_capacity"
-              type="number"
-              value={car.seating_capacity}
-              onChange={handleChange}
-              className="px-3 py-2 w-full mt-1 border border-gray-400 rounded-md outline-none focus:border-primary focus:ring-2 focus:ring-primary/50 text-gray-700 dark:bg-card-bg dark:border-dark-border dark:text-dark-text"
-            />
-          </div>
-
-          <div>
-            <label htmlFor="location" className="text-sm dark:text-dark-muted">Location</label>
-            <input
-              id="location"
-              name="location"
-              value={car.location}
-              onChange={handleChange}
-              className="px-3 py-2 w-full mt-1 border border-gray-400 rounded-md outline-none focus:border-primary focus:ring-2 focus:ring-primary/50 text-gray-700 dark:bg-card-bg dark:border-dark-border dark:text-dark-text"
-              placeholder="Delhi, Mumbai..."
-            />
-          </div>
-
-          <div>
-            <label htmlFor="cleaningTime" className="text-sm dark:text-dark-muted">Cleaning Time (Mins)</label>
-            <input
-              id="cleaningTime"
-              name="cleaningTime"
-              type="number"
-              value={car.cleaningTime}
-              onChange={handleChange}
-              className="px-3 py-2 w-full mt-1 border border-gray-400 rounded-md outline-none focus:border-primary focus:ring-2 focus:ring-primary/50 text-gray-700 dark:bg-card-bg dark:border-dark-border dark:text-dark-text"
-              placeholder="30"
-            />
-          </div>
-
-          <div>
-            <label htmlFor="maintenanceTime" className="text-sm dark:text-dark-muted">Maint. Time (Mins)</label>
-            <input
-              id="maintenanceTime"
-              name="maintenanceTime"
-              type="number"
-              value={car.maintenanceTime}
-              onChange={handleChange}
-              className="px-3 py-2 w-full mt-1 border border-gray-400 rounded-md outline-none focus:border-primary focus:ring-2 focus:ring-primary/50 text-gray-700 dark:bg-card-bg dark:border-dark-border dark:text-dark-text"
-              placeholder="60"
-            />
-          </div>
-        </div>
-
-        {/* description */}
-        <div className="mb-4">
-          <label htmlFor="description" className="text-sm dark:text-dark-muted">
-            Description
-          </label>
-          <textarea
-            id="description"
-            name="description"
-            rows="3"
-            value={car.description}
-            onChange={handleChange}
-            className="px-3 py-2 w-full mt-1 border border-gray-400 rounded-md outline-none focus:border-primary focus:ring-2 focus:ring-primary/50 text-gray-700 dark:bg-card-bg dark:border-dark-border dark:text-dark-text resize-none"
-            placeholder="Comfortable, powerful engine..."
-          />
-        </div>
-
-        <button
-          type="submit"
-          disabled={loading}
-          className={` px-5 py-2.5 mt-2 rounded-md text-white transition-all active:scale-95 dark:bg-accent dark:hover:bg-accent-dull dark:text-main-bg w-full md:w-auto ${loading ? "cursor-not-allowed bg-primary" : "bg-primary hover:bg-primary-dull cursor-pointer"}`}
+    const formContent = (
+        <motion.form
+            initial={isFullPage ? { opacity: 0 } : { scale: 0.9, opacity: 0 }}
+            animate={isFullPage ? { opacity: 1 } : { scale: 1, opacity: 1 }}
+            exit={isFullPage ? { opacity: 0 } : { scale: 0.9, opacity: 0 }}
+            transition={{ type: "spring", stiffness: 300, damping: 25 }}
+            onSubmit={handleSubmit}
+            onClick={(e) => e.stopPropagation()}
+            className={`${isFullPage ? "w-full h-full" : "relative max-w-2xl mx-auto bg-white dark:bg-second-bg shadow-2xl md:rounded-md md:max-h-[90vh] md:border border-gray-200 dark:border-dark-border"} px-5 md:px-10 py-8 overflow-y-auto blue-thumb-scrollbar w-full bg-white dark:bg-second-bg cursor-default`}
         >
-          {loading ? (
-            <span className="flex items-center justify-center gap-2">
-              <iconList.Loader size={18} className="animate-spin" />
-              Updating...
-            </span>
-          ) : (
-            <span className="flex items-center justify-center gap-2">
-              <iconList.Check size={18} />
-              Update Car
-            </span>
-          )}
-        </button>
+            {/* title and close button  */}
+            <div className="flex items-center justify-between mb-8">
+                <div className="flex items-center gap-4">
+                    {isFullPage && (
+                        <button
+                            type="button"
+                            onClick={handleClose}
+                            className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-surface transition-all active:scale-90 text-gray-500 dark:text-dark-text border border-gray-100 dark:border-white/5"
+                        >
+                            <iconList.ArrowLeft size={20} />
+                        </button>
+                    )}
+                    <h2 className="text-xl md:text-2xl font-bold dark:text-dark-text">Edit Your Car</h2>
+                </div>
+                {!isFullPage && (
+                    <button
+                        type="button"
+                        onClick={handleClose}
+                        className="p-2 rounded-md hover:bg-gray-100 dark:hover:bg-surface transition-all active:scale-95 text-gray-500 dark:text-dark-text"
+                    >
+                        <iconList.X size={22} className="cursor-pointer" />
+                    </button>
+                )}
+            </div>
 
-      </motion.form>
-    </motion.div>
-  );
-}
+            <div className="flex flex-col gap-5 text-gray-500 text-sm w-full">
+                {/* car image  */}
+                <div className="flex gap-4 items-center w-full mb-2">
+                    <label htmlFor="car-image">
+                        {image ? (
+                            <img src={URL.createObjectURL(image)} className="h-14 w-26 object-cover rounded-md" alt="car preview" />
+                        ) : car?.image ? (
+                            <img src={car.image} className="h-14 w-26 object-cover rounded-md" alt="car current" />
+                        ) : (
+                            <iconList.CloudUpload className="h-14 text-primary bg-gray-100 dark:bg-surface dark:text-accent px-4 py-3 rounded-md cursor-pointer w-26 border border-gray-300 dark:border-dark-border" />
+                        )}
+                        <input
+                            type="file"
+                            id="car-image"
+                            name="car-image"
+                            accept="image/*"
+                            hidden
+                            onChange={(e) => setImage(e.target.files[0])}
+                        />
+                    </label>
+                    <p className="text-xs md:text-sm text-gray-500">
+                        Upload a image of your car
+                    </p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
+                    <div className="flex flex-col w-full">
+                        <label htmlFor="brand" className="mb-1">Brand</label>
+                        <input
+                            name="brand"
+                            id="brand"
+                            value={car.brand}
+                            onChange={handleChange}
+                            className="px-3 py-2.5 border border-gray-300 rounded-md outline-none focus:border-primary focus:ring-3 focus:ring-primary/50 transition-colors duration-600 dark:bg-card-bg dark:border-dark-border dark:text-dark-text"
+                            placeholder="e.g. BMW"
+                        />
+                    </div>
+                    <div className="flex flex-col w-full">
+                        <label htmlFor="model" className="mb-1">Model</label>
+                        <input
+                            name="model"
+                            id="model"
+                            value={car.model}
+                            onChange={handleChange}
+                            className="px-3 py-2.5 border border-gray-300 rounded-md outline-none focus:border-primary focus:ring-3 focus:ring-primary/50 transition-colors duration-600 dark:bg-card-bg dark:border-dark-border dark:text-dark-text"
+                            placeholder="e.g. X5"
+                        />
+                    </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full">
+                    <div className="flex flex-col w-full">
+                        <label htmlFor="year" className="mb-1">Year</label>
+                        <input
+                            type="number"
+                            name="year"
+                            id="year"
+                            value={car.year}
+                            onChange={handleChange}
+                            className="px-3 py-2.5 border border-gray-300 rounded-md outline-none focus:border-primary focus:ring-3 focus:ring-primary/50 transition-colors duration-600 dark:bg-card-bg dark:border-dark-border dark:text-dark-text"
+                        />
+                    </div>
+                    <div className="flex flex-col w-full">
+                        <label htmlFor="pricePerHour" className="mb-1">Price /Hour</label>
+                        <input
+                            type="number"
+                            name="pricePerHour"
+                            id="pricePerHour"
+                            value={car.pricePerHour}
+                            onChange={handleChange}
+                            className="px-3 py-2.5 border border-gray-300 rounded-md outline-none focus:border-primary focus:ring-3 focus:ring-primary/50 transition-colors duration-600 dark:bg-card-bg dark:border-dark-border dark:text-dark-text"
+                        />
+                    </div>
+                    <div className="flex flex-col w-full">
+                        <label htmlFor="category" className="mb-1">Category</label>
+                        <select
+                            name="category"
+                            id="category"
+                            value={car.category}
+                            onChange={handleChange}
+                            className="px-3 py-2.5 border border-gray-300 rounded-md outline-none focus:border-primary focus:ring-3 focus:ring-primary/50 transition-colors duration-600 dark:bg-card-bg dark:border-dark-border dark:text-dark-text"
+                        >
+                            <option value="" disabled>Select Category</option>
+                            {["Sedan", "SUV", "MUV", "EV", "Wagon", "Van", "Jeep", "Hatchback"].map(cat => (
+                                <option key={cat} value={cat}>{cat}</option>
+                            ))}
+                        </select>
+                    </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full">
+                    <div className="flex flex-col w-full">
+                        <label htmlFor="transmission" className="mb-1">Transmission</label>
+                        <select
+                            name="transmission"
+                            id="transmission"
+                            value={car.transmission}
+                            onChange={handleChange}
+                            className="px-3 py-2.5 border border-gray-300 rounded-md outline-none focus:border-primary focus:ring-3 focus:ring-primary/50 transition-colors duration-600 dark:bg-card-bg dark:border-dark-border dark:text-dark-text"
+                        >
+                            <option value="" disabled>Select</option>
+                            <option value="Automatic">Automatic</option>
+                            <option value="Semi-Automatic">Semi-Automatic</option>
+                            <option value="Manual">Manual</option>
+                        </select>
+                    </div>
+                    <div className="flex flex-col w-full">
+                        <label htmlFor="fuel_type" className="mb-1">Fuel Type</label>
+                        <select
+                            name="fuel_type"
+                            id="fuel_type"
+                            value={car.fuel_type}
+                            onChange={handleChange}
+                            className="px-3 py-2.5 border border-gray-300 rounded-md outline-none focus:border-primary focus:ring-3 focus:ring-primary/50 transition-colors duration-600 dark:bg-card-bg dark:border-dark-border dark:text-dark-text"
+                        >
+                            <option value="" disabled>Select Fuel</option>
+                            <option value="Petrol">Petrol</option>
+                            <option value="Diesel">Diesel</option>
+                            <option value="Electric">Electric</option>
+                            <option value="Hybrid">Hybrid</option>
+                        </select>
+                    </div>
+                    <div className="flex flex-col w-full">
+                        <label htmlFor="seating_capacity" className="mb-1">Capacity</label>
+                        <input
+                            type="number"
+                            name="seating_capacity"
+                            id="seating_capacity"
+                            value={car.seating_capacity}
+                            onChange={handleChange}
+                            className="px-3 py-2.5 border border-gray-300 rounded-md outline-none focus:border-primary focus:ring-3 focus:ring-primary/50 transition-colors duration-600 dark:bg-card-bg dark:border-dark-border dark:text-dark-text"
+                        />
+                    </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
+                    <div className="flex flex-col w-full">
+                        <label htmlFor="cleaningTime" className="mb-1">Cleaning (Mins)</label>
+                        <input
+                            type="number"
+                            name="cleaningTime"
+                            id="cleaningTime"
+                            value={car.cleaningTime}
+                            onChange={handleChange}
+                            className="px-3 py-2.5 border border-gray-300 rounded-md outline-none focus:border-primary focus:ring-3 focus:ring-primary/50 transition-colors duration-600 dark:bg-card-bg dark:border-dark-border dark:text-dark-text"
+                        />
+                    </div>
+                    <div className="flex flex-col w-full">
+                        <label htmlFor="maintenanceTime" className="mb-1">Maint. (Mins)</label>
+                        <input
+                            type="number"
+                            name="maintenanceTime"
+                            id="maintenanceTime"
+                            value={car.maintenanceTime}
+                            onChange={handleChange}
+                            className="px-3 py-2.5 border border-gray-300 rounded-md outline-none focus:border-primary focus:ring-3 focus:ring-primary/50 transition-colors duration-600 dark:bg-card-bg dark:border-dark-border dark:text-dark-text"
+                        />
+                    </div>
+                </div>
+
+                <div className="flex flex-col w-full">
+                    <label htmlFor="description" className="mb-1">Description</label>
+                    <textarea
+                        name="description"
+                        id="description"
+                        rows="4"
+                        value={car.description}
+                        onChange={handleChange}
+                        className="px-3 py-2.5 border border-gray-300 rounded-md outline-none focus:border-primary focus:ring-3 focus:ring-primary/50 transition-colors duration-600 dark:bg-card-bg dark:border-dark-border dark:text-dark-text resize-none"
+                    />
+                </div>
+
+                <div className="mt-4">
+                    <button
+                        type="submit"
+                        disabled={loading}
+                        className={`px-8 py-2.5 rounded-md text-white transition-all active:scale-95 flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer ${loading ? "bg-primary" : "bg-primary hover:bg-primary-dull"}`}
+                    >
+                        {loading ? <iconList.Loader className="animate-spin" size={18} /> : <iconList.Check size={18} />}
+                        {loading ? "Updating..." : "Update Car"}
+                    </button>
+                </div>
+            </div>
+        </motion.form>
+    );
+
+
+    if (isFullPage) return (
+        <div className="w-full h-full bg-white dark:bg-second-bg flex flex-col">
+            {formContent}
+        </div>
+    );
+
+    return (
+        <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={handleClose}
+            className="fixed inset-0 z-100 flex items-center justify-center p-0 md:p-6 backdrop-blur-md bg-black/40 cursor-pointer overflow-hidden"
+        >
+            {formContent}
+        </motion.div>
+    );
+};
 
 export default EditCarForm;

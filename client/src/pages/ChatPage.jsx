@@ -28,13 +28,22 @@ const ChatPage = () => {
   const scrollContainerRef = useRef(null);
   const prevMessagesLength = useRef(0);
 
+  // Instant scroll on load, smooth scroll for new messages if near bottom
   useEffect(() => {
     if (scrollContainerRef.current) {
+      const container = scrollContainerRef.current;
       const isInitialLoad = prevMessagesLength.current === 0 && messages.length > 0;
-      scrollContainerRef.current.scrollTo({
-        top: scrollContainerRef.current.scrollHeight,
-        behavior: isInitialLoad ? "auto" : "smooth"
-      });
+      
+      // Check if user is near bottom (within 200px)
+      const isNearBottom = container.scrollHeight - container.scrollTop - container.clientHeight < 200;
+
+      if (isInitialLoad || isNearBottom) {
+        container.scrollTo({
+          top: container.scrollHeight,
+          behavior: isInitialLoad ? "auto" : "smooth"
+        });
+      }
+
       prevMessagesLength.current = messages.length;
     }
   }, [messages]);
@@ -293,14 +302,16 @@ const ChatPage = () => {
               {/* CHAT BODY AREA */}
               <div className="flex-1 min-h-0 relative">
                 <div ref={scrollContainerRef} className="absolute inset-0 overflow-y-auto p-4 md:p-6 custom-scrollbar bg-[url('https://i.pinimg.com/736x/8c/98/99/8c98994518b575bfd8c949e91d20548b.jpg')] bg-repeat bg-bg-size-[400px] dark:opacity-90 dark:bg-blend-overlay dark:bg-black/20">
-                  <div className="flex flex-col justify-start min-h-full space-y-3">
-                    <AnimatePresence>
-                      {messages.map((m) => (
-                        <motion.div
-                          initial={{ opacity: 0, y: 10, scale: 0.98 }}
-                          animate={{ opacity: 1, y: 0, scale: 1 }}
-                          transition={{ duration: 0.2 }}
-                          key={m._id}
+                  <div className="flex flex-col min-h-full">
+                    <div className="flex-1" />
+                    <div className="space-y-3 flex flex-col p-1">
+                      <AnimatePresence initial={false}>
+                        {messages.map((m) => (
+                          <motion.div
+                            initial={{ opacity: 0, y: 10, scale: 0.98 }}
+                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                            transition={{ duration: 0.2 }}
+                            key={m._id}
                           className={`relative max-w-[85%] md:max-w-[65%] w-fit px-3.5 py-2 text-[14.5px] rounded-2xl shadow-sm wrap-break-words ${m.senderRole === user.role
                             ? "ml-auto bg-[#d9fdd3] dark:bg-[#005c4b] text-[#111b21] dark:text-[#e9edef] rounded-br-sm"
                             : "bg-white dark:bg-[#202c33] text-[#111b21] dark:text-[#e9edef] rounded-bl-sm border border-transparent dark:border-none shadow-sm"
@@ -326,6 +337,7 @@ const ChatPage = () => {
                         </motion.div>
                       ))}
                     </AnimatePresence>
+                    </div>
                   </div>
                 </div>
               </div>

@@ -64,7 +64,9 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
 			{/* Menu */}
 			<div className="w-full flex-1 overflow-y-auto">
 				{ownerMenuLinks.map((link) => {
-					const isActive = link.path === location.pathname;
+					const isActive = link.path === "/owner" 
+						? location.pathname === "/owner" 
+						: location.pathname.startsWith(link.path);
 					return (
 						<MotionNavLink
 							key={link.path}

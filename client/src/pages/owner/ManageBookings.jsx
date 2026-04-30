@@ -212,7 +212,7 @@ const ManageBookings = () => {
 			{/* Delete Confirmation Modal */}
 			<AnimatePresence>
 				{openConfirm && (
-					<div className="fixed inset-0 flex items-center justify-center z-[999] px-4">
+					<div className="fixed inset-0 flex items-center justify-center z-999 px-4">
 						{/* Semi-transparent Backdrop */}
 						<motion.div
 							initial={{ opacity: 0 }}

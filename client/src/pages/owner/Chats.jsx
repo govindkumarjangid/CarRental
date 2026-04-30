@@ -8,9 +8,11 @@ import { iconList } from "../../assets/assets.jsx";
 import { Title as OwnerTitle } from "../../components/owner/Title.jsx";
 import ChatSkeletonList from "../../components/chat/ChatSkeletonList.jsx";
 import OwnerChatMessageSkeleton from "../../components/chat/OwnerChatMessageSkeleton.jsx";
+import { useParams, useNavigate } from "react-router-dom";
 
 const Chats = () => {
-
+  const { userId } = useParams();
+  const navigate = useNavigate();
   const { user } = useAuthStore();
   const {
     chats,
@@ -24,6 +26,22 @@ const Chats = () => {
   } = useChatStore();
 
   const [activeChat, setActiveChat] = useState(null);
+
+  // Sync activeChat with userId from URL
+  useEffect(() => {
+    if (userId && chats.length > 0) {
+      const chat = chats.find(c => {
+        const other = c.user?._id === user?._id ? c.owner : c.user;
+        return other?._id === userId;
+      });
+      if (chat) {
+        setActiveChat(chat);
+      }
+    } else if (!userId) {
+      setActiveChat(null);
+    }
+  }, [userId, chats]);
+
   const [input, setInput] = useState("");
   const [typingChatId, setTypingChatId] = useState(null);
   const [onlineUsers, setOnlineUsers] = useState([]);
@@ -32,15 +50,21 @@ const Chats = () => {
   const scrollContainerRef = useRef(null);
   const prevMessagesLength = useRef(0);
 
-  // Instant scroll on load, smooth scroll for new messages
+  // Instant scroll on load, smooth scroll for new messages if near bottom
   useEffect(() => {
     if (scrollContainerRef.current) {
+      const container = scrollContainerRef.current;
       const isInitialLoad = prevMessagesLength.current === 0 && messages.length > 0;
+      
+      // Check if user is near bottom (within 200px)
+      const isNearBottom = container.scrollHeight - container.scrollTop - container.clientHeight < 200;
 
-      scrollContainerRef.current.scrollTo({
-        top: scrollContainerRef.current.scrollHeight,
-        behavior: isInitialLoad ? "auto" : "smooth"
-      });
+      if (isInitialLoad || isNearBottom) {
+        container.scrollTo({
+          top: container.scrollHeight,
+          behavior: isInitialLoad ? "auto" : "smooth"
+        });
+      }
 
       prevMessagesLength.current = messages.length;
     }
@@ -280,7 +304,7 @@ const Chats = () => {
                 return (
                   <div
                     key={chat._id}
-                    onClick={() => setActiveChat(chat)}
+                    onClick={() => navigate(`/owner/chats/${other._id}`)}
                     className={`flex items-center gap-3 px-4 py-3 cursor-pointer border-b border-gray-50 dark:border-dark-border/50 transition-colors hover:bg-gray-100 rounded-md relative ${isActive ? "bg-primary/10 text-primary" : ""}`}
                   >
 
@@ -326,7 +350,7 @@ const Chats = () => {
             {activeChat ? (
               <div className="h-16 flex items-center gap-3 px-4 bg-white/80 backdrop-blur-md dark:bg-second-bg/90 border-b border-gray-200 dark:border-dark-border shadow-sm z-10 shrink-0">
                 <button
-                  onClick={() => setActiveChat(null)}
+                  onClick={() => navigate("/owner/chats")}
                   className="md:hidden p-2 -ml-2 rounded-full hover:bg-gray-100 dark:hover:bg-surface text-gray-600 dark:text-dark-muted transition-colors active:scale-95 cursor-pointer"
                 >
                   <iconList.ArrowLeft size={18} />
@@ -365,39 +389,43 @@ const Chats = () => {
             <div className="flex-1 min-h-0 relative">
               {activeChat ? (
                 <div ref={scrollContainerRef} className="h-full w-full overflow-y-auto custom-scrollbar bg-[url('https://i.pinimg.com/736x/8c/98/99/8c98994518b575bfd8c949e91d20548b.jpg')] bg-repeat bg-bg-size-[400px] dark:opacity-90 dark:bg-blend-overlay dark:bg-black/20">
-                  <div className="p-4 md:p-6 space-y-4 flex flex-col justify-end min-h-full">
-                    <AnimatePresence>
-                      {messages.map((m) => (
-                        <motion.div
-                          initial={{ opacity: 0, y: 10, scale: 0.98 }}
-                          animate={{ opacity: 1, y: 0, scale: 1 }}
-                          transition={{ duration: 0.2 }}
-                          key={m._id}
-                          className={`relative max-w-[85%] md:max-w-[70%] w-fit px-3 py-1.5 text-[14px] rounded-xl leading-snug wrap-break-words shadow-sm ${m.senderRole === user.role
-                            ? "ml-auto bg-[#d9fdd3] dark:bg-[#005c4b] text-[#111b21] dark:text-[#e9edef] rounded-br-sm"
-                            : "bg-white dark:bg-[#202c33] text-[#111b21] dark:text-[#e9edef] rounded-bl-sm border border-transparent dark:border-none shadow-sm"
-                            }`}
-                        >
-                          <p>{m.message}</p>
-                          <div className={`flex items-center justify-end gap-1 mt-1 text-[10px] font-medium ${m.senderRole === user.role ? "text-[#667781] dark:text-[#8696a0]" : "text-[#667781] dark:text-[#8696a0]"}`}>
-                            <span>{formatMessageTime(m.createdAt).split('•').pop().trim()}</span>
-                            {m.senderRole === user.role && (
-                              <span className="ml-0.5">
-                                {m.status === 'sending' ? (
-                                  <iconList.Clock size={11} className="text-[#667781] dark:text-[#8696a0]" />
-                                ) : m.seenByReceiver ? (
-                                  <CheckCheck size={15} className="text-[#53bdeb]" />
-                                ) : m.delivered ? (
-                                  <CheckCheck size={15} className="text-[#8696a0]" />
-                                ) : (
-                                  <Check size={15} className="text-[#8696a0]" />
-                                )}
-                              </span>
-                            )}
-                          </div>
-                        </motion.div>
-                      ))}
-                    </AnimatePresence>
+                  {/* Spacer to push messages to bottom when there are few of them */}
+                  <div className="flex flex-col min-h-full">
+                    <div className="flex-1" /> 
+                    <div className="p-4 md:p-6 space-y-4 flex flex-col">
+                      <AnimatePresence initial={false}>
+                        {messages.map((m) => (
+                          <motion.div
+                            initial={{ opacity: 0, y: 10, scale: 0.98 }}
+                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                            transition={{ duration: 0.2 }}
+                            key={m._id}
+                            className={`relative max-w-[85%] md:max-w-[70%] w-fit px-3 py-1.5 text-[14px] rounded-xl leading-snug wrap-break-words shadow-sm ${m.senderRole === user.role
+                              ? "ml-auto bg-[#d9fdd3] dark:bg-[#005c4b] text-[#111b21] dark:text-[#e9edef] rounded-br-sm"
+                              : "bg-white dark:bg-[#202c33] text-[#111b21] dark:text-[#e9edef] rounded-bl-sm border border-transparent dark:border-none shadow-sm"
+                              }`}
+                          >
+                            <p>{m.message}</p>
+                            <div className={`flex items-center justify-end gap-1 mt-1 text-[10px] font-medium ${m.senderRole === user.role ? "text-[#667781] dark:text-[#8696a0]" : "text-[#667781] dark:text-[#8696a0]"}`}>
+                              <span>{formatMessageTime(m.createdAt).split('•').pop().trim()}</span>
+                              {m.senderRole === user.role && (
+                                <span className="ml-0.5">
+                                  {m.status === 'sending' ? (
+                                    <iconList.Clock size={11} className="text-[#667781] dark:text-[#8696a0]" />
+                                  ) : m.seenByReceiver ? (
+                                    <CheckCheck size={15} className="text-[#53bdeb]" />
+                                  ) : m.delivered ? (
+                                    <CheckCheck size={15} className="text-[#8696a0]" />
+                                  ) : (
+                                    <Check size={15} className="text-[#8696a0]" />
+                                  )}
+                                </span>
+                              )}
+                            </div>
+                          </motion.div>
+                        ))}
+                      </AnimatePresence>
+                    </div>
                   </div>
                 </div>
               ) : (

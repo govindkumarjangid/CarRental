@@ -4,6 +4,8 @@ import { AnimatePresence, motion } from "framer-motion";
 import { iconList } from "../../assets/assets.jsx";
 import { Title as OwnerTitle } from "../../components/owner/Title.jsx";
 import TableSkeleton from "../../components/UI/TableSkeleton.jsx";
+import { useParams, useNavigate } from "react-router-dom";
+import EditCarForm from "../../components/owner/EditCarForm.jsx";
 
 const ManageCars = () => {
 	const currency = import.meta.env.VITE_CURRENCY;
@@ -17,6 +19,9 @@ const ManageCars = () => {
 		setEditCar
 	} = useCarStore();
 
+	const { carId } = useParams();
+	const navigate = useNavigate();
+
 	const [openConfirm, setOpenConfirm] = useState(false);
 	const [deleteId, setDeleteId] = useState(null);
 
@@ -24,7 +29,21 @@ const ManageCars = () => {
 		fetchOwnerCars();
 	}, []);
 
-	if (loading) return <TableSkeleton />;
+	const selectedCar = cars.find(c => c._id === carId);
+
+	if (loading && cars.length === 0) return <TableSkeleton />;
+
+	if (carId && selectedCar) {
+		return (
+			<div className="flex-1 h-full overflow-hidden">
+				<EditCarForm
+					car={selectedCar}
+					onClose={() => navigate("/owner/manage-cars")}
+					isFullPage={true}
+				/>
+			</div>
+		)
+	}
 
 	return (
 		<div className="px-4 pt-10 md:px-10 flex-1 pb-10">
@@ -147,14 +166,14 @@ const ManageCars = () => {
 											/>
 										</button>
 
-										<button className="cursor-pointer">
+										<button 
+											onClick={() => navigate(`/owner/manage-cars/${car._id}`)}
+											className="cursor-pointer active:scale-90 transition-transform duration-300"
+											title="Edit Car"
+										>
 											<iconList.EditIcon
-												onClick={() => {
-													setShowEditCar(true);
-													setEditCar(car);
-												}}
 												size={18}
-												className="text-yellow-500 active:scale-90 transition-transform duration-300"
+												className="text-yellow-500"
 											/>
 										</button>
 									</div>

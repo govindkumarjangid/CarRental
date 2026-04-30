@@ -84,7 +84,12 @@ export const useCarStore = create((set, get) => ({
     updateCar: async (carData, image) => {
         try {
             const fd = new FormData();
-            fd.append("carId", get().editCar._id);
+            const carId = carData._id || get().editCar?._id;
+            if (!carId) {
+                toast.error("Car ID not found");
+                return null;
+            }
+            fd.append("carId", carId);
             Object.entries(carData).forEach(([key, value]) => {
                 if (key !== "image") {
                     fd.append(key, value);

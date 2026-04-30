@@ -71,7 +71,7 @@ const App = () => {
 								<AddCar />
 							</ProtectRoute>
 						} />
-						<Route path="manage-cars" element={
+						<Route path="manage-cars/:carId?" element={
 							<ProtectRoute>
 								<ManageCars />
 							</ProtectRoute>
@@ -93,7 +93,7 @@ const App = () => {
 							}
 						/>
 						<Route
-							path="chats"
+							path="chats/:userId?"
 							element={
 								<ProtectRoute>
 									<Chats />

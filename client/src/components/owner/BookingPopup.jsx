@@ -1,26 +1,41 @@
 import { motion } from "framer-motion";
 import { iconList } from "../../assets/assets.jsx";
+import { useNavigate } from "react-router-dom";
+import { useChatStore } from "../../store/useChatStore.js";
+import { useAuthStore } from "../../store/useAuthStore.js";
 
 const BookingPopup = ({ setSelectedBooking, selectedBooking, isFullPage = false }) => {
+    const navigate = useNavigate();
+    const { createChat } = useChatStore();
+    const { user: currentUser } = useAuthStore();
 
     if (!selectedBooking) return null;
     const { car, user } = selectedBooking;
 
+    const handleChat = async () => {
+        if (!user?._id || !currentUser?._id || !car?._id) return;
+        const chatId = await createChat(user._id, currentUser._id, car._id);
+        if (chatId) {
+            setSelectedBooking(null);
+            navigate(`/owner/chats/${user._id}`);
+        }
+    };
+
     const detailItems = [
         {
             label: "Pickup Date & Time",
-            value: new Date(selectedBooking.pickupDate).toLocaleString("en-IN", { 
-                day: '2-digit', month: 'short', year: 'numeric', 
-                hour: '2-digit', minute: '2-digit', hour12: true 
+            value: new Date(selectedBooking.pickupDate).toLocaleString("en-IN", {
+                day: '2-digit', month: 'short', year: 'numeric',
+                hour: '2-digit', minute: '2-digit', hour12: true
             }),
             icon: iconList.Calendar,
             color: "text-blue-600 bg-blue-50 dark:bg-blue-900/20"
         },
         {
             label: "Return Date & Time",
-            value: new Date(selectedBooking.returnDate).toLocaleString("en-IN", { 
-                day: '2-digit', month: 'short', year: 'numeric', 
-                hour: '2-digit', minute: '2-digit', hour12: true 
+            value: new Date(selectedBooking.returnDate).toLocaleString("en-IN", {
+                day: '2-digit', month: 'short', year: 'numeric',
+                hour: '2-digit', minute: '2-digit', hour12: true
             }),
             icon: iconList.CalendarCheck,
             color: "text-indigo-600 bg-indigo-50 dark:bg-indigo-900/20"
@@ -51,14 +66,14 @@ const BookingPopup = ({ setSelectedBooking, selectedBooking, isFullPage = false 
 
             {/* Left Side: Car Showcase */}
             <div className={`w-full md:w-5/12 lg:w-1/2 ${isFullPage ? "h-[40vh] md:h-full" : "h-[45vh] md:h-full"} bg-white dark:bg-[#0a0b0d] flex items-center justify-center relative overflow-hidden shrink-0`}>
-                <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_center,rgba(59,130,246,0.05),transparent_70%)]" />
+                <div className="absolute top-0 left-0 w-full h-full" />
                 <motion.img
                     initial={{ scale: 1.1, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
                     transition={{ delay: 0.2 }}
                     src={car?.image}
                     alt={car?.model}
-                    className="w-full h-full object-cover md:object-contain drop-shadow-2xl z-10"
+                    className="w-full h-full object-cover md:object-contain z-10"
                 />
 
                 <div className="absolute bottom-10 left-8 right-8 z-30 hidden md:block">
@@ -66,7 +81,7 @@ const BookingPopup = ({ setSelectedBooking, selectedBooking, isFullPage = false 
                         initial={{ y: 20, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
                         transition={{ delay: 0.4 }}
-                        className="bg-white/40 dark:bg-black/40 backdrop-blur-xl border border-white/20 dark:border-white/10 p-5 rounded-xl shadow-2xl"
+                        className=" backdrop-blur-xl border border-white/20 dark:border-white/10 p-5 rounded-xl shadow-2xl"
                     >
                         <p className="text-gray-800 dark:text-white/60 text-xs uppercase tracking-widest font-medium mb-1">Elite Collection</p>
                         <h3 className="text-gray-900 dark:text-white text-3xl font-bold tracking-tight">{car?.brand} <span className="text-primary">{car?.model}</span></h3>
@@ -95,27 +110,29 @@ const BookingPopup = ({ setSelectedBooking, selectedBooking, isFullPage = false 
                 </div>
 
                 {/* Customer Profile Card */}
-                <div className="bg-gray-50 dark:bg-white/[0.03] border border-gray-100 dark:border-white/5 p-4 md:p-6 rounded-xl flex flex-col sm:flex-row items-center sm:justify-between gap-4 group">
+                <div className="bg-gray-50 dark:bg-white/3 border border-gray-100 dark:border-white/5 p-4 md:p-6 rounded-xl flex flex-col sm:flex-row items-center sm:justify-between gap-4 group">
                     <div className="flex items-center gap-4 w-full sm:w-auto">
                         <div className="relative shrink-0 mx-auto sm:mx-0">
                             {user?.image ? (
-                                <img src={user?.image} className="w-14 h-14 rounded-xl object-cover ring-4 ring-white dark:ring-white/5 shadow-lg" alt="" />
+                                <img src={user?.image} className="w-14 h-14 rounded-full object-cover ring-4 ring-white dark:ring-white/5 shadow-lg" alt="" />
                             ) : (
-                                <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center text-primary ring-4 ring-white dark:ring-white/5 shadow-lg">
+                                <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center text-primary ring-4 ring-white dark:ring-white/5 shadow-lg">
                                     <iconList.User size={24} />
                                 </div>
                             )}
-                            <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 border-2 border-white dark:border-second-bg rounded-full" />
                         </div>
                         <div className="text-center sm:text-left flex-1 min-w-0">
                             <p className="text-xs text-gray-400 dark:text-dark-muted font-medium mb-0.5">Renter Details</p>
                             <h4 className="font-bold text-gray-900 dark:text-white text-lg truncate">{user?.name || "Premium User"}</h4>
                             <p className="text-sm text-gray-500 dark:text-dark-muted flex items-center justify-center sm:justify-start gap-1.5 truncate">
-                                <iconList.Mail size={12} className="shrink-0" /> {user?.email}
+                             {user?.email}
                             </p>
                         </div>
                     </div>
-                    <button className="bg-white dark:bg-white/5 w-12 h-12 rounded-full flex items-center justify-center shadow-sm border border-gray-100 dark:border-white/5 text-primary hover:bg-primary hover:text-white transition-all shrink-0">
+                    <button 
+                        onClick={handleChat}
+                        className="bg-white dark:bg-white/5 w-12 h-12 rounded-full flex items-center justify-center shadow-sm border border-gray-100 dark:border-white/5 text-primary hover:bg-primary hover:text-white transition-all shrink-0"
+                    >
                         <iconList.MessageCircle size={20} />
                     </button>
                 </div>
@@ -155,7 +172,7 @@ const BookingPopup = ({ setSelectedBooking, selectedBooking, isFullPage = false 
                     <h3 className="text-sm font-bold text-gray-900 dark:text-white mb-4">Booking Overview</h3>
                     <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
                         {detailItems.map((item, idx) => (
-                            <div key={idx} className="bg-white dark:bg-white/[0.02] border border-gray-100 dark:border-white/5 p-4 rounded-xl hover:border-primary/30 transition-all group overflow-hidden">
+                            <div key={idx} className="bg-white dark:bg-white/2 border border-gray-100 dark:border-white/5 p-4 rounded-xl hover:border-primary/30 transition-all group overflow-hidden">
                                 <div className={`w-8 h-8 rounded-lg ${item.color} flex items-center justify-center mb-3 transition-transform group-hover:scale-110`}>
                                     <item.icon size={16} strokeWidth={2.5} />
                                 </div>
