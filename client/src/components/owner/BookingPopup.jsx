@@ -138,7 +138,7 @@ const BookingPopup = ({ setSelectedBooking, selectedBooking, isFullPage = false 
                 </div>
 
                 {/* Rental Timeline */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div className="bg-gray-50 dark:bg-card-bg p-5 rounded-xl border border-gray-100 dark:border-dark-border">
                         <p className="text-gray-400 dark:text-dark-muted text-xs font-medium mb-2">Pickup Date & Time</p>
                         <p className="text-gray-900 dark:text-white font-semibold text-base">
@@ -165,6 +165,29 @@ const BookingPopup = ({ setSelectedBooking, selectedBooking, isFullPage = false 
                             })}
                         </p>
                     </div>
+                    <div className="bg-primary/5 dark:bg-primary/10 p-5 rounded-xl border border-primary/20">
+                        <p className="text-primary/60 dark:text-primary/70 text-xs font-bold uppercase tracking-wider mb-2">Total Duration</p>
+                        <p className="text-primary font-bold text-xl">
+                            {(() => {
+                                const diff = new Date(selectedBooking.returnDate) - new Date(selectedBooking.pickupDate);
+                                const totalHours = Math.floor(diff / (1000 * 60 * 60));
+                                const days = Math.floor(totalHours / 24);
+                                const hours = totalHours % 24;
+                                return `${days > 0 ? `${days}d ` : ""}${hours > 0 ? `${hours}h` : days === 0 ? "0h" : ""}`;
+                            })()}
+                        </p>
+                    </div>
+                </div>
+
+                {/* Booking Placed Info */}
+                <div className="flex items-center gap-2 px-4 py-2 bg-gray-50 dark:bg-white/5 rounded-lg border border-gray-100 dark:border-white/5 w-fit">
+                    <iconList.Clock size={14} className="text-gray-400" />
+                    <span className="text-[11px] text-gray-500 dark:text-dark-muted font-medium">
+                        Booking placed on: {new Date(selectedBooking.createdAt).toLocaleString('en-IN', {
+                            day: '2-digit', month: 'short', year: 'numeric',
+                            hour: '2-digit', minute: '2-digit', hour12: true
+                        })}
+                    </span>
                 </div>
 
                 {/* Booking Stats Grid */}

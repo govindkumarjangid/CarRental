@@ -95,7 +95,7 @@ const EditCarForm = ({ car: propCar, onClose, isFullPage = false }) => {
             <div className="flex flex-col gap-5 text-gray-500 text-sm w-full">
                 {/* car image  */}
                 <div className="flex gap-4 items-center w-full mb-2">
-                    <label htmlFor="car-image">
+                    <label htmlFor="car-image" className="cursor-pointer shadow-sm rounded-md border-dashed border-primary border-2 p-2 hover:border-solid">
                         {image ? (
                             <img src={URL.createObjectURL(image)} className="h-14 w-26 object-cover rounded-md" alt="car preview" />
                         ) : car?.image ? (
@@ -161,6 +161,17 @@ const EditCarForm = ({ car: propCar, onClose, isFullPage = false }) => {
                             name="pricePerHour"
                             id="pricePerHour"
                             value={car.pricePerHour}
+                            onChange={handleChange}
+                            className="px-3 py-2.5 border border-gray-300 rounded-md outline-none focus:border-primary focus:ring-3 focus:ring-primary/50 transition-colors duration-600 dark:bg-card-bg dark:border-dark-border dark:text-dark-text"
+                        />
+                    </div>
+                    <div className="flex flex-col w-full">
+                        <label htmlFor="lateFeePerHour" className="mb-1">Late Fee /Hour</label>
+                        <input
+                            type="number"
+                            name="lateFeePerHour"
+                            id="lateFeePerHour"
+                            value={car.lateFeePerHour}
                             onChange={handleChange}
                             className="px-3 py-2.5 border border-gray-300 rounded-md outline-none focus:border-primary focus:ring-3 focus:ring-primary/50 transition-colors duration-600 dark:bg-card-bg dark:border-dark-border dark:text-dark-text"
                         />

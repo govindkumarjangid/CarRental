@@ -239,7 +239,7 @@ const Chats = () => {
         />
       </div>
 
-      <div className={`flex flex-1 w-full overflow-hidden shadow-sm bg-white dark:bg-second-bg border-t border-gray-200 dark:border-dark-border`}>
+      <div className={`flex flex-1 w-full overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 bg-white dark:bg-second-bg border-t border-gray-200 dark:border-dark-border`}>
 
         {/* CHAT LIST */}
         <div className={`w-full md:w-80 lg:w-[360px] shrink-0 border-r border-gray-200 dark:border-dark-border flex flex-col bg-white dark:bg-second-bg ${activeChat ? "hidden md:flex" : "flex"}`}>

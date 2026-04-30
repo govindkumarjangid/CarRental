@@ -59,16 +59,21 @@ const BookingCard = ({ booking, index }) => {
 						<p className="text-gray-500 dark:text-dark-muted">
 							Rental Period
 						</p>
-						<div className="flex gap-2">
-							<p>
-								{booking.pickupDate.split("T")[0]} - {" "}
-								{booking.returnDate.split("T")[0]} -
+						<div className="flex flex-col gap-0.5">
+							<p className="text-sm font-semibold">
+								{new Date(booking.pickupDate).toLocaleString('en-IN', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit', hour12: true })}
+								<span className="mx-2 text-gray-400">→</span>
+								{new Date(booking.returnDate).toLocaleString('en-IN', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit', hour12: true })}
 							</p>
-							<p> {Math.ceil(
-								(new Date(booking.returnDate) - new Date(booking.pickupDate)) /
-								(1000 * 60 * 60 * 24))
-							}{" "}
-								days</p>
+							<p className="text-xs text-primary font-bold">
+								Total Duration: {(() => {
+									const diff = new Date(booking.returnDate) - new Date(booking.pickupDate);
+									const totalHours = Math.floor(diff / (1000 * 60 * 60));
+									const days = Math.floor(totalHours / 24);
+									const hours = totalHours % 24;
+									return `${days > 0 ? `${days}d ` : ""}${hours > 0 ? `${hours}h` : days === 0 ? "0h" : ""}`;
+								})()}
+							</p>
 						</div>
 					</div>
 				</div>
@@ -79,7 +84,7 @@ const BookingCard = ({ booking, index }) => {
 						<p className="text-gray-500 dark:text-dark-muted">
 							Pickup Location
 						</p>
-						<p>{booking?.car?.location}</p>
+						<p className="text-sm font-medium">{booking?.car?.location}</p>
 					</div>
 				</div>
 				<div className="flex items-start gap-2 mt-3">
@@ -88,7 +93,7 @@ const BookingCard = ({ booking, index }) => {
 						<p className="text-gray-500 dark:text-dark-muted">
 							Return Location
 						</p>
-						<p>Downtown Office</p>
+						<p className="text-sm font-medium">{booking?.car?.location || "Downtown Office"}</p>
 					</div>
 				</div>
 			</div>
@@ -99,13 +104,13 @@ const BookingCard = ({ booking, index }) => {
 						Total Price
 					</p>
 					<h1 className="text-2xl font-bold text-primary dark:text-accent">
-						{currency} {booking?.price.toLocaleString("en-US")}
+						{currency} {booking?.price.toLocaleString("en-IN")}
 					</h1>
-					<p className="text-gray-500 dark:text-dark-muted">
-						Booked on {booking?.createdAt.split("T")[0]}
-					</p>
-					<p className="text-gray-500 dark:text-dark-muted">
-						Time at {booking?.createdAt.split("T")[1].split(".")[0]}
+					<p className="text-[11px] text-gray-400 dark:text-dark-muted mt-2 font-medium">
+						Booked on {new Date(booking?.createdAt).toLocaleString('en-IN', {
+							day: '2-digit', month: 'short', year: 'numeric',
+							hour: '2-digit', minute: '2-digit', hour12: true
+						})}
 					</p>
 				</div>
 			</div>

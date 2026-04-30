@@ -25,7 +25,7 @@ const AllUsers = () => {
         title="All Users"
         subTitle="Manage all users of the car rental system. View, block or unblock users as necessary to maintain an up-to-date user database."
       />
-      <div className="max-w-[1000px] w-full bg-white dark:bg-second-bg shadow-sm rounded-xl overflow-hidden mt-6 border border-gray-200 dark:border-dark-border">
+      <div className="max-w-[1000px] w-full bg-white dark:bg-second-bg shadow-md hover:shadow-lg transition-all duration-300 rounded-xl overflow-hidden mt-6 border border-gray-200 dark:border-dark-border">
         <motion.table
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}

@@ -62,7 +62,7 @@ const ManageBookings = () => {
 					"Track all customer bookings, approve or cancel requests, and manage booking statuses."
 				}
 			/>
-			<div className="max-w-[1000px] w-full bg-white dark:bg-second-bg shadow-sm rounded-xl overflow-hidden mt-6 border border-gray-200 dark:border-dark-border mb-10">
+			<div className="max-w-[1000px] w-full bg-white dark:bg-second-bg shadow-md hover:shadow-lg transition-all duration-300 rounded-xl overflow-hidden mt-6 border border-gray-200 dark:border-dark-border mb-10">
 				<div className="overflow-x-auto">
 					<motion.table
 						initial={{ opacity: 0 }}
@@ -114,8 +114,21 @@ const ManageBookings = () => {
 										</div>
 									</td>
 
-									<td className="p-3 max-md:hidden text-xs">
-										{new Date(booking.pickupDate).toLocaleDateString('en-IN', { day: '2-digit', month: 'short' })} - {new Date(booking.returnDate).toLocaleDateString('en-IN', { day: '2-digit', month: 'short' })}
+									<td className="p-3 max-md:hidden">
+										<div className="flex flex-col gap-0.5">
+											<p className="text-[13px] font-bold text-gray-800 dark:text-dark-text whitespace-nowrap">
+												{(() => {
+													const diff = new Date(booking.returnDate) - new Date(booking.pickupDate);
+													const totalHours = Math.floor(diff / (1000 * 60 * 60));
+													const days = Math.floor(totalHours / 24);
+													const hours = totalHours % 24;
+													return `${days > 0 ? `${days}d ` : ""}${hours > 0 ? `${hours}h` : days === 0 ? "0h" : ""}`;
+												})()}
+											</p>
+											<p className="text-[10px] text-gray-400 font-medium whitespace-nowrap">
+												{new Date(booking.pickupDate).toLocaleDateString('en-IN', { day: '2-digit', month: 'short' })} - {new Date(booking.returnDate).toLocaleDateString('en-IN', { day: '2-digit', month: 'short' })}
+											</p>
+										</div>
 									</td>
 
 									<td className="p-3 md:text-base text-xs font-light max-md:hidden">

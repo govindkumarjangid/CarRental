@@ -25,7 +25,22 @@ const RecentBookings = ({ bookings, currency }) => {
               </div>
               <div>
                 <p className="font-medium text-sm">{booking.car.brand} {booking.car.model}</p>
-                <p className="text-xs text-gray-500">{booking.createdAt.split("T")[0]}</p>
+                <p className="text-[10px] text-gray-500 font-medium">
+                  {(() => {
+                    const date = new Date(booking.createdAt);
+                    const now = new Date();
+                    const isToday = date.toDateString() === now.toDateString();
+                    const yesterday = new Date();
+                    yesterday.setDate(now.getDate() - 1);
+                    const isYesterday = date.toDateString() === yesterday.toDateString();
+
+                    const timeStr = date.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true });
+
+                    if (isToday) return `Today at ${timeStr}`;
+                    if (isYesterday) return `Yesterday • ${timeStr}`;
+                    return `${date.toLocaleDateString('en-IN', { day: '2-digit', month: 'short' })} • ${timeStr}`;
+                  })()}
+                </p>
               </div>
             </div>
             <div className="flex flex-col items-end gap-1">
