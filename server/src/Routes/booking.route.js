@@ -7,7 +7,8 @@ import {
   createOnlineBooking,
   getOwnerBookings,
   getUserBookings,
-  verifyPayment
+  verifyPayment,
+  deleteBooking
 } from '../controllers/booking.controller.js';
 import { protect } from '../middleware/auth.middleware.js'
 
@@ -21,6 +22,7 @@ bookingRouter.get('/user', protect, getUserBookings);
 bookingRouter.get('/owner', protect, getOwnerBookings);
 bookingRouter.post('/change-status', protect, changeBookingStatus);
 bookingRouter.post('/change-payment-status', protect, changePaymentStatus);
+bookingRouter.post('/delete-booking', protect, deleteBooking);
 
 
 

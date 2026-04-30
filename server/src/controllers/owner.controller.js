@@ -20,7 +20,8 @@ export const addCar = wrapAsync(async (req, res) => {
     brand,
     model,
     year,
-    pricePerDay,
+    pricePerHour,
+    lateFeePerHour,
     category,
     transmission,
     fuel_type,
@@ -29,13 +30,11 @@ export const addCar = wrapAsync(async (req, res) => {
     description,
   } = req.body;
 
-  if (!imageFile) {
-    return res.json({ message: "No image file provided" });
-  }
+  if (!imageFile) return res.json({ message: "No image file provided" });
 
-  if (!brand || !model || !year || !pricePerDay || !category || !transmission || !fuel_type || !seating_capacity || !location || !description) {
+
+  if (!brand || !model || !year || !pricePerHour || !category || !transmission || !fuel_type || !seating_capacity || !location || !description)
     return res.json({ message: "All fields are required" });
-  }
 
   // Upload to ImageKit
   const response = await imagekit.files.upload({
@@ -50,11 +49,18 @@ export const addCar = wrapAsync(async (req, res) => {
 
   const image = optimizedImageUrl;
 
+  const { cleaningTime, maintenanceTime } = req.body;
+  let finalStatus = "available";
+
+  if (Number(cleaningTime) > 120 || Number(maintenanceTime) > 120)
+    finalStatus = "unavailable";
+
   await Car.create({
     brand,
     model,
     year: Number(year),
-    pricePerDay: Number(pricePerDay),
+    pricePerHour: Number(pricePerHour),
+    lateFeePerHour: Number(lateFeePerHour || 0),
     category,
     transmission,
     fuel_type,
@@ -63,6 +69,9 @@ export const addCar = wrapAsync(async (req, res) => {
     description,
     image,
     owner: _id,
+    cleaningTime: Number(cleaningTime) || 30,
+    maintenanceTime: Number(maintenanceTime) || 60,
+    status: finalStatus,
   });
 
   res.json({ success: true, message: "Car added successfully" });
@@ -75,17 +84,22 @@ export const getOwnerCars = wrapAsync(async (req, res) => {
   res.json({ success: true, cars });
 });
 
-//* toggle car availability
-export const toggleCarAvailability = wrapAsync(async (req, res) => {
+//* update car status
+export const updateCarStatus = wrapAsync(async (req, res) => {
   const { _id } = req.user;
-  const { carId } = req.body;
+  const { carId, status } = req.body;
   const car = await Car.findById(carId);
-  if (car.owner.toString() !== _id.toString()) {
+  if (!car) return res.json({ success: false, message: "Car not found" });
+
+  if (car.owner.toString() !== _id.toString())
     return res.json({ success: false, message: "You are not authorized" });
-  }
-  car.isAvaliable = !car.isAvaliable;
+
+  if (!["available", "cleaning", "maintenance", "unavailable"].includes(status))
+    return res.json({ success: false, message: "Invalid status" });
+
+  car.status = status;
   await car.save();
-  res.json({ success: true, message: "Car availability Toggled" });
+  res.json({ success: true, message: `Car status updated to ${status}` });
 });
 
 //* delete car
@@ -93,10 +107,12 @@ export const deleteCar = wrapAsync(async (req, res) => {
   const { _id } = req.user;
   const { carId } = req.body;
   const car = await Car.findById(carId);
+  if (!car) return res.json({ success: false, message: "Car not found" });
+
   if (car.owner.toString() !== _id.toString())
     return res.json({ success: false, message: "You are not authorized" });
   car.owner = null;
-  car.isAvaliable = false;
+  car.status = "maintenance";
   await car.save();
   res.json({ success: true, message: "Car removed successfully" });
 });
@@ -104,15 +120,19 @@ export const deleteCar = wrapAsync(async (req, res) => {
 //* edit car
 export const editCar = wrapAsync(async (req, res) => {
   const { _id } = req.user;
-  const { carId, imageUrl, ...data } = req.body;
+  const { carId, imageUrl, cleaningTime, maintenanceTime, ...data } = req.body;
   let finalImage = imageUrl;
   const car = await Car.findById(carId);
   if (!car) return res.json({ success: false, message: "Car not found" });
   if (car.owner.toString() !== _id.toString())
     return res.json({ success: false, message: "You are not authorized" });
 
-  if (!data.brand || !data.model || !data.year || !data.pricePerDay || !data.category || !data.transmission || !data.fuel_type || !data.seating_capacity || !data.location || !data.description)
+  if (!data.brand || !data.model || !data.year || !data.pricePerHour || !data.category || !data.transmission || !data.fuel_type || !data.seating_capacity || !data.location || !data.description)
     return res.json({ success: false, message: "All fields are required" });
+
+  let updateData = { ...data, cleaningTime: Number(cleaningTime), maintenanceTime: Number(maintenanceTime) };
+  if (Number(cleaningTime) > 120 || Number(maintenanceTime) > 120)
+    updateData.status = "unavailable";
 
   if (req.file) {
     const uploaded = await imagekit.files.upload({
@@ -122,32 +142,104 @@ export const editCar = wrapAsync(async (req, res) => {
     });
     finalImage = uploaded.url;
   }
-  await Car.findByIdAndUpdate(carId, { ...data, image: finalImage });
+  await Car.findByIdAndUpdate(carId, { ...updateData, image: finalImage });
   return res.json({ success: true, message: "Car updated successfully" });
 });
 
-//* get owner dashboard data
+//* update service times
+export const updateServiceTimes = wrapAsync(async (req, res) => {
+  const { _id } = req.user;
+  const { carId, cleaningTime, maintenanceTime } = req.body;
+
+  const car = await Car.findById(carId);
+  if (!car) return res.json({ success: false, message: "Car not found" });
+
+  if (car.owner.toString() !== _id.toString())
+    return res.json({ success: false, message: "You are not authorized" });
+
+  car.cleaningTime = Number(cleaningTime);
+  car.maintenanceTime = Number(maintenanceTime);
+
+  if (car.cleaningTime > 120 || car.maintenanceTime > 120)
+    car.status = "unavailable";
+
+  await car.save();
+  res.json({ success: true, message: "Service times updated successfully" });
+});
+
+// * get owner dashboard data
 export const getDashboardData = wrapAsync(async (req, res) => {
   const { _id, role } = req.user;
 
-  if (role !== "owner") {
+  if (role !== "owner")
     return res.json({ success: false, message: "You are not authorized" });
-  }
+
   const cars = await Car.find({ owner: _id });
   const bookings = await Booking.find({ owner: _id }).populate('car').sort({ createdAt: -1 });
-  const pendingBookings = await Booking.find({ owner: _id, status: 'pending' });
-  const completedBookings = await Booking.find({ owner: _id, status: 'completed' });
-  const cancelledBookings = await Booking.find({ owner: _id, status: 'cancelled' });
-  const monthlyRevenue = bookings.slice().filter(booking => booking.status === 'completed').reduce((acc, booking) => (acc + booking.price), 0);
+
+  const now = new Date();
+  const currentMonth = now.getMonth();
+  const currentYear = now.getFullYear();
+
+  // Current Month Revenue
+  const monthlyRevenue = bookings.filter(booking => {
+    const bDate = new Date(booking.createdAt);
+    return booking.status === 'completed' &&
+      bDate.getMonth() === currentMonth &&
+      bDate.getFullYear() === currentYear;
+  }).reduce((acc, booking) => (acc + booking.price), 0);
+
+  // Revenue History
+  const revenueHistory = [];
+  const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+  for (let i = 5; i >= 0; i--) {
+    const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+    const m = d.getMonth();
+    const y = d.getFullYear();
+    const rev = bookings.filter(booking => {
+      const bDate = new Date(booking.createdAt);
+      return booking.status === 'completed' &&
+        bDate.getMonth() === m &&
+        bDate.getFullYear() === y;
+    }).reduce((acc, booking) => (acc + booking.price), 0);
+
+    revenueHistory.push({
+      label: `${monthNames[m]} ${y}`,
+      revenue: rev
+    });
+  }
+
+  const availableCars = cars.filter(car => car.status === 'available').length;
+  const cleaningCars = cars.filter(car => car.status === 'cleaning').length;
+  const maintenanceCars = cars.filter(car => car.status === 'maintenance').length;
+  const unavailableCars = cars.filter(car => car.status === 'unavailable').length;
+
+  const bookingStatusCounts = {
+    pending: bookings.filter(b => b.status === 'pending').length,
+    confirmed: bookings.filter(b => b.status === 'confirmed').length,
+    completed: bookings.filter(b => b.status === 'completed').length,
+    cancelled: bookings.filter(b => b.status === 'cancelled').length
+  };
+
+  const paymentStatusCounts = {
+    pending: bookings.filter(b => b.paymentStatus === 'pending').length,
+    confirmed: bookings.filter(b => b.paymentStatus === 'confirmed').length,
+    failed: bookings.filter(b => b.paymentStatus === 'failed').length
+  };
 
   const dashboardData = {
     totalCars: cars.length,
+    availableCars,
+    cleaningCars,
+    maintenanceCars,
+    unavailableCars,
     totalBookings: bookings.length,
-    pendingBookings: pendingBookings.length,
-    completedBookings: completedBookings.length,
-    cancelledBookings: cancelledBookings.length,
-    recentBookings: bookings.slice(0, 3),
-    monthlyRevenue
+    bookingStatusCounts,
+    paymentStatusCounts,
+    monthlyRevenue,
+    revenueHistory,
+    recentBookings: bookings.slice(0, 5)
   };
 
   res.json({ success: true, dashboardData });
@@ -158,9 +250,8 @@ export const updateUserImage = wrapAsync(async (req, res) => {
   const { _id } = req.user;
   const imageFile = req.file;
 
-  if (!imageFile) {
+  if (!imageFile)
     return res.status(400).json({ message: "No image file provided" });
-  }
 
   // Upload to ImageKit
   const response = await imagekit.files.upload({
@@ -173,8 +264,6 @@ export const updateUserImage = wrapAsync(async (req, res) => {
 
   // Optimized Image URL
   const optimizedImageUrl = response.url + "?tr=w-1280,q-auto,f-webp";
-
-  // console.log(optimizedImageUrl);
 
   const image = optimizedImageUrl;
   await User.findByIdAndUpdate(_id, { image });

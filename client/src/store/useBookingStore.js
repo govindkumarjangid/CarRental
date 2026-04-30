@@ -8,7 +8,7 @@ export const useBookingStore = create((set, get) => ({
     pickupDate: null,
     returnDate: null,
     ownerBookings: [],
-    ownerBookingLoading: false,
+    ownerBookingLoading: true,
     setPickupDate: (date) => set({ pickupDate: date }),
     setReturnDate: (date) => set({ returnDate: date }),
 
@@ -130,4 +130,20 @@ export const useBookingStore = create((set, get) => ({
         }
     },
 
+    deleteBooking: async (bookingId) => {
+        set({ ownerBookingLoading: true });
+        try {
+            const { data } = await axiosInstance.post("/api/bookings/delete-booking", { bookingId });
+            if (data.success) {
+                toast.success(data.message);
+                await get().fetchOwnerBookings();
+            } else {
+                toast.error(data.message);
+                set({ ownerBookingLoading: false });
+            }
+        } catch (error) {
+            toast.error(error.response?.data?.message || error.message || "Failed to delete booking");
+            set({ ownerBookingLoading: false });
+        }
+    }
 }));

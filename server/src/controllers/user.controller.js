@@ -36,7 +36,7 @@ export const registerUser = wrapAsync(async (req, res) => {
 
   await sendEmail({
     email: email,
-    subject: 'Welcome to CarRenatl! 🚗',
+    subject: 'Welcome to CarRental! 🚗',
     htmlMessage: welcomeEmailTemplate(name),
   });
 
@@ -100,7 +100,7 @@ export const getUserData = wrapAsync(async (req, res) => {
 
 //* get all user cars
 export const getCars = wrapAsync(async (_, res) => {
-  const cars = await Car.find({ isAvaliable: true });
+  const cars = await Car.find();
   res.json({ success: true, cars });
 });
 

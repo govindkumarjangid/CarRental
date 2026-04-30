@@ -1,7 +1,9 @@
 const BRAND_NAME = "CarRental";
-const BRAND_COLOR = "#6C63FF";
-const BRAND_DARK = "#1a1a2e";
-const ACCENT_COLOR = "#00D4AA";
+const BRAND_COLOR = "#2563EB"; // Blue from frontend
+const BRAND_DARK = "#131414"; // Main bg from frontend
+const ACCENT_COLOR = "#3B82F6"; // Lighter blue for accents
+const SECONDARY_DARK = "#1E1E1E";
+const BRAND_LOGO = "https://img.icons8.com/ios-filled/50/ffffff/car.png"; // Professional car icon
 
 const baseLayout = (content) => `
 <!DOCTYPE html>
@@ -12,15 +14,6 @@ const baseLayout = (content) => `
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="x-apple-disable-message-reformatting" />
   <title>${BRAND_NAME}</title>
-  <!--[if mso]>
-  <noscript>
-    <xml>
-      <o:OfficeDocumentSettings>
-        <o:PixelsPerInch>96</o:PixelsPerInch>
-      </o:OfficeDocumentSettings>
-    </xml>
-  </noscript>
-  <![endif]-->
   <style>
     /* Reset */
     body, table, td, a { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
@@ -33,53 +26,33 @@ const baseLayout = (content) => `
       .email-container { width: 100% !important; max-width: 100% !important; border-radius: 0 !important; }
       .email-header { padding: 24px 20px !important; }
       .email-header h1 { font-size: 22px !important; }
-      .email-header p { font-size: 11px !important; }
       .email-content { padding: 24px 20px !important; }
       .email-footer { padding: 20px !important; }
       .content-heading { font-size: 20px !important; }
       .content-text { font-size: 14px !important; }
       .feature-box { padding: 16px !important; }
-      .feature-item { font-size: 13px !important; }
       .detail-card-cell { padding: 14px 16px !important; }
-      .detail-label { font-size: 11px !important; }
-      .detail-value { font-size: 13px !important; }
       .price-value { font-size: 18px !important; }
-      .big-price { font-size: 20px !important; }
       .col-half { display: block !important; width: 100% !important; padding-bottom: 12px !important; }
       .col-half-last { padding-bottom: 0 !important; }
-      .badge { font-size: 12px !important; padding: 3px 10px !important; }
-      .confirm-icon { width: 52px !important; height: 52px !important; line-height: 52px !important; font-size: 24px !important; }
-      .booking-id { font-size: 13px !important; word-break: break-all !important; }
-      .status-badge { font-size: 12px !important; padding: 5px 16px !important; }
-    }
-
-    @media only screen and (max-width: 400px) {
-      .email-content { padding: 20px 16px !important; }
-      .content-heading { font-size: 18px !important; }
-      .detail-card-cell { padding: 12px 14px !important; }
-      .price-value { font-size: 16px !important; }
-      .big-price { font-size: 18px !important; }
     }
   </style>
 </head>
-<body style="margin:0; padding:0; background-color:#0f0f1a; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; width:100%; -webkit-text-size-adjust:100%; -ms-text-size-adjust:100%;">
-  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#0f0f1a;">
+<body style="margin:0; padding:0; background-color:#0a0a0a; font-family: 'Outfit', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; width:100%;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#0a0a0a;">
     <tr>
       <td align="center" class="email-wrapper" style="padding: 40px 12px;">
 
-        <!--[if mso]>
-        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="600" align="center"><tr><td>
-        <![endif]-->
-
-        <table role="presentation" class="email-container" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:600px; background-color:${BRAND_DARK}; border-radius:16px; overflow:hidden; box-shadow: 0 20px 60px rgba(108,99,255,0.15);">
+        <table role="presentation" class="email-container" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:600px; background-color:${BRAND_DARK}; border-radius:16px; overflow:hidden; border: 1px solid rgba(37, 99, 235, 0.15);">
 
           <!-- Header -->
           <tr>
-            <td class="email-header" style="background: linear-gradient(135deg, ${BRAND_COLOR}, #8b5cf6); padding: 32px 40px; text-align:center;">
-              <h1 style="margin:0; color:#ffffff; font-size:28px; font-weight:700; letter-spacing:1px;">
-                🚗 ${BRAND_NAME}
+            <td class="email-header" style="background: linear-gradient(135deg, ${BRAND_COLOR}, #1D4ED8); padding: 32px 40px; text-align:center;">
+              <img src="${BRAND_LOGO}" alt="${BRAND_NAME} Logo" width="40" height="40" style="margin-bottom: 12px;" />
+              <h1 style="margin:0; color:#ffffff; font-size:26px; font-weight:700; letter-spacing:1px; line-height:1;">
+                ${BRAND_NAME}
               </h1>
-              <p style="margin:6px 0 0; color:rgba(255,255,255,0.85); font-size:13px; letter-spacing:2px; text-transform:uppercase;">
+              <p style="margin:8px 0 0; color:rgba(255,255,255,0.8); font-size:10px; letter-spacing:2px; text-transform:uppercase;">
                 Premium Car Rental Service
               </p>
             </td>
@@ -94,21 +67,17 @@ const baseLayout = (content) => `
 
           <!-- Footer -->
           <tr>
-            <td class="email-footer" style="background-color:#12121f; padding: 24px 40px; text-align:center; border-top: 1px solid rgba(108,99,255,0.2);">
+            <td class="email-footer" style="background-color:#0d0d0d; padding: 24px 40px; text-align:center; border-top: 1px solid rgba(255,255,255,0.05);">
               <p style="margin:0 0 8px; color:rgba(255,255,255,0.4); font-size:12px;">
                 © ${new Date().getFullYear()} ${BRAND_NAME}. All rights reserved.
               </p>
-              <p style="margin:0; color:rgba(255,255,255,0.3); font-size:11px;">
+              <p style="margin:0; color:rgba(255,255,255,0.2); font-size:11px;">
                 This is an automated email. Please do not reply.
               </p>
             </td>
           </tr>
 
         </table>
-
-        <!--[if mso]>
-        </td></tr></table>
-        <![endif]-->
 
       </td>
     </tr>
@@ -130,22 +99,22 @@ export const welcomeEmailTemplate = (name) => {
     <!-- Features Box -->
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:28px;">
       <tr>
-        <td class="feature-box" style="background: linear-gradient(135deg, rgba(108,99,255,0.12), rgba(0,212,170,0.08)); border:1px solid rgba(108,99,255,0.2); border-radius:12px; padding:24px;">
+        <td class="feature-box" style="background: rgba(37, 99, 235, 0.05); border:1px solid rgba(37, 99, 235, 0.2); border-radius:12px; padding:24px;">
           <p style="margin:0 0 12px; color:${ACCENT_COLOR}; font-size:14px; font-weight:600; text-transform:uppercase; letter-spacing:1px;">
             What you can do now
           </p>
           <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
             <tr>
-              <td class="feature-item" style="padding:6px 0; color:rgba(255,255,255,0.8); font-size:14px;">✅ Browse premium cars</td>
+              <td style="padding:6px 0; color:rgba(255,255,255,0.8); font-size:14px;">✅ Browse premium cars</td>
             </tr>
             <tr>
-              <td class="feature-item" style="padding:6px 0; color:rgba(255,255,255,0.8); font-size:14px;">✅ Book instantly — online or offline</td>
+              <td style="padding:6px 0; color:rgba(255,255,255,0.8); font-size:14px;">✅ Book instantly — online or offline</td>
             </tr>
             <tr>
-              <td class="feature-item" style="padding:6px 0; color:rgba(255,255,255,0.8); font-size:14px;">✅ Chat directly with car owners</td>
+              <td style="padding:6px 0; color:rgba(255,255,255,0.8); font-size:14px;">✅ Chat directly with car owners</td>
             </tr>
             <tr>
-              <td class="feature-item" style="padding:6px 0; color:rgba(255,255,255,0.8); font-size:14px;">✅ Leave reviews & share your experience</td>
+              <td style="padding:6px 0; color:rgba(255,255,255,0.8); font-size:14px;">✅ Leave reviews & share your experience</td>
             </tr>
           </table>
         </td>
@@ -159,54 +128,78 @@ export const welcomeEmailTemplate = (name) => {
   return baseLayout(content);
 };
 
-// New Booking Email (sent to user on booking creation)
-export const bookingEmailTemplate = ({ userName, carName, pickupDate, returnDate, price, paymentMethod }) => {
+// New Booking Email
+export const bookingEmailTemplate = ({ userName, carName, pickupDate, returnDate, price, paymentMethod, location, carImage, fuelType, transmission, seatingCapacity }) => {
   const content = `
     <h2 class="content-heading" style="margin:0 0 8px; color:#ffffff; font-size:24px; font-weight:600;">
       Booking Received! 📋
     </h2>
     <p class="content-text" style="color:rgba(255,255,255,0.6); font-size:15px; line-height:1.7; margin:0 0 24px;">
-      Hi <strong style="color:#fff;">${userName}</strong>, your booking request has been submitted. Here are the details:
+      Hi <strong style="color:#fff;">${userName}</strong>, your booking request has been submitted.
     </p>
 
     <!-- Booking Details Card -->
-    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:rgba(108,99,255,0.08); border:1px solid rgba(108,99,255,0.2); border-radius:12px; overflow:hidden; margin-bottom:28px;">
-      <!-- Car Name -->
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:12px; overflow:hidden; margin-bottom:28px;">
+      ${carImage ? `
       <tr>
-        <td class="detail-card-cell" style="padding:20px 24px; border-bottom:1px solid rgba(108,99,255,0.15);">
-          <p class="detail-label" style="margin:0; color:rgba(255,255,255,0.5); font-size:12px; text-transform:uppercase; letter-spacing:1px;">Car</p>
-          <p class="detail-value" style="margin:4px 0 0; color:#ffffff; font-size:16px; font-weight:600;">${carName}</p>
+        <td style="padding:0;">
+          <img src="${carImage}" alt="${carName}" style="width:100%; height:auto; display:block; border-bottom:1px solid rgba(255,255,255,0.08);" />
         </td>
       </tr>
-      <!-- Dates -->
+      ` : ''}
       <tr>
-        <td class="detail-card-cell" style="padding:16px 24px;">
-          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+        <td class="detail-card-cell" style="padding:20px 24px;">
+          <p class="detail-label" style="margin:0; color:rgba(255,255,255,0.4); font-size:11px; text-transform:uppercase; letter-spacing:1px;">Car Details</p>
+          <p class="detail-value" style="margin:4px 0 0; color:#ffffff; font-size:18px; font-weight:700;">${carName}</p>
+          
+          ${location ? `
+          <p style="margin:8px 0 0; color:rgba(255,255,255,0.6); font-size:13px;">
+            📍 Location: <span style="color:#fff;">${location}</span>
+          </p>
+          ` : ''}
+        </td>
+      </tr>
+
+      <!-- Specs Row -->
+      <tr>
+        <td style="padding:0 24px 20px;">
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:rgba(255,255,255,0.03); border-radius:8px; padding:12px;">
             <tr>
-              <td class="col-half" width="50%" style="padding:8px 0; vertical-align:top;">
-                <p class="detail-label" style="margin:0; color:rgba(255,255,255,0.5); font-size:12px; text-transform:uppercase; letter-spacing:1px;">Pickup</p>
-                <p class="detail-value" style="margin:4px 0 0; color:#ffffff; font-size:14px; font-weight:500;">${new Date(pickupDate).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</p>
+              <td align="center" style="color:rgba(255,255,255,0.7); font-size:12px;">
+                ⛽ ${fuelType || 'Petrol/Diesel'}
               </td>
-              <td class="col-half col-half-last" width="50%" style="padding:8px 0; vertical-align:top;">
-                <p class="detail-label" style="margin:0; color:rgba(255,255,255,0.5); font-size:12px; text-transform:uppercase; letter-spacing:1px;">Return</p>
-                <p class="detail-value" style="margin:4px 0 0; color:#ffffff; font-size:14px; font-weight:500;">${new Date(returnDate).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</p>
+              <td align="center" style="color:rgba(255,255,255,0.7); font-size:12px;">
+                ⚙️ ${transmission || 'Manual'}
+              </td>
+              <td align="center" style="color:rgba(255,255,255,0.7); font-size:12px;">
+                👥 ${seatingCapacity || '5'} Seater
               </td>
             </tr>
           </table>
         </td>
       </tr>
-      <!-- Price & Payment -->
+
       <tr>
-        <td class="detail-card-cell" style="padding:16px 24px; border-top:1px solid rgba(108,99,255,0.15);">
+        <td style="padding:0 24px 24px; border-top:1px solid rgba(255,255,255,0.05);">
           <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
             <tr>
-              <td class="col-half" width="50%" style="vertical-align:middle;">
-                <p class="detail-label" style="margin:0; color:rgba(255,255,255,0.5); font-size:12px; text-transform:uppercase; letter-spacing:1px;">Total Price</p>
-                <p class="price-value" style="margin:4px 0 0; color:${ACCENT_COLOR}; font-size:20px; font-weight:700;">₹${price}</p>
+              <td class="col-half" width="50%" style="padding:20px 0 0;">
+                <p class="detail-label" style="margin:0; color:rgba(255,255,255,0.4); font-size:11px; text-transform:uppercase;">Pickup</p>
+                <p style="margin:4px 0 0; color:#ffffff; font-size:14px;">${new Date(pickupDate).toLocaleString('en-IN', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}</p>
               </td>
-              <td class="col-half col-half-last" width="50%" style="text-align:right; vertical-align:middle;">
-                <p class="detail-label" style="margin:0; color:rgba(255,255,255,0.5); font-size:12px; text-transform:uppercase; letter-spacing:1px;">Payment</p>
-                <span class="badge" style="display:inline-block; margin-top:4px; background:${paymentMethod === 'online' ? 'rgba(0,212,170,0.15)' : 'rgba(255,183,77,0.15)'}; color:${paymentMethod === 'online' ? ACCENT_COLOR : '#FFB74D'}; padding:4px 12px; border-radius:20px; font-size:13px; font-weight:600; text-transform:capitalize;">
+              <td class="col-half" width="50%" style="padding:20px 0 0;">
+                <p class="detail-label" style="margin:0; color:rgba(255,255,255,0.4); font-size:11px; text-transform:uppercase;">Return</p>
+                <p style="margin:4px 0 0; color:#ffffff; font-size:14px;">${new Date(returnDate).toLocaleString('en-IN', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}</p>
+              </td>
+            </tr>
+            <tr>
+              <td class="col-half" width="50%" style="padding:20px 0 0;">
+                <p class="detail-label" style="margin:0; color:rgba(255,255,255,0.4); font-size:11px; text-transform:uppercase;">Total Price</p>
+                <p style="margin:4px 0 0; color:${BRAND_COLOR}; font-size:22px; font-weight:800;">₹${price}</p>
+              </td>
+              <td class="col-half" width="50%" style="padding:20px 0 0;">
+                <p class="detail-label" style="margin:0; color:rgba(255,255,255,0.4); font-size:11px; text-transform:uppercase;">Payment</p>
+                <span style="display:inline-block; margin-top:4px; background:${paymentMethod === 'online' ? 'rgba(37, 99, 235, 0.15)' : 'rgba(255,183,77,0.15)'}; color:${paymentMethod === 'online' ? BRAND_COLOR : '#FFB74D'}; padding:4px 12px; border-radius:6px; font-size:12px; font-weight:700; text-transform:uppercase;">
                   ${paymentMethod}
                 </span>
               </td>
@@ -224,10 +217,10 @@ export const bookingEmailTemplate = ({ userName, carName, pickupDate, returnDate
 };
 
 // Booking Confirmation Email
-export const bookingConfirmationTemplate = ({ userName, carName, pickupDate, returnDate, price, bookingId }) => {
+export const bookingConfirmationTemplate = ({ userName, carName, pickupDate, returnDate, price, bookingId, location, carImage, fuelType, transmission, seatingCapacity }) => {
   const content = `
     <div style="text-align:center; margin-bottom:24px;">
-      <div class="confirm-icon" style="display:inline-block; background:rgba(0,212,170,0.12); border:2px solid ${ACCENT_COLOR}; border-radius:50%; width:64px; height:64px; line-height:64px; text-align:center; font-size:28px;">
+      <div style="display:inline-block; background:rgba(37, 99, 235, 0.1); border:2px solid ${BRAND_COLOR}; border-radius:50%; width:64px; height:64px; line-height:64px; text-align:center; font-size:28px;">
         ✅
       </div>
     </div>
@@ -240,57 +233,56 @@ export const bookingConfirmationTemplate = ({ userName, carName, pickupDate, ret
     </p>
 
     <!-- Confirmation Card -->
-    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background: linear-gradient(135deg, rgba(0,212,170,0.08), rgba(108,99,255,0.08)); border:1px solid rgba(0,212,170,0.25); border-radius:12px; overflow:hidden; margin-bottom:28px;">
-      <!-- Booking ID -->
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:rgba(255,255,255,0.03); border:1px solid ${BRAND_COLOR}40; border-radius:16px; overflow:hidden; margin-bottom:28px;">
+      ${carImage ? `
       <tr>
-        <td class="detail-card-cell" style="padding:20px 24px; text-align:center; border-bottom:1px solid rgba(0,212,170,0.15);">
-          <p class="detail-label" style="margin:0; color:rgba(255,255,255,0.5); font-size:12px; text-transform:uppercase; letter-spacing:1px;">Booking ID</p>
-          <p class="booking-id" style="margin:6px 0 0; color:${BRAND_COLOR}; font-size:16px; font-weight:700; font-family:monospace; letter-spacing:1px;">${bookingId}</p>
+        <td style="padding:0;">
+          <img src="${carImage}" alt="${carName}" style="width:100%; height:auto; display:block;" />
         </td>
       </tr>
-      <!-- Details -->
+      ` : ''}
+      
       <tr>
-        <td class="detail-card-cell" style="padding:20px 24px;">
-          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
-            <!-- Car -->
+        <td style="padding:24px;">
+          <p class="detail-label" style="margin:0; color:rgba(255,255,255,0.4); font-size:11px; text-transform:uppercase; text-align:center;">Booking ID</p>
+          <p style="margin:4px 0 20px; color:${BRAND_COLOR}; font-size:16px; font-weight:700; font-family:monospace; text-align:center;">${bookingId}</p>
+
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-top:1px solid rgba(255,255,255,0.05); padding-top:20px;">
             <tr>
-              <td style="padding:8px 0;">
-                <p class="detail-label" style="margin:0; color:rgba(255,255,255,0.5); font-size:12px;">🚗 Car</p>
-                <p class="detail-value" style="margin:2px 0 0; color:#fff; font-size:15px; font-weight:600;">${carName}</p>
+              <td colspan="2" style="padding-bottom:16px;">
+                <p class="detail-label" style="margin:0; color:rgba(255,255,255,0.4); font-size:11px; text-transform:uppercase;">Car</p>
+                <p style="margin:4px 0 0; color:#ffffff; font-size:18px; font-weight:700;">${carName}</p>
+                ${location ? `<p style="margin:4px 0 0; color:rgba(255,255,255,0.6); font-size:13px;">📍 ${location}</p>` : ''}
               </td>
             </tr>
-            <!-- Dates -->
             <tr>
-              <td style="padding:8px 0;">
-                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
-                  <tr>
-                    <td class="col-half" width="50%" style="vertical-align:top;">
-                      <p class="detail-label" style="margin:0; color:rgba(255,255,255,0.5); font-size:12px;">📅 Pickup</p>
-                      <p class="detail-value" style="margin:2px 0 0; color:#fff; font-size:14px;">${new Date(pickupDate).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</p>
-                    </td>
-                    <td class="col-half col-half-last" width="50%" style="vertical-align:top;">
-                      <p class="detail-label" style="margin:0; color:rgba(255,255,255,0.5); font-size:12px;">📅 Return</p>
-                      <p class="detail-value" style="margin:2px 0 0; color:#fff; font-size:14px;">${new Date(returnDate).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</p>
-                    </td>
-                  </tr>
-                </table>
+              <td width="50%" style="padding-bottom:16px;">
+                <p class="detail-label" style="margin:0; color:rgba(255,255,255,0.4); font-size:11px; text-transform:uppercase;">Dates</p>
+                <p style="margin:4px 0 0; color:#ffffff; font-size:14px;">${new Date(pickupDate).toLocaleString('en-IN', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })} - ${new Date(returnDate).toLocaleString('en-IN', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}</p>
               </td>
-            </tr>
-            <!-- Price -->
-            <tr>
-              <td style="padding:12px 0 0;">
-                <p class="detail-label" style="margin:0; color:rgba(255,255,255,0.5); font-size:12px;">💰 Total Amount</p>
-                <p class="big-price" style="margin:4px 0 0; color:${ACCENT_COLOR}; font-size:22px; font-weight:700;">₹${price}</p>
+              <td width="50%" style="padding-bottom:16px; text-align:right;">
+                <p class="detail-label" style="margin:0; color:rgba(255,255,255,0.4); font-size:11px; text-transform:uppercase;">Amount Paid</p>
+                <p style="margin:4px 0 0; color:${BRAND_COLOR}; font-size:20px; font-weight:800;">₹${price}</p>
               </td>
             </tr>
           </table>
+
+          <div style="background:rgba(37, 99, 235, 0.05); border-radius:8px; padding:16px; margin-top:8px;">
+             <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td style="color:rgba(255,255,255,0.7); font-size:13px;">⛽ ${fuelType || 'Petrol'}</td>
+                <td style="color:rgba(255,255,255,0.7); font-size:13px; text-align:center;">⚙️ ${transmission || 'Auto'}</td>
+                <td style="color:rgba(255,255,255,0.7); font-size:13px; text-align:right;">👥 ${seatingCapacity || '5'} Seats</td>
+              </tr>
+             </table>
+          </div>
         </td>
       </tr>
-      <!-- Confirmed Badge -->
+      
       <tr>
-        <td class="detail-card-cell" style="padding:16px 24px; text-align:center; background:rgba(0,212,170,0.06); border-top:1px solid rgba(0,212,170,0.15);">
-          <span class="status-badge" style="display:inline-block; background:${ACCENT_COLOR}; color:#0f0f1a; padding:6px 20px; border-radius:20px; font-size:13px; font-weight:700; text-transform:uppercase; letter-spacing:1px;">
-            ✓ Confirmed
+        <td style="padding:16px; background:${BRAND_COLOR}; text-align:center;">
+          <span style="color:#ffffff; font-size:13px; font-weight:700; text-transform:uppercase; letter-spacing:1px;">
+            ✓ Booking Confirmed
           </span>
         </td>
       </tr>

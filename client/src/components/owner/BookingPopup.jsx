@@ -1,150 +1,205 @@
-import { motion, iconList } from "../../index.js"
+import { motion } from "framer-motion";
+import { iconList } from "../../assets/assets.jsx";
 
-const BookingPopup = ({ setSelectedBooking, selectedBooking }) => {
+const BookingPopup = ({ setSelectedBooking, selectedBooking, isFullPage = false }) => {
 
     if (!selectedBooking) return null;
     const { car, user } = selectedBooking;
 
+    const detailItems = [
+        {
+            label: "Pickup Date & Time",
+            value: new Date(selectedBooking.pickupDate).toLocaleString("en-IN", { 
+                day: '2-digit', month: 'short', year: 'numeric', 
+                hour: '2-digit', minute: '2-digit', hour12: true 
+            }),
+            icon: iconList.Calendar,
+            color: "text-blue-600 bg-blue-50 dark:bg-blue-900/20"
+        },
+        {
+            label: "Return Date & Time",
+            value: new Date(selectedBooking.returnDate).toLocaleString("en-IN", { 
+                day: '2-digit', month: 'short', year: 'numeric', 
+                hour: '2-digit', minute: '2-digit', hour12: true 
+            }),
+            icon: iconList.CalendarCheck,
+            color: "text-indigo-600 bg-indigo-50 dark:bg-indigo-900/20"
+        },
+        { label: "Total Amount", value: `₹${selectedBooking.price.toLocaleString("en-IN")}`, icon: iconList.IndianRupee, color: "text-emerald-600 bg-emerald-50 dark:bg-emerald-900/20" },
+        { label: "Booking Status", value: selectedBooking.status, icon: iconList.ClipboardCheck, color: "text-amber-600 bg-amber-50 dark:bg-amber-900/20" },
+        { label: "Payment Status", value: selectedBooking.paymentStatus, icon: iconList.Wallet, color: "text-purple-600 bg-purple-50 dark:bg-purple-900/20" },
+        { label: "Payment Method", value: selectedBooking.paymentMethod, icon: iconList.CreditCard, color: "text-rose-600 bg-rose-50 dark:bg-rose-900/20" },
+    ];
+
+    const content = (
+        <motion.div
+            initial={isFullPage ? { opacity: 0 } : { y: "100%" }}
+            animate={isFullPage ? { opacity: 1 } : { y: 0 }}
+            exit={isFullPage ? { opacity: 0 } : { y: "100%" }}
+            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+            onClick={(e) => e.stopPropagation()}
+            className={`${isFullPage ? "w-full h-full" : "w-full md:max-w-6xl h-screen md:h-[85vh] rounded-none md:rounded-[3rem] shadow-2xl border border-gray-100 dark:border-dark-border"} bg-white dark:bg-second-bg overflow-hidden flex flex-col md:flex-row relative`}
+        >
+            {/* Close/Back Button */}
+            <button
+                onClick={() => setSelectedBooking(null)}
+                className="absolute top-5 left-5 text-gray-500 hover:text-gray-800 dark:text-white/70 dark:hover:text-white bg-white/80 dark:bg-black/20 backdrop-blur-md rounded-full w-10 h-10 flex items-center justify-center transition-all z-50 cursor-pointer active:scale-90 border border-black/5 dark:border-white/10"
+                title={isFullPage ? "Go Back" : "Close"}
+            >
+                {isFullPage ? <iconList.ArrowLeft size={22} strokeWidth={2.5} /> : <iconList.X size={22} strokeWidth={2.5} />}
+            </button>
+
+            {/* Left Side: Car Showcase */}
+            <div className={`w-full md:w-5/12 lg:w-1/2 ${isFullPage ? "h-[40vh] md:h-full" : "h-[45vh] md:h-full"} bg-white dark:bg-[#0a0b0d] flex items-center justify-center relative overflow-hidden shrink-0`}>
+                <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_center,rgba(59,130,246,0.05),transparent_70%)]" />
+                <motion.img
+                    initial={{ scale: 1.1, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ delay: 0.2 }}
+                    src={car?.image}
+                    alt={car?.model}
+                    className="w-full h-full object-cover md:object-contain drop-shadow-2xl z-10"
+                />
+
+                <div className="absolute bottom-10 left-8 right-8 z-30 hidden md:block">
+                    <motion.div
+                        initial={{ y: 20, opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        transition={{ delay: 0.4 }}
+                        className="bg-white/40 dark:bg-black/40 backdrop-blur-xl border border-white/20 dark:border-white/10 p-5 rounded-xl shadow-2xl"
+                    >
+                        <p className="text-gray-800 dark:text-white/60 text-xs uppercase tracking-widest font-medium mb-1">Elite Collection</p>
+                        <h3 className="text-gray-900 dark:text-white text-3xl font-bold tracking-tight">{car?.brand} <span className="text-primary">{car?.model}</span></h3>
+                    </motion.div>
+                </div>
+            </div>
+
+            {/* Right Side: Detailed Info */}
+            <div className="flex-1 h-[60vh] md:h-full overflow-y-auto overflow-x-hidden px-6 md:px-10 lg:px-12 py-10 space-y-8 dark:text-dark-text bg-white dark:bg-second-bg custom-scrollbar relative">
+                {/* Header Section */}
+                <div className="flex flex-col gap-2">
+                    <div className="flex items-center gap-2">
+                        <span className="px-3 py-1 bg-primary/10 text-primary text-[10px] font-bold uppercase tracking-wider rounded-full border border-primary/20">
+                            {car?.category}
+                        </span>
+                        <span className="px-3 py-1 bg-gray-100 dark:bg-white/5 text-gray-500 dark:text-dark-muted text-[10px] font-bold uppercase tracking-wider rounded-full border border-gray-200 dark:border-white/5">
+                            {car?.transmission}
+                        </span>
+                    </div>
+                    <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white leading-tight">
+                        {car?.brand} <span className="text-primary">{car?.model}</span>
+                    </h2>
+                    <p className="text-gray-500 dark:text-dark-muted text-sm leading-relaxed max-w-2xl line-clamp-2">
+                        {car?.description || "High-performance luxury rental with premium amenities and exceptional driving dynamics."}
+                    </p>
+                </div>
+
+                {/* Customer Profile Card */}
+                <div className="bg-gray-50 dark:bg-white/[0.03] border border-gray-100 dark:border-white/5 p-4 md:p-6 rounded-xl flex flex-col sm:flex-row items-center sm:justify-between gap-4 group">
+                    <div className="flex items-center gap-4 w-full sm:w-auto">
+                        <div className="relative shrink-0 mx-auto sm:mx-0">
+                            {user?.image ? (
+                                <img src={user?.image} className="w-14 h-14 rounded-xl object-cover ring-4 ring-white dark:ring-white/5 shadow-lg" alt="" />
+                            ) : (
+                                <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center text-primary ring-4 ring-white dark:ring-white/5 shadow-lg">
+                                    <iconList.User size={24} />
+                                </div>
+                            )}
+                            <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 border-2 border-white dark:border-second-bg rounded-full" />
+                        </div>
+                        <div className="text-center sm:text-left flex-1 min-w-0">
+                            <p className="text-xs text-gray-400 dark:text-dark-muted font-medium mb-0.5">Renter Details</p>
+                            <h4 className="font-bold text-gray-900 dark:text-white text-lg truncate">{user?.name || "Premium User"}</h4>
+                            <p className="text-sm text-gray-500 dark:text-dark-muted flex items-center justify-center sm:justify-start gap-1.5 truncate">
+                                <iconList.Mail size={12} className="shrink-0" /> {user?.email}
+                            </p>
+                        </div>
+                    </div>
+                    <button className="bg-white dark:bg-white/5 w-12 h-12 rounded-full flex items-center justify-center shadow-sm border border-gray-100 dark:border-white/5 text-primary hover:bg-primary hover:text-white transition-all shrink-0">
+                        <iconList.MessageCircle size={20} />
+                    </button>
+                </div>
+
+                {/* Rental Timeline */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="bg-gray-50 dark:bg-card-bg p-5 rounded-xl border border-gray-100 dark:border-dark-border">
+                        <p className="text-gray-400 dark:text-dark-muted text-xs font-medium mb-2">Pickup Date & Time</p>
+                        <p className="text-gray-900 dark:text-white font-semibold text-base">
+                            {new Date(selectedBooking.pickupDate).toLocaleString('en-IN', {
+                                day: '2-digit',
+                                month: 'short',
+                                year: 'numeric',
+                                hour: '2-digit',
+                                minute: '2-digit',
+                                hour12: true
+                            })}
+                        </p>
+                    </div>
+                    <div className="bg-gray-50 dark:bg-card-bg p-5 rounded-xl border border-gray-100 dark:border-dark-border">
+                        <p className="text-gray-400 dark:text-dark-muted text-xs font-medium mb-2">Return Date & Time</p>
+                        <p className="text-gray-900 dark:text-white font-semibold text-base">
+                            {new Date(selectedBooking.returnDate).toLocaleString('en-IN', {
+                                day: '2-digit',
+                                month: 'short',
+                                year: 'numeric',
+                                hour: '2-digit',
+                                minute: '2-digit',
+                                hour12: true
+                            })}
+                        </p>
+                    </div>
+                </div>
+
+                {/* Booking Stats Grid */}
+                <div>
+                    <h3 className="text-sm font-bold text-gray-900 dark:text-white mb-4">Booking Overview</h3>
+                    <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
+                        {detailItems.map((item, idx) => (
+                            <div key={idx} className="bg-white dark:bg-white/[0.02] border border-gray-100 dark:border-white/5 p-4 rounded-xl hover:border-primary/30 transition-all group overflow-hidden">
+                                <div className={`w-8 h-8 rounded-lg ${item.color} flex items-center justify-center mb-3 transition-transform group-hover:scale-110`}>
+                                    <item.icon size={16} strokeWidth={2.5} />
+                                </div>
+                                <p className="text-xs font-medium text-gray-400 dark:text-dark-muted mb-1">{item.label}</p>
+                                <p className="font-bold text-gray-900 dark:text-white truncate text-base capitalize">{item.value}</p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                {/* Specifications Grid */}
+                <div className="pt-2">
+                    <div className="flex items-center gap-4 py-4 px-6 bg-primary/5 rounded-xl border border-primary/10">
+                        <div className="flex-1 flex flex-col items-center border-r border-primary/10 px-2 min-w-0">
+                            <p className="text-xs text-primary/60 font-medium mb-1 text-center truncate">Daily Rate</p>
+                            <p className="text-lg font-bold text-primary truncate">₹{car?.pricePerDay}</p>
+                        </div>
+                        <div className="flex-1 flex flex-col items-center border-r border-primary/10 px-2 min-w-0">
+                            <p className="text-xs text-primary/60 font-medium mb-1 text-center truncate">Capacity</p>
+                            <p className="text-lg font-bold text-primary truncate">{car?.seating_capacity} Seats</p>
+                        </div>
+                        <div className="flex-1 flex flex-col items-center px-2 min-w-0">
+                            <p className="text-xs text-primary/60 font-medium mb-1 text-center truncate">Transmission</p>
+                            <p className="text-lg font-bold text-primary truncate capitalize">{car?.transmission}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </motion.div>
+    );
+
+    if (isFullPage) return content;
+
     return (
         <motion.div
-            className="fixed inset-0 backdrop-blur-sm flex items-end md:items-center justify-center z-50 p-0 md:p-4"
+            className="fixed inset-0 backdrop-blur-md bg-black/40 flex items-end md:items-center justify-center z-50 p-0 md:p-6"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setSelectedBooking(null)}
         >
-            <motion.div
-                initial={{ y: 20, opacity: 0, scale: 0.95 }}
-                animate={{ y: 0, opacity: 1, scale: 1 }}
-                exit={{ y: 20, opacity: 0, scale: 0.95 }}
-                transition={{ duration: 0.2, ease: "easeOut" }}
-                onClick={(e) => e.stopPropagation()}
-                className="w-full md:max-w-5xl h-full md:h-[80vh] max-h-200 bg-white dark:bg-second-bg rounded-t-3xl md:rounded-2xl overflow-hidden shadow-2xl flex flex-col md:flex-row relative border border-transparent dark:border-dark-border"
-            >
-                {/* Close Button  */}
-                <button
-                    onClick={() => setSelectedBooking(null)}
-                    className="absolute top-4 right-4 md:right-6 text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-white bg-white/80 dark:bg-main-bg/80 md:bg-gray-100 dark:md:bg-surface backdrop-blur-sm rounded-full w-8 h-8 flex items-center justify-center transition-colors z-20 cursor-pointer active:scale-90"
-                >
-                    <iconList.X size={18} strokeWidth={2.5} />
-                </button>
-
-                {/* Left Side: Image Section */}
-                <div className="h-[35vh] md:h-full w-full md:w-1/2 shrink-0 bg-gray-50 dark:bg-[#0f1014] flex items-center justify-center p-2 md:p-6 relative">
-                    <div className="absolute inset-0 bg-linear-to-t from-black/20 to-transparent dark:from-black/40 pointer-events-none" />
-                    <img
-                        src={car?.image}
-                        alt={car?.model}
-                        className="w-full h-full object-cover md:object-contain rounded-xl md:rounded-xl drop-shadow-2xl z-10"
-                    />
-                </div>
-
-                {/* Right Side: Content & Details */}
-                <div className="w-full md:w-1/2 h-[calc(90vh-15rem)] md:h-full p-5 md:p-8 overflow-y-auto space-y-6 [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-gray-200 dark:[&::-webkit-scrollbar-thumb]:bg-dark-border [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-gray-300 dark:hover:[&::-webkit-scrollbar-thumb]:bg-gray-600">
-
-                    {/* Title & Basic Info */}
-                    <div className="pr-8">
-                        <h2 className="text-xl md:text-3xl font-bold text-gray-800 dark:text-dark-text">
-                            {car?.brand} {car?.model}
-                        </h2>
-                        <p className="text-sm text-gray-500 dark:text-dark-muted mt-1 uppercase tracking-wide font-medium">
-                            {car?.year} • {car?.fuel_type} • {car?.transmission}
-                        </p>
-                    </div>
-
-                    {/* Car Info Highlights */}
-                    <div className="grid grid-cols-3 gap-3 md:gap-4 text-sm">
-                        <div className="bg-gray-50 dark:bg-card-bg border border-gray-100 dark:border-dark-border p-3 rounded-xl transition-all hover:shadow-md">
-                            <p className="text-gray-400 dark:text-dark-muted text-xs mb-0.5">Seats</p>
-                            <p className="font-bold text-gray-800 dark:text-dark-text">{car?.seating_capacity}</p>
-                        </div>
-                        <div className="bg-gray-50 dark:bg-card-bg border border-gray-100 dark:border-dark-border p-3 rounded-xl transition-all hover:shadow-md">
-                            <p className="text-gray-400 dark:text-dark-muted text-xs mb-0.5">Location</p>
-                            <p className="font-bold text-gray-800 dark:text-dark-text">{car?.location}</p>
-                        </div>
-                        <div className="bg-gray-50 dark:bg-card-bg border border-gray-100 dark:border-dark-border p-3 rounded-xl transition-all hover:shadow-md">
-                            <p className="text-gray-400 dark:text-dark-muted text-xs mb-0.5">Price/Day</p>
-                            <p className="font-bold text-gray-800 dark:text-dark-text">₹{car?.pricePerDay}</p>
-                        </div>
-                    </div>
-
-                    {/* Description */}
-                    <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
-                        {car?.description || "Experience the perfect blend of performance, style, and comfort. This vehicle is well-maintained and ready for your next adventure."}
-                    </p>
-
-                    {/* User Profile */}
-                    <div className="flex items-center gap-4 bg-gray-50/80 dark:bg-surface border border-gray-100 dark:border-dark-border p-4 rounded-2xl">
-                        {user?.image ? (
-                            <img
-                                src={user?.image}
-                                alt={user?.name}
-                                className="w-12 h-12 rounded-full object-cover shadow-sm"
-                            />
-                        ) : (
-                            <div className="w-12 h-12 rounded-full bg-blue-100 dark:bg-primary/20 text-blue-600 dark:text-accent flex items-center justify-center">
-                                <iconList.CircleUser size={24} />
-                            </div>
-                        )}
-                        <div>
-                            <p className="font-bold text-gray-800 dark:text-dark-text">{user?.name ? user?.name : "Owner"}</p>
-                            <p className="text-sm text-gray-500 dark:text-dark-muted">{user?.email ? user?.email : "owner@gmail.com"}</p>
-                        </div>
-                    </div>
-
-                    {/* Booking Details */}
-                    <div className="pt-2">
-                        <h3 className="text-lg font-bold text-gray-800 dark:text-dark-text mb-4">
-                            Booking Details
-                        </h3>
-
-                        <div className="grid grid-cols-2 md:grid-cols-3 gap-3 text-sm">
-                            <div className="bg-blue-50 dark:bg-blue-900/10 p-3 rounded-xl border border-blue-100 dark:border-blue-900/30">
-                                <p className="text-blue-500/80 dark:text-blue-400/80 text-xs mb-0.5">Pickup</p>
-                                <p className="font-bold text-blue-900 dark:text-blue-300">
-                                    {new Date(selectedBooking.pickupDate).toLocaleDateString()}
-                                </p>
-                            </div>
-
-                            <div className="bg-blue-50 dark:bg-blue-900/10 p-3 rounded-xl border border-blue-100 dark:border-blue-900/30">
-                                <p className="text-blue-500/80 dark:text-blue-400/80 text-xs mb-0.5">Return</p>
-                                <p className="font-bold text-blue-900 dark:text-blue-300">
-                                    {new Date(selectedBooking.returnDate).toLocaleDateString()}
-                                </p>
-                            </div>
-
-                            <div className="bg-indigo-50 dark:bg-indigo-900/10 p-3 rounded-xl border border-indigo-100 dark:border-indigo-900/30">
-                                <p className="text-indigo-500/80 dark:text-indigo-400/80 text-xs mb-0.5">Total Price</p>
-                                <p className="font-bold text-indigo-900 dark:text-indigo-300">₹{selectedBooking.price}</p>
-                            </div>
-
-                            <div className="bg-emerald-50 dark:bg-emerald-900/10 p-3 rounded-xl border border-emerald-100 dark:border-emerald-900/30">
-                                <p className="text-emerald-500/80 dark:text-emerald-400/80 text-xs mb-0.5">Status</p>
-                                <p className="font-bold text-emerald-900 dark:text-emerald-300 capitalize">
-                                    {selectedBooking.status}
-                                </p>
-                            </div>
-
-                            <div className="bg-purple-50 dark:bg-purple-900/10 p-3 rounded-xl border border-purple-100 dark:border-purple-900/30">
-                                <p className="text-purple-500/80 dark:text-purple-400/80 text-xs mb-0.5">Payment</p>
-                                <p className="font-bold text-purple-900 dark:text-purple-300 capitalize">
-                                    {selectedBooking.paymentStatus}
-                                </p>
-                            </div>
-
-                            <div className="bg-amber-50 dark:bg-amber-900/10 p-3 rounded-xl border border-amber-100 dark:border-amber-900/30">
-                                <p className="text-amber-500/80 dark:text-amber-400/80 text-xs mb-0.5">Method</p>
-                                <p className="font-bold text-amber-900 dark:text-amber-300 capitalize">
-                                    {selectedBooking.paymentMethod}
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </motion.div>
+            {content}
         </motion.div>
-    )
-}
+    );
+};
 
 export default BookingPopup;

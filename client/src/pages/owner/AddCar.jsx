@@ -15,13 +15,16 @@ const AddCar = () => {
 		brand: "",
 		model: "",
 		year: 0,
-		pricePerDay: 0,
+		pricePerHour: 0,
+		lateFeePerHour: 0,
 		category: "",
 		transmission: "",
 		fuel_type: "",
 		seating_capacity: 0,
 		location: "",
 		description: "",
+		cleaningTime: 30,
+		maintenanceTime: 60,
 	});
 
 	const handleChange = (e) => {
@@ -41,13 +44,16 @@ const AddCar = () => {
 				brand: "",
 				model: "",
 				year: 0,
-				pricePerDay: 0,
+				pricePerHour: 0,
+				lateFeePerHour: 0,
 				category: "",
 				transmission: "",
 				fuel_type: "",
 				seating_capacity: 0,
 				location: "",
 				description: "",
+				cleaningTime: 30,
+				maintenanceTime: 60,
 			});
 			setImage(null);
 		}
@@ -156,15 +162,28 @@ const AddCar = () => {
 						/>
 					</div>
 					<div className="flex flex-col w-full">
-						<label htmlFor="">Daily Price {currency}</label>
+						<label htmlFor="">Price /Hour {currency}</label>
 						<input
 							type="number"
-							id="pricePerDay"
-							name="pricePerDay"
+							id="pricePerHour"
+							name="pricePerHour"
 							placeholder="0"
 							className="px-3 py-2.5 mt-1	border border-gray-300 rounded-md
 							outline-none	focus:border-primary focus:ring-3 focus:ring-primary/50 dark:bg-card-bg dark:border-dark-border dark:text-dark-text transition-colors duration-600"
-							value={car.pricePerDay}
+							value={car.pricePerHour}
+							onChange={handleChange}
+						/>
+					</div>
+					<div className="flex flex-col w-full">
+						<label htmlFor="">Late Fee /Hour {currency}</label>
+						<input
+							type="number"
+							id="lateFeePerHour"
+							name="lateFeePerHour"
+							placeholder="0"
+							className="px-3 py-2.5 mt-1	border border-gray-300 rounded-md
+							outline-none	focus:border-primary focus:ring-3 focus:ring-primary/50 dark:bg-card-bg dark:border-dark-border dark:text-dark-text transition-colors duration-600"
+							value={car.lateFeePerHour}
 							onChange={handleChange}
 						/>
 					</div>
@@ -283,6 +302,33 @@ const AddCar = () => {
 							<option value="Delhi">Delhi</option>
 							<option value="Gurugram">Gurugram</option>
 						</select>
+					</div>
+
+					<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+						<div className="flex flex-col w-full">
+							<label htmlFor="cleaningTime">Cleaning Time (Minutes)</label>
+							<input
+								type="number"
+								id="cleaningTime"
+								name="cleaningTime"
+								placeholder="30"
+								className="px-3 py-2.5 mt-1	border border-gray-300 rounded-md outline-none	focus:border-primary focus:ring-3 focus:ring-primary/50 dark:bg-card-bg dark:border-dark-border dark:text-dark-text transition-colors duration-600"
+								value={car.cleaningTime}
+								onChange={handleChange}
+							/>
+						</div>
+						<div className="flex flex-col w-full">
+							<label htmlFor="maintenanceTime">Maint. Time (Minutes)</label>
+							<input
+								type="number"
+								id="maintenanceTime"
+								name="maintenanceTime"
+								placeholder="60"
+								className="px-3 py-2.5 mt-1	border border-gray-300 rounded-md outline-none	focus:border-primary focus:ring-3 focus:ring-primary/50 dark:bg-card-bg dark:border-dark-border dark:text-dark-text transition-colors duration-600"
+								value={car.maintenanceTime}
+								onChange={handleChange}
+							/>
+						</div>
 					</div>
 				</motion.div>
 

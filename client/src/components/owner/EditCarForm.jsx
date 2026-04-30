@@ -13,7 +13,8 @@ const EditCarForm = () => {
     brand: editCar.brand || "",
     model: editCar.model || "",
     year: editCar.year || "",
-    pricePerDay: editCar.pricePerDay || "",
+    pricePerHour: editCar.pricePerHour || "",
+    lateFeePerHour: editCar.lateFeePerHour || "",
     category: editCar.category || "",
     transmission: editCar.transmission || "",
     fuel_type: editCar.fuel_type || "",
@@ -21,6 +22,8 @@ const EditCarForm = () => {
     location: editCar.location || "",
     description: editCar.description || "",
     image: editCar.image || "",
+    cleaningTime: editCar.cleaningTime || 30,
+    maintenanceTime: editCar.maintenanceTime || 60,
   } : null);
   const [loading, setLoading] = useState(false);
   const [image, setImage] = useState(null);
@@ -31,7 +34,8 @@ const EditCarForm = () => {
       brand: editCar.brand || "",
       model: editCar.model || "",
       year: editCar.year || "",
-      pricePerDay: editCar.pricePerDay || "",
+      pricePerHour: editCar.pricePerHour || "",
+      lateFeePerHour: editCar.lateFeePerHour || "",
       category: editCar.category || "",
       transmission: editCar.transmission || "",
       fuel_type: editCar.fuel_type || "",
@@ -39,6 +43,8 @@ const EditCarForm = () => {
       location: editCar.location || "",
       description: editCar.description || "",
       image: editCar.image || "",
+      cleaningTime: editCar.cleaningTime || 30,
+      maintenanceTime: editCar.maintenanceTime || 60,
     });
   }, [editCar]);
 
@@ -162,12 +168,24 @@ const EditCarForm = () => {
           </div>
 
           <div>
-            <label htmlFor="pricePerDay" className="text-sm dark:text-dark-muted">Daily Price ₹</label>
+            <label htmlFor="pricePerHour" className="text-sm dark:text-dark-muted">Hourly Price ₹</label>
             <input
-              id="pricePerDay"
-              name="pricePerDay"
+              id="pricePerHour"
+              name="pricePerHour"
               type="number"
-              value={car.pricePerDay}
+              value={car.pricePerHour}
+              onChange={handleChange}
+              className="px-3 py-2 w-full mt-1 border border-gray-400 rounded-md outline-none focus:border-primary focus:ring-2 focus:ring-primary/50 text-gray-700 dark:bg-card-bg dark:border-dark-border dark:text-dark-text"
+            />
+          </div>
+
+          <div>
+            <label htmlFor="lateFeePerHour" className="text-sm dark:text-dark-muted">Late Fee /Hr ₹</label>
+            <input
+              id="lateFeePerHour"
+              name="lateFeePerHour"
+              type="number"
+              value={car.lateFeePerHour}
               onChange={handleChange}
               className="px-3 py-2 w-full mt-1 border border-gray-400 rounded-md outline-none focus:border-primary focus:ring-2 focus:ring-primary/50 text-gray-700 dark:bg-card-bg dark:border-dark-border dark:text-dark-text"
             />
@@ -249,6 +267,32 @@ const EditCarForm = () => {
               onChange={handleChange}
               className="px-3 py-2 w-full mt-1 border border-gray-400 rounded-md outline-none focus:border-primary focus:ring-2 focus:ring-primary/50 text-gray-700 dark:bg-card-bg dark:border-dark-border dark:text-dark-text"
               placeholder="Delhi, Mumbai..."
+            />
+          </div>
+
+          <div>
+            <label htmlFor="cleaningTime" className="text-sm dark:text-dark-muted">Cleaning Time (Mins)</label>
+            <input
+              id="cleaningTime"
+              name="cleaningTime"
+              type="number"
+              value={car.cleaningTime}
+              onChange={handleChange}
+              className="px-3 py-2 w-full mt-1 border border-gray-400 rounded-md outline-none focus:border-primary focus:ring-2 focus:ring-primary/50 text-gray-700 dark:bg-card-bg dark:border-dark-border dark:text-dark-text"
+              placeholder="30"
+            />
+          </div>
+
+          <div>
+            <label htmlFor="maintenanceTime" className="text-sm dark:text-dark-muted">Maint. Time (Mins)</label>
+            <input
+              id="maintenanceTime"
+              name="maintenanceTime"
+              type="number"
+              value={car.maintenanceTime}
+              onChange={handleChange}
+              className="px-3 py-2 w-full mt-1 border border-gray-400 rounded-md outline-none focus:border-primary focus:ring-2 focus:ring-primary/50 text-gray-700 dark:bg-card-bg dark:border-dark-border dark:text-dark-text"
+              placeholder="60"
             />
           </div>
         </div>

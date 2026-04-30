@@ -4,6 +4,8 @@ import { Title as OwnerTitle } from "../../components/owner/Title.jsx";
 import { useBookingStore } from "../../store/useBookingStore.js";
 import TableSkeleton from "../../components/UI/TableSkeleton.jsx";
 import BookingPopup from "../../components/owner/BookingPopup.jsx";
+import { iconList } from "../../assets/assets.jsx";
+import { useParams, useNavigate } from "react-router-dom";
 
 const ManageBookings = () => {
 	const {
@@ -12,214 +14,261 @@ const ManageBookings = () => {
 		fetchOwnerBookings,
 		changeBookingStatus,
 		changePaymentStatus,
+		deleteBooking,
 	} = useBookingStore();
 	const currency = import.meta.env.VITE_CURRENCY;
+	const { bookingId } = useParams();
+	const navigate = useNavigate();
 
-	const [selectedBooking, setSelectedBooking] = useState(null);
+	const [openConfirm, setOpenConfirm] = useState(false);
+	const [deleteId, setDeleteId] = useState(null);
+	const [visibleCount, setVisibleCount] = useState(10);
 
 
 	useEffect(() => {
 		fetchOwnerBookings();
 	}, []);
 
-	if (loading) return <TableSkeleton />;
+	const selectedBooking = bookings.find(b => b._id === bookingId);
+
+	const handleDelete = (e, bId) => {
+		e.stopPropagation();
+		setDeleteId(bId);
+		setOpenConfirm(true);
+	}
+
+	if (loading && bookings.length === 0) return <TableSkeleton />;
+	if (bookings.length === 0 && !loading) return <div className="p-10 text-center text-gray-500">No bookings found.</div>;
+
+	if (bookingId && selectedBooking) {
+		return (
+			<div className="flex-1 h-full overflow-hidden">
+				<BookingPopup
+					selectedBooking={selectedBooking}
+					setSelectedBooking={() => navigate("/owner/manage-bookings")}
+					isFullPage={true}
+				/>
+			</div>
+		)
+	}
+
+	const displayedBookings = bookings.slice(0, visibleCount);
 
 	return (
-		<div className="px-4 pt-10 pb-15 md:px-10 flex-1">
+		<div className="px-4 pt-10 md:px-10 flex-1 pb-10">
 			<OwnerTitle
 				title={"Manage Bookings"}
 				subTitle={
 					"Track all customer bookings, approve or cancel requests, and manage booking statuses."
 				}
 			/>
-			<div className="max-w-[1000px] w-full bg-white dark:bg-second-bg shadow-sm rounded-xl overflow-hidden mt-6 border border-gray-200 dark:border-dark-border">
-				<motion.table
-					initial={{ opacity: 0, y: 10 }}
-					animate={{ opacity: 1, y: 0 }}
-					transition={{ type: "spring", stiffness: 300, damping: 30 }}
-					className="w-full border-collapse text-left text-sm text-gray-600 dark:text-dark-text"
-				>
-					<thead className="bg-gray-50 dark:bg-card-bg text-gray-500 dark:text-dark-muted border-b border-gray-200 dark:border-dark-border">
-						<tr>
-							<th className="p-3 font-medium">Car</th>
-							<th className="p-3 font-medium max-md:hidden">
-								Date Range
-							</th>
-							<th className="p-3 font-medium max-md:hidden">
-								Total
-							</th>
-							<th className="p-3 font-medium max-md:hidden">Payment Method</th>
-							<th className="py-3 font-medium">Payment Status</th>
-							<th className="p-3 font-medium">Actions</th>
-						</tr>
-					</thead>
-					<tbody>
-						{bookings.map((booking, index) => (
-							<motion.tr
-								onClick={() => setSelectedBooking(booking)}
-								initial={{ opacity: 0 }}
-								animate={{ opacity: 1 }}
-								transition={{
-									type: "spring", stiffness: 300, damping: 30
-								}}
-								className="border-b last:border-b-0 border-gray-100 hover:bg-gray-50/80 transition-colors duration-200 dark:border-dark-border dark:hover:bg-surface/50 cursor-pointer"
-								key={index}
-							>
+			<div className="max-w-[1000px] w-full bg-white dark:bg-second-bg shadow-sm rounded-xl overflow-hidden mt-6 border border-gray-200 dark:border-dark-border mb-10">
+				<div className="overflow-x-auto">
+					<motion.table
+						initial={{ opacity: 0 }}
+						animate={{ opacity: 1 }}
+						transition={{ duration: 0.4 }}
+						className="w-full border-collapse text-left text-sm text-gray-600 dark:text-dark-text"
+					>
+						<thead className="bg-gray-50 dark:bg-card-bg text-gray-500 dark:text-dark-muted border-b border-gray-200 dark:border-dark-border">
+							<tr>
+								<th className="p-3 font-medium">Car</th>
+								<th className="p-3 font-medium max-md:hidden">
+									Duration
+								</th>
+								<th className="p-3 font-medium max-md:hidden">Earnings</th>
+								<th className="p-3 font-medium max-md:hidden">Method</th>
+								<th className="p-3 font-medium max-md:hidden">
+									Payment
+								</th>
+								<th className="p-3 font-medium">Status</th>
+								<th className="p-3 font-medium">Actions</th>
+							</tr>
+						</thead>
+						<tbody>
+							{displayedBookings.map((booking, index) => (
+								<motion.tr
+									initial={{ opacity: 0 }}
+									animate={{ opacity: 1 }}
+									transition={{
+										type: "spring", stiffness: 300, damping: 30
+									}}
+									onClick={() => navigate(`/owner/manage-bookings/${booking._id}`)}
+									className="border-b last:border-b-0 border-gray-100 hover:bg-gray-50/80 transition-colors duration-200 dark:border-dark-border dark:hover:bg-surface/50 cursor-pointer"
+									key={index}
+								>
+									<td className="p-3 flex md:flex-row flex-col items-start gap-3 justify-start">
+										<img
+											src={booking.car.image}
+											alt={booking.car.name}
+											className="h-11 aspect-video rounded-md object-cover"
+										/>
+										<div>
+											<p className="font-medium md:text-base text-xs line-clamp-1">
+												{booking.car.brand} {booking.car.model}
+											</p>
+											<p className="max-md:hidden text-[11px] text-gray-400">
+												{booking.car.seating_capacity} seats ●{" "}
+												{booking.car.transmission}
+											</p>
+										</div>
+									</td>
 
-								{/* car details  */}
-								<td className="p-3 flex md:flex-row flex-col items-start gap-3 justify-start">
-									<img
-										src={booking.car.image}
-										alt={booking.car.name}
-										className="h-11 aspect-video rounded-md  object-cover"
-									/>
-									<div>
-										<p className="font-medium md:text-base text-xs line-clamp-1">
-											{booking.car.brand}{" "}
-											{booking.car.model}
-										</p>
-									</div>
-								</td>
+									<td className="p-3 max-md:hidden text-xs">
+										{new Date(booking.pickupDate).toLocaleDateString('en-IN', { day: '2-digit', month: 'short' })} - {new Date(booking.returnDate).toLocaleDateString('en-IN', { day: '2-digit', month: 'short' })}
+									</td>
 
-								{/* date range  */}
-								<td className="p-3 max-md:hidden text-xs">
-									{booking.pickupDate.split("T")[0]} To{" "}
-									{booking.returnDate.split("T")[0]}
-								</td>
+									<td className="p-3 md:text-base text-xs font-light max-md:hidden">
+										<span>{currency}</span>
+										<span>{booking.price.toLocaleString("en-IN")}</span>
+									</td>
 
+									<td className="p-3 max-md:hidden">
+										<div className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[11px] font-medium uppercase tracking-wide ${booking.paymentMethod === "online"
+											? "bg-blue-500/10 text-blue-600 border border-blue-500/20"
+											: "bg-emerald-500/10 text-emerald-600 border border-emerald-500/20"
+											}`}>
+											{booking.paymentMethod}
+										</div>
+									</td>
 
-								{/* total price  */}
-								<td className="p-3 max-md:hidden">
-									{currency}{" "}
-									{booking.price.toLocaleString("en-IN")}
-								</td>
-
-								{/* payment method  */}
-								<td className="max-md:hidden md:p-3">
-									<p className={`px-2 py-1 text-xs text-gray-100 rounded-md text-center capitalize ${booking.paymentMethod === "online"
-										? "bg-blue-500"
-										: "bg-green-500"
-										}`}>
-										{booking.paymentMethod}
-									</p>
-								</td>
-
-								{/* payment status  */}
-								<td className="py-3">
-									{
-										booking.paymentStatus === "pending" ? (<select
-											name="paymentStatus"
-											id="paymentStatus"
-											value={booking.paymentStatus}
-											onClick={(e) => e.stopPropagation()}
-											onChange={(e) =>
-												changePaymentStatus(
-													booking._id,
-													e.target.value
-												)
-											}
-											className="outline-none bg-yellow-300/30 text-yellow-500 px-1 py-1 text-xs rounded-md cursor-pointer"
-										>
-											<option
-												value="pending"
-												className="cursor-pointer"
+									<td className="p-3 max-md:hidden">
+										{booking.paymentStatus === "pending" ? (
+											<select
+												value={booking.paymentStatus}
+												onClick={(e) => e.stopPropagation()}
+												onChange={(e) => changePaymentStatus(booking._id, e.target.value)}
+												className={`text-[12px] font-medium px-2 py-1 rounded-md outline-none border cursor-pointer transition-all bg-yellow-500/10 text-yellow-600 border-yellow-500/20 dark:bg-yellow-500/20`}
 											>
-												Pending
-											</option>
-											<option
-												value="confirmed"
-												className="cursor-pointer"
-											>
-												Confirmed
-											</option>
-											<option
-												value="failed"
-												className="cursor-pointer"
-											>
-												Failed
-											</option>
-										</select>
+												<option value="pending">Pending</option>
+												<option value="confirmed">Confirmed</option>
+												<option value="failed">Failed</option>
+											</select>
 										) : (
-											<span
-												className={`px-3 py-1 rounded-md text-xs font-semibold ${booking.paymentStatus === "confirmed"
-													? "bg-green-100 text-green-500"
-													: "bg-red-100 text-red-500"
-													}`}
-											>
-												{booking.paymentStatus}
-											</span>
-
+											<div className={`inline-flex px-2 py-1 rounded-md text-[12px] font-medium border ${booking.paymentStatus === "confirmed"
+												? "bg-green-500/10 text-green-600 border-green-500/20"
+												: "bg-red-500/10 text-red-600 border-red-500/20"
+												}`}>
+												{booking.paymentStatus.charAt(0).toUpperCase() + booking.paymentStatus.slice(1)}
+											</div>
 										)}
+									</td>
 
-								</td>
-
-								{/* booking status  */}
-								<td className="py-3 pr-1.5">
-									{["pending", "confirmed"].includes(booking.status) ? (
-										<select
-											name="bookingStatus"
-											id="bookingStatus"
-											value={booking.status}
-											onClick={(e) => e.stopPropagation()}
-											onChange={(e) =>
-												changeBookingStatus(booking._id, e.target.value)
-											}
-
-											className={`outline-none px-2 py-1 text-xs font-semibold rounded-md cursor-pointer capitalize ${booking.status === "completed"
-												? "bg-blue-100 text-blue-600"
-												: booking.status === "confirmed"
-													? "bg-green-100 text-green-500"
-													: booking.status === "pending"
-														? "bg-yellow-100 text-yellow-500"
-														: "bg-red-100 text-red-600"
-												}`}
+									<td className="p-3">
+										<div className="flex items-center gap-3">
+											{["pending", "confirmed"].includes(booking.status) ? (
+												<select
+													value={booking.status}
+													onClick={(e) => e.stopPropagation()}
+													onChange={(e) => changeBookingStatus(booking._id, e.target.value)}
+													className={`text-[12px] font-medium px-2 py-1 rounded-md outline-none border cursor-pointer transition-all ${booking.status === "confirmed"
+														? "bg-green-500/10 text-green-600 border-green-500/20 dark:bg-green-500/20"
+														: "bg-yellow-500/10 text-yellow-600 border-yellow-500/20 dark:bg-yellow-500/20"
+														}`}
+												>
+													<option value="pending">Pending</option>
+													<option value="confirmed">Confirmed</option>
+													<option value="completed">Completed</option>
+													<option value="cancelled">Cancelled</option>
+												</select>
+											) : (
+												<div className={`px-2 py-1 rounded-md text-[12px] font-medium border ${booking.status === "completed"
+													? "bg-blue-500/10 text-blue-600 border-blue-500/20"
+													: "bg-red-500/10 text-red-600 border-red-500/20"
+													}`}>
+													{booking.status.charAt(0).toUpperCase() + booking.status.slice(1)}
+												</div>
+											)}
+										</div>
+									</td>
+									<td className="p-3">
+										<button
+											onClick={(e) => handleDelete(e, booking._id)}
+											className="cursor-pointer active:scale-90 transition-transform duration-300"
+											title="Delete Booking"
 										>
-											<option value="pending" className="cursor-pointer">
-												Pending
-											</option>
-											<option value="confirmed" className="cursor-pointer">
-												Confirmed
-											</option>
-											<option value="completed" className="cursor-pointer">
-												Completed
-											</option>
-											<option value="cancelled" className="cursor-pointer">
-												Cancelled
-											</option>
-										</select>
-									) : (
-										<span
-											className={`px-3 py-1 rounded-md text-xs font-semibold capitalize
-												 ${booking.status === "completed"
-													? "bg-blue-100 text-blue-600"
-													: booking.status === "confirmed"
-														? "bg-green-100 text-green-500"
-														: booking.status === "pending"
-															? "bg-yellow-100 text-yellow-500"
-															: "bg-red-100 text-red-600"
-												}`}
-										>
-											{booking.status}
-										</span>
-									)}
-								</td>
-							</motion.tr>
-						))}
-					</tbody>
-				</motion.table>
+											<iconList.Trash2 size={18} className="text-red-600" />
+										</button>
+									</td>
+								</motion.tr>
+							))}
+						</tbody>
+					</motion.table>
+				</div>
 
-				{/* booking details popup  */}
-				<AnimatePresence>
-					{selectedBooking && (
-						<BookingPopup
-							selectedBooking={selectedBooking}
-							setSelectedBooking={setSelectedBooking}
-						/>
-					)}
-				</AnimatePresence>
+				{bookings.length > visibleCount && (
+					<div className="p-6 flex justify-center border-t border-gray-100 dark:border-dark-border bg-gray-50/30 dark:bg-card-bg/20">
+						<button
+							onClick={() => setVisibleCount(prev => prev + 10)}
+							className="px-8 py-3 bg-primary text-white font-bold text-sm rounded-md hover:bg-primary/90 transition-all active:scale-95 flex items-center gap-2 cursor-pointer"
+						>
+							<iconList.Plus size={18} />
+							Load More Bookings
+						</button>
+					</div>
+				)}
 			</div>
-		</div >
+
+			{/* Delete Confirmation Modal */}
+			<AnimatePresence>
+				{openConfirm && (
+					<div className="fixed inset-0 flex items-center justify-center z-[999] px-4">
+						{/* Semi-transparent Backdrop */}
+						<motion.div
+							initial={{ opacity: 0 }}
+							animate={{ opacity: 1 }}
+							exit={{ opacity: 0 }}
+							onClick={() => setOpenConfirm(false)}
+							className="absolute inset-0 backdrop-blur-sm"
+						/>
+
+						{/* Modal Content */}
+						<motion.div
+							initial={{ opacity: 0, scale: 0.9, y: 20 }}
+							animate={{ opacity: 1, scale: 1, y: 0 }}
+							exit={{ opacity: 0, scale: 0.9, y: 20 }}
+							transition={{
+								type: "spring",
+								stiffness: 400,
+								damping: 25
+							}}
+							className="relative bg-white dark:bg-gray-900 rounded-md shadow-2xl w-full max-w-md p-6 overflow-hidden"
+						>
+							<h2 className="text-xl font-semibold text-center dark:text-white">
+								Delete booking?
+							</h2>
+
+							<p className="text-center mt-2 text-gray-600 dark:text-gray-300">
+								Are you sure you want to delete this booking record? This
+								action cannot be undone.
+							</p>
+
+							<div className="flex justify-between gap-6 mt-6 md:px-10 px-4">
+								<button
+									className="w-1/2 py-2 rounded-md border bg-primary hover:bg-primary-dull text-white cursor-pointer active:scale-90 hover:scale-105 transition-transform duration-300 flex justify-center items-center gap-4"
+									onClick={() => setOpenConfirm(false)}
+								>
+									Cancel <iconList.X size={20} />
+								</button>
+
+								<button
+									className="w-1/2 py-2 rounded-md bg-red-500 hover:bg-red-600 text-white cursor-pointer active:scale-90 hover:scale-105 transition-transform duration-300 flex justify-center items-center gap-4"
+									onClick={() => {
+										deleteBooking(deleteId);
+										setOpenConfirm(false);
+									}}
+								>
+									Delete <iconList.Trash2 size={18} />
+								</button>
+							</div>
+						</motion.div>
+					</div>
+				)}
+			</AnimatePresence>
+		</div>
 	);
 };
 
 export default ManageBookings;
+
+

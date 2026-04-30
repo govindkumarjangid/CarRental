@@ -11,10 +11,17 @@ const carSchema = new mongoose.Schema({
   seating_capacity: { type: Number, required: true },
   fuel_type: { type: String, required: true },
   transmission: { type: String, required: true },
-  pricePerDay: { type: Number, required: true },
+  pricePerHour: { type: Number, required: true },
+  lateFeePerHour: { type: Number, default: 0 },
   location: { type: String, required: true },
   description: { type: String, required: true },
-  isAvaliable: { type: Boolean, default: true }
+  status: { 
+    type: String, 
+    enum: ["available", "cleaning", "maintenance", "unavailable"], 
+    default: "available" 
+  },
+  cleaningTime: { type: Number, default: 30 },
+  maintenanceTime: { type: Number, default: 60 }
 }, { timestamps: true });
 
 const Car = mongoose.model("Car", carSchema);

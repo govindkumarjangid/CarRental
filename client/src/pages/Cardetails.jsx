@@ -21,15 +21,15 @@ const Cardetails = () => {
 	const [car, setCar] = useState(null);
 	const [openPopup, setOpenPopup] = useState(false);
 	const [loading, setLoading] = useState(false);
-	const [pickupDate, setPickupDate] = useState("");
-	const [returnDate, setReturnDate] = useState("");
+	const [startTime, setStartTime] = useState("");
+	const [endTime, setEndTime] = useState("");
 
 	const handleOfflineBooking = async (e) => {
 		e.preventDefault();
 		setOpenPopup(false);
-		await createUserBooking({ car, pickupDate, returnDate }, navigate);
-		setPickupDate("");
-		setReturnDate("");
+		await createUserBooking({ car: car._id, startTime, endTime }, navigate);
+		setStartTime("");
+		setEndTime("");
 	};
 
 	const handleOnlinePayment = async () => {
@@ -56,7 +56,7 @@ const Cardetails = () => {
 			return;
 		}
 
-		const orderData = await createOnlineBooking({ car, pickupDate, returnDate });
+		const orderData = await createOnlineBooking({ car: car._id, startTime, endTime });
 		if (!orderData) {
 			setLoading(false);
 			return;
@@ -109,7 +109,7 @@ const Cardetails = () => {
 	};
 
 	const handleBookNow = () => {
-		if (!pickupDate || !returnDate) {
+		if (!startTime || !endTime) {
 			toast.error("Please select pickup and return dates");
 			return;
 		} else {
@@ -179,12 +179,39 @@ const Cardetails = () => {
 									transition={{ delay: 0.2 }}
 									className="mt-3"
 								>
-									<h1 className="text-3xl font-bold dark:text-dark-text">
-										{car.brand} {car.model}
-									</h1>
-									<p className="text-gray-500 text-lg dark:text-dark-muted">
+									<div className="flex items-center gap-3">
+										<h1 className="text-3xl font-bold dark:text-dark-text">
+											{car.brand} {car.model}
+										</h1>
+										<span className={`text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-widest ${
+											car.status === "available"
+											? "bg-green-500/20 text-green-500 border border-green-500/50"
+											: car.status === "cleaning"
+											? "bg-blue-500/20 text-blue-500 border border-blue-500/50"
+											: car.status === "maintenance"
+											? "bg-red-500/20 text-red-500 border border-red-500/50"
+											: "bg-gray-500/20 text-gray-500 border border-gray-500/50"
+										}`}>
+											{car.status}
+										</span>
+									</div>
+									<p className="text-gray-500 text-lg dark:text-dark-muted mb-2">
 										{car.category} ◉ {car.year}
 									</p>
+									<div className="flex flex-wrap gap-3 mt-1">
+										{car.status === "cleaning" && (
+											<div className="flex items-center gap-1.5 text-blue-600 dark:text-blue-400 bg-blue-500/10 px-2 py-1 rounded-md border border-blue-500/20">
+												<iconList.Sparkles size={14} />
+												<span className="text-[11px] font-bold uppercase tracking-wider">Cleaning : {car.cleaningTime || 30} Mins</span>
+											</div>
+										)}
+										{car.status === "maintenance" && (
+											<div className="flex items-center gap-1.5 text-red-600 dark:text-red-400 bg-red-500/10 px-2 py-1 rounded-md border border-red-500/20">
+												<iconList.Wrench size={14} />
+												<span className="text-[11px] font-bold uppercase tracking-wider">Maintenance : {car.maintenanceTime || 60} Mins</span>
+											</div>
+										)}
+									</div>
 								</motion.div>
 
 								<hr className="border-borderColor my-6 dark:border-gray-300" />
@@ -297,9 +324,9 @@ const Cardetails = () => {
 							{/* price per day  */}
 							<p className="flex items-center justify-between text-2xl text-gray-800 font-semibold dark:text-dark-text">
 								{currency}
-								{car.pricePerDay}
+								{car.pricePerHour}
 								<span className="text-base text-gray-400 font-normal">
-									per day
+									/hour
 								</span>
 							</p>
 
@@ -307,12 +334,13 @@ const Cardetails = () => {
 
 							{/* pickup date input  */}
 							<div className="flex flex-col gap-2">
-								<label>Pickup Date</label>
+								<label className="text-sm font-medium text-gray-400 dark:text-gray-300">Pickup Date & Time</label>
 								<input
-									type="date"
-									name="pickupDate"
+									type="datetime-local"
+									name="startTime"
+									value={startTime}
 									onChange={(e) =>
-										setPickupDate(e.target.value)
+										setStartTime(e.target.value)
 									}
 									className="outline-none focus:ring-2 focus:border-primary focus:ring-primary/50 border border-borderColor px-3 py-2 rounded-md w-full dark:bg-surface dark:text-dark-text dark:border-dark-border"
 								/>
@@ -320,12 +348,13 @@ const Cardetails = () => {
 
 							{/* return date input  */}
 							<div className="flex flex-col gap-2">
-								<label>Return Date</label>
+								<label className="text-sm font-medium text-gray-400 dark:text-gray-300">Return Date & Time</label>
 								<input
-									type="date"
-									name="returnDate"
+									type="datetime-local"
+									name="endTime"
+									value={endTime}
 									onChange={(e) =>
-										setReturnDate(e.target.value)
+										setEndTime(e.target.value)
 									}
 									className="outline-none focus:ring-2 focus:border-primary focus:ring-primary/50 border border-borderColor px-3 py-2 rounded-md w-full dark:bg-surface dark:text-dark-text dark:border-dark-border"
 								/>
@@ -334,10 +363,15 @@ const Cardetails = () => {
 							{/* booking button  */}
 							<motion.button
 								type="button"
+								disabled={car.status !== "available"}
 								onClick={() => handleBookNow()}
-								className={`w-full transition-all py-3 font-medium text-white rounded-md hover:scale-102 active:scale-95 bg-primary hover:bg-primary-dull cursor-pointer dark:bg-accent dark:hover:bg-accent-dull dark:text-main-bg`}
+								className={`w-full transition-all py-3 font-medium text-white rounded-md hover:scale-102 active:scale-95 cursor-pointer dark:bg-accent dark:hover:bg-accent-dull dark:text-main-bg ${
+									car.status === "available"
+									? "bg-primary hover:bg-primary-dull"
+									: "bg-gray-400 cursor-not-allowed opacity-70"
+								}`}
 							>
-								Book Now
+								{car.status === "available" ? "Book Now" : `Currently ${car.status.toUpperCase()}`}
 							</motion.button>
 							<p className="text-center text-sm text-gray-400 dark:text-300">
 								No credit card required to reserve
@@ -439,7 +473,7 @@ const Cardetails = () => {
 								</span>
 								<span className="flex items-center gap-1">
 									<span className="text-primary text-base">{currency}</span>
-									<span>{car.pricePerDay}/day</span>
+									<span>{car.pricePerHour}/hr</span>
 								</span>
 							</div>
 

@@ -77,7 +77,7 @@ const App = () => {
 							</ProtectRoute>
 						} />
 						<Route
-							path="manage-bookings"
+							path="manage-bookings/:bookingId?"
 							element={
 								<ProtectRoute>
 									<ManageBookings />

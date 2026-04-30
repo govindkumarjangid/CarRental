@@ -20,12 +20,14 @@ export const checkAvailability = async (car, pickupDate, returnDate) => {
 
 //* check avaliablity of cars
 export const checkAvaliablityofCar = wrapAsync(async (req, res) => {
-  const { location, pickupDate, returnDate } = req.body;
+  const { location, startTime, endTime } = req.body;
 
-  if (!location || !pickupDate || !returnDate) {
+  if (!location || !startTime || !endTime)
     return res.json({ success: false, message: 'All fields are required' });
-  }
-  const car = await Car.find({ location, isAvaliable: true });
+
+  const pickupDate = new Date(startTime);
+  const returnDate = new Date(endTime);
+  const car = await Car.find({ location, status: "available" });
 
   const avaliableCarsPromises = car.map(async (car) => {
     const isAvaliable = await checkAvailability(car._id, pickupDate, returnDate);
@@ -40,34 +42,42 @@ export const checkAvaliablityofCar = wrapAsync(async (req, res) => {
 //* create offline booking
 export const createOfflineBooking = wrapAsync(async (req, res) => {
   const { _id } = req.user;
-  const { car, pickupDate, returnDate } = req.body;
+  const { car, startTime, endTime } = req.body;
 
-  const isAvaliable = await checkAvailability(car, pickupDate, returnDate);
+  const picked = new Date(startTime);
+  const returned = new Date(endTime);
 
-  if (!isAvaliable) {
+  const isAvaliable = await checkAvailability(car, picked, returned);
+
+  if (!isAvaliable)
     return res.json({ success: false, message: "Car is not avaliable" })
-  }
 
-  const carData = await Car.find(car);
-  const picked = new Date(pickupDate);
-  const returned = new Date(returnDate);
-  const noOfDays = Math.ceil((returned - picked) / (1000 * 60 * 60 * 24));
-  const pricePerDay = Number(car.pricePerDay)
-  const price = pricePerDay * noOfDays;
+  const carData = await Car.findById(car);
+  if (!carData) return res.json({ success: false, message: "Car not found" });
+
+  const durationMs = returned - picked;
+  if (isNaN(durationMs) || durationMs <= 0)
+    return res.json({ success: false, message: "Invalid duration selected" });
+
+  const hours = Math.max(1, Math.ceil(durationMs / (1000 * 60 * 60)));
+  const pricePerHour = Number(carData.pricePerHour || Math.round((carData.pricePerDay || 0) / 24) || 100);
+
+  let price = pricePerHour * hours;
 
   const booking = await Booking.create({
     car,
     user: _id,
-    owner: carData[0].owner,
-    pickupDate,
-    returnDate,
+    owner: carData.owner,
+    pickupDate: picked,
+    returnDate: returned,
     price,
     paymentMethod: "offline",
   });
 
   // Send booking email to user
   const user = await User.findById(_id);
-  const carInfo = carData[0];
+  const carInfo = carData;
+
   if (user?.email) {
     await sendEmail({
       email: user.email,
@@ -75,10 +85,15 @@ export const createOfflineBooking = wrapAsync(async (req, res) => {
       htmlMessage: bookingEmailTemplate({
         userName: user.name,
         carName: `${carInfo.brand} ${carInfo.model}`,
-        pickupDate,
-        returnDate,
+        pickupDate: picked,
+        returnDate: returned,
         price,
         paymentMethod: "offline",
+        location: carInfo.location,
+        carImage: carInfo.image,
+        fuelType: carInfo.fuel_type,
+        transmission: carInfo.transmission,
+        seatingCapacity: carInfo.seating_capacity
       }),
     });
   }
@@ -89,18 +104,26 @@ export const createOfflineBooking = wrapAsync(async (req, res) => {
 //* create online booking
 export const createOnlineBooking = wrapAsync(async (req, res) => {
   const { _id } = req.user;
-  const { car, pickupDate, returnDate } = req.body;
-  const isAvaliable = await checkAvailability(car, pickupDate, returnDate);
+  const { car, startTime, endTime } = req.body;
 
-  if (!isAvaliable) {
+  const picked = new Date(startTime);
+  const returned = new Date(endTime);
+
+  const isAvaliable = await checkAvailability(car, picked, returned);
+
+  if (!isAvaliable)
     return res.json({ success: false, message: "Car is not avaliable" })
-  }
-  const carData = await Car.find(car);
-  const picked = new Date(pickupDate);
-  const returned = new Date(returnDate);
-  const noOfDays = Math.ceil((returned - picked) / (1000 * 60 * 60 * 24));
-  const pricePerDay = Number(car.pricePerDay)
-  const price = pricePerDay * noOfDays;
+
+  const carData = await Car.findById(car);
+  if (!carData) return res.json({ success: false, message: "Car not found" });
+
+  const durationMs = returned - picked;
+  if (isNaN(durationMs) || durationMs <= 0)
+    return res.json({ success: false, message: "Invalid duration selected" });
+
+  const hours = Math.max(1, Math.ceil(durationMs / (1000 * 60 * 60)));
+  const pricePerHour = Number(carData.pricePerHour || Math.round((carData.pricePerDay || 0) / 24) || 100);
+  const price = pricePerHour * hours;
 
   const order = await razorpay.orders.create({
     amount: price * 100,
@@ -114,9 +137,9 @@ export const createOnlineBooking = wrapAsync(async (req, res) => {
   const booking = await Booking.create({
     car,
     user: _id,
-    owner: carData[0].owner,
-    pickupDate,
-    returnDate,
+    owner: carData.owner,
+    pickupDate: picked,
+    returnDate: returned,
     price,
     paymentMethod: "online",
     paymentStatus: "confirmed",
@@ -125,7 +148,7 @@ export const createOnlineBooking = wrapAsync(async (req, res) => {
 
   // Send booking email to user
   const user = await User.findById(_id);
-  const carInfo = carData[0];
+  const carInfo = carData;
   if (user?.email) {
     await sendEmail({
       email: user.email,
@@ -133,10 +156,15 @@ export const createOnlineBooking = wrapAsync(async (req, res) => {
       htmlMessage: bookingEmailTemplate({
         userName: user.name,
         carName: `${carInfo.brand} ${carInfo.model}`,
-        pickupDate,
-        returnDate,
+        pickupDate: picked,
+        returnDate: returned,
         price,
         paymentMethod: "online",
+        location: carInfo.location,
+        carImage: carInfo.image,
+        fuelType: carInfo.fuel_type,
+        transmission: carInfo.transmission,
+        seatingCapacity: carInfo.seating_capacity
       }),
     });
   }
@@ -160,9 +188,8 @@ export const getUserBookings = wrapAsync(async (req, res) => {
 
 //* list owner bookings
 export const getOwnerBookings = wrapAsync(async (req, res) => {
-  if (req.user.role !== 'owner') {
+  if (req.user.role !== 'owner')
     return res.json({ success: false, message: 'Access denied' });
-  }
   const { _id } = req.user;
   const bookings = await Booking.find({ owner: _id }).populate('car user').select("-user.password").sort({ createdAt: -1 });
   res.json({ success: true, bookings });
@@ -173,13 +200,35 @@ export const changeBookingStatus = wrapAsync(async (req, res) => {
   const { _id } = req.user;
   const { bookingId, status } = req.body;
   const booking = await Booking.findById(bookingId).populate('car user');
-  if (booking.owner.toString() !== _id.toString()) {
+
+  if (booking.owner.toString() !== _id.toString())
     return res.json({ success: false, message: 'Access denied' });
+
+  if (status === 'completed' && booking.status !== 'completed') {
+    const plannedReturn = new Date(booking.returnDate);
+    const actualReturn = new Date();
+    if (actualReturn > plannedReturn) {
+      const lateDurationMs = actualReturn - plannedReturn;
+      const gracePeriodMs = 30 * 60 * 1000;
+
+      if (lateDurationMs > gracePeriodMs) {
+        const car = booking.car;
+        const lateHours = Math.ceil(lateDurationMs / (1000 * 60 * 60));
+        const lateFees = lateHours * (car.lateFeePerHour || 0);
+        if (lateFees > 0) booking.price += lateFees;
+      }
+    }
   }
+
+  if (status === 'confirmed' && booking.status !== 'confirmed') {
+    const originalDurationMs = new Date(booking.returnDate) - new Date(booking.pickupDate);
+    booking.pickupDate = new Date();
+    booking.returnDate = new Date(booking.pickupDate.getTime() + originalDurationMs);
+  }
+
   booking.status = status;
   await booking.save();
 
-  // Send confirmation email when booking is confirmed
   if (status === 'confirmed' && booking.user?.email) {
     const car = booking.car;
     await sendEmail({
@@ -192,6 +241,11 @@ export const changeBookingStatus = wrapAsync(async (req, res) => {
         returnDate: booking.returnDate,
         price: booking.price,
         bookingId: booking._id.toString(),
+        location: car.location,
+        carImage: car.image,
+        fuelType: car.fuel_type,
+        transmission: car.transmission,
+        seatingCapacity: car.seating_capacity
       }),
     });
   }
@@ -204,9 +258,8 @@ export const changePaymentStatus = wrapAsync(async (req, res) => {
   const { _id } = req.user;
   const { bookingId, status } = req.body;
   const booking = await Booking.findById(bookingId);
-  if (booking.owner.toString() !== _id.toString()) {
+  if (booking.owner.toString() !== _id.toString())
     return res.json({ success: false, message: 'Access denied' });
-  }
   booking.paymentStatus = status;
   await booking.save();
   res.json({ success: true, message: 'Payment status updated' });
@@ -216,9 +269,8 @@ export const changePaymentStatus = wrapAsync(async (req, res) => {
 export const verifyPayment = wrapAsync(async (req, res) => {
   const { razorpayOrderId, razorpayPaymentId, razorpaySignature, status, bookingId } = req.body;
 
-  if (!razorpayOrderId || !razorpayPaymentId || !razorpaySignature) {
+  if (!razorpayOrderId || !razorpayPaymentId || !razorpaySignature)
     return res.status(400).json({ success: false, message: "missing required fields" });
-  }
 
   const sign = razorpayOrderId + "|" + razorpayPaymentId;
 
@@ -237,12 +289,21 @@ export const verifyPayment = wrapAsync(async (req, res) => {
     });
   }
 
+  const bookingData = await Booking.findById(bookingId);
+  if (!bookingData) return res.status(404).json({ success: false, message: "Booking not found" });
+
+  const originalDurationMs = new Date(bookingData.returnDate) - new Date(bookingData.pickupDate);
+  const newPickupDate = new Date();
+  const newReturnDate = new Date(newPickupDate.getTime() + originalDurationMs);
+
   const booking = await Booking.findByIdAndUpdate(bookingId, {
     razorpayOrderId: razorpayOrderId,
     razorpayPaymentId: razorpayPaymentId,
     razorpaySignature: razorpaySignature,
     paymentStatus: "confirmed",
     status: "confirmed",
+    pickupDate: newPickupDate,
+    returnDate: newReturnDate
   }, { new: true }).populate('car user');
 
   // Send booking confirmation email after successful payment
@@ -258,9 +319,29 @@ export const verifyPayment = wrapAsync(async (req, res) => {
         returnDate: booking.returnDate,
         price: booking.price,
         bookingId: booking._id.toString(),
+        location: car.location,
+        carImage: car.image,
+        fuelType: car.fuel_type,
+        transmission: car.transmission,
+        seatingCapacity: car.seating_capacity
       }),
     });
   }
 
   res.json({ success: true, message: "Payment verified" });
+});
+
+//* delete booking
+export const deleteBooking = wrapAsync(async (req, res) => {
+  const { _id } = req.user;
+  const { bookingId } = req.body;
+  const booking = await Booking.findById(bookingId);
+  if (!booking) return res.json({ success: false, message: "Booking not found" });
+
+  if (booking.owner.toString() !== _id.toString()) {
+    return res.json({ success: false, message: "You are not authorized" });
+  }
+
+  await Booking.findByIdAndDelete(bookingId);
+  res.json({ success: true, message: "Booking deleted successfully" });
 });

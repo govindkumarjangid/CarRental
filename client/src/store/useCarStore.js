@@ -6,7 +6,7 @@ export const useCarStore = create((set, get) => ({
     cars: [],
     ownerCars: [],
     availableCars: [],
-    loading: false,
+    loading: true,
     showEditCar: false,
     editCar: null,
     carDetails: {},
@@ -69,15 +69,15 @@ export const useCarStore = create((set, get) => ({
         }
     },
 
-    toggleCarAvailability: async (carId) => {
+    updateCarStatus: async (carId, status) => {
         try {
-            const { data } = await axiosInstance.post("/api/owner/toggle-car", { carId });
+            const { data } = await axiosInstance.post("/api/owner/update-status", { carId, status });
             if (data.success) {
-                toast.success("Car availability toggled");
+                toast.success(data.message);
                 get().fetchOwnerCars();
             }
         } catch (error) {
-            toast.error(error.response?.data?.message || error.message || "Failed to toggle car");
+            toast.error(error.response?.data?.message || error.message || "Failed to update car status");
         }
     },
 

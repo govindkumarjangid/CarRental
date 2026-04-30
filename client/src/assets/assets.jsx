@@ -46,6 +46,17 @@ import {
 	Menu,
 	Clock,
 	CheckCheck,
+	CheckCircle2,
+	Sparkles,
+	Wrench,
+	CircleX,
+	Wallet,
+	CreditCard,
+	IndianRupee,
+	CalendarCheck,
+	ClipboardCheck,
+	MessageCircle,
+	User,
 } from "lucide-react";
 
 export const cityList = [
@@ -99,7 +110,18 @@ export const iconList = {
 	Send,
 	Menu,
 	Clock,
-	CheckCheck
+	CheckCheck,
+	CheckCircle2,
+	Sparkles,
+	Wrench,
+	CircleX,
+	Wallet,
+	CreditCard,
+	IndianRupee,
+	CalendarCheck,
+	ClipboardCheck,
+	MessageCircle,
+	User,
 };
 
 export const assets = {

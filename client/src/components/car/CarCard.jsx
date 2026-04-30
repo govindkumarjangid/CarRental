@@ -31,17 +31,25 @@ const CarCard = ({ car, index }) => {
 					loading="lazy"
 					className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
 				/>
-				{car.isAvaliable && (
-					<p className="absolute top-4 left-4 bg-primary/80 text-white text-xs px-2.5 py-1 font-medium rounded-md">
-						Available Now
+				<div className="absolute top-4 left-4 flex flex-col gap-2">
+					<p className={`text-white text-[10px] px-2 py-1 font-semibold rounded-md shadow-lg backdrop-blur-md uppercase tracking-wider ${
+						car.status === "available" 
+						? "bg-green-500/80" 
+						: car.status === "cleaning" 
+						? "bg-blue-500/80" 
+						: car.status === "maintenance"
+						? "bg-red-500/80"
+						: "bg-gray-500/80"
+					}`}>
+						{car.status}
 					</p>
-				)}
+				</div>
 
 				<div className="absolute bottom-4 right-4 border border-white/80 backdrop-blur-sm text-white/80 px-3 py-2 rounded-xl">
 					<span className="font-semibold">
-						{currency} {car.pricePerDay}
+						{currency} {car.pricePerHour}
 					</span>
-					<span className="text-sm text-white/80"> / day</span>
+					<span className="text-sm text-white/80"> / hr</span>
 				</div>
 			</div>
 
