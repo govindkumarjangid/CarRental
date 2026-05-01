@@ -13,7 +13,7 @@ import {
 	iconList
 } from "../../index.js"
 import { AnimatePresence } from 'framer-motion'
-import { Divide, LogOut } from "lucide-react";
+import { LogOut } from "lucide-react";
 
 const Navbar = () => {
 
@@ -21,8 +21,7 @@ const Navbar = () => {
 	const [image, setImage] = useState(null);
 	const [open, setOpen] = useState(false);
 
-	const { theme, toggleTheme } = useThemeStore();
-	const { user, isOwner, logout, setShowLogin, changeRole, updateProfileImage } = useAuthStore();
+	const { user, isOwner, logout, setShowLogin, updateProfileImage } = useAuthStore();
 	const navigate = useNavigate();
 
 	const location = useLocation();
@@ -69,10 +68,10 @@ const Navbar = () => {
 				{/* menu links  */}
 				<div className="flex items-center gap-4 sm:gap-8">
 					<div
-						className={`max-sm:fixed max-sm:h-screen max-sm:w-full max-sm:top-16 right-0 flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-8 max-sm:p-6 z-40 sm:bg-transparent bg-light  relative max-sm:transition-all max-sm:duration-300 ${open ? 'max-sm:opacity-100 max-sm:translate-y-0' : 'max-sm:opacity-0 max-sm:-translate-y-4 max-sm:pointer-events-none'}`}
+						className={`max-sm:fixed max-sm:h-screen max-sm:w-full max-sm:top-15 right-0 flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-8 max-sm:p-6 z-40 sm:bg-transparent bg-light  relative max-sm:transition-all max-sm:duration-300 ${open ? 'max-sm:opacity-100 max-sm:translate-x-0' : 'max-sm:opacity-0 max-sm:translate-x-100 max-sm:pointer-events-none'}`}
 					>
 						<div className="absolute inset-0 z-10 blur-2xl rounded-3xl pointer-events-none" />
-						{menuLinks.map((menuLink, index) => {
+						{menuLinks.filter(link => !(link.name === "Chat with owner" && isOwner)).map((menuLink, index) => {
 							const isActive = location.pathname === menuLink.path;
 							return (
 								<motion.div

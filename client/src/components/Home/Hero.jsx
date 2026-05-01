@@ -151,8 +151,7 @@ const Hero = () => {
 								stiffness: 120,
 								damping: 20,
 							}}
-							className="fixed inset-x-0 bottom-0 sm:inset-auto sm:bottom-4 sm:right-4 z-50 bg-white shadow-2xl rounded-t-md sm:rounded-md
-							w-full sm:w-105 md:w-130 md:max-h-[80vh] overflow-y-auto blue-thumb-scrollbar  "
+							className="fixed inset-x-0 bottom-0 sm:inset-auto sm:bottom-4 sm:right-4 z-50 bg-white shadow-2xl rounded-t-md sm:rounded-md w-full sm:w-105 md:w-130 md:max-h-[80vh] overflow-y-auto blue-thumb-scrollbar  "
 						>
 							<div className="sticky top-0 bg-white flex justify-between items-center px-2 py-2 border-b border-gray-400  ">
 								<h3 className="font-semibold">
@@ -217,7 +216,7 @@ const Hero = () => {
 
 												<td className="py-2 font-semibold text-left">
 													{currency}
-													{car.pricePerDay}/day
+													{car.pricePerHour}/hr.
 												</td>
 											</motion.tr>
 										))}

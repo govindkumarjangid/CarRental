@@ -87,7 +87,7 @@ const ChatPage = () => {
 
 
   const handleCreateChat = async () => {
-    if (!resolvedCarId) return;
+    if (!resolvedCarId || user?._id === owner) return;
     const newChatId = await createChat(user._id, owner, resolvedCarId);
     if (newChatId) setChatId(newChatId);
   };
@@ -275,6 +275,18 @@ const ChatPage = () => {
           ) : isDetailsLoading ? (
             <div className="flex-1 flex items-center justify-center">
               <ChatMessagesSkeleton />
+            </div>
+          ) : user?._id === owner ? (
+            <div className="flex-1 flex flex-col items-center justify-center p-6 text-center space-y-4">
+              <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center text-primary">
+                <iconList.CircleUser size={40} />
+              </div>
+              <div className="space-y-2">
+                <h3 className="text-xl font-bold text-gray-800 dark:text-dark-text">Self-Chat Not Available</h3>
+                <p className="text-gray-500 dark:text-dark-muted max-w-xs mx-auto">
+                  You are the owner of this car. You cannot start a chat with yourself.
+                </p>
+              </div>
             </div>
           ) : (
             <div className="w-full flex-1 flex flex-col min-w-0 overflow-hidden bg-[#efe7de] dark:bg-[#0b141a]">

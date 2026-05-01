@@ -2,41 +2,39 @@ import {motion, iconList, Link} from "../../index.js"
 import { assets } from "../../assets/assets.jsx";
 
 const Footer = () => {
-	const fadeUp = {
-		hidden: { opacity: 0, y: 20 },
-		show: {
-			opacity: 1,
-			y: 0,
-			transition: { duration: 0.6, ease: "easeOut" },
-		},
-	};
-	const staggerContainer = {
-		hidden: {},
-		show: {
-			transition: {
-				staggerChildren: 0.15,
-			},
-		},
-	};
 	return (
 		<motion.div
 			initial="hidden"
 			whileInView="show"
 			viewport={{ amount: 0.1 }}
-			variants={staggerContainer}
-			className="w-full bg-light text-gray-500/80 pt-16 px-4 md:px-8   border-t border-gray-200 "
+			variants={{
+				hidden: {},
+				show: {
+					transition: {
+						staggerChildren: 0.15,
+					},
+				},
+			}}
+			className="w-full bg-light text-gray-500/80 pt-16 max-w-full px-4 md:px-15 border-t border-gray-200 "
 		>
 			<div className="max-w-7xl mx-auto">
 				<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8 pb-10">
 					{/* Brand & Social */}
-					<motion.div variants={fadeUp} className="space-y-6">
+					<motion.div variants={{
+						hidden: { opacity: 0, y: 20 },
+						show: {
+							opacity: 1,
+							y: 0,
+							transition: { duration: 0.6, ease: "easeOut" },
+						},
+					}} className="space-y-6">
 						<motion.img
 							initial={{ opacity: 0, scale: 0.9 }}
 							whileInView={{ opacity: 1, scale: 1 }}
 							transition={{ duration: 0.6 }}
 							src={assets.logo}
 							alt="logo"
-							className="h-8 md:h-9 "
+							className="h-6 md:h-7"
 						/>
 
 						<p className="text-sm leading-relaxed max-w-xs">
@@ -64,7 +62,14 @@ const Footer = () => {
 					</motion.div>
 
 					{/* Quick Links */}
-					<motion.div variants={fadeUp} className="space-y-4">
+					<motion.div variants={{
+						hidden: { opacity: 0, y: 20 },
+						show: {
+							opacity: 1,
+							y: 0,
+							transition: { duration: 0.6, ease: "easeOut" },
+						},
+					}} className="space-y-4">
 						<h4 className="text-sm font-bold tracking-wider text-gray-900  uppercase">
 							Quick Links
 						</h4>
@@ -77,7 +82,14 @@ const Footer = () => {
 					</motion.div>
 
 					{/* Resources */}
-					<motion.div variants={fadeUp} className="space-y-4">
+					<motion.div variants={{
+						hidden: { opacity: 0, y: 20 },
+						show: {
+							opacity: 1,
+							y: 0,
+							transition: { duration: 0.6, ease: "easeOut" },
+						},
+					}} className="space-y-4">
 						<h4 className="text-sm font-bold tracking-wider text-gray-900  uppercase">
 							Resources
 						</h4>
@@ -90,7 +102,14 @@ const Footer = () => {
 					</motion.div>
 
 					{/* Contact */}
-					<motion.div variants={fadeUp} className="space-y-4">
+					<motion.div variants={{
+						hidden: { opacity: 0, y: 20 },
+						show: {
+							opacity: 1,
+							y: 0,
+							transition: { duration: 0.6, ease: "easeOut" },
+						},
+					}} className="space-y-4">
 						<h4 className="text-sm font-bold tracking-wider text-gray-900  uppercase">
 							Contact
 						</h4>
@@ -112,11 +131,25 @@ const Footer = () => {
 				</div>
 
 				{/* Divider */}
-				<motion.hr variants={fadeUp} className="border-gray-200 " />
+				<motion.hr variants={{
+						hidden: { opacity: 0, y: 20 },
+						show: {
+							opacity: 1,
+							y: 0,
+							transition: { duration: 0.6, ease: "easeOut" },
+						},
+					}} className="border-gray-200 " />
 
 				{/* Bottom Row */}
 				<motion.div
-					variants={fadeUp}
+					variants={{
+						hidden: { opacity: 0, y: 20 },
+						show: {
+							opacity: 1,
+							y: 0,
+							transition: { duration: 0.6, ease: "easeOut" },
+						},
+					}}
 					className="flex flex-col md:flex-row gap-6 items-center justify-between py-8 text-[13px]"
 				>
 					<p className="order-2 md:order-1 text-gray-400">

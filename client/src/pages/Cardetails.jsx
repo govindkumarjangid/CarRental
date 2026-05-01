@@ -4,62 +4,30 @@ import { useCarStore } from "../store/useCarStore.js";
 import { useBookingStore } from "../store/useBookingStore.js";
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { toast } from "react-hot-toast";
 import { iconList } from "../assets/assets.jsx";
 
 const Cardetails = () => {
 
+	const [car, setCar] = useState(null);
+	const [loading, setLoading] = useState(false);
+	const [startTime, setStartTime] = useState("");
+	const [endTime, setEndTime] = useState("");
+	const [paymentMode, setPaymentMode] = useState("offline");
 	const currency = import.meta.env.VITE_CURRENCY;
+
+	const { id } = useParams();
 	const navigate = useNavigate();
 
 	const { setShowLogin, token, user, loadRazorpay } = useAuthStore();
 	const { cars, fetchCars, loading: carsLoading } = useCarStore();
 	const { createUserBooking, createOnlineBooking, verifyPayment, bookingLoading } = useBookingStore();
 
-	const { id } = useParams();
-	const [car, setCar] = useState(null);
-	const [openPopup, setOpenPopup] = useState(false);
-	const [loading, setLoading] = useState(false);
-	const [startTime, setStartTime] = useState("");
-	const [endTime, setEndTime] = useState("");
+	const isSubmitting = loading || bookingLoading;
+	const isBookDisabled = car?.status !== "available" || isSubmitting;
 
-	const pageVariants = {
-		hidden: { opacity: 0, y: 18 },
-		visible: {
-			opacity: 1,
-			y: 0,
-			transition: {
-				duration: 0.6,
-				ease: [0.22, 1, 0.36, 1],
-				when: "beforeChildren",
-				staggerChildren: 0.08,
-			},
-		},
-	};
-
-	const itemVariants = {
-		hidden: { opacity: 0, y: 16 },
-		visible: {
-			opacity: 1,
-			y: 0,
-			transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] },
-		},
-	};
-
-	const imageVariants = {
-		hidden: { opacity: 0, y: 24, scale: 1.02 },
-		visible: {
-			opacity: 1,
-			y: 0,
-			scale: 1,
-			transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] },
-		},
-	};
-
-	const handleOfflineBooking = async (e) => {
-		e.preventDefault();
-		setOpenPopup(false);
+	const handleOfflineBooking = async () => {
 		await createUserBooking({ car: car._id, startTime, endTime }, navigate);
 		setStartTime("");
 		setEndTime("");
@@ -115,7 +83,6 @@ const Cardetails = () => {
 
 				if (result.success) {
 					toast.success("Payment Successful");
-					setOpenPopup(false);
 					navigate("/my-bookings");
 				} else {
 					toast.error("Payment verification failed");
@@ -141,8 +108,16 @@ const Cardetails = () => {
 		setLoading(false);
 	};
 
-	const handleBookNow = () => {
-		setOpenPopup(true);
+	const handleBookNow = async () => {
+		if (!startTime || !endTime) {
+			toast.error("Please select pickup and return dates");
+			return;
+		}
+		if (paymentMode === "online") {
+			await handleOnlinePayment();
+			return;
+		}
+		await handleOfflineBooking();
 	};
 
 	useEffect(() => {
@@ -162,13 +137,15 @@ const Cardetails = () => {
 		car && (
 			<>
 				<motion.div
-					variants={pageVariants}
-					initial="hidden"
-					animate="visible"
+					initial={{ opacity: 0, y: 18 }}
+					animate={{ opacity: 1, y: 0 }}
+					transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
 					className="h-auto max-w-7xl m-auto px-6 md:px-16 lg:px-24 xl:px-32 pt-16 pb-16 dark:bg-main-bg"
 				>
 					<motion.button
-						variants={itemVariants}
+						initial={{ opacity: 0, y: 16 }}
+						animate={{ opacity: 1, y: 0 }}
+						transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1], delay: 0.05 }}
 						onClick={() => {
 							navigate("/cars");
 							window.scrollTo(0, 0);
@@ -186,7 +163,9 @@ const Cardetails = () => {
 							<div>
 								<motion.img
 									src={car.image}
-									variants={imageVariants}
+									initial={{ opacity: 0, y: 24, scale: 1.02 }}
+									animate={{ opacity: 1, y: 0, scale: 1 }}
+									transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1], delay: 0.08 }}
 									alt="main-car-image"
 									loading="lazy"
 									className="w-full h-auto md:max-h-100 object-cover rounded-xl shadow-md"
@@ -194,20 +173,30 @@ const Cardetails = () => {
 							</div>
 
 							{/* Car details wrapper */}
-							<motion.div className="space-y-6" variants={itemVariants}>
+							<motion.div
+								className="space-y-6"
+								initial={{ opacity: 0, y: 16 }}
+								animate={{ opacity: 1, y: 0 }}
+								transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1], delay: 0.12 }}
+							>
 								{/* Title */}
-								<motion.div variants={itemVariants} className="mt-3">
+								<motion.div
+									className="mt-3"
+									initial={{ opacity: 0, y: 14 }}
+									animate={{ opacity: 1, y: 0 }}
+									transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1], delay: 0.16 }}
+								>
 									<div className="flex items-center gap-3">
 										<h1 className="text-3xl font-bold dark:text-dark-text">
 											{car.brand} {car.model}
 										</h1>
 										<span className={`text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-widest ${car.status === "available"
-												? "bg-green-500/20 text-green-500 border border-green-500/50"
-												: car.status === "cleaning"
-													? "bg-blue-500/20 text-blue-500 border border-blue-500/50"
-													: car.status === "maintenance"
-														? "bg-red-500/20 text-red-500 border border-red-500/50"
-														: "bg-gray-500/20 text-gray-500 border border-gray-500/50"
+											? "bg-green-500/20 text-green-500 border border-green-500/50"
+											: car.status === "cleaning"
+												? "bg-blue-500/20 text-blue-500 border border-blue-500/50"
+												: car.status === "maintenance"
+													? "bg-red-500/20 text-red-500 border border-red-500/50"
+													: "bg-gray-500/20 text-gray-500 border border-gray-500/50"
 											}`}>
 											{car.status}
 										</span>
@@ -235,54 +224,50 @@ const Cardetails = () => {
 
 								{/* Features icons grid */}
 								<div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-									{[
-										{
-											icon: (
-												<iconList.Users className="mb-1 text-primary " />
-											),
-											text: `${car.seating_capacity} Seats`,
-										},
-										{
-											icon: (
-												<iconList.Fuel className="mb-1 text-primary " />
-											),
-											text: `${car.fuel_type}`,
-										},
-										{
-											icon: (
-												<iconList.Car className="mb-1 text-primary " />
-											),
-											text: `${car.transmission}`,
-										},
-										{
-											icon: (
-												<iconList.MapPin className="mb-1 text-primary " />
-											),
-											text: `${car.location}`,
-										},
-									].map(({ icon, text, index }) => (
-										<motion.div
-											key={text}
-											initial={{ opacity: 0, y: 20 }}
-											animate={{ opacity: 1, y: 0 }}
-											whileHover={{ scale: 1.05 }}
-											transition={{
-												type: "spring",
-												stiffness: 200,
-												delay: 0.2 * index,
-											}}
-											className="flex flex-col items-center bg-light dark:bg-card-bg p-4 rounded-lg"
-										>
-											{icon}
-											<p className="dark:text-dark-muted">
-												{text}
-											</p>
-										</motion.div>
-									))}
+										{[
+											{
+												icon: (<iconList.Users className="mb-1 text-primary " />),
+												text: `${car.seating_capacity} Seats`,
+											},
+											{
+												icon: (<iconList.Fuel className="mb-1 text-primary " />),
+												text: `${car.fuel_type}`,
+											},
+											{
+												icon: (<iconList.Car className="mb-1 text-primary " />),
+												text: `${car.transmission}`,
+											},
+											{
+												icon: (<iconList.MapPin className="mb-1 text-primary " />),
+												text: `${car.location}`,
+											}
+										].map(({ icon, text, index }) => (
+											<motion.div
+												key={text}
+												initial={{ opacity: 0, y: 20 }}
+												animate={{ opacity: 1, y: 0 }}
+												whileHover={{ scale: 1.05 }}
+												transition={{
+													type: "spring",
+													stiffness: 200,
+													delay: 0.2 * index,
+												}}
+												className="flex flex-col items-center bg-light dark:bg-card-bg p-4 rounded-lg"
+											>
+												{icon}
+												<p className="dark:text-dark-muted">
+													{text}
+												</p>
+											</motion.div>
+										))}
 								</div>
 
 								{/* Description */}
-								<motion.div variants={itemVariants}>
+								<motion.div
+									initial={{ opacity: 0, y: 14 }}
+									animate={{ opacity: 1, y: 0 }}
+									transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1], delay: 0.18 }}
+								>
 									<h1 className="text-xl font-medium mb-3 dark:text-dark-text">
 										Description
 									</h1>
@@ -292,7 +277,11 @@ const Cardetails = () => {
 								</motion.div>
 
 								{/* Features list */}
-								<motion.div variants={itemVariants}>
+								<motion.div
+									initial={{ opacity: 0, y: 14 }}
+									animate={{ opacity: 1, y: 0 }}
+									transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1], delay: 0.22 }}
+								>
 									<h1 className="text-xl font-medium mb-3 dark:text-dark-text">
 										Features
 									</h1>
@@ -325,8 +314,10 @@ const Cardetails = () => {
 						{/* RIGHT / BOOKING FORM */}
 						<motion.form
 							onSubmit={(e) => e.preventDefault()}
-							variants={itemVariants}
-							className="shadow-lg h-max sticky top-18 rounded-xl p-6 space-y-6 text-gray-500 dark:bg-card-bg dark:text-dark-text dark:border dark:border-dark-border"
+							initial={{ opacity: 0, x: 18 }}
+							animate={{ opacity: 1, x: 0 }}
+							transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1], delay: 0.14 }}
+							className="shadow-lg h-max sticky top-10 rounded-xl p-6 space-y-6 text-gray-500 dark:bg-card-bg dark:text-dark-text dark:border dark:border-dark-border"
 						>
 							{/* price per day  */}
 							<p className="flex items-center justify-between text-2xl text-gray-800 font-semibold dark:text-dark-text">
@@ -367,91 +358,67 @@ const Cardetails = () => {
 								/>
 							</div>
 
+							{/* payment mode */}
+							<div className="flex flex-col gap-2">
+								<label className="text-sm font-medium text-gray-400 dark:text-gray-300">Payment Mode</label>
+								<div className="grid grid-cols-2 gap-3">
+									<button
+										type="button"
+										onClick={() => setPaymentMode("offline")}
+										className={`cursor-pointer active:scale-98 px-3 py-2 rounded-md border text-sm font-semibold transition-all ${paymentMode === "offline"
+											? "bg-primary text-white border-primary"
+											: "bg-white text-gray-600 border-gray-200 hover:border-gray-300"}`}
+									>
+										Pay Offline
+									</button>
+									<button
+										type="button"
+										onClick={() => setPaymentMode("online")}
+										className={`cursor-pointer active:scale-98 px-3 py-2 rounded-md border text-sm font-semibold transition-all ${paymentMode === "online"
+											? "bg-primary text-white border-primary"
+											: "bg-white text-gray-600 border-gray-200 hover:border-gray-300"}`}
+									>
+										Pay Online
+									</button>
+								</div>
+							</div>
+
 							{/* booking button  */}
 							<motion.button
 								type="button"
-								disabled={car.status !== "available"}
-								onClick={() => handleBookNow()}
-								className={`w-full transition-all py-3 font-medium text-white rounded-md hover:scale-102 active:scale-95 cursor-pointer dark:bg-accent dark:hover:bg-accent-dull dark:text-main-bg ${car.status === "available"
-										? "bg-primary hover:bg-primary-dull"
-										: "bg-gray-400 cursor-not-allowed opacity-70"
-									}`}
+								disabled={isBookDisabled}
+								onClick={handleBookNow}
+								className={`w-full transition-all py-3 font-medium text-white rounded-md hover:scale-102 active:scale-95 ${isBookDisabled
+									? "bg-gray-400 cursor-not-allowed opacity-70"
+									: "bg-primary hover:bg-primary-dull cursor-pointer"}`}
 							>
-								{car.status === "available" ? "Book Now" : `Currently ${car.status.toUpperCase()}`}
+								{isSubmitting ? (
+									<span className="inline-flex items-center gap-2">
+										<iconList.Loader size={16} className="animate-spin" />
+										Processing...
+									</span>
+								) : (
+									car.status === "available" ? "Book Now" : `Currently ${car.status.toUpperCase()}`
+								)}
 							</motion.button>
 							<p className="text-center text-sm text-gray-400 dark:text-300">
 								No credit card required to reserve
 							</p>
 						</motion.form>
-						{/* chat with owner  */}
-					</div>
-					{/*  POPUP */}
-					<AnimatePresence>
-						{openPopup && (
-							<motion.div
-								onClick={() => setOpenPopup(false)}
-								className="fixed inset-0 backdrop-blur-sm flex items-center justify-center z-50"
-								initial={{ opacity: 0 }}
-								animate={{ opacity: 1 }}
-								exit={{ opacity: 0 }}
+						{user?._id !== car?.owner && (
+							<motion.button
+								initial={{ opacity: 0, y: 10 }}
+								animate={{ opacity: 1, y: 0 }}
+								whileHover={{ scale: 1.02 }}
+								whileTap={{ scale: 0.98 }}
+								onClick={() => navigate(`/chatpage/${car._id}`)}
+								className="w-full flex items-center justify-center gap-2 py-3 bg-white dark:bg-surface border border-primary text-primary rounded-md font-medium hover:bg-primary/5 transition-all cursor-pointer shadow-sm"
 							>
-								<motion.div
-									initial={{ scale: 0.8, opacity: 0 }}
-									animate={{ scale: 1, opacity: 1 }}
-									exit={{ scale: 0.8, opacity: 0 }}
-									className="bg-white dark:bg-second-bg p-6 rounded-md w-80 shadow-xl dark:text-dark-text"
-								>
-									<h2 className="text-lg font-semibold text-center mb-4">
-										Select Payment Method
-									</h2>
-
-									<div className="space-y-3">
-										{/* Online Payment */}
-										<button
-											onClick={handleOnlinePayment}
-											className="w-full py-2 rounded-md bg-blue-600 text-white cursor-pointer"
-										>
-											{loading ? (
-												<>
-													<iconList.Loader
-														size={16}
-														className="h-5 w-5 animate-spin text-white inline-block mr-2"
-													/>
-													<span>Processing...</span>
-												</>
-											) : 'Pay Online'}
-										</button>
-
-
-										<button
-											onClick={handleOfflineBooking}
-											className="w-full py-2 rounded-md bg-green-600 text-white cursor-pointer"
-										>
-											{bookingLoading ? (
-												<>
-													<iconList.Loader
-														size={16}
-														className="h-5 w-5 animate-spin text-white inline-block mr-2"
-													/>
-													<span>Processing...</span>
-												</>
-											) : 'Pay Offline'}
-										</button>
-
-										{/* Close */}
-										<button
-											onClick={() => setOpenPopup(false)}
-											className="w-full py-2 rounded-md bg-gray-200 dark:bg-surface dark:text-dark-muted cursor-pointer"
-										>
-											Cancel
-										</button>
-
-									</div>
-								</motion.div>
-							</motion.div>
+								<iconList.MessageCircleMore size={18} />
+								Chat with Owner
+							</motion.button>
 						)}
-					</AnimatePresence>
-
+					</div>
 				</motion.div>
 			</>
 		)
