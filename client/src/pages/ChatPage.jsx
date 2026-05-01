@@ -259,7 +259,7 @@ const ChatPage = () => {
                 <div className="text-xs md:text-sm text-gray-500 dark:text-dark-muted mt-1.5 flex gap-1.5 items-center flex-wrap font-medium">
                   <span className="bg-gray-100 dark:bg-surface px-2 py-0.5 rounded-md">{carDetails?.transmission}</span>
                   <span className="bg-gray-100 dark:bg-surface px-2 py-0.5 rounded-md">{carDetails?.fuel_type}</span>
-                  <span className="text-emerald-600 dark:text-emerald-400 font-bold ml-1">{currency}{carDetails?.pricePerDay}/day</span>
+                  <span className="text-emerald-600 dark:text-emerald-400 font-bold ml-1">{currency}{carDetails?.pricePerHour}/hour</span>
                 </div>
               </div>
             </div>

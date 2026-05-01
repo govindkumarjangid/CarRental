@@ -13,7 +13,7 @@ const Hero = () => {
 	const navigate = useNavigate();
 	const currency = import.meta.env.VITE_CURRENCY;
 
-	const { checkAvailability, availableCars, loading } = useCarStore();
+	const { checkAvailability, availableCars, availableCarsLoading: loading } = useCarStore();
 
 	const [pickupDate, setPickupDate] = useState("");
 	const [returnDate, setReturnDate] = useState("");

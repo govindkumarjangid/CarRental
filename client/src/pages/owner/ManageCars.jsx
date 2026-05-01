@@ -12,7 +12,7 @@ const ManageCars = () => {
 	const currency = import.meta.env.VITE_CURRENCY;
 	const {
 		ownerCars: cars,
-		loading,
+		ownerCarsLoading: loading,
 		fetchOwnerCars,
 		updateCarStatus,
 		deleteCar,

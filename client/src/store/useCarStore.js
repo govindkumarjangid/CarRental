@@ -6,7 +6,9 @@ export const useCarStore = create((set, get) => ({
     cars: [],
     ownerCars: [],
     availableCars: [],
-    loading: true,
+    carsLoading: false,
+    ownerCarsLoading: false,
+    availableCarsLoading: false,
     showEditCar: false,
     editCar: null,
     carDetails: {},
@@ -16,7 +18,7 @@ export const useCarStore = create((set, get) => ({
     setEditCar: (car) => set({ editCar: car }),
 
     checkAvailability: async (location, pickupDate, returnDate) => {
-        set({ loading: true });
+        set({ availableCarsLoading: true });
         try {
             const { data } = await axiosInstance.post("/api/bookings/check-availability", {
                 location,
@@ -33,39 +35,39 @@ export const useCarStore = create((set, get) => ({
             console.log(error);
             toast.error("Error checking car availability");
         } finally {
-            set({ loading: false });
+            set({ availableCarsLoading: false });
         }
     },
 
     fetchCars: async () => {
-        set({ loading: true });
+        set({ carsLoading: true });
         try {
             const { data } = await axiosInstance.get("/api/user/cars");
             if (data.success) {
-                set({ cars: data.cars, loading: false });
+                set({ cars: data.cars });
             } else {
                 toast.error(data.message);
-                set({ loading: false });
             }
         } catch (error) {
             toast.error(error.response?.data?.message || error.message || "Failed to fetch cars");
-            set({ loading: false });
+        } finally {
+            set({ carsLoading: false });
         }
     },
 
     fetchOwnerCars: async () => {
-        set({ loading: true });
+        set({ ownerCarsLoading: true });
         try {
             const { data } = await axiosInstance.get("/api/owner/cars");
             if (data.success) {
-                set({ ownerCars: data.cars, loading: false });
+                set({ ownerCars: data.cars });
             } else {
                 toast.error(data.message);
-                set({ loading: false });
             }
         } catch (error) {
             toast.error(error.response?.data?.message || error.message || "Failed to fetch owner cars");
-            set({ loading: false });
+        } finally {
+            set({ ownerCarsLoading: false });
         }
     },
 

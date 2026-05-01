@@ -21,7 +21,7 @@ const Cardetails = () => {
 	const navigate = useNavigate();
 
 	const { setShowLogin, token, user, loadRazorpay } = useAuthStore();
-	const { cars, fetchCars, loading: carsLoading } = useCarStore();
+	const { cars, fetchCars, carsLoading } = useCarStore();
 	const { createUserBooking, createOnlineBooking, verifyPayment, bookingLoading } = useBookingStore();
 
 	const isSubmitting = loading || bookingLoading;
@@ -224,42 +224,42 @@ const Cardetails = () => {
 
 								{/* Features icons grid */}
 								<div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-										{[
-											{
-												icon: (<iconList.Users className="mb-1 text-primary " />),
-												text: `${car.seating_capacity} Seats`,
-											},
-											{
-												icon: (<iconList.Fuel className="mb-1 text-primary " />),
-												text: `${car.fuel_type}`,
-											},
-											{
-												icon: (<iconList.Car className="mb-1 text-primary " />),
-												text: `${car.transmission}`,
-											},
-											{
-												icon: (<iconList.MapPin className="mb-1 text-primary " />),
-												text: `${car.location}`,
-											}
-										].map(({ icon, text, index }) => (
-											<motion.div
-												key={text}
-												initial={{ opacity: 0, y: 20 }}
-												animate={{ opacity: 1, y: 0 }}
-												whileHover={{ scale: 1.05 }}
-												transition={{
-													type: "spring",
-													stiffness: 200,
-													delay: 0.2 * index,
-												}}
-												className="flex flex-col items-center bg-light dark:bg-card-bg p-4 rounded-lg"
-											>
-												{icon}
-												<p className="dark:text-dark-muted">
-													{text}
-												</p>
-											</motion.div>
-										))}
+									{[
+										{
+											icon: (<iconList.Users className="mb-1 text-primary " />),
+											text: `${car.seating_capacity} Seats`,
+										},
+										{
+											icon: (<iconList.Fuel className="mb-1 text-primary " />),
+											text: `${car.fuel_type}`,
+										},
+										{
+											icon: (<iconList.Car className="mb-1 text-primary " />),
+											text: `${car.transmission}`,
+										},
+										{
+											icon: (<iconList.MapPin className="mb-1 text-primary " />),
+											text: `${car.location}`,
+										}
+									].map(({ icon, text, index }) => (
+										<motion.div
+											key={text}
+											initial={{ opacity: 0, y: 20 }}
+											animate={{ opacity: 1, y: 0 }}
+											whileHover={{ scale: 1.05 }}
+											transition={{
+												type: "spring",
+												stiffness: 200,
+												delay: 0.2 * index,
+											}}
+											className="flex flex-col items-center bg-light dark:bg-card-bg p-4 rounded-lg"
+										>
+											{icon}
+											<p className="dark:text-dark-muted">
+												{text}
+											</p>
+										</motion.div>
+									))}
 								</div>
 
 								{/* Description */}
@@ -388,9 +388,12 @@ const Cardetails = () => {
 								type="button"
 								disabled={isBookDisabled}
 								onClick={handleBookNow}
-								className={`w-full transition-all py-3 font-medium text-white rounded-md hover:scale-102 active:scale-95 ${isBookDisabled
-									? "bg-gray-400 cursor-not-allowed opacity-70"
-									: "bg-primary hover:bg-primary-dull cursor-pointer"}`}
+								className={`w-full transition-all py-3 font-medium text-white rounded-md ${isSubmitting
+									? "bg-primary cursor-wait opacity-90"
+									: isBookDisabled
+										? "bg-gray-400 cursor-not-allowed opacity-70"
+										: "bg-primary hover:bg-primary-dull cursor-pointer hover:scale-102 active:scale-95"
+									}`}
 							>
 								{isSubmitting ? (
 									<span className="inline-flex items-center gap-2">
@@ -405,19 +408,6 @@ const Cardetails = () => {
 								No credit card required to reserve
 							</p>
 						</motion.form>
-						{user?._id !== car?.owner && (
-							<motion.button
-								initial={{ opacity: 0, y: 10 }}
-								animate={{ opacity: 1, y: 0 }}
-								whileHover={{ scale: 1.02 }}
-								whileTap={{ scale: 0.98 }}
-								onClick={() => navigate(`/chatpage/${car._id}`)}
-								className="w-full flex items-center justify-center gap-2 py-3 bg-white dark:bg-surface border border-primary text-primary rounded-md font-medium hover:bg-primary/5 transition-all cursor-pointer shadow-sm"
-							>
-								<iconList.MessageCircleMore size={18} />
-								Chat with Owner
-							</motion.button>
-						)}
 					</div>
 				</motion.div>
 			</>

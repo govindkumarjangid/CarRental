@@ -4,7 +4,7 @@ import { iconList, motion, Title, useNavigate, CarCardSkeleton, CarCard, useEffe
 
 
 const FeaturedSection = () => {
-	const { loading, cars, fetchCars } = useCarStore();
+	const { carsLoading: loading, cars, fetchCars } = useCarStore();
 	const navigate = useNavigate();
 
 	useEffect(() => {
