@@ -153,6 +153,9 @@ export const welcomeEmailTemplate = (name) => {
 
 // New Booking Email
 export const bookingEmailTemplate = ({ userName, carName, pickupDate, returnDate, price, paymentMethod, location, carImage, fuelType, transmission, seatingCapacity }) => {
+  const diffMs = new Date(returnDate) - new Date(pickupDate);
+  const totalHours = Math.max(1, Math.ceil(diffMs / (1000 * 60 * 60)));
+
   const content = `
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom: 24px;">
       <tr>
@@ -219,10 +222,16 @@ export const bookingEmailTemplate = ({ userName, carName, pickupDate, returnDate
             </tr>
             <tr>
               <td class="col-half" width="50%" style="padding:20px 0 0;">
+                <p class="detail-label" style="margin:0 0 4px; color:${TEXT_MUTED}; font-size:11px; text-transform:uppercase;">Duration</p>
+                ${iconTextRow("https://img.icons8.com/material-rounded/100/6B7280/time.png", totalHours + " Hours", TEXT_MAIN, 13)}
+              </td>
+              <td class="col-half" width="50%" style="padding:20px 0 0;">
                 <p class="detail-label" style="margin:0 0 4px; color:${TEXT_MUTED}; font-size:11px; text-transform:uppercase;">Total Price</p>
                 ${iconTextRow(ICON_WALLET, "₹" + price, BRAND_COLOR, 20)}
               </td>
-              <td class="col-half" width="50%" style="padding:20px 0 0;">
+            </tr>
+            <tr>
+              <td class="col-half" width="100%" colspan="2" style="padding:20px 0 0;">
                 <p class="detail-label" style="margin:0 0 8px; color:${TEXT_MUTED}; font-size:11px; text-transform:uppercase;">Payment</p>
                 <span style="display:inline-block; background:${paymentMethod === 'online' ? '#EFF6FF' : '#FFF7ED'}; color:${paymentMethod === 'online' ? BRAND_COLOR : '#EA580C'}; padding:4px 12px; border-radius:6px; font-size:12px; font-weight:700; text-transform:uppercase;">
                   ${paymentMethod}
@@ -243,6 +252,9 @@ export const bookingEmailTemplate = ({ userName, carName, pickupDate, returnDate
 
 // Booking Confirmation Email
 export const bookingConfirmationTemplate = ({ userName, carName, pickupDate, returnDate, price, bookingId, location, carImage, fuelType, transmission, seatingCapacity }) => {
+  const diffMs = new Date(returnDate) - new Date(pickupDate);
+  const totalHours = Math.max(1, Math.ceil(diffMs / (1000 * 60 * 60)));
+
   const content = `
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom: 24px;">
       <tr>
@@ -284,8 +296,18 @@ export const bookingConfirmationTemplate = ({ userName, carName, pickupDate, ret
             </tr>
             <tr>
               <td width="50%" style="padding-bottom:16px;">
-                <p class="detail-label" style="margin:0 0 4px; color:${TEXT_MUTED}; font-size:11px; text-transform:uppercase;">Dates</p>
-                ${iconTextRow(ICON_CALENDAR, new Date(pickupDate).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }) + " - " + new Date(returnDate).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }), TEXT_MAIN, 13)}
+                <p class="detail-label" style="margin:0 0 4px; color:${TEXT_MUTED}; font-size:11px; text-transform:uppercase;">Pickup</p>
+                ${iconTextRow(ICON_CALENDAR, new Date(pickupDate).toLocaleString('en-IN', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }), TEXT_MAIN, 13)}
+              </td>
+              <td width="50%" style="padding-bottom:16px;">
+                <p class="detail-label" style="margin:0 0 4px; color:${TEXT_MUTED}; font-size:11px; text-transform:uppercase;">Return</p>
+                ${iconTextRow(ICON_CALENDAR, new Date(returnDate).toLocaleString('en-IN', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }), TEXT_MAIN, 13)}
+              </td>
+            </tr>
+            <tr>
+              <td width="50%" style="padding-bottom:16px;">
+                <p class="detail-label" style="margin:0 0 4px; color:${TEXT_MUTED}; font-size:11px; text-transform:uppercase;">Duration</p>
+                ${iconTextRow("https://img.icons8.com/material-rounded/100/6B7280/time.png", totalHours + " Hours", TEXT_MAIN, 13)}
               </td>
               <td width="50%" style="padding-bottom:16px; text-align:right;">
                 <p class="detail-label" style="margin:0 0 4px; color:${TEXT_MUTED}; font-size:11px; text-transform:uppercase;">Amount</p>
