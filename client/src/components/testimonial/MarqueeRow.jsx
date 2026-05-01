@@ -34,7 +34,7 @@ const MarqueeRow = ({ items, reverse }) => {
             <div
               key={i}
               className="pointer-events-auto shrink-0 w-70 sm:w-80 md:w-90"
-            >  
+            >
               <TestimonialSkeleton />
             </div>
           ))

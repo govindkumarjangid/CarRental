@@ -65,7 +65,7 @@ const EditCarForm = ({ car: propCar, onClose, isFullPage = false }) => {
             transition={{ type: "spring", stiffness: 300, damping: 25 }}
             onSubmit={handleSubmit}
             onClick={(e) => e.stopPropagation()}
-            className={`${isFullPage ? "w-full h-full" : "relative max-w-2xl mx-auto bg-white dark:bg-second-bg shadow-2xl md:rounded-md md:max-h-[90vh] md:border border-gray-200 dark:border-dark-border"} px-5 md:px-10 py-8 overflow-y-auto blue-thumb-scrollbar w-full bg-white dark:bg-second-bg cursor-default`}
+            className={`${isFullPage ? "w-full h-full" : "relative max-w-2xl mx-auto bg-white  shadow-2xl md:rounded-md md:max-h-[90vh] md:border border-gray-200 "} px-5 md:px-10 py-8 overflow-y-auto blue-thumb-scrollbar w-full bg-white  cursor-default`}
         >
             {/* title and close button  */}
             <div className="flex items-center justify-between mb-8">
@@ -74,18 +74,18 @@ const EditCarForm = ({ car: propCar, onClose, isFullPage = false }) => {
                         <button
                             type="button"
                             onClick={handleClose}
-                            className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-surface transition-all active:scale-90 text-gray-500 dark:text-dark-text border border-gray-100 dark:border-white/5"
+                            className="p-2 rounded-full hover:bg-gray-100  transition-all active:scale-90 text-gray-500  border border-gray-100 "
                         >
                             <iconList.ArrowLeft size={20} />
                         </button>
                     )}
-                    <h2 className="text-xl md:text-2xl font-bold dark:text-dark-text">Edit Your Car</h2>
+                    <h2 className="text-xl md:text-2xl font-bold ">Edit Your Car</h2>
                 </div>
                 {!isFullPage && (
                     <button
                         type="button"
                         onClick={handleClose}
-                        className="p-2 rounded-md hover:bg-gray-100 dark:hover:bg-surface transition-all active:scale-95 text-gray-500 dark:text-dark-text"
+                        className="p-2 rounded-md hover:bg-gray-100  transition-all active:scale-95 text-gray-500 "
                     >
                         <iconList.X size={22} className="cursor-pointer" />
                     </button>
@@ -101,7 +101,7 @@ const EditCarForm = ({ car: propCar, onClose, isFullPage = false }) => {
                         ) : car?.image ? (
                             <img src={car.image} className="h-14 w-26 object-cover rounded-md" alt="car current" />
                         ) : (
-                            <iconList.CloudUpload className="h-14 text-primary bg-gray-100 dark:bg-surface dark:text-accent px-4 py-3 rounded-md cursor-pointer w-26 border border-gray-300 dark:border-dark-border" />
+                            <iconList.CloudUpload className="h-14 text-primary bg-gray-100   px-4 py-3 rounded-md cursor-pointer w-26 border border-gray-300 " />
                         )}
                         <input
                             type="file"
@@ -125,7 +125,7 @@ const EditCarForm = ({ car: propCar, onClose, isFullPage = false }) => {
                             id="brand"
                             value={car.brand}
                             onChange={handleChange}
-                            className="px-3 py-2.5 border border-gray-300 rounded-md outline-none focus:border-primary focus:ring-3 focus:ring-primary/50 transition-colors duration-600 dark:bg-card-bg dark:border-dark-border dark:text-dark-text"
+                            className="px-3 py-2.5 border border-gray-300 rounded-md outline-none focus:border-primary focus:ring-3 focus:ring-primary/50 transition-colors duration-600   "
                             placeholder="e.g. BMW"
                         />
                     </div>
@@ -136,7 +136,7 @@ const EditCarForm = ({ car: propCar, onClose, isFullPage = false }) => {
                             id="model"
                             value={car.model}
                             onChange={handleChange}
-                            className="px-3 py-2.5 border border-gray-300 rounded-md outline-none focus:border-primary focus:ring-3 focus:ring-primary/50 transition-colors duration-600 dark:bg-card-bg dark:border-dark-border dark:text-dark-text"
+                            className="px-3 py-2.5 border border-gray-300 rounded-md outline-none focus:border-primary focus:ring-3 focus:ring-primary/50 transition-colors duration-600   "
                             placeholder="e.g. X5"
                         />
                     </div>
@@ -151,7 +151,7 @@ const EditCarForm = ({ car: propCar, onClose, isFullPage = false }) => {
                             id="year"
                             value={car.year}
                             onChange={handleChange}
-                            className="px-3 py-2.5 border border-gray-300 rounded-md outline-none focus:border-primary focus:ring-3 focus:ring-primary/50 transition-colors duration-600 dark:bg-card-bg dark:border-dark-border dark:text-dark-text"
+                            className="px-3 py-2.5 border border-gray-300 rounded-md outline-none focus:border-primary focus:ring-3 focus:ring-primary/50 transition-colors duration-600   "
                         />
                     </div>
                     <div className="flex flex-col w-full">
@@ -162,7 +162,7 @@ const EditCarForm = ({ car: propCar, onClose, isFullPage = false }) => {
                             id="pricePerHour"
                             value={car.pricePerHour}
                             onChange={handleChange}
-                            className="px-3 py-2.5 border border-gray-300 rounded-md outline-none focus:border-primary focus:ring-3 focus:ring-primary/50 transition-colors duration-600 dark:bg-card-bg dark:border-dark-border dark:text-dark-text"
+                            className="px-3 py-2.5 border border-gray-300 rounded-md outline-none focus:border-primary focus:ring-3 focus:ring-primary/50 transition-colors duration-600   "
                         />
                     </div>
                     <div className="flex flex-col w-full">
@@ -173,7 +173,7 @@ const EditCarForm = ({ car: propCar, onClose, isFullPage = false }) => {
                             id="lateFeePerHour"
                             value={car.lateFeePerHour}
                             onChange={handleChange}
-                            className="px-3 py-2.5 border border-gray-300 rounded-md outline-none focus:border-primary focus:ring-3 focus:ring-primary/50 transition-colors duration-600 dark:bg-card-bg dark:border-dark-border dark:text-dark-text"
+                            className="px-3 py-2.5 border border-gray-300 rounded-md outline-none focus:border-primary focus:ring-3 focus:ring-primary/50 transition-colors duration-600   "
                         />
                     </div>
                     <div className="flex flex-col w-full">
@@ -183,7 +183,7 @@ const EditCarForm = ({ car: propCar, onClose, isFullPage = false }) => {
                             id="category"
                             value={car.category}
                             onChange={handleChange}
-                            className="px-3 py-2.5 border border-gray-300 rounded-md outline-none focus:border-primary focus:ring-3 focus:ring-primary/50 transition-colors duration-600 dark:bg-card-bg dark:border-dark-border dark:text-dark-text"
+                            className="px-3 py-2.5 border border-gray-300 rounded-md outline-none focus:border-primary focus:ring-3 focus:ring-primary/50 transition-colors duration-600   "
                         >
                             <option value="" disabled>Select Category</option>
                             {["Sedan", "SUV", "MUV", "EV", "Wagon", "Van", "Jeep", "Hatchback"].map(cat => (
@@ -201,7 +201,7 @@ const EditCarForm = ({ car: propCar, onClose, isFullPage = false }) => {
                             id="transmission"
                             value={car.transmission}
                             onChange={handleChange}
-                            className="px-3 py-2.5 border border-gray-300 rounded-md outline-none focus:border-primary focus:ring-3 focus:ring-primary/50 transition-colors duration-600 dark:bg-card-bg dark:border-dark-border dark:text-dark-text"
+                            className="px-3 py-2.5 border border-gray-300 rounded-md outline-none focus:border-primary focus:ring-3 focus:ring-primary/50 transition-colors duration-600   "
                         >
                             <option value="" disabled>Select</option>
                             <option value="Automatic">Automatic</option>
@@ -216,7 +216,7 @@ const EditCarForm = ({ car: propCar, onClose, isFullPage = false }) => {
                             id="fuel_type"
                             value={car.fuel_type}
                             onChange={handleChange}
-                            className="px-3 py-2.5 border border-gray-300 rounded-md outline-none focus:border-primary focus:ring-3 focus:ring-primary/50 transition-colors duration-600 dark:bg-card-bg dark:border-dark-border dark:text-dark-text"
+                            className="px-3 py-2.5 border border-gray-300 rounded-md outline-none focus:border-primary focus:ring-3 focus:ring-primary/50 transition-colors duration-600   "
                         >
                             <option value="" disabled>Select Fuel</option>
                             <option value="Petrol">Petrol</option>
@@ -233,7 +233,7 @@ const EditCarForm = ({ car: propCar, onClose, isFullPage = false }) => {
                             id="seating_capacity"
                             value={car.seating_capacity}
                             onChange={handleChange}
-                            className="px-3 py-2.5 border border-gray-300 rounded-md outline-none focus:border-primary focus:ring-3 focus:ring-primary/50 transition-colors duration-600 dark:bg-card-bg dark:border-dark-border dark:text-dark-text"
+                            className="px-3 py-2.5 border border-gray-300 rounded-md outline-none focus:border-primary focus:ring-3 focus:ring-primary/50 transition-colors duration-600   "
                         />
                     </div>
                 </div>
@@ -247,7 +247,7 @@ const EditCarForm = ({ car: propCar, onClose, isFullPage = false }) => {
                             id="cleaningTime"
                             value={car.cleaningTime}
                             onChange={handleChange}
-                            className="px-3 py-2.5 border border-gray-300 rounded-md outline-none focus:border-primary focus:ring-3 focus:ring-primary/50 transition-colors duration-600 dark:bg-card-bg dark:border-dark-border dark:text-dark-text"
+                            className="px-3 py-2.5 border border-gray-300 rounded-md outline-none focus:border-primary focus:ring-3 focus:ring-primary/50 transition-colors duration-600   "
                         />
                     </div>
                     <div className="flex flex-col w-full">
@@ -258,7 +258,7 @@ const EditCarForm = ({ car: propCar, onClose, isFullPage = false }) => {
                             id="maintenanceTime"
                             value={car.maintenanceTime}
                             onChange={handleChange}
-                            className="px-3 py-2.5 border border-gray-300 rounded-md outline-none focus:border-primary focus:ring-3 focus:ring-primary/50 transition-colors duration-600 dark:bg-card-bg dark:border-dark-border dark:text-dark-text"
+                            className="px-3 py-2.5 border border-gray-300 rounded-md outline-none focus:border-primary focus:ring-3 focus:ring-primary/50 transition-colors duration-600   "
                         />
                     </div>
                 </div>
@@ -271,7 +271,7 @@ const EditCarForm = ({ car: propCar, onClose, isFullPage = false }) => {
                         rows="4"
                         value={car.description}
                         onChange={handleChange}
-                        className="px-3 py-2.5 border border-gray-300 rounded-md outline-none focus:border-primary focus:ring-3 focus:ring-primary/50 transition-colors duration-600 dark:bg-card-bg dark:border-dark-border dark:text-dark-text resize-none"
+                        className="px-3 py-2.5 border border-gray-300 rounded-md outline-none focus:border-primary focus:ring-3 focus:ring-primary/50 transition-colors duration-600    resize-none"
                     />
                 </div>
 
@@ -291,7 +291,7 @@ const EditCarForm = ({ car: propCar, onClose, isFullPage = false }) => {
 
 
     if (isFullPage) return (
-        <div className="w-full h-full bg-white dark:bg-second-bg flex flex-col">
+        <div className="w-full h-full bg-white  flex flex-col">
             {formContent}
         </div>
     );

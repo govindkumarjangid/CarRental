@@ -17,7 +17,7 @@ const TestimonialCard = ({ review, index }) => {
 					alt={review?.name}
 				/>
 				<div>
-					<p className="text-lg dark:text-gray-400">{review?.name}</p>
+					<p className="text-lg ">{review?.name}</p>
 					<p className="text-gray-500 text-sm">
 						{review?.location}
 					</p>
@@ -35,7 +35,7 @@ const TestimonialCard = ({ review, index }) => {
 					/>
 				))}
 			</div>
-			<p className="text-gray-500 max-w-90 text-sm mt-4 dark:text-gray-400 line-clamp-3 md:line-clamp-4">
+			<p className="text-gray-500 max-w-90 text-sm mt-4  line-clamp-3 md:line-clamp-4">
 				{review?.review}
 			</p>
 		</motion.div>

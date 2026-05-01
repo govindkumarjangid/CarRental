@@ -74,15 +74,15 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
 							whileTap={{ scale: 0.97 }}
 							onClick={() => setIsSidebarOpen(false)}
 							className={`relative flex items-center gap-3 rounded-md w-full py-3 pl-6 md:pl-6 first:mt-3 transition-colors cursor-pointer ${isActive
-								? "bg-primary/20 text-primary font-semibold dark:bg-accent/15 dark:text-accent"
-								: "text-gray-500 hover:bg-gray-100 dark:text-dark-muted dark:hover:bg-surface"
+								? "bg-primary/20 text-primary font-semibold  "
+								: "text-gray-500 hover:bg-gray-100  "
 								}`}
 						>
 							<div className="shrink-0 cursor-pointer">{link.icon}</div>
 							<span className="text-[15px] cursor-pointer">{link.name}</span>
 
 							{isActive && (
-								<motion.div className="absolute right-0 top-2 h-8 w-1.5 bg-primary rounded-l dark:bg-accent" />
+								<motion.div className="absolute right-0 top-2 h-8 w-1.5 bg-primary rounded-l " />
 							)}
 						</MotionNavLink>
 					);
@@ -90,7 +90,7 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
 			</div>
 
 			{/* Redirect Button */}
-			<div className="w-full p-4 mt-auto border-t border-gray-100 dark:border-dark-border md:hidden">
+			<div className="w-full p-4 mt-auto border-t border-gray-100  md:hidden">
 				<NavLink to="/" className="flex items-center justify-center gap-2 w-full py-2.5 bg-primary hover:bg-primary-dull text-white rounded-md font-medium transition-colors shadow-sm">
 					<iconList.ArrowLeft size={18} />
 					<span>Back to Home</span>
@@ -111,7 +111,7 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
 								animate={{ clipPath: "inset(0% 0% 0% 0%)", opacity: 1 }}
 								exit={{ clipPath: "inset(0% 0% 100% 0%)", opacity: 0.5 }}
 								transition={{ duration: 0.4, ease: "easeOut" }}
-								className="absolute top-0 left-0 right-0 z-50 bg-white dark:bg-second-bg pt-6 pb-2 border-b border-gray-200 max-h-screen flex flex-col pointer-events-auto"
+								className="absolute top-0 left-0 right-0 z-50 bg-white  pt-6 pb-2 border-b border-gray-200 max-h-screen flex flex-col pointer-events-auto"
 							>
 								<SidebarContent />
 							</motion.div>
@@ -121,7 +121,7 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
 			</div>
 
 			{/* Desktop Sidebar */}
-			<div className="hidden md:flex relative z-50 h-full flex-col items-center pt-8 w-[240px] bg-white border-r border-gray-200 text-sm overflow-x-hidden dark:bg-second-bg dark:border-dark-border shrink-0">
+			<div className="hidden md:flex relative z-50 h-full flex-col items-center pt-8 w-[240px] bg-white border-r border-gray-200 text-sm overflow-x-hidden   shrink-0">
 				<SidebarContent />
 			</div>
 		</>

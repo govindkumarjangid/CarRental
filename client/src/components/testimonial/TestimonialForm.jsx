@@ -66,7 +66,7 @@ const TestimonialForm = () => {
 							stiffness: 300,
 							damping: 25
 						}}
-						className="bg-white dark:bg-second-bg md:rounded-md w-full h-full md:h-fit max-w-2xl md:max-h-[90vh] overflow-y-auto shadow-2xl relative p-6 md:p-8"
+						className="bg-white  md:rounded-md w-full h-full md:h-fit max-w-2xl md:max-h-[90vh] overflow-y-auto shadow-2xl relative p-6 md:p-8"
 					>
 						<div className="flex items-center justify-between">
 							<motion.h2

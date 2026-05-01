@@ -1,7 +1,6 @@
 import { menuLinks, assets } from "../../assets/assets.jsx";
 import { useThemeStore } from "../../store/useThemeStore.js";
 import { useAuthStore } from "../../store/useAuthStore.js";
-import { useBookingStore } from "../../store/useBookingStore.js";
 import {
 	Link,
 	useNavigate,
@@ -24,7 +23,6 @@ const Navbar = () => {
 
 	const { theme, toggleTheme } = useThemeStore();
 	const { user, isOwner, logout, setShowLogin, changeRole, updateProfileImage } = useAuthStore();
-	const { bookings, fetchUserBookings } = useBookingStore();
 	const navigate = useNavigate();
 
 	const location = useLocation();
@@ -34,25 +32,9 @@ const Navbar = () => {
 		setOpenPopup(false);
 	}, [location.pathname]);
 
-	useEffect(() => {
-		if (user && !isOwner) {
-			fetchUserBookings();
-		}
-	}, [user, isOwner]);
-
-	const handleUserChatClick = () => {
-		if (bookings && bookings.length > 0) {
-			navigate(`/chatpage/${bookings[0].car?._id}`);
-		} else {
-			navigate("/chats");
-		}
-	};
-
-
 
 	const ref = useRef(null);
 	const isInView = useInView(ref, { once: true });
-
 
 	const handleImageUpload = async () => {
 		if (image) await updateProfileImage(image);
@@ -70,7 +52,7 @@ const Navbar = () => {
 			initial={{ opacity: 0, y: -10 }}
 			animate={isInView ? { opacity: 1, y: 0 } : {}}
 			transition={{ duration: 0.3, ease: "easeOut" }}
-			className={`max-w-full px-4 md:px-8 py-3 md:py-4 text-gray-600 dark:text-dark-muted border-b border-gray-200 dark:border-dark-border sticky top-0 z-50 transition-all duration-300 ${location.pathname === "/" ? "bg-light" : "bg-white"
+			className={`max-w-full px-4 md:px-8 py-3 md:py-4 text-gray-600  border-b border-gray-200  sticky top-0 z-50 transition-all duration-300 ${location.pathname === "/" ? "bg-light" : "bg-white"
 				}`}
 		>
 			<div className="max-w-7xl m-auto flex items-center justify-between h-auto ">
@@ -79,7 +61,7 @@ const Navbar = () => {
 					<img
 						src={assets.logo}
 						alt="logo"
-						className="h-6 md:h-7 object-contain cursor-pointer dark:brightness-300"
+						className="h-6 md:h-7 object-contain cursor-pointer "
 						loading="lazy"
 					/>
 				</Link>
@@ -87,9 +69,9 @@ const Navbar = () => {
 				{/* menu links  */}
 				<div className="flex items-center gap-4 sm:gap-8">
 					<div
-						className={`max-sm:fixed max-sm:h-screen max-sm:w-full max-sm:top-16 max-sm:border-t border-gray-200 dark:border-dark-border right-0 flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-8 max-sm:p-6 z-40 sm:bg-transparent bg-white dark:bg-dark-bg relative max-sm:transition-all max-sm:duration-300 ${open ? 'max-sm:opacity-100 max-sm:translate-y-0' : 'max-sm:opacity-0 max-sm:-translate-y-4 max-sm:pointer-events-none'}`}
+						className={`max-sm:fixed max-sm:h-screen max-sm:w-full max-sm:top-16 right-0 flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-8 max-sm:p-6 z-40 sm:bg-transparent bg-light  relative max-sm:transition-all max-sm:duration-300 ${open ? 'max-sm:opacity-100 max-sm:translate-y-0' : 'max-sm:opacity-0 max-sm:-translate-y-4 max-sm:pointer-events-none'}`}
 					>
-						<div className="absolute inset-0 -z-10 blur-2xl rounded-3xl pointer-events-none" />
+						<div className="absolute inset-0 z-10 blur-2xl rounded-3xl pointer-events-none" />
 						{menuLinks.map((menuLink, index) => {
 							const isActive = location.pathname === menuLink.path;
 							return (
@@ -103,8 +85,8 @@ const Navbar = () => {
 									<Link
 										to={menuLink.path}
 										className={`font-medium transition-colors duration-200 ${isActive
-											? "text-primary dark:text-accent"
-											: "text-gray-600 dark:text-dark-text hover:text-primary dark:hover:text-accent"
+											? "text-primary "
+											: "text-gray-600  hover:text-primary "
 											}`}
 									>
 										{menuLink.name}
@@ -112,7 +94,7 @@ const Navbar = () => {
 									{isActive && (
 										<motion.div
 											layoutId="activeTab"
-											className="absolute -bottom-1 left-0 right-0 h-0.5 bg-primary dark:bg-accent rounded-full hidden sm:block"
+											className="absolute -bottom-1 left-0 right-0 h-0.5 bg-primary  rounded-full hidden sm:block"
 											transition={{ type: "spring", stiffness: 380, damping: 30 }}
 										/>
 									)}
@@ -120,22 +102,13 @@ const Navbar = () => {
 							);
 						})}
 
-						{isOwner ? (
+						{isOwner && (
 							<div className="flex max-sm:flex-col items-start sm:items-center gap-6">
 								<button
-									className="cursor-pointer dark:text-dark-text hover:text-primary dark:hover:text-accent font-medium transition-colors"
+									className="cursor-pointer  hover:text-primary  font-medium transition-colors"
 									onClick={() => navigate("/owner")}
 								>
 									Dashboard
-								</button>
-							</div>
-						) : user && (
-							<div className="flex max-sm:flex-col items-start sm:items-center gap-6">
-								<button
-									className="cursor-pointer dark:text-dark-text hover:text-primary dark:hover:text-accent font-medium transition-colors"
-									onClick={handleUserChatClick}
-								>
-									Chat with owner
 								</button>
 							</div>
 						)}
@@ -145,34 +118,34 @@ const Navbar = () => {
 					<div className="flex items-center gap-2 sm:gap-4">
 						{!user ? (
 							<button
-								className="cursor-pointer px-4 sm:px-8 py-1.5 sm:py-2 bg-primary hover:bg-primary-dull dark:bg-accent dark:hover:bg-accent-dull dark:text-main-bg transition-all text-white rounded-lg active:scale-95 font-medium shadow-sm text-sm sm:text-base"
+								className="cursor-pointer px-4 sm:px-8 py-1.5 sm:py-2 bg-primary hover:bg-primary-dull    transition-all text-white rounded-lg active:scale-95 font-medium shadow-sm text-sm sm:text-base"
 								onClick={() => setShowLogin(true)}
 							>
 								Login
 							</button>
 						) : (
 							<div
-								className="cursor-pointer flex items-center gap-2 text-gray-500 dark:text-dark-text hover:text-primary dark:hover:text-accent font-medium active:scale-95 transition-all"
+								className="cursor-pointer flex items-center gap-2 text-gray-500  hover:text-primary  font-medium active:scale-95 transition-all"
 								onClick={() => {
 									setOpenPopup(!openPopup);
 									setOpen(false);
 								}}
 							>
-								<iconList.User size={34} className="rounded-full bg-primary/10 text-primary dark:bg-accent/10 dark:text-accent p-1.5 hover:bg-primary hover:text-white transition-all duration-300" />
+								<iconList.User size={37} className="rounded-full bg-primary/10 text-primary   p-1.5 hover:bg-primary hover:text-white transition-all duration-300" />
 							</div>
 						)}
 
 						{/* Mobile toggle button  */}
 						<button
 							onClick={() => setOpen(!open)}
-							className="sm:hidden flex items-center justify-center p-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-dark-border rounded-lg transition-colors"
+							className="sm:hidden flex items-center justify-center p-2 cursor-pointer hover:bg-primary/10 rounded-full transition-all active:scale-95 "
 						>
 							{open ? (
-								<iconList.X size={24} className="text-gray-600 dark:text-dark-text" />
+								<iconList.X size={22} className="text-gray-600" />
 							) : (
 								<iconList.TextAlignEnd
-									size={24}
-									className="text-gray-600 dark:text-dark-text"
+									size={22}
+									className="text-gray-600"
 								/>
 							)}
 						</button>
@@ -202,11 +175,11 @@ const Navbar = () => {
 								animate={{ opacity: 1, scale: 1 }}
 								exit={{ opacity: 0, scale: 0.95 }}
 								transition={{ duration: 0.2, ease: 'easeOut' }}
-								className="flex flex-col gap-4 p-6 bg-white dark:bg-second-bg border border-gray-100 dark:border-dark-border shadow-2xl fixed z-999 cursor-default sm:w-[320px] sm:top-18 sm:right-4 sm:rounded-md sm:items-center max-sm:bottom-0 max-sm:left-0 max-sm:right-0 max-sm:pb-10 max-sm:rounded-t-xl"
+								className="flex flex-col gap-4 p-6 bg-white  border border-gray-100  shadow-2xl fixed z-999 cursor-default sm:w-[320px] sm:top-18 sm:right-4 sm:rounded-md sm:items-center max-sm:bottom-0 max-sm:left-0 max-sm:right-0 max-sm:pb-10 max-sm:rounded-t-xl"
 								onClick={(e) => e.stopPropagation()}
 							>
 								{/* Drag handle — mobile only */}
-								<div className="w-10 h-1 bg-gray-300 dark:bg-gray-600 rounded-full mx-auto -mt-2 mb-1 sm:hidden" />
+								<div className="w-10 h-1 bg-gray-300  rounded-full mx-auto -mt-2 mb-1 sm:hidden" />
 
 								<div className="w-full flex items-center gap-4">
 									<label htmlFor="image" className="relative group cursor-pointer shrink-0">
@@ -217,8 +190,8 @@ const Navbar = () => {
 												className="h-16 w-16 rounded-full border-2 border-primary/20 aspect-square object-cover group-hover:border-primary/40 transition-all"
 											/>
 										) : (
-											<div className="h-16 w-16 rounded-full bg-gray-100 dark:bg-dark-border flex items-center justify-center">
-												<iconList.CircleUser size={40} className="text-gray-400 dark:text-gray-600" />
+											<div className="h-16 w-16 rounded-full bg-gray-100  flex items-center justify-center">
+												<iconList.CircleUser size={40} className="text-gray-400 " />
 											</div>
 										)}
 										<input type="file" id="image" name="image" accept="image/*" hidden onChange={(e) => setImage(e.target.files[0])} />
@@ -227,21 +200,21 @@ const Navbar = () => {
 										</div>
 									</label>
 									<div className="flex flex-col overflow-hidden">
-										<span className="text-base font-bold text-gray-800 dark:text-gray-100 truncate">{user?.name}</span>
-										<p className="text-xs text-gray-500 dark:text-dark-muted truncate">{user?.email}</p>
+										<span className="text-base font-bold text-gray-800  truncate">{user?.name}</span>
+										<p className="text-xs text-gray-500  truncate">{user?.email}</p>
 										<div className="mt-1.5">
-											<span className="text-[10px] px-2 py-0.5 bg-primary/10 text-primary dark:bg-accent/10 dark:text-accent rounded-full font-bold uppercase tracking-wider">
+											<span className="text-[10px] px-2 py-0.5 bg-primary/10 text-primary   rounded-full font-bold uppercase tracking-wider">
 												{isOwner ? 'Owner' : 'Customer'}
 											</span>
 										</div>
 									</div>
 								</div>
 
-								<div className="w-full h-px bg-gray-100 dark:bg-dark-border" />
+								<div className="w-full h-px bg-gray-100 " />
 
 								<button
 									onClick={handleLogout}
-									className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-primary hover:bg-primary-dull dark:bg-accent dark:hover:bg-accent-dull rounded-xl text-sm cursor-pointer text-white active:scale-[0.98] font-bold transition-all shadow-md group">
+									className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-primary hover:bg-primary-dull   rounded-xl text-sm cursor-pointer text-white active:scale-[0.98] font-bold transition-all shadow-md group">
 									<LogOut size={18} className="group-hover:-translate-x-0.5 transition-transform" />
 									Logout Account
 								</button>

@@ -1,6 +1,7 @@
 import { useAuthStore } from "../store/useAuthStore.js";
 import { useCarStore } from "../store/useCarStore.js";
 import { useChatStore } from "../store/useChatStore.js";
+import { useBookingStore } from "../store/useBookingStore.js";
 import CarDetailsSkeleton from "../components/car/CarDetailsSkeleton.jsx";
 import ChatMessagesSkeleton from "../components/chat/ChatMessagesSkeleton.jsx";
 import socket from '../socket.js';
@@ -18,12 +19,14 @@ const ChatPage = () => {
   const { user, ownerDetails, ownerDetailsLoading, fetchOwnerDetails } = useAuthStore();
   const { carDetails, carDetailsLoading, carOwner, fetchUserCarDetails } = useCarStore();
   const { messages, setMessages, getMessages, createChat, sendUserMessage } = useChatStore();
-  const { id } = useParams();
+  const { bookings, fetchUserBookings, bookingLoading } = useBookingStore();
+  const { id: routeCarId } = useParams();
   const [owner, setOwner] = useState("");
   const [input, setInput] = useState("");
   const [chatId, setChatId] = useState(null);
   const [isTyping, setIsTyping] = useState(false);
   const [onlineUsers, setOnlineUsers] = useState([]);
+  const [resolvedCarId, setResolvedCarId] = useState(routeCarId || null);
 
   const scrollContainerRef = useRef(null);
   const prevMessagesLength = useRef(0);
@@ -33,7 +36,7 @@ const ChatPage = () => {
     if (scrollContainerRef.current) {
       const container = scrollContainerRef.current;
       const isInitialLoad = prevMessagesLength.current === 0 && messages.length > 0;
-      
+
       // Check if user is near bottom (within 200px)
       const isNearBottom = container.scrollHeight - container.scrollTop - container.clientHeight < 200;
 
@@ -84,7 +87,8 @@ const ChatPage = () => {
 
 
   const handleCreateChat = async () => {
-    const newChatId = await createChat(user._id, owner, id);
+    if (!resolvedCarId) return;
+    const newChatId = await createChat(user._id, owner, resolvedCarId);
     if (newChatId) setChatId(newChatId);
   };
 
@@ -177,8 +181,25 @@ const ChatPage = () => {
   }, [chatId]);
 
   useEffect(() => {
-    if (id) fetchUserCarDetails(id);
-  }, [id]);
+    if (!routeCarId) {
+      fetchUserBookings();
+    } else {
+      setResolvedCarId(routeCarId);
+    }
+  }, [routeCarId]);
+
+  useEffect(() => {
+    if (routeCarId) return;
+    if (bookings.length === 0) return;
+    const latest = bookings[0];
+    const bookingCar = latest?.car;
+    const carId = typeof bookingCar === "string" ? bookingCar : bookingCar?._id;
+    if (carId) setResolvedCarId(carId);
+  }, [routeCarId, bookings]);
+
+  useEffect(() => {
+    if (resolvedCarId) fetchUserCarDetails(resolvedCarId);
+  }, [resolvedCarId]);
 
   useEffect(() => {
     if (carOwner) setOwner(carOwner);
@@ -197,7 +218,9 @@ const ChatPage = () => {
   }, [chatId]);
 
 
-  const isOnline = onlineUsers.includes(ownerDetails._id);
+  const isOnline = ownerDetails?._id ? onlineUsers.includes(ownerDetails._id) : false;
+  const isDetailsLoading = carDetailsLoading || ownerDetailsLoading || (!resolvedCarId && bookingLoading);
+  const showNoBooking = !routeCarId && !bookingLoading && !resolvedCarId;
   // console.log(ownerDetails._id)
 
 
@@ -209,7 +232,11 @@ const ChatPage = () => {
 
         {/* LEFT SIDE */}
         {
-          (carDetailsLoading || ownerDetailsLoading) ? (
+          showNoBooking ? (
+            <div className="w-full md:w-[30%] shrink-0 border-b md:border-b-0 md:border-r border-gray-200 dark:border-dark-border p-6 flex items-center justify-center">
+              <p className="text-sm text-gray-500">No bookings yet. Book a car to start a chat.</p>
+            </div>
+          ) : isDetailsLoading ? (
             <div className="w-full md:w-[30%] shrink-0">
               <CarDetailsSkeleton />
             </div>
@@ -241,7 +268,11 @@ const ChatPage = () => {
 
         {/* RIGHT SIDE */}
         {
-          (carDetailsLoading || ownerDetailsLoading) ? (
+          showNoBooking ? (
+            <div className="flex-1 flex items-center justify-center">
+              <p className="text-sm text-gray-500">No bookings found for chat.</p>
+            </div>
+          ) : isDetailsLoading ? (
             <div className="flex-1 flex items-center justify-center">
               <ChatMessagesSkeleton />
             </div>
@@ -312,31 +343,31 @@ const ChatPage = () => {
                             animate={{ opacity: 1, y: 0, scale: 1 }}
                             transition={{ duration: 0.2 }}
                             key={m._id}
-                          className={`relative max-w-[85%] md:max-w-[65%] w-fit px-3.5 py-2 text-[14.5px] rounded-2xl shadow-sm wrap-break-words ${m.senderRole === user.role
-                            ? "ml-auto bg-[#d9fdd3] dark:bg-[#005c4b] text-[#111b21] dark:text-[#e9edef] rounded-br-sm"
-                            : "bg-white dark:bg-[#202c33] text-[#111b21] dark:text-[#e9edef] rounded-bl-sm border border-transparent dark:border-none shadow-sm"
-                            }`}
-                        >
-                          <p className="whitespace-pre-wrap">{m.message}</p>
-                          <div className={`flex items-center justify-end gap-1.5 mt-1 text-[10px] font-medium ${m.senderRole === user.role ? "text-[#667781] dark:text-[#8696a0]" : "text-[#667781] dark:text-[#8696a0]"}`}>
-                            <span>{formatMessageTime(m.createdAt).split('•').pop().trim()}</span>
-                            {m.senderRole === user.role && (
-                              <span className="ml-0.5">
-                                {m.status === 'sending' ? (
-                                  <iconList.Clock size={11} className="text-[#667781] dark:text-[#8696a0]" />
-                                ) : m.seenByReceiver ? (
-                                  <CheckCheck size={15} className="text-[#53bdeb]" />
-                                ) : m.delivered ? (
-                                  <CheckCheck size={15} className="text-[#8696a0]" />
-                                ) : (
-                                  <Check size={15} className="text-[#8696a0]" />
-                                )}
-                              </span>
-                            )}
-                          </div>
-                        </motion.div>
-                      ))}
-                    </AnimatePresence>
+                            className={`relative max-w-[85%] md:max-w-[65%] w-fit px-3.5 py-2 text-[14.5px] rounded-2xl shadow-sm wrap-break-words ${m.senderRole === user.role
+                              ? "ml-auto bg-[#d9fdd3]  text-[#111b21] rounded-br-sm"
+                              : "bg-white  text-[#111b21] rounded-bl-sm border border-transparent shadow-sm"
+                              }`}
+                          >
+                            <p className="whitespace-pre-wrap">{m.message}</p>
+                            <div className={`flex items-center justify-end gap-1.5 mt-1 text-[10px] font-medium ${m.senderRole === user.role ? "text-[#667781] dark:text-[#8696a0]" : "text-[#667781] dark:text-[#8696a0]"}`}>
+                              <span>{formatMessageTime(m.createdAt).split('•').pop().trim()}</span>
+                              {m.senderRole === user.role && (
+                                <span className="ml-0.5">
+                                  {m.status === 'sending' ? (
+                                    <iconList.Clock size={11} className="text-[#667781] dark:text-[#8696a0]" />
+                                  ) : m.seenByReceiver ? (
+                                    <CheckCheck size={15} className="text-[#53bdeb]" />
+                                  ) : m.delivered ? (
+                                    <CheckCheck size={15} className="text-[#8696a0]" />
+                                  ) : (
+                                    <Check size={15} className="text-[#8696a0]" />
+                                  )}
+                                </span>
+                              )}
+                            </div>
+                          </motion.div>
+                        ))}
+                      </AnimatePresence>
                     </div>
                   </div>
                 </div>
@@ -368,8 +399,7 @@ const ChatPage = () => {
                 <button
                   onClick={handleSendMessage}
                   disabled={!input.trim()}
-                  className="bg-primary dark:bg-accent text-white dark:text-main-bg h-[48px] w-[48px] md:h-[50px] md:w-[50px] rounded-full
-                            active:scale-95 transition-all duration-300 cursor-pointer hover:bg-primary-dull dark:hover:bg-accent-dull disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center shadow-md shrink-0">
+                  className="bg-primary dark:bg-accent text-white dark:text-main-bg h-12 w-12 md:h-12.5 md:w-12.5 rounded-full active:scale-95 transition-all duration-300 cursor-pointer hover:bg-primary-dull dark:hover:bg-accent-dull disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center shadow-md shrink-0">
                   <iconList.Send size={20} className="ml-1" />
                 </button>
               </div>

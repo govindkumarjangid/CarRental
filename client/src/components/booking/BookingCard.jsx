@@ -8,14 +8,14 @@ const BookingCard = ({ booking, index }) => {
 	return (
 		<motion.div
 			ref={ref}
-			initial={{ y: 50, scale: 0.8, opacity: 0 }}
+			initial={{ y: 10, scale: 0.95, opacity: 0 }}
 			animate={inView ? { y: 0, scale: 1, opacity: 1 } : {}}
 			transition={{
 				duration: 0.4,
 				ease: "easeInOut",
 				delay: index * 0.05,
 			}}
-			className="grid grid-cols-1 md:grid-cols-4 gap-6 p-6 rounded-lg mt-5 first:mt-12 backdrop-blur-sm border border-gray-200 dark:bg-card-bg dark:border-dark-border dark:text-dark-text"
+			className="grid grid-cols-1 md:grid-cols-4 gap-6 p-6 rounded-lg mt-5 first:mt-12 backdrop-blur-sm border border-gray-200   "
 		>
 			<div className="md:col-span-1 ">
 				<img
@@ -27,7 +27,7 @@ const BookingCard = ({ booking, index }) => {
 				<p className="text-lg font-medium mt-2">
 					{booking?.car?.brand} {booking?.car?.model}
 				</p>
-				<p className="text-gray-500 dark:text-dark-muted">
+				<p className="text-gray-500 ">
 					{booking?.car?.year} ◉ {booking?.car?.category} ◉{" "}
 					{booking?.car?.location}
 				</p>
@@ -35,7 +35,7 @@ const BookingCard = ({ booking, index }) => {
 
 			<div className="md:col-span-2">
 				<div className="flex items-center gap-2">
-					<p className="px-3 py-1 bg-light rounded dark:text-dark-text">
+					<p className="px-3 py-1 bg-light rounded ">
 						Booking # {index + 1}
 					</p>
 					<p
@@ -43,7 +43,7 @@ const BookingCard = ({ booking, index }) => {
 							? "bg-green-400/15 text-gray-600 "
 							: booking?.status === "cancelled"
 								? " bg-red-400/15 text-red-900"
-								: booking?.status === "completed" ? "bg-blue-400/15 text-blue-600" : "bg-yellow-400/15 dark:bg-yellow-400/70 text-yellow-900"
+								: booking?.status === "completed" ? "bg-blue-400/15 text-blue-600" : "bg-yellow-400/15  text-yellow-900"
 							}`}
 					>
 						{booking?.status}
@@ -56,7 +56,7 @@ const BookingCard = ({ booking, index }) => {
 						className="mt-2 text-primary"
 					/>
 					<div>
-						<p className="text-gray-500 dark:text-dark-muted">
+						<p className="text-gray-500 ">
 							Rental Period
 						</p>
 						<div className="flex flex-col gap-0.5">
@@ -81,7 +81,7 @@ const BookingCard = ({ booking, index }) => {
 				<div className="flex items-start gap-2 mt-3">
 					<iconList.MapPin size={17} className="mt-2 text-primary" />
 					<div>
-						<p className="text-gray-500 dark:text-dark-muted">
+						<p className="text-gray-500 ">
 							Pickup Location
 						</p>
 						<p className="text-sm font-medium">{booking?.car?.location}</p>
@@ -90,7 +90,7 @@ const BookingCard = ({ booking, index }) => {
 				<div className="flex items-start gap-2 mt-3">
 					<iconList.MapPin size={17} className="mt-2 text-primary" />
 					<div>
-						<p className="text-gray-500 dark:text-dark-muted">
+						<p className="text-gray-500 ">
 							Return Location
 						</p>
 						<p className="text-sm font-medium">{booking?.car?.location || "Downtown Office"}</p>
@@ -100,13 +100,13 @@ const BookingCard = ({ booking, index }) => {
 
 			<div className="md:col-span-1 flex flex-col justify-between gap-6">
 				<div className="text-sm text-gray-500 text-right">
-					<p className="text-gray-500 dark:text-dark-muted">
+					<p className="text-gray-500 ">
 						Total Price
 					</p>
-					<h1 className="text-2xl font-bold text-primary dark:text-accent">
+					<h1 className="text-2xl font-bold text-primary ">
 						{currency} {booking?.price.toLocaleString("en-IN")}
 					</h1>
-					<p className="text-[11px] text-gray-400 dark:text-dark-muted mt-2 font-medium">
+					<p className="text-[11px] text-gray-400  mt-2 font-medium">
 						Booked on {new Date(booking?.createdAt).toLocaleString('en-IN', {
 							day: '2-digit', month: 'short', year: 'numeric',
 							hour: '2-digit', minute: '2-digit', hour12: true

@@ -20,7 +20,7 @@ export const checkAvailability = async (car, pickupDate, returnDate) => {
 
 //* check avaliablity of cars
 export const checkAvaliablityofCar = wrapAsync(async (req, res) => {
-  const { location, startTime, endTime } = req.body;
+  const { location, pickupDate: startTime, returnDate: endTime } = req.body;
 
   if (!location || !startTime || !endTime)
     return res.json({ success: false, message: 'All fields are required' });

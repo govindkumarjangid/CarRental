@@ -22,12 +22,12 @@ const NavbarOwner = ({ toggleSidebar, isSidebarOpen }) => {
 				<img
 					src={assets.logo}
 					alt="logo"
-					className="h-5 md:h-7 dark:brightness-300"
+					className="h-5 md:h-7 "
 					loading="lazy"
 				/>
 			</Link>
 			<div className="flex items-center gap-4">
-				<p className="hidden md:block text-base font-medium text-gray-700 dark:text-dark-text capitalize">
+				<p className="hidden md:block text-base font-medium text-gray-700  capitalize">
 					Welcome, {user?.name || "Owner"}
 				</p>
 				<button

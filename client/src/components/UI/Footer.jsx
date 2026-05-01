@@ -24,7 +24,7 @@ const Footer = () => {
 			whileInView="show"
 			viewport={{ amount: 0.1 }}
 			variants={staggerContainer}
-			className="w-full bg-light text-gray-500/80 pt-16 px-4 md:px-8 dark:bg-main-bg dark:text-dark-muted border-t border-gray-200 dark:border-dark-border"
+			className="w-full bg-light text-gray-500/80 pt-16 px-4 md:px-8   border-t border-gray-200 "
 		>
 			<div className="max-w-7xl mx-auto">
 				<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8 pb-10">
@@ -36,7 +36,7 @@ const Footer = () => {
 							transition={{ duration: 0.6 }}
 							src={assets.logo}
 							alt="logo"
-							className="h-8 md:h-9 dark:brightness-200"
+							className="h-8 md:h-9 "
 						/>
 
 						<p className="text-sm leading-relaxed max-w-xs">
@@ -57,7 +57,7 @@ const Footer = () => {
 									whileTap={{ scale: 0.95 }}
 									className="cursor-pointer"
 								>
-									<Icon className="w-5 h-5 transition-colors hover:text-primary dark:hover:text-accent" />
+									<Icon className="w-5 h-5 transition-colors hover:text-primary " />
 								</motion.div>
 							))}
 						</div>
@@ -65,46 +65,46 @@ const Footer = () => {
 
 					{/* Quick Links */}
 					<motion.div variants={fadeUp} className="space-y-4">
-						<h4 className="text-sm font-bold tracking-wider text-gray-900 dark:text-dark-text uppercase">
+						<h4 className="text-sm font-bold tracking-wider text-gray-900  uppercase">
 							Quick Links
 						</h4>
 						<ul className="flex flex-col gap-3 text-sm">
-							<li><Link to="/" className="hover:text-primary dark:hover:text-accent transition-colors">Home</Link></li>
-							<li><Link to="/cars" className="hover:text-primary dark:hover:text-accent transition-colors">Browse Cars</Link></li>
-							<li><Link to="/" className="hover:text-primary dark:hover:text-accent transition-colors">List Your Car</Link></li>
-							<li><Link to="/" className="hover:text-primary dark:hover:text-accent transition-colors">About Us</Link></li>
+							<li><Link to="/" className="hover:text-primary  transition-colors">Home</Link></li>
+							<li><Link to="/cars" className="hover:text-primary  transition-colors">Browse Cars</Link></li>
+							<li><Link to="/" className="hover:text-primary  transition-colors">List Your Car</Link></li>
+							<li><Link to="/" className="hover:text-primary  transition-colors">About Us</Link></li>
 						</ul>
 					</motion.div>
 
 					{/* Resources */}
 					<motion.div variants={fadeUp} className="space-y-4">
-						<h4 className="text-sm font-bold tracking-wider text-gray-900 dark:text-dark-text uppercase">
+						<h4 className="text-sm font-bold tracking-wider text-gray-900  uppercase">
 							Resources
 						</h4>
 						<ul className="flex flex-col gap-3 text-sm">
-							<li><Link className="hover:text-primary dark:hover:text-accent transition-colors">Help Center</Link></li>
-							<li><Link className="hover:text-primary dark:hover:text-accent transition-colors">Terms of Service</Link></li>
-							<li><Link className="hover:text-primary dark:hover:text-accent transition-colors">Privacy Policy</Link></li>
-							<li><Link className="hover:text-primary dark:hover:text-accent transition-colors">Insurance</Link></li>
+							<li><Link className="hover:text-primary  transition-colors">Help Center</Link></li>
+							<li><Link className="hover:text-primary  transition-colors">Terms of Service</Link></li>
+							<li><Link className="hover:text-primary  transition-colors">Privacy Policy</Link></li>
+							<li><Link className="hover:text-primary  transition-colors">Insurance</Link></li>
 						</ul>
 					</motion.div>
 
 					{/* Contact */}
 					<motion.div variants={fadeUp} className="space-y-4">
-						<h4 className="text-sm font-bold tracking-wider text-gray-900 dark:text-dark-text uppercase">
+						<h4 className="text-sm font-bold tracking-wider text-gray-900  uppercase">
 							Contact
 						</h4>
 						<ul className="flex flex-col gap-3 text-sm">
 							<li className="flex items-center gap-2">
-								<iconList.MapPin size={16} className="text-primary dark:text-accent" />
+								<iconList.MapPin size={16} className="text-primary " />
 								<span>Jaipur, IN 302015</span>
 							</li>
 							<li className="flex items-center gap-2">
-								<iconList.Mail size={16} className="text-primary dark:text-accent" />
+								<iconList.Mail size={16} className="text-primary " />
 								<span>car@example.com</span>
 							</li>
 							<li className="flex items-center gap-2">
-								<iconList.Plus size={16} className="text-primary dark:text-accent" />
+								<iconList.Plus size={16} className="text-primary " />
 								<span>+91-7342162313</span>
 							</li>
 						</ul>
@@ -112,7 +112,7 @@ const Footer = () => {
 				</div>
 
 				{/* Divider */}
-				<motion.hr variants={fadeUp} className="border-gray-200 dark:border-dark-border" />
+				<motion.hr variants={fadeUp} className="border-gray-200 " />
 
 				{/* Bottom Row */}
 				<motion.div
@@ -124,11 +124,11 @@ const Footer = () => {
 					</p>
 
 					<ul className="flex items-center gap-6 order-1 md:order-2">
-						<li><a href="#" className="hover:text-primary dark:hover:text-accent transition-colors">Terms</a></li>
-						<li className="text-gray-300 dark:text-dark-border">|</li>
-						<li><a href="#" className="hover:text-primary dark:hover:text-accent transition-colors">Privacy</a></li>
-						<li className="text-gray-300 dark:text-dark-border">|</li>
-						<li><a href="#" className="hover:text-primary dark:hover:text-accent transition-colors">Cookies</a></li>
+						<li><a href="#" className="hover:text-primary  transition-colors">Terms</a></li>
+						<li className="text-gray-300 ">|</li>
+						<li><a href="#" className="hover:text-primary  transition-colors">Privacy</a></li>
+						<li className="text-gray-300 ">|</li>
+						<li><a href="#" className="hover:text-primary  transition-colors">Cookies</a></li>
 					</ul>
 				</motion.div>
 			</div>

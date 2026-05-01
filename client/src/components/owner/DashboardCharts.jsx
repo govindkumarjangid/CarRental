@@ -8,9 +8,9 @@ export const FleetChart = ({ data }) => (
   <motion.div
     initial={{ opacity: 0, y: 10 }}
     animate={{ opacity: 1, y: 0 }}
-    className="p-6 border border-gray-200 dark:border-dark-border dark:bg-card-bg rounded-xl shadow-sm max-w-xl"
+    className="p-6 border border-gray-200   rounded-xl shadow-sm max-w-xl"
   >
-    <h3 className="text-sm font-semibold mb-4 dark:text-dark-text opacity-70 uppercase tracking-widest">Live Availability Breakdown</h3>
+    <h3 className="text-sm font-semibold mb-4  opacity-70 uppercase tracking-widest">Live Availability Breakdown</h3>
     <div className="h-48 flex justify-center">
       <Doughnut
         data={{
@@ -46,9 +46,9 @@ export const BookingChart = ({ data }) => (
   <motion.div
     initial={{ opacity: 0, y: 10 }}
     animate={{ opacity: 1, y: 0 }}
-    className="p-6 border border-gray-200 dark:border-dark-border dark:bg-card-bg rounded-xl shadow-sm"
+    className="p-6 border border-gray-200   rounded-xl shadow-sm"
   >
-    <h3 className="text-sm font-semibold mb-4 dark:text-dark-text opacity-70 uppercase tracking-widest">Booking Status Breakdown</h3>
+    <h3 className="text-sm font-semibold mb-4  opacity-70 uppercase tracking-widest">Booking Status Breakdown</h3>
     <div className="h-64">
       <Bar
         data={{
@@ -92,9 +92,9 @@ export const PaymentChart = ({ data }) => (
   <motion.div
     initial={{ opacity: 0, y: 10 }}
     animate={{ opacity: 1, y: 0 }}
-    className="p-6 border border-gray-200 dark:border-dark-border dark:bg-card-bg rounded-xl shadow-sm"
+    className="p-6 border border-gray-200   rounded-xl shadow-sm"
   >
-    <h3 className="text-sm font-semibold mb-4 dark:text-dark-text opacity-70 uppercase tracking-widest">Payment Integrity Analysis</h3>
+    <h3 className="text-sm font-semibold mb-4  opacity-70 uppercase tracking-widest">Payment Integrity Analysis</h3>
     <div className="h-64">
       <Bar
         data={{
@@ -135,9 +135,9 @@ export const RevenueHistoryChart = ({ history, currency }) => (
   <motion.div
     initial={{ opacity: 0, y: 10 }}
     animate={{ opacity: 1, y: 0 }}
-    className="p-6 border border-gray-200 dark:border-dark-border dark:bg-card-bg rounded-xl shadow-sm lg:col-span-2"
+    className="p-6 border border-gray-200   rounded-xl shadow-sm lg:col-span-2"
   >
-    <h3 className="text-sm font-semibold mb-4 dark:text-dark-text opacity-70 uppercase tracking-widest">Revenue Performance History</h3>
+    <h3 className="text-sm font-semibold mb-4  opacity-70 uppercase tracking-widest">Revenue Performance History</h3>
     <div className="h-72">
       <Line
         data={{

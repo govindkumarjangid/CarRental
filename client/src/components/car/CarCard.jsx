@@ -14,13 +14,16 @@ const CarCard = ({ car, index }) => {
 	return (
 		<motion.div
 			ref={ref}
-			initial={{ opacity: 0, filter: "blur(10px)", y: 50 }}
-			animate={inView ? { opacity: 1, filter: "blur(0px)", y: 0 } : {}}
+			initial={{ opacity: 0, filter: "blur(4px)", y: 18, scale: 0.98 }}
+			animate={inView ? { opacity: 1, filter: "blur(0px)", y: 0, scale: 1 } : {}}
 			transition={{
-				ease: "easeOut",
+				type: "spring",
+				stiffness: 140,
+				damping: 18,
+				mass: 0.6,
 				delay: index * 0.1,
 			}}
-			className="h-full w-full group rounded-xl overflow-hidden shadow-lg hover:-translate-y-2 transition-all duration-500 cursor-pointer hover:shadow-[0_4px_24px_rgba(0,0,0,0.35)] dark:hover:shadow-[0_4px_24px_rgba(56,189,248,0.15)] active:scale-95 bg-light dark:bg-card-bg dark:border dark:border-dark-border"
+			className="h-full w-full group rounded-xl overflow-hidden shadow-lg hover:-translate-y-2 transition-all duration-500 cursor-pointer hover:shadow-[0_4px_24px_rgba(0,0,0,0.35)] active:scale-99"
 			onClick={handleClick}
 		>
 			{/* image & availability & price  */}
@@ -33,10 +36,10 @@ const CarCard = ({ car, index }) => {
 				/>
 				<div className="absolute top-4 left-4 flex flex-col gap-2">
 					<p className={`text-white text-[10px] px-2 py-1 font-semibold rounded-md shadow-lg backdrop-blur-md uppercase tracking-wider ${
-						car.status === "available" 
-						? "bg-green-500/80" 
-						: car.status === "cleaning" 
-						? "bg-blue-500/80" 
+						car.status === "available"
+						? "bg-green-500/80"
+						: car.status === "cleaning"
+						? "bg-blue-500/80"
 						: car.status === "maintenance"
 						? "bg-red-500/80"
 						: "bg-gray-500/80"
@@ -53,34 +56,34 @@ const CarCard = ({ car, index }) => {
 				</div>
 			</div>
 
-			<div className="p-4 sm:p-5 dark:text-dark-text">
+			<div className="p-4 sm:p-5 ">
 				{/* brand & model & catrgory  */}
 				<div className="flex justify-between items-start mb-2">
 					<div>
 						<h3 className="text-lg font-medium">
 							{car.brand} {car.model}
 						</h3>
-						<p className="text-muted-foreground dark:text-dark-muted text-sm">
+						<p className="text-muted-foreground  text-sm">
 							{car.category} ◉ {car.year}
 						</p>
 					</div>
 				</div>
 
 				{/* feactures  */}
-				<div className="mt-4 grid grid-cols-2 gap-y-2 text-gray-600 dark:text-dark-text ">
-					<div className="flex items-center text-sm text-muted-foreground dark:text-dark-muted">
+				<div className="mt-4 grid grid-cols-2 gap-y-2 text-gray-600  ">
+					<div className="flex items-center text-sm text-muted-foreground ">
 						<iconList.Users size={15} className="mr-1" />
 						<span>{car.seating_capacity} Seats</span>
 					</div>
-					<div className="flex items-center text-sm text-muted-foreground dark:text-dark-muted">
+					<div className="flex items-center text-sm text-muted-foreground ">
 						<iconList.Fuel size={15} className="mr-1" />
 						<span>{car.fuel_type}</span>
 					</div>
-					<div className="flex items-center text-sm text-muted-foreground dark:text-dark-muted">
+					<div className="flex items-center text-sm text-muted-foreground ">
 						<iconList.Car size={15} className="mr-1" />
 						<span>{car.transmission}</span>
 					</div>
-					<div className="flex items-center text-sm text-muted-foreground dark:text-dark-muted">
+					<div className="flex items-center text-sm text-muted-foreground ">
 						<iconList.MapPin size={15} className="mr-1" />
 						<span>{car.location}</span>
 					</div>

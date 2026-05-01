@@ -28,14 +28,14 @@ const Hero = () => {
 
 	return (
 		<>
-			<div className="max-w-8xl m-auto flex flex-col justify-center items-center gap-6 bg-light text-center dark:bg-main-bg px-2">
+			<div className="max-w-8xl m-auto flex flex-col justify-center items-center gap-6 bg-light text-center  px-2">
 
 				{/* heading  */}
 				<motion.h1
 					initial={{ opacity: 0, y: 100 }}
 					animate={{ opacity: 1, y: 0 }}
 					transition={{ duration: 0.7, ease: "easeOut", delay: 0.1 }}
-					className="text-4xl md:text-5xl font-semibold text-gray-800 dark:text-white mt-15"
+					className="text-4xl md:text-5xl font-semibold text-gray-800  mt-15"
 				>
 					Luxury cars on Rent
 				</motion.h1>
@@ -51,11 +51,11 @@ const Hero = () => {
 					initial={{ opacity: 0, scale: 0.9, y: 50 }}
 					animate={{ opacity: 1, scale: 1, y: 0 }}
 					transition={{ duration: 0.7, ease: "easeOut", delay: 0.7 }}
-					className="flex flex-col md:flex-row items-center md:items-center justify-between px-4 py-5 rounded-lg w-full max-w-120 md:max-w-200 bg-white shadow-[0px_8px_20px_rgba(0,0,0,0.1)] dark:bg-second-bg dark:shadow-[0px_8px_20px_rgba(56,189,248,0.08)] dark:border dark:border-dark-border "
+					className="flex flex-col md:flex-row items-center md:items-center justify-between px-4 py-5 rounded-lg w-full max-w-120 md:max-w-200 bg-white shadow-[0px_8px_20px_rgba(0,0,0,0.1)]     "
 				>
 					<div className="flex flex-col md:flex-row items-center md:items-center md:justify-center gap-10 md:ml-8">
 						<div className="flex flex-row items-center gap-2 md:flex-col">
-							<p className="px-1 text-sm text-gray-500  text-center dark:text-white">
+							<p className="px-1 text-sm text-gray-500  text-center ">
 								{pickupLocation
 									? pickupLocation
 									: "Please select location"}
@@ -64,7 +64,7 @@ const Hero = () => {
 								onChange={(e) =>
 									setPickupLocation(e.target.value)
 								}
-								className="outline-none border border-gray-300 bg-gray-100 p-2 px-4 rounded-md max-w-47 focus:border-primary focus:ring-2 focus:ring-primary/50 dark:bg-card-bg dark:text-dark-text dark:border-dark-border"
+								className="outline-none border border-gray-300 bg-gray-100 p-2 px-4 rounded-md max-w-47 focus:border-primary focus:ring-2 focus:ring-primary/50   "
 							>
 								<option value="" >Pickup Location</option>
 								{cityList.map((city, index) => (
@@ -77,7 +77,7 @@ const Hero = () => {
 						<div className="flex flex-row items-center gap-2  md:flex-col">
 							<label
 								htmlFor="pickup-date"
-								className="dark:text-white"
+								className=""
 							>
 								Pick-up Date
 							</label>
@@ -87,13 +87,13 @@ const Hero = () => {
 								id="pickup-date"
 								min={new Date().toISOString().split("T")[0]}
 								onChange={(e) => setPickupDate(e.target.value)}
-								className="text-sm text-gray-500 bg-gray-100 p-2 px-4 rounded-md outline-none border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/50 dark:bg-card-bg dark:text-dark-text dark:border-dark-border"
+								className="text-sm text-gray-500 bg-gray-100 p-2 px-4 rounded-md outline-none border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/50   "
 							/>
 						</div>
 						<div className="flex flex-row items-center gap-2  md:flex-col">
 							<label
 								htmlFor="return-date"
-								className="dark:text-white"
+								className=""
 							>
 								Return Date
 							</label>
@@ -102,12 +102,12 @@ const Hero = () => {
 								name="return-date"
 								id="return-date"
 								onChange={(e) => setReturnDate(e.target.value)}
-								className="text-sm text-gray-500 bg-gray-100 p-2 px-4 rounded-md outline-none border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/50 dark:bg-card-bg dark:text-dark-text dark:border-dark-border"
+								className="text-sm text-gray-500 bg-gray-100 p-2 px-4 rounded-md outline-none border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/50   "
 							/>
 						</div>
 						<button
 							type="submit"
-							className={`cursor-pointer flex items-center justify-center gap-1 px-5 py-2  transition-all text-white rounded-lg shadow-[0px_3px_20px_rgba(0,0,0,0.2)]  dark:bg-accent dark:hover:bg-accent-dull dark:text-main-bg dark:border-0 active:scale-95 ${loading
+							className={`cursor-pointer flex items-center justify-center gap-1 px-5 py-2  transition-all text-white rounded-lg shadow-[0px_3px_20px_rgba(0,0,0,0.2)]      active:scale-95 ${loading
 								? "bg-primary cursor-not-allowed opacity-90"
 								: "bg-primary hover:bg-primary-dull"
 								}`}
@@ -152,9 +152,9 @@ const Hero = () => {
 								damping: 20,
 							}}
 							className="fixed inset-x-0 bottom-0 sm:inset-auto sm:bottom-4 sm:right-4 z-50 bg-white shadow-2xl rounded-t-md sm:rounded-md
-							w-full sm:w-105 md:w-130 md:max-h-[80vh] overflow-y-auto blue-thumb-scrollbar dark:bg-second-bg dark:text-dark-text"
+							w-full sm:w-105 md:w-130 md:max-h-[80vh] overflow-y-auto blue-thumb-scrollbar  "
 						>
-							<div className="sticky top-0 bg-white flex justify-between items-center px-2 py-2 border-b border-gray-400 dark:bg-second-bg dark:border-dark-border">
+							<div className="sticky top-0 bg-white flex justify-between items-center px-2 py-2 border-b border-gray-400  ">
 								<h3 className="font-semibold">
 									Available Cars
 								</h3>
@@ -171,7 +171,7 @@ const Hero = () => {
 
 							<div className="max-h-72 overflow-y-auto overflow-x-auto">
 								<table className="w-full text-sm">
-									<thead className="py-2 bg-gray-100 z-20 dark:bg-card-bg">
+									<thead className="py-2 bg-gray-100 z-20 ">
 										<tr className="bg-gray-100">
 											<th className="p-2 text-left">
 												Image
@@ -193,7 +193,7 @@ const Hero = () => {
 										{availableCars.map((car) => (
 											<motion.tr
 												key={car._id}
-												className="cursor-pointer hover:bg-gray-100 dark:hover:bg-surface"
+												className="cursor-pointer hover:bg-gray-100 "
 												onClick={() =>
 													navigate(
 														`/car-details/${car._id}`

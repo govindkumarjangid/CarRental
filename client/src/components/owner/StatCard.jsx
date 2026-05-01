@@ -8,13 +8,13 @@ const StatCard = ({ card, index, colorMap }) => {
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ type: "spring", stiffness: 300, damping: 30, delay: index * 0.05 }}
-      className="flex gap-4 items-center justify-between p-4 rounded-xl border border-gray-200 dark:border-dark-border dark:bg-card-bg shadow-sm hover:shadow-md transition-all duration-300 group"
+      className="flex gap-4 items-center justify-between p-4 rounded-xl border border-gray-200   shadow-sm hover:shadow-md transition-all duration-300 group"
     >
       <div className="flex flex-col gap-1">
-        <h2 className="text-gray-500 text-[10px] md:text-xs font-medium uppercase tracking-wider dark:text-dark-muted">
+        <h2 className="text-gray-500 text-[10px] md:text-xs font-medium uppercase tracking-wider ">
           {card.title}
         </h2>
-        <p className="text-lg md:text-xl font-bold dark:text-dark-text">
+        <p className="text-lg md:text-xl font-bold ">
           {card.value}
         </p>
       </div>

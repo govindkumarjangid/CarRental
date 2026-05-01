@@ -24,6 +24,39 @@ const Cardetails = () => {
 	const [startTime, setStartTime] = useState("");
 	const [endTime, setEndTime] = useState("");
 
+	const pageVariants = {
+		hidden: { opacity: 0, y: 18 },
+		visible: {
+			opacity: 1,
+			y: 0,
+			transition: {
+				duration: 0.6,
+				ease: [0.22, 1, 0.36, 1],
+				when: "beforeChildren",
+				staggerChildren: 0.08,
+			},
+		},
+	};
+
+	const itemVariants = {
+		hidden: { opacity: 0, y: 16 },
+		visible: {
+			opacity: 1,
+			y: 0,
+			transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] },
+		},
+	};
+
+	const imageVariants = {
+		hidden: { opacity: 0, y: 24, scale: 1.02 },
+		visible: {
+			opacity: 1,
+			y: 0,
+			scale: 1,
+			transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] },
+		},
+	};
+
 	const handleOfflineBooking = async (e) => {
 		e.preventDefault();
 		setOpenPopup(false);
@@ -109,12 +142,7 @@ const Cardetails = () => {
 	};
 
 	const handleBookNow = () => {
-		if (!startTime || !endTime) {
-			toast.error("Please select pickup and return dates");
-			return;
-		} else {
-			setOpenPopup(true);
-		}
+		setOpenPopup(true);
 	};
 
 	useEffect(() => {
@@ -134,12 +162,13 @@ const Cardetails = () => {
 		car && (
 			<>
 				<motion.div
-					initial={{ opacity: 0, y: 50 }}
-					animate={{ opacity: 1, y: 0 }}
-					transition={{ duration: 0.9, ease: "easeOut" }}
+					variants={pageVariants}
+					initial="hidden"
+					animate="visible"
 					className="h-auto max-w-7xl m-auto px-6 md:px-16 lg:px-24 xl:px-32 pt-16 pb-16 dark:bg-main-bg"
 				>
-					<button
+					<motion.button
+						variants={itemVariants}
 						onClick={() => {
 							navigate("/cars");
 							window.scrollTo(0, 0);
@@ -148,7 +177,7 @@ const Cardetails = () => {
 					>
 						<iconList.ArrowLeft size={20} />
 						<span>Back to Cars</span>
-					</button>
+					</motion.button>
 
 					<div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
 						{/* LEFT */}
@@ -157,13 +186,7 @@ const Cardetails = () => {
 							<div>
 								<motion.img
 									src={car.image}
-									initial={{ opacity: 0, y: 50 }}
-									animate={{ opacity: 1, y: 0 }}
-									transition={{
-										type: "spring",
-										stiffness: 50,
-										duration: 0.5,
-									}}
+									variants={imageVariants}
 									alt="main-car-image"
 									loading="lazy"
 									className="w-full h-auto md:max-h-100 object-cover rounded-xl shadow-md"
@@ -171,27 +194,21 @@ const Cardetails = () => {
 							</div>
 
 							{/* Car details wrapper */}
-							<motion.div className="space-y-6">
+							<motion.div className="space-y-6" variants={itemVariants}>
 								{/* Title */}
-								<motion.div
-									initial={{ opacity: 0, y: 20 }}
-									animate={{ opacity: 1, y: 0 }}
-									transition={{ delay: 0.2 }}
-									className="mt-3"
-								>
+								<motion.div variants={itemVariants} className="mt-3">
 									<div className="flex items-center gap-3">
 										<h1 className="text-3xl font-bold dark:text-dark-text">
 											{car.brand} {car.model}
 										</h1>
-										<span className={`text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-widest ${
-											car.status === "available"
-											? "bg-green-500/20 text-green-500 border border-green-500/50"
-											: car.status === "cleaning"
-											? "bg-blue-500/20 text-blue-500 border border-blue-500/50"
-											: car.status === "maintenance"
-											? "bg-red-500/20 text-red-500 border border-red-500/50"
-											: "bg-gray-500/20 text-gray-500 border border-gray-500/50"
-										}`}>
+										<span className={`text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-widest ${car.status === "available"
+												? "bg-green-500/20 text-green-500 border border-green-500/50"
+												: car.status === "cleaning"
+													? "bg-blue-500/20 text-blue-500 border border-blue-500/50"
+													: car.status === "maintenance"
+														? "bg-red-500/20 text-red-500 border border-red-500/50"
+														: "bg-gray-500/20 text-gray-500 border border-gray-500/50"
+											}`}>
 											{car.status}
 										</span>
 									</div>
@@ -214,7 +231,7 @@ const Cardetails = () => {
 									</div>
 								</motion.div>
 
-								<hr className="border-borderColor my-6 dark:border-gray-300" />
+								<hr className="border border-gray-300 my-6 dark:border-gray-300" />
 
 								{/* Features icons grid */}
 								<div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
@@ -265,11 +282,7 @@ const Cardetails = () => {
 								</div>
 
 								{/* Description */}
-								<motion.div
-									initial={{ opacity: 0, y: 20 }}
-									animate={{ opacity: 1, y: 0 }}
-									transition={{ delay: 0.2 }}
-								>
+								<motion.div variants={itemVariants}>
 									<h1 className="text-xl font-medium mb-3 dark:text-dark-text">
 										Description
 									</h1>
@@ -279,11 +292,7 @@ const Cardetails = () => {
 								</motion.div>
 
 								{/* Features list */}
-								<motion.div
-									initial={{ opacity: 0, y: 20 }}
-									animate={{ opacity: 1, y: 0 }}
-									transition={{ delay: 0.2 }}
-								>
+								<motion.div variants={itemVariants}>
 									<h1 className="text-xl font-medium mb-3 dark:text-dark-text">
 										Features
 									</h1>
@@ -316,9 +325,7 @@ const Cardetails = () => {
 						{/* RIGHT / BOOKING FORM */}
 						<motion.form
 							onSubmit={(e) => e.preventDefault()}
-							initial={{ opacity: 0, x: 100 }}
-							animate={{ opacity: 1, x: 0 }}
-							transition={{ duration: 0.6, ease: "easeOut" }}
+							variants={itemVariants}
 							className="shadow-lg h-max sticky top-18 rounded-xl p-6 space-y-6 text-gray-500 dark:bg-card-bg dark:text-dark-text dark:border dark:border-dark-border"
 						>
 							{/* price per day  */}
@@ -365,11 +372,10 @@ const Cardetails = () => {
 								type="button"
 								disabled={car.status !== "available"}
 								onClick={() => handleBookNow()}
-								className={`w-full transition-all py-3 font-medium text-white rounded-md hover:scale-102 active:scale-95 cursor-pointer dark:bg-accent dark:hover:bg-accent-dull dark:text-main-bg ${
-									car.status === "available"
-									? "bg-primary hover:bg-primary-dull"
-									: "bg-gray-400 cursor-not-allowed opacity-70"
-								}`}
+								className={`w-full transition-all py-3 font-medium text-white rounded-md hover:scale-102 active:scale-95 cursor-pointer dark:bg-accent dark:hover:bg-accent-dull dark:text-main-bg ${car.status === "available"
+										? "bg-primary hover:bg-primary-dull"
+										: "bg-gray-400 cursor-not-allowed opacity-70"
+									}`}
 							>
 								{car.status === "available" ? "Book Now" : `Currently ${car.status.toUpperCase()}`}
 							</motion.button>
@@ -445,49 +451,6 @@ const Cardetails = () => {
 							</motion.div>
 						)}
 					</AnimatePresence>
-
-					{/* chat with owner card  */}
-					<div className="flex items-center justify-end py-5 mt-10">
-						<div className="w-80 bg-white dark:bg-card-bg rounded-xl shadow-md p-4 dark:text-dark-text dark:border dark:border-dark-border">
-							{/* Image */}
-							<img
-								src={car.image}
-								alt={car.name}
-								className="rounded-xl w-full h-44 object-cover"
-							/>
-
-							{/* Title */}
-							<h2 className="text-xl font-semibold mt-3">
-								{car.brand} {car.model} <span className="font-normal"> {car.year}</span>
-							</h2>
-
-							{/* Specs */}
-							<div className="flex justify-between text-sm text-gray-600 mt-3">
-								<span className="flex items-center gap-1">
-									<iconList.Car className=" text-primary" size={16} />
-									{car.transmission}
-								</span>
-								<span className="flex items-center gap-1">
-									<iconList.Fuel className=" text-primary" size={16} />
-									{car.fuel_type}
-								</span>
-								<span className="flex items-center gap-1">
-									<span className="text-primary text-base">{currency}</span>
-									<span>{car.pricePerHour}/hr</span>
-								</span>
-							</div>
-
-							{/* Button */}
-							<button
-								onClick={() => {
-									token ? navigate(`/chatpage/${car._id}`) : toast.error("Not Authorized")
-								}}
-								className="mt-4 w-full bg-primary hover:bg-primary-dull dark:bg-accent dark:hover:bg-accent-dull text-white dark:text-main-bg py-2 rounded-md cursor-pointer"
-							>
-								Chat with Owner
-							</button>
-						</div>
-					</div>
 
 				</motion.div>
 			</>

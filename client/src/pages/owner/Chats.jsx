@@ -246,7 +246,7 @@ const Chats = () => {
       <div className={`flex flex-1 w-full overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 bg-white dark:bg-second-bg border-t border-gray-200 dark:border-dark-border`}>
 
         {/* CHAT LIST */}
-        <div className={`w-full md:w-80 lg:w-[360px] shrink-0 border-r border-gray-200 dark:border-dark-border flex flex-col bg-white dark:bg-second-bg ${activeChat ? "hidden md:flex" : "flex"}`}>
+        <div className={`w-full md:w-80 lg:w-90 shrink-0 border-r border-gray-200 dark:border-dark-border flex flex-col bg-white dark:bg-second-bg ${activeChat ? "hidden md:flex" : "flex"}`}>
           {/* chat list header  */}
           <div className="h-16 flex items-center justify-between px-5 border-b border-gray-100 dark:border-dark-border shrink-0 bg-gray-50/50 dark:bg-second-bg relative overflow-hidden">
             <AnimatePresence mode="wait">
@@ -475,7 +475,7 @@ const Chats = () => {
                   <button
                     onClick={() => { if (input.trim()) handleSend() }}
                     disabled={!input.trim()}
-                    className={`h-[48px] w-[48px] md:h-[50px] md:w-[50px] shrink-0 rounded-full flex items-center justify-center transition-all duration-200 ${input.trim()
+                    className={`h-12 w-12 md:h-12.5 md:w-12.5 shrink-0 rounded-full flex items-center justify-center transition-all duration-200 ${input.trim()
                       ? "bg-primary dark:bg-accent text-white dark:text-main-bg shadow-md hover:shadow-lg hover:-translate-y-0.5 active:scale-95 active:translate-y-0 cursor-pointer"
                       : "bg-gray-200 dark:bg-[#2a3942] text-gray-400 dark:text-gray-500 cursor-not-allowed"
                       }`}

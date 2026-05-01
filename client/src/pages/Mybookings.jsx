@@ -37,28 +37,20 @@ const Mybookings = () => {
 				<div>
 					{
 						bookingLoading ? (
-							<>
-								{
-									[0, 1, 2].map((_, index) => (
-										<BookingCardSkeleton index={index} key={index} />
-									))
-								}
-							</>
+							[0, 1, 2].map((_, index) => (
+								<BookingCardSkeleton index={index} key={index} />
+							))
 						) : (
-							<>
-								{
-									storedBookings.length === 0 ? (
-										<EmptyBookings />
-									) : (storedBookings.slice(0, visibleCount).map((booking, index) => (
-										<BookingCard
-											key={booking._id}
-											booking={booking}
-											index={index}
-											currency={currency}
-										/>
-									)))
-								}
-							</>
+							storedBookings.length === 0 ? (
+								<EmptyBookings />
+							) : (storedBookings.slice(0, visibleCount).map((booking, index) => (
+								<BookingCard
+									key={booking._id}
+									booking={booking}
+									index={index}
+									currency={currency}
+								/>
+							)))
 						)
 					}
 				</div>
