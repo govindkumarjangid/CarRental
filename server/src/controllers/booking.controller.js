@@ -144,6 +144,7 @@ export const createOnlineBooking = wrapAsync(async (req, res) => {
     paymentMethod: "online",
     paymentStatus: "confirmed",
     razorpayOrderId: order.id,
+    status: "pending"
   });
 
   // Send booking email to user

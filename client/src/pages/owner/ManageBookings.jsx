@@ -4,6 +4,7 @@ import { Title as OwnerTitle } from "../../components/owner/Title.jsx";
 import { useBookingStore } from "../../store/useBookingStore.js";
 import TableSkeleton from "../../components/UI/TableSkeleton.jsx";
 import BookingPopup from "../../components/owner/BookingPopup.jsx";
+import EmptyBookingState from "../../components/owner/EmptyBookingState.jsx";
 import { iconList } from "../../assets/assets.jsx";
 import { useParams, useNavigate } from "react-router-dom";
 
@@ -38,7 +39,7 @@ const ManageBookings = () => {
 	}
 
 	if (loading && bookings.length === 0) return <TableSkeleton />;
-	if (bookings.length === 0 && !loading) return <div className="p-10 text-center text-gray-500">No bookings found.</div>;
+	if (bookings.length === 0 && !loading) return <EmptyBookingState />;
 
 	if (bookingId && selectedBooking) {
 		return (
@@ -62,7 +63,7 @@ const ManageBookings = () => {
 					"Track all customer bookings, approve or cancel requests, and manage booking statuses."
 				}
 			/>
-			<div className="max-w-[1000px] w-full bg-white dark:bg-second-bg shadow-md hover:shadow-lg transition-all duration-300 rounded-xl overflow-hidden mt-6 border border-gray-200 dark:border-dark-border mb-10">
+			<div className="max-w-250 w-full bg-white dark:bg-second-bg shadow-md hover:shadow-lg transition-all duration-300 rounded-xl overflow-hidden mt-6 border border-gray-200 dark:border-dark-border mb-10">
 				<div className="overflow-x-auto">
 					<motion.table
 						initial={{ opacity: 0 }}

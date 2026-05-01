@@ -4,15 +4,15 @@ const EmptyBookings = () => {
   return (
     <div className="flex flex-col items-center justify-center py-20">
       <motion.div
-        initial={{ y: 50, scale: 0, opacity: 0 }}
+        initial={{ y: 10, scale: 0.9, opacity: 0 }}
         animate={{ y: 0, scale: 1, opacity: 1 }}
-        transition={{ duration: 0.8, ease: "easeInOut" }}
+        transition={{ duration: 0.5, ease: "easeInOut" }}
         className="p-6 rounded-full bg-primary">
         <iconList.CalendarX className="w-10 h-10 text-gray-200" />
       </motion.div>
 
       <motion.h2
-        initial={{ y: 50, opacity: 0 }}
+        initial={{ y: 10, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.5, ease: "easeInOut", delay: 0.3 }}
         className="text-2xl font-semibold mt-6 ">
@@ -20,7 +20,7 @@ const EmptyBookings = () => {
       </motion.h2>
 
       <motion.p
-        initial={{ y: 50, opacity: 0 }}
+        initial={{ y: 10, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.5, ease: "easeInOut", delay: 0.4 }}
         className="text-gray-600  mt-2 text-center max-w-md">

@@ -6,6 +6,7 @@ import { Title as OwnerTitle } from "../../components/owner/Title.jsx";
 import TableSkeleton from "../../components/UI/TableSkeleton.jsx";
 import { useParams, useNavigate } from "react-router-dom";
 import EditCarForm from "../../components/owner/EditCarForm.jsx";
+import EmptyCarState from "../../components/owner/EmptyCarState.jsx";
 
 const ManageCars = () => {
 	const currency = import.meta.env.VITE_CURRENCY;
@@ -32,6 +33,7 @@ const ManageCars = () => {
 	const selectedCar = cars.find(c => c._id === carId);
 
 	if (loading && cars.length === 0) return <TableSkeleton />;
+	if (cars.length === 0 && !loading) return <EmptyCarState />;
 
 	if (carId && selectedCar) {
 		return (
@@ -53,7 +55,7 @@ const ManageCars = () => {
 					"View all listed cars, update their details, or remove them from the booking platform."
 				}
 			/>
-			<div className="max-w-[1000px] w-full bg-white dark:bg-second-bg shadow-md hover:shadow-lg transition-all duration-300 rounded-xl overflow-hidden mt-6 border border-gray-200 dark:border-dark-border">
+			<div className="max-w-250 w-full bg-white dark:bg-second-bg shadow-md hover:shadow-lg transition-all duration-300 rounded-xl overflow-hidden mt-6 border border-gray-200 dark:border-dark-border">
 				<motion.table
 					initial={{ opacity: 0, y: 10 }}
 					animate={{ opacity: 1, y: 0 }}
@@ -166,7 +168,7 @@ const ManageCars = () => {
 											/>
 										</button>
 
-										<button 
+										<button
 											onClick={() => navigate(`/owner/manage-cars/${car._id}`)}
 											className="cursor-pointer active:scale-90 transition-transform duration-300"
 											title="Edit Car"
