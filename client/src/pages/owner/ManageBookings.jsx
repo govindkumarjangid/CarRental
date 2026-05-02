@@ -127,7 +127,7 @@ const ManageBookings = () => {
 												})()}
 											</p>
 											<p className="text-[10px] text-gray-400 font-medium whitespace-nowrap">
-												{new Date(booking.pickupDate).toLocaleDateString('en-IN', { day: '2-digit', month: 'short' })} - {new Date(booking.returnDate).toLocaleDateString('en-IN', { day: '2-digit', month: 'short' })}
+												{new Date(booking.pickupDate).toLocaleString('en-IN', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' })} - {new Date(booking.returnDate).toLocaleString('en-IN', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' })}
 											</p>
 										</div>
 									</td>

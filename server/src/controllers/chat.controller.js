@@ -1,6 +1,7 @@
 import Chat from '../models/chat.model.js';
 import Message from '../models/message.model.js';
 import wrapAsync from '../configs/wrapAsync.js';
+import imagekit from '../utils/imagekit.js';
 
 // Create or get chat between user and owner
 export const getOrCreateChat = wrapAsync(async (req, res) => {
@@ -19,11 +20,27 @@ export const getOrCreateChat = wrapAsync(async (req, res) => {
 // send messages
 export const sendMessage = wrapAsync(async (req, res) => {
   const { chatId, from, text } = req.body;
-  console.log(req.body);
+  const files = req.files || [];
 
   const chat = await Chat.findById(chatId);
   if (!chat) {
     return res.status(404).json({ success: false, message: "Chat not found" });
+  }
+
+  // Upload files to ImageKit if any
+  const attachments = [];
+  for (const file of files) {
+    const response = await imagekit.files.upload({
+      file: file.buffer.toString("base64"),
+      fileName: file.originalname,
+      folder: "/chat_attachments",
+    });
+    
+    attachments.push({
+      url: response.url,
+      name: file.originalname,
+      type: file.mimetype.startsWith("image/") ? "image" : "file",
+    });
   }
 
   const newMessage = await Message.create({
@@ -32,8 +49,9 @@ export const sendMessage = wrapAsync(async (req, res) => {
     senderId: from === "user" ? chat.user : chat.owner,
     receiverId: from === "user" ? chat.owner : chat.user,
     senderRole: from,
-    message: text,
-    messageType: "text",
+    message: text || "",
+    messageType: attachments.length > 0 ? (attachments.every(a => a.type === "image") ? "image" : "file") : "text",
+    attachments: attachments,
   });
 
   await Chat.findByIdAndUpdate(chatId, {
@@ -43,7 +61,6 @@ export const sendMessage = wrapAsync(async (req, res) => {
       ? { unreadByOwner: true }
       : { unreadByUser: true }),
   });
-  // console.log(newMessage)
 
   res.status(200).json({
     success: true,

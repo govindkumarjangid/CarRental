@@ -47,8 +47,13 @@ const Chats = () => {
   }, [userId, chats]);
 
   const [input, setInput] = useState("");
+  const [attachments, setAttachments] = useState([]);
   const [typingChatId, setTypingChatId] = useState(null);
   const [onlineUsers, setOnlineUsers] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [showSearch, setShowSearch] = useState(false);
+
+  const fileInputRef = useRef(null);
 
   const typingTimeoutRef = useRef(null);
   const scrollContainerRef = useRef(null);
@@ -123,10 +128,34 @@ const Chats = () => {
   };
 
 
+  const handleFileSelect = (e) => {
+    const files = Array.from(e.target.files);
+    const newAttachments = files.map(file => ({
+      file,
+      preview: file.type.startsWith('image/') ? URL.createObjectURL(file) : null,
+      name: file.name,
+      type: file.type.startsWith('image/') ? 'image' : 'pdf'
+    }));
+    setAttachments(prev => [...prev, ...newAttachments]);
+    e.target.value = null;
+  };
+
+  const removeAttachment = (index) => {
+    setAttachments(prev => {
+      const newArr = [...prev];
+      if (newArr[index].preview) URL.revokeObjectURL(newArr[index].preview);
+      newArr.splice(index, 1);
+      return newArr;
+    });
+  };
+
   const handleSend = async () => {
+    if (!input.trim() && attachments.length === 0) return;
     const text = input;
+    const currentAttachments = [...attachments];
     setInput("");
-    await sendMessage(activeChat, user.role, text, socket);
+    setAttachments([]);
+    await sendMessage(activeChat, user.role, text, socket, currentAttachments);
   };
 
 
@@ -224,13 +253,29 @@ const Chats = () => {
   }, []);
 
 
-  const [searchQuery, setSearchQuery] = useState("");
-  const [showSearch, setShowSearch] = useState(false);
 
   const filteredChats = chats.filter(chat => {
     const other = getOtherUser(chat);
     return other?.name?.toLowerCase().includes(searchQuery.toLowerCase());
   });
+
+  const handleDownload = async (url, filename) => {
+    try {
+      const response = await fetch(url);
+      const blob = await response.blob();
+      const blobUrl = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = blobUrl;
+      link.download = filename || 'download';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(blobUrl);
+    } catch (error) {
+      console.error("Download failed:", error);
+      window.open(url, '_blank');
+    }
+  };
 
   return (
     <div className="absolute inset-0 flex flex-col overflow-hidden bg-gray-50/30 dark:bg-main-bg text-gray-800 dark:text-dark-text">
@@ -421,7 +466,58 @@ const Chats = () => {
                               : "bg-white dark:bg-[#202c33] text-[#111b21] dark:text-[#e9edef] rounded-bl-sm border border-transparent dark:border-none shadow-sm"
                               }`}
                           >
-                            <p>{m.message}</p>
+                            {m.attachments && m.attachments.length > 0 && (
+                              <div className={`flex flex-col gap-2 mb-2 ${m.attachments.length > 1 ? "grid grid-cols-2" : ""}`}>
+                                {m.attachments.map((att, idx) => (
+                                  <div key={idx} className="group relative rounded-lg overflow-hidden border border-black/5 dark:border-white/10 shadow-sm bg-black/5 dark:bg-black/20">
+                                    {att.type === 'image' ? (
+                                      <>
+                                        <img
+                                          src={att.url}
+                                          alt="attachment"
+                                          className="md:max-h-48 max-w-45 w-full object-cover cursor-pointer hover:opacity-90 transition-opacity"
+                                          onClick={() => window.open(att.url, '_blank')}
+                                        />
+                                        <button
+                                          onClick={(e) => {
+                                            e.stopPropagation();
+                                            handleDownload(att.url, att.name || `image_${idx}.jpg`);
+                                          }}
+                                          className="absolute top-0 right-0 h-8 w-8 bg-black/50 hover:bg-black/70 text-white rounded-full flex items-center justify-center opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all duration-200 shadow-lg backdrop-blur-sm cursor-pointer"
+                                        >
+                                          <iconList.Download size={16} />
+                                        </button>
+                                      </>
+                                    ) : (
+                                      <div className="flex items-center justify-between p-1.5 hover:bg-black/5 dark:hover:bg-white/5 transition-colors">
+                                        <a
+                                          href={att.url}
+                                          target="_blank"
+                                          rel="noreferrer"
+                                          className="flex items-center gap-2 text-[13px] text-inherit no-underline min-w-0"
+                                        >
+                                          <div className="h-9 w-9 shrink-0 flex items-center justify-center bg-white dark:bg-card-bg rounded-lg shadow-sm">
+                                            <iconList.FileText className="text-red-500" size={20} />
+                                          </div>
+                                          <div className="flex flex-col min-w-0">
+                                            <span className="font-semibold truncate text-[11px]">{att.name || "Document.pdf"}</span>
+                                            <span className="text-[9px] opacity-60 uppercase">{att.type}</span>
+                                          </div>
+                                        </a>
+                                        <button
+                                          onClick={() => handleDownload(att.url, att.name || "document.pdf")}
+                                          className="h-7 w-7 flex items-center justify-center text-gray-500 hover:text-primary dark:text-dark-muted dark:hover:text-accent transition-colors cursor-pointer"
+                                          title="Download"
+                                        >
+                                          <iconList.Download size={16} />
+                                        </button>
+                                      </div>
+                                    )}
+                                  </div>
+                                ))}
+                              </div>
+                            )}
+                            {m.message && <p className="whitespace-pre-wrap">{m.message}</p>}
                             <div className={`flex items-center justify-end gap-1 mt-1 text-[10px] font-medium ${m.senderRole === user.role ? "text-[#667781] dark:text-[#8696a0]" : "text-[#667781] dark:text-[#8696a0]"}`}>
                               <span>{formatMessageTime(m.createdAt).split('•').pop().trim()}</span>
                               {m.senderRole === user.role && (
@@ -462,8 +558,55 @@ const Chats = () => {
             {/* INPUT */}
             {activeChat && (
               <div className="p-3 md:p-4 bg-[#f0f2f5] dark:bg-[#202c33] border-t border-gray-200 dark:border-dark-border shrink-0">
+                {/* ATTACHMENT PREVIEW */}
+                {attachments.length > 0 && (
+                  <div className="flex gap-3 mb-3 max-w-4xl mx-auto overflow-x-auto pb-2 scrollbar-hide">
+                    <AnimatePresence>
+                      {attachments.map((file, index) => (
+                        <motion.div
+                          key={index}
+                          initial={{ opacity: 0, scale: 0.8, y: 10 }}
+                          animate={{ opacity: 1, scale: 1, y: 0 }}
+                          exit={{ opacity: 0, scale: 0.8, y: 10 }}
+                          className="relative h-20 w-20 md:h-24 md:w-24 shrink-0 rounded-xl overflow-hidden border-2 border-white dark:border-dark-border shadow-md bg-white dark:bg-card-bg group"
+                        >
+                          {file.type === 'image' ? (
+                            <img src={file.preview} alt="" className="h-full w-full object-cover" />
+                          ) : (
+                            <div className="h-full w-full flex flex-col items-center justify-center p-2 bg-red-50 dark:bg-red-900/10">
+                              <iconList.FileText className="text-red-500 mb-1" size={24} />
+                              <span className="text-[10px] font-medium truncate w-full text-center px-1 dark:text-dark-text">{file.name}</span>
+                            </div>
+                          )}
+                          <button
+                            onClick={() => removeAttachment(index)}
+                            className="absolute top-1 right-1 h-6 w-6 bg-black/60 hover:bg-red-500 text-white rounded-full flex items-center justify-center transition-all duration-200 shadow-sm opacity-0 group-hover:opacity-100 cursor-pointer scale-90 hover:scale-100"
+                          >
+                            <iconList.X size={14} />
+                          </button>
+                        </motion.div>
+                      ))}
+                    </AnimatePresence>
+                  </div>
+                )}
+
                 <div className="flex items-end gap-2 max-w-4xl mx-auto">
-                  <div className="flex-1 bg-white dark:bg-[#2a3942] rounded-3xl flex items-center px-5 py-0.5 border-2 border-transparent focus-within:border-transparent transition-colors shadow-sm">
+                  <input
+                    type="file"
+                    ref={fileInputRef}
+                    onChange={handleFileSelect}
+                    multiple
+                    accept="image/*,application/pdf"
+                    className="hidden"
+                  />
+                  <button
+                    onClick={() => fileInputRef.current.click()}
+                    className="h-12 w-12 shrink-0 rounded-full flex items-center justify-center text-gray-500 dark:text-dark-muted hover:bg-gray-200 dark:hover:bg-[#2a3942] transition-colors cursor-pointer"
+                  >
+                    <iconList.Paperclip size={22} />
+                  </button>
+
+                  <div className="flex-1 bg-white dark:bg-[#2a3942] rounded-3xl flex items-center px-5 py-0.5 border-2 border-transparent focus-within:border-primary/20 transition-all shadow-sm">
                     <input
                       type="text"
                       value={input}
@@ -478,16 +621,17 @@ const Chats = () => {
                         }, 1000);
                       }}
                       onKeyDown={(e) => {
-                        if (e.key === "Enter" && input.trim()) handleSend();
+                        if (e.key === "Enter") handleSend();
                       }}
                       placeholder="Type your message..."
                       className="w-full bg-transparent border-none outline-none py-3 text-[15px] text-gray-800 dark:text-[#d1d7db] placeholder-gray-500 dark:placeholder-gray-400 "
                     />
                   </div>
+
                   <button
-                    onClick={() => { if (input.trim()) handleSend() }}
-                    disabled={!input.trim()}
-                    className={`h-12 w-12 md:h-12.5 md:w-12.5 shrink-0 rounded-full flex items-center justify-center transition-all duration-200 ${input.trim()
+                    onClick={handleSend}
+                    disabled={!input.trim() && attachments.length === 0}
+                    className={`h-12 w-12 md:h-12.5 md:w-12.5 shrink-0 rounded-full flex items-center justify-center transition-all duration-200 ${input.trim() || attachments.length > 0
                       ? "bg-primary dark:bg-accent text-white dark:text-main-bg shadow-md hover:shadow-lg hover:-translate-y-0.5 active:scale-95 active:translate-y-0 cursor-pointer"
                       : "bg-gray-200 dark:bg-[#2a3942] text-gray-400 dark:text-gray-500 cursor-not-allowed"
                       }`}
@@ -497,6 +641,7 @@ const Chats = () => {
                 </div>
               </div>
             )}
+
           </div>
         )}
       </div>

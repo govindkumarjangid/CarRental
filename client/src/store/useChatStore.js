@@ -42,15 +42,19 @@ export const useChatStore = create((set, get) => ({
         }));
     },
 
-    sendMessage: async (activeChat, userRole, text, socket) => {
-        if (!text) return toast.error("Please Enter the message!");
-        if (!text.trim() || !activeChat) return;
+    sendMessage: async (activeChat, userRole, text, socket, attachments = []) => {
+        if (!text && attachments.length === 0) return toast.error("Please enter a message or select a file!");
 
         const tempId = Date.now();
         const temp = {
             _id: tempId,
             senderRole: userRole,
             message: text,
+            attachments: attachments.map(a => ({
+                type: a.type,
+                url: a.preview || "",
+                name: a.name
+            })),
             createdAt: new Date().toISOString(),
             status: 'sending'
         };
@@ -58,11 +62,28 @@ export const useChatStore = create((set, get) => ({
         set((state) => ({ messages: [...state.messages, temp] }));
 
         try {
-            const { data } = await axiosInstance.post("/api/chat/send-message", {
-                chatId: activeChat._id,
-                from: userRole,
-                text: text,
-            });
+            let response;
+            if (attachments.length > 0) {
+                const formData = new FormData();
+                formData.append("chatId", activeChat._id);
+                formData.append("from", userRole);
+                formData.append("text", text);
+                attachments.forEach((att) => {
+                    formData.append("files", att.file);
+                });
+
+                response = await axiosInstance.post("/api/chat/send-message", formData, {
+                    headers: { 'Content-Type': 'multipart/form-data' }
+                });
+            } else {
+                response = await axiosInstance.post("/api/chat/send-message", {
+                    chatId: activeChat._id,
+                    from: userRole,
+                    text: text,
+                });
+            }
+
+            const { data } = response;
 
             if (data.success) {
                 set((state) => ({
@@ -101,9 +122,8 @@ export const useChatStore = create((set, get) => ({
         }
     },
 
-    sendUserMessage: async (chatId, userRole, text, socketInstance) => {
-        if (!text) return toast.error("Please enter a message!");
-        if (!text.trim()) return;
+    sendUserMessage: async (chatId, userRole, text, socketInstance, attachments = []) => {
+        if (!text && attachments.length === 0) return toast.error("Please enter a message or select a file!");
         if (!chatId) return toast.error("Chat not ready");
 
         const tempId = Date.now();
@@ -111,6 +131,11 @@ export const useChatStore = create((set, get) => ({
             _id: tempId,
             senderRole: userRole,
             message: text,
+            attachments: attachments.map(a => ({
+                type: a.type,
+                url: a.preview || "",
+                name: a.name
+            })),
             createdAt: new Date().toISOString(),
             status: 'sending'
         };
@@ -118,11 +143,28 @@ export const useChatStore = create((set, get) => ({
         set((state) => ({ messages: [...state.messages, temp] }));
 
         try {
-            const { data } = await axiosInstance.post("/api/chat/send-message", {
-                chatId,
-                from: userRole,
-                text,
-            });
+            let response;
+            if (attachments.length > 0) {
+                const formData = new FormData();
+                formData.append("chatId", chatId);
+                formData.append("from", userRole);
+                formData.append("text", text);
+                attachments.forEach((att) => {
+                    formData.append("files", att.file);
+                });
+
+                response = await axiosInstance.post("/api/chat/send-message", formData, {
+                    headers: { 'Content-Type': 'multipart/form-data' }
+                });
+            } else {
+                response = await axiosInstance.post("/api/chat/send-message", {
+                    chatId,
+                    from: userRole,
+                    text,
+                });
+            }
+
+            const { data } = response;
             if (data.success) {
                 set((state) => ({ messages: state.messages.map(m => m._id === tempId ? data.data : m) }));
                 socketInstance.emit("sendMessage", {

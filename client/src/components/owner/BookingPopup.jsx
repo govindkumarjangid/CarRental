@@ -210,8 +210,8 @@ const BookingPopup = ({ setSelectedBooking, selectedBooking, isFullPage = false 
                 <div className="pt-2">
                     <div className="flex items-center gap-4 py-4 px-6 bg-primary/5 rounded-xl border border-primary/10">
                         <div className="flex-1 flex flex-col items-center border-r border-primary/10 px-2 min-w-0">
-                            <p className="text-xs text-primary/60 font-medium mb-1 text-center truncate">Daily Rate</p>
-                            <p className="text-lg font-bold text-primary truncate">₹{car?.pricePerDay}</p>
+                            <p className="text-xs text-primary/60 font-medium mb-1 text-center truncate">Hourly Rate</p>
+                            <p className="text-lg font-bold text-primary truncate">₹{car?.pricePerHour}</p>
                         </div>
                         <div className="flex-1 flex flex-col items-center border-r border-primary/10 px-2 min-w-0">
                             <p className="text-xs text-primary/60 font-medium mb-1 text-center truncate">Capacity</p>

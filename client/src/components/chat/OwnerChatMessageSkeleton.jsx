@@ -1,32 +1,32 @@
 
 const OwnerChatMessageSkeleton = () => {
   return (
-    <div className="flex-1 flex flex-col bg-slate-50/50  animate-pulse h-full">
+    <div className="flex-1 flex flex-col bg-[#efe7de] dark:bg-[#0b141a] animate-pulse h-full">
       {/* HEADER */}
-      <div className="h-16 flex items-center gap-3 px-4 bg-white/80  border-b border-gray-200  shadow-sm shrink-0">
+      <div className="h-16 flex items-center gap-3 px-4 bg-white/80 dark:bg-second-bg/90 backdrop-blur-md border-b border-gray-200 dark:border-dark-border shadow-sm shrink-0">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-gray-200  rounded-full shrink-0" />
-          <div className="flex flex-col space-y-2">
-            <div className="h-4 bg-gray-200  rounded w-24" />
-            <div className="h-3 bg-gray-200  rounded w-12" />
+          <div className="w-11 h-11 bg-gray-200 dark:bg-card-bg rounded-full shrink-0" />
+          <div className="flex flex-col space-y-1.5">
+            <div className="h-4 bg-gray-200 dark:bg-card-bg rounded w-32" />
+            <div className="h-3 bg-gray-200 dark:bg-card-bg rounded w-16" />
           </div>
         </div>
       </div>
 
       {/* CHAT BODY */}
-      <div className="flex-1 min-h-0 relative p-4 space-y-6 overflow-y-auto custom-scrollbar flex flex-col justify-end">
-        <div className="h-12 bg-gray-100  border border-gray-100  rounded-xl rounded-tl-sm w-[60%] sm:w-[40%] self-start" />
-        <div className="h-16 bg-blue-100  rounded-xl rounded-tr-sm w-[70%] sm:w-[50%] self-end" />
-        <div className="h-12 bg-gray-100  border border-gray-100  rounded-xl rounded-tl-sm w-[50%] sm:w-[35%] self-start" />
-        <div className="h-20 bg-blue-100  rounded-xl rounded-tr-sm w-[80%] sm:w-[60%] self-end" />
-        <div className="h-12 bg-gray-100  border border-gray-100  rounded-xl rounded-tl-sm w-[60%] sm:w-[45%] self-start" />
+      <div className="flex-1 min-h-0 relative p-4 md:p-6 space-y-4 overflow-y-auto custom-scrollbar flex flex-col justify-end bg-[url('https://i.pinimg.com/736x/8c/98/99/8c98994518b575bfd8c949e91d20548b.jpg')] bg-repeat bg-bg-size-[400px]">
+        <div className="h-12 bg-white dark:bg-[#202c33] border border-transparent dark:border-none shadow-sm rounded-xl rounded-tl-sm w-[60%] md:w-[40%] self-start" />
+        <div className="h-16 bg-[#d9fdd3] dark:bg-[#005c4b] rounded-xl rounded-tr-sm w-[70%] md:w-[50%] self-end shadow-sm" />
+        <div className="h-12 bg-white dark:bg-[#202c33] border border-transparent dark:border-none shadow-sm rounded-xl rounded-tl-sm w-[50%] md:w-[35%] self-start" />
+        <div className="h-20 bg-[#d9fdd3] dark:bg-[#005c4b] rounded-xl rounded-tr-sm w-[80%] md:w-[60%] self-end shadow-sm" />
+        <div className="h-12 bg-white dark:bg-[#202c33] border border-transparent dark:border-none shadow-sm rounded-xl rounded-tl-sm w-[60%] md:w-[45%] self-start" />
       </div>
 
       {/* INPUT */}
-      <div className="p-3 md:p-4 bg-white  border-t border-gray-200  shrink-0">
+      <div className="p-3 md:p-4 bg-[#f0f2f5] dark:bg-[#202c33] border-t border-gray-200 dark:border-dark-border shrink-0">
         <div className="flex items-end gap-2 max-w-4xl mx-auto">
-          <div className="flex-1 h-12 bg-gray-100  rounded-3xl border border-transparent shadow-inner " />
-          <div className="w-[50px] h-[50px] bg-gray-200  rounded-full shrink-0" />
+          <div className="flex-1 h-12 bg-white dark:bg-[#2a3942] rounded-3xl border border-transparent shadow-sm" />
+          <div className="w-12 h-12 bg-gray-200 dark:bg-[#2a3942] rounded-full shrink-0 shadow-md" />
         </div>
       </div>
     </div>
