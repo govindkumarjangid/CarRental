@@ -221,7 +221,7 @@ const Navbar = () => {
 								{image && (
 									<button
 										onClick={handleImageUpload}
-										className="flex items-center justify-center gap-1 text-xs font-bold shadow-lg transition-all bg-green-500 text-white hover:bg-green-600 px-4 py-2 sm:absolute sm:-top-3 sm:-right-3 sm:rounded-full max-sm:w-full max-sm:rounded-xl max-sm:text-sm"
+										className="flex items-center justify-center gap-1 text-xs font-bold shadow-lg transition-all bg-green-500 text-white hover:bg-green-600 px-4 py-2 sm:absolute sm:-top-3 sm:right-0 sm:rounded-full max-sm:w-full max-sm:rounded-xl max-sm:text-sm cursor-pointer active:scale-95"
 									>
 										<iconList.CircleCheckBig size={14} />
 										Save Avatar

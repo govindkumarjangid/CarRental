@@ -12,7 +12,7 @@ const Cars = () => {
 	const [modelFilter, setModelFilter] = useState("");
 	const [fuelFilter, setFuelFilter] = useState("");
 	const [transmissionFilter, setTransmissionFilter] = useState("");
-	
+
 	const [input, setInput] = useState("");
 	const [openModel, setOpenModel] = useState(false);
 	const [openFuel, setOpenFuel] = useState(false);
@@ -146,7 +146,7 @@ const Cars = () => {
 						{showLeftArrow && (
 							<button
 								onClick={() => scroll("left")}
-								className="absolute left-0 z-20 bg-white/90 dark:bg-card-bg/90 p-1.5 rounded-full shadow-lg cursor-pointer hover:bg-primary hover:text-white transition-all duration-300 border border-gray-200 dark:border-dark-border text-primary active:scale-90"
+								className="absolute left-0 z-20 bg-white/90 dark:bg-card-bg/90 p-1.5 rounded-full  cursor-pointer hover:bg-primary hover:text-white transition-all duration-300 border border-gray-200 dark:border-dark-border text-primary active:scale-90"
 							>
 								<iconList.ChevronLeft size={18} />
 							</button>
@@ -172,7 +172,7 @@ const Cars = () => {
 						{showRightArrow && (
 							<button
 								onClick={() => scroll("right")}
-								className="absolute right-0 z-20 bg-white/90 dark:bg-card-bg/90 p-1.5 rounded-full shadow-lg cursor-pointer hover:bg-primary hover:text-white transition-all duration-300 border border-gray-200 dark:border-dark-border text-primary active:scale-90"
+								className="absolute right-0 z-20 bg-white/90 dark:bg-card-bg/90 p-1.5 rounded-full  cursor-pointer hover:bg-primary hover:text-white transition-all duration-300 border border-gray-200 dark:border-dark-border text-primary active:scale-90"
 							>
 								<iconList.ChevronRight size={18} />
 							</button>

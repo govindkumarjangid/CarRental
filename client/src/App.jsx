@@ -45,7 +45,7 @@ const App = () => {
 	return (
 		<div className="h-screen flex flex-col dark:bg-main-bg overflow-hidden">
 			<ScrollToTop />
-			<Toaster position="top-right" reverseOrder={false} />
+			<Toaster position="right-bottom" reverseOrder={true} />
 			{showLogin && <Login />}
 			{!isOwnerPath && <Navbar />}
 			<main className={`flex-1 min-h-0 overflow-x-hidden ${!isChatPath && !isOwnerPath ? "overflow-y-auto custom-scrollbar" : "overflow-hidden"}`}>

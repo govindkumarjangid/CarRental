@@ -316,7 +316,13 @@ const Chats = () => {
                       <motion.div className="absolute left-0 top-2 h-13 w-1.5 bg-primary rounded-r dark:bg-accent" />
                     )}
                     <div className="relative shrink-0">
-                      <iconList.CircleUser size={46} strokeWidth={1.5} className={isActive ? "text-primary" : "text-gray-400 dark:text-gray-500"} />
+                      {
+                        other?.image ?
+                          <img src={other?.image} alt={other?.name} className="h-11 w-11 border-2 border-gray-300 rounded-full aspect-square" />
+                          : <>
+                            <iconList.CircleUser size={46} strokeWidth={1.5} className={isActive ? "text-primary" : "text-gray-400 dark:text-gray-500"} />
+                          </>
+                      }
                       <span
                         className={`absolute bottom-0 right-0 h-3.5 w-3.5 rounded-full border-2 border-white dark:border-second-bg ${isOnline ? "bg-green-500" : "bg-gray-400"}`}
                       />
@@ -362,7 +368,13 @@ const Chats = () => {
 
                 <div className="flex items-center gap-3">
                   <div className="relative">
-                    <iconList.CircleUser size={40} strokeWidth={1.5} className="text-gray-500 dark:text-gray-400" />
+                    {
+                      getOtherUser(activeChat)?.image ?
+                        <img src={getOtherUser(activeChat)?.image} alt={getOtherUser(activeChat)?.name} className="h-11 w-11 border-2 border-gray-300 rounded-full aspect-square" />
+                        : <>
+                          <iconList.CircleUser size={46} strokeWidth={1.5} className={activeChat ? "text-primary" : "text-gray-400 dark:text-gray-500"} />
+                        </>
+                    }
                     {activeChat && onlineUsers.includes(getOtherUser(activeChat)?._id) && (
                       <span className="absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-white dark:border-second-bg bg-green-500" />
                     )}
