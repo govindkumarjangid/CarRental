@@ -1,5 +1,6 @@
 import { useAuthStore } from "../../store/useAuthStore.js";
 import { useState, useNavigate, useRef, motion, iconList } from "../../index.js";
+import InputBox from '../owner/InputBox.jsx';
 
 const Login = () => {
 	const { signup, login, isLoading, setShowLogin } = useAuthStore();
@@ -37,14 +38,14 @@ const Login = () => {
 		>
 			<motion.form
 				ref={ref}
-				initial={{ scale: 0.8, opacity: 0, scale: 0 }}
-				animate={{ scale: 1, opacity: 1, scale: 1 }}
+				initial={{ scale: 0.8, opacity: 0 }}
+				animate={{ scale: 1, opacity: 1 }}
 				transition={{ duration: 0.4 }}
 				onSubmit={handleSubmit}
 				onClick={(e) => e.stopPropagation()}
-				className="flex flex-col gap-4 m-auto items-start p-8 py-12 w-80 sm:w-88 text-gray-500 rounded-lg shadow-xl border border-gray-200 bg-white z-200    "
+				className="flex flex-col gap-4 m-auto items-start p-8 py-12 w-80 sm:w-88 text-gray-500 rounded-lg shadow-xl border border-gray-200 bg-white dark:bg-main-bg dark:border-dark-border z-200"
 			>
-				<p className="text-3xl font-medium m-auto">
+				<p className="text-3xl font-medium m-auto dark:text-white">
 					<span className="text-primary ">
 						User
 					</span>
@@ -53,28 +54,13 @@ const Login = () => {
 
 				{/* name field  */}
 				{state === "register" && (
-					<div className="w-full relative">
-						<input
-							type="text"
-							name="name"
-							placeholder=" "
-							value={name}
-							onChange={(e) => setName(e.target.value)}
-							className="w-full peer border border-gray-200 rounded-lg py-3 px-4 outline-none focus:border-primary focus:ring-2 focus:ring-primary/50      transition-colors duration-200"
-						/>
-
-						<label
-							htmlFor="name"
-							className="absolute left-4 text-gray-500 pointer-events-none bg-white  px-1
-							transition-all duration-200
-							top-1/2 -translate-y-1/2
-							peer-focus:top-0 peer-focus:-translate-y-1/2 peer-focus:text-xs
-							peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:text-base
-							peer-not-placeholder-shown:top-0 peer-not-placeholder-shown:-translate-y-1/2 peer-not-placeholder-shown:text-xs"
-						>
-							Name
-						</label>
-					</div>
+					<InputBox
+						label="name"
+						title="Name"
+						value={name}
+						onChange={(e) => setName(e.target.value)}
+						placeholder="Full Name"
+					/>
 				)}
 
 				{/* role selector */}
@@ -87,8 +73,8 @@ const Login = () => {
 								onClick={() => setRole("user")}
 								className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg border-2 text-sm font-semibold cursor-pointer transition-all duration-200 ${
 									role === "user"
-										? "border-primary bg-primary/10 text-primary   "
-										: "border-gray-200 text-gray-400 hover:border-gray-300  "
+										? "border-primary bg-primary/10 text-primary dark:border-accent dark:bg-accent/10 dark:text-accent"
+										: "border-gray-200 text-gray-400 hover:border-gray-300 dark:border-dark-border dark:hover:border-dark-muted"
 								}`}
 							>
 								<iconList.User size={16} />
@@ -99,8 +85,8 @@ const Login = () => {
 								onClick={() => setRole("owner")}
 								className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg border-2 text-sm font-semibold cursor-pointer transition-all duration-200 ${
 									role === "owner"
-										? "border-primary bg-primary/10 text-primary   "
-										: "border-gray-200 text-gray-400 hover:border-gray-300  "
+										? "border-primary bg-primary/10 text-primary dark:border-accent dark:bg-accent/10 dark:text-accent"
+										: "border-gray-200 text-gray-400 hover:border-gray-300 dark:border-dark-border dark:hover:border-dark-muted"
 								}`}
 							>
 								<iconList.CarFront size={16} />
@@ -111,50 +97,24 @@ const Login = () => {
 				)}
 
 				{/* email field  */}
-				<div className="relative w-full">
-					<input
-						type="email"
-						placeholder=" "
-						value={email}
-						onChange={(e) => setEmail(e.target.value)}
-						className="peer w-full border border-gray-200 rounded-lg py-3 px-4 outline-none  focus:border-primary focus:ring-2 focus:ring-primary/50     "
-					/>
-
-					<label
-						htmlFor="email"
-						className="absolute left-4 text-gray-500 pointer-events-none bg-white  px-1
-						transition-all duration-200
-						top-1/2 -translate-y-1/2
-						peer-focus:top-0 peer-focus:-translate-y-1/2 peer-focus:text-xs
-						peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:text-base
-						peer-not-placeholder-shown:top-0 peer-not-placeholder-shown:-translate-y-1/2 peer-not-placeholder-shown:text-xs"
-					>
-						Email
-					</label>
-				</div>
+				<InputBox
+					label="email"
+					title="Email"
+					type="email"
+					value={email}
+					onChange={(e) => setEmail(e.target.value)}
+					placeholder="Email Address"
+				/>
 
 				{/* password field  */}
-				<div className="relative w-full">
-					<input
-						type="password"
-						value={password}
-						placeholder=" "
-						onChange={(e) => setPassword(e.target.value)}
-						className="peer w-full border border-gray-200 rounded-lg py-3 px-4 outline-none  focus:border-primary focus:ring-2 focus:ring-primary/50     "
-					/>
-
-					<label
-						htmlFor="password"
-						className="absolute left-4 text-gray-500 pointer-events-none bg-white  px-1
-						transition-all duration-200
-						top-1/2 -translate-y-1/2
-						peer-focus:top-0 peer-focus:-translate-y-1/2 peer-focus:text-xs
-						peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:text-base
-						peer-not-placeholder-shown:top-0 peer-not-placeholder-shown:-translate-y-1/2 peer-not-placeholder-shown:text-xs"
-					>
-						Password
-					</label>
-				</div>
+				<InputBox
+					label="password"
+					title="Password"
+					type="password"
+					value={password}
+					onChange={(e) => setPassword(e.target.value)}
+					placeholder="Password"
+				/>
 
 				{/* toggle login/register  */}
 				<div className="flex items-center justify-center w-full text-sm ">

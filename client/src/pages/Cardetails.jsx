@@ -7,9 +7,9 @@ import { useParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { toast } from "react-hot-toast";
 import { iconList } from "../assets/assets.jsx";
+import InputBox from "../components/owner/InputBox.jsx";
 
 const Cardetails = () => {
-
 	const [car, setCar] = useState(null);
 	const [loading, setLoading] = useState(false);
 	const [startTime, setStartTime] = useState("");
@@ -331,32 +331,22 @@ const Cardetails = () => {
 							<hr className="border-borderColor my-4" />
 
 							{/* pickup date input  */}
-							<div className="flex flex-col gap-2">
-								<label className="text-sm font-medium text-gray-400 dark:text-gray-300">Pickup Date & Time</label>
-								<input
-									type="datetime-local"
-									name="startTime"
-									value={startTime}
-									onChange={(e) =>
-										setStartTime(e.target.value)
-									}
-									className="outline-none focus:ring-2 focus:border-primary focus:ring-primary/50 border border-borderColor px-3 py-2 rounded-md w-full dark:bg-surface dark:text-dark-text dark:border-dark-border"
-								/>
-							</div>
+							<InputBox
+								type="datetime-local"
+								label="startTime"
+								title="Pickup Date & Time"
+								value={startTime}
+								onChange={(e) => setStartTime(e.target.value)}
+							/>
 
 							{/* return date input  */}
-							<div className="flex flex-col gap-2">
-								<label className="text-sm font-medium text-gray-400 dark:text-gray-300">Return Date & Time</label>
-								<input
-									type="datetime-local"
-									name="endTime"
-									value={endTime}
-									onChange={(e) =>
-										setEndTime(e.target.value)
-									}
-									className="outline-none focus:ring-2 focus:border-primary focus:ring-primary/50 border border-borderColor px-3 py-2 rounded-md w-full dark:bg-surface dark:text-dark-text dark:border-dark-border"
-								/>
-							</div>
+							<InputBox
+								type="datetime-local"
+								label="endTime"
+								title="Return Date & Time"
+								value={endTime}
+								onChange={(e) => setEndTime(e.target.value)}
+							/>
 
 							{/* payment mode */}
 							<div className="flex flex-col gap-2">

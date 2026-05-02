@@ -29,7 +29,7 @@ export const FleetChart = ({ data }) => (
               'rgb(239, 68, 68)',
               'rgb(107, 114, 128)',
             ],
-            borderWidth: 2,
+            borderWidth: 1,
           }]
         }}
         options={{
@@ -73,7 +73,7 @@ export const BookingChart = ({ data }) => (
               'rgb(59, 130, 246)',
               'rgb(239, 68, 68)',
             ],
-            borderWidth: 2,
+            borderWidth: 1,
             borderRadius: 5,
           }]
         }}
@@ -116,7 +116,7 @@ export const PaymentChart = ({ data }) => (
               'rgb(16, 185, 129)',
               'rgb(239, 68, 68)',
             ],
-            borderWidth: 2,
+            borderWidth: 1,
             borderRadius: 5,
           }]
         }}

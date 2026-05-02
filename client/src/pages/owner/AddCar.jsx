@@ -3,6 +3,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { iconList } from "../../assets/assets.jsx";
 import { Title as OwnerTitle } from "../../components/owner/Title.jsx";
+import InputBox from "../../components/owner/InputBox.jsx";
 
 const AddCar = () => {
 	const { addCar } = useCarStore();
@@ -63,10 +64,8 @@ const AddCar = () => {
 	return (
 		<div className="px-4 pt-10 md:px-10 flex-1">
 			<OwnerTitle
-				title={"Add New Car"}
-				subTitle={
-					"Fill in details to list a new car for booking, including pricing, availability, and car specifications."
-				}
+				title="Add New Car"
+				subTitle="Fill in details to list a new car for booking, including pricing, availability, and car specifications."
 			/>
 
 			<form
@@ -74,7 +73,6 @@ const AddCar = () => {
 				className="flex flex-col gap-5 text-gray-500 text-sm mt-6 max-w-2xl dark:text-dark-muted"
 			>
 				{/* car image  */}
-
 				<motion.div
 					initial={{ opacity: 0, y: 10 }}
 					animate={{ opacity: 1, y: 0 }}
@@ -114,31 +112,23 @@ const AddCar = () => {
 					transition={{ type: "spring", stiffness: 300, damping: 30, delay: 0.05 }}
 					className="grid grid-cols-1 md:grid-cols-2 gap-6"
 				>
-					<motion.div className="flex flex-col w-full">
-						<label htmlFor="brand">Brand</label>
-						<input
-							type="text"
-							id="brand"
-							name="brand"
-							placeholder="e.g. BMW, Mercedes, Audi"
-							className="px-3 py-2.5 mt-1	border border-gray-300 rounded-md
-							outline-none focus:border-primary focus:ring-3 focus:ring-primary/50 transition-colors duration-600"
-							value={car.brand}
-							onChange={handleChange}
-						/>
-					</motion.div>
-					<div className="flex flex-col w-full">
-						<label htmlFor="model">Model</label>
-						<input
-							type="text"
-							id="model"
-							name="model"
-							placeholder="e.g. X5, C-Class, A6"
-							className="px-3 py-2.5 mt-1	border border-gray-300 rounded-md outline-none	focus:border-primary focus:ring-3 focus:ring-primary/50 dark:bg-card-bg dark:border-dark-border dark:text-dark-text transition-colors duration-600"
-							value={car.model}
-							onChange={handleChange}
-						/>
-					</div>
+
+					<InputBox
+						value={car.brand}
+						label="brand"
+						placeholder="e.g. BMW, Mercedes, Audi"
+						onChange={handleChange}
+						type="text"
+						title="Brand"
+					/>
+					<InputBox
+						value={car.model}
+						label="model"
+						placeholder="e.g. X5, C-Class, A6"
+						onChange={handleChange}
+						type="text"
+						title="Model"
+					/>
 				</motion.div>
 
 				{/* year , price and category  */}
@@ -148,68 +138,49 @@ const AddCar = () => {
 					transition={{ type: "spring", stiffness: 300, damping: 30, delay: 0.1 }}
 					className="grid grid-cols-1 md:grid-cols-3 gap-6"
 				>
-					<div className="flex flex-col w-full">
-						<label htmlFor="">Year</label>
-						<input
-							type="number"
-							id="year"
-							name="year"
-							placeholder="0"
-							className="px-3 py-2.5 mt-1	border border-gray-300 rounded-md
-							outline-none	focus:border-primary focus:ring-3 focus:ring-primary/50 dark:bg-card-bg dark:border-dark-border dark:text-dark-text transition-colors duration-600"
-							value={car.year}
-							onChange={handleChange}
-						/>
-					</div>
-					<div className="flex flex-col w-full">
-						<label htmlFor="">Price /Hour {currency}</label>
-						<input
-							type="number"
-							id="pricePerHour"
-							name="pricePerHour"
-							placeholder="0"
-							className="px-3 py-2.5 mt-1	border border-gray-300 rounded-md
-							outline-none	focus:border-primary focus:ring-3 focus:ring-primary/50 dark:bg-card-bg dark:border-dark-border dark:text-dark-text transition-colors duration-600"
-							value={car.pricePerHour}
-							onChange={handleChange}
-						/>
-					</div>
-					<div className="flex flex-col w-full">
-						<label htmlFor="">Late Fee /Hour {currency}</label>
-						<input
-							type="number"
-							id="lateFeePerHour"
-							name="lateFeePerHour"
-							placeholder="0"
-							className="px-3 py-2.5 mt-1	border border-gray-300 rounded-md
-							outline-none	focus:border-primary focus:ring-3 focus:ring-primary/50 dark:bg-card-bg dark:border-dark-border dark:text-dark-text transition-colors duration-600"
-							value={car.lateFeePerHour}
-							onChange={handleChange}
-						/>
-					</div>
-					<div className="flex flex-col w-full">
-						<label htmlFor="">Category</label>
-						<select
-							name="category"
-							id="category"
-							className="px-3 py-2.5 mt-1	border border-gray-300 rounded-md
-							outline-none	focus:border-primary focus:ring-3 focus:ring-primary/50 dark:bg-card-bg dark:border-dark-border dark:text-dark-text transition-colors duration-600"
-							value={car.category}
-							onChange={handleChange}
-						>
-							<option value="" disabled>
-								Select Category
-							</option>
-							<option value="Sedan">Sedan</option>
-							<option value="SUV">SUV</option>
-							<option value="MUV">MUV</option>
-							<option value="EV">EV</option>
-							<option value="Wagon">Wagon</option>
-							<option value="Van">Van</option>
-							<option value="Jeep">Jeep</option>
-							<option value="Hatchback">Hatchback</option>
-						</select>
-					</div>
+					<InputBox
+						value={car.year}
+						label="year"
+						placeholder="0"
+						onChange={handleChange}
+						type="number"
+						title="Year"
+					/>
+
+					<InputBox
+						value={car.pricePerHour}
+						label="pricePerHour"
+						placeholder="0"
+						onChange={handleChange}
+						type="number"
+						title={`Price /Hour ${currency}`}
+					/>
+
+					<InputBox
+						value={car.lateFeePerHour}
+						label="lateFeePerHour"
+						placeholder="0"
+						onChange={handleChange}
+						type="number"
+						title={`Late Fee /Hour ${currency}`}
+					/>
+					<InputBox
+						value={car.category}
+						label="category"
+						onChange={handleChange}
+						as="select"
+						title="Category"
+						options={[
+							'Sedan',
+							'SUV',
+							'MUV',
+							'EV',
+							'Wagon',
+							'Van',
+							'Jeep',
+							'Hatchback',
+						]}
+					/>
 				</motion.div>
 
 				{/* transmission , fuel type and seating capacity  */}
@@ -219,60 +190,31 @@ const AddCar = () => {
 					transition={{ type: "spring", stiffness: 300, damping: 30, delay: 0.15 }}
 					className="grid grid-cols-1 md:grid-cols-3 gap-6"
 				>
-					<div className="flex flex-col w-full">
-						<label htmlFor="">Transmission</label>
-						<select
-							name="transmission"
-							id="transmission"
-							className="px-3 py-2.5 mt-1	border border-gray-300 rounded-md
-							outline-none	focus:border-primary focus:ring-3 focus:ring-primary/50 dark:bg-card-bg dark:border-dark-border dark:text-dark-text transition-colors duration-600"
-							value={car.transmission}
-							onChange={handleChange}
-						>
-							<option value="" disabled>
-								Select Transmission
-							</option>
-							<option value="Automatic">Automatic</option>
-							<option value="Semi-Automatic">
-								Semi-Automatic
-							</option>
-							<option value="Manual">Manual</option>
-						</select>
-					</div>
+					<InputBox
+						value={car.transmission}
+						label="transmission"
+						onChange={handleChange}
+						as="select"
+						title="Transmission"
+						options={['Automatic', 'Semi-Automatic', 'Manual']}
+					/>
 
-					<div className="flex flex-col w-full">
-						<label htmlFor="">Fuel Type</label>
-						<select
-							name="fuel_type"
-							id="fuel_type"
-							className="px-3 py-2.5 mt-1	border border-gray-300 rounded-md
-							outline-none	focus:border-primary focus:ring-3 focus:ring-primary/50 dark:bg-card-bg dark:border-dark-border dark:text-dark-text transition-colors duration-600"
-							value={car.fuel_type}
-							onChange={handleChange}
-						>
-							<option value="" disabled>
-								Select Fuel Type
-							</option>
-							<option value="Gas">Gas</option>
-							<option value="Petrol">Petrol</option>
-							<option value="Diesel">Diesel</option>
-							<option value="Electric">Electric</option>
-							<option value="Hybrid">Hybrid</option>
-						</select>
-					</div>
-					<div className="flex flex-col w-full">
-						<label htmlFor="">Seating Capacity</label>
-						<input
-							type="number"
-							placeholder="0"
-							id="seating_capacity"
-							name="seating_capacity"
-							className="px-3 py-2.5 mt-1	border border-gray-300 rounded-md
-							outline-none	focus:border-primary focus:ring-3 focus:ring-primary/50 dark:bg-card-bg dark:border-dark-border dark:text-dark-text transition-colors duration-600"
-							value={car.seating_capacity}
-							onChange={handleChange}
-						/>
-					</div>
+					<InputBox
+						value={car.fuel_type}
+						label="fuel_type"
+						onChange={handleChange}
+						as="select"
+						title="Fuel Type"
+						options={['Gas', 'Petrol', 'Diesel', 'Electric', 'Hybrid']}
+					/>
+					<InputBox
+						value={car.seating_capacity}
+						label="seating_capacity"
+						onChange={handleChange}
+						type="number"
+						placeholder="0"
+						title="Seating Capacity"
+					/>
 				</motion.div>
 
 				{/* location and description  */}
@@ -282,53 +224,39 @@ const AddCar = () => {
 					transition={{ type: "spring", stiffness: 300, damping: 30, delay: 0.2 }}
 					className="grid grid-cols-1 gap-6"
 				>
-					<div className="flex flex-col w-full">
-						<label htmlFor="">Location</label>
-						<select
-							name="location"
-							id="location"
-							className="px-3 py-2.5 mt-1	border border-gray-300 rounded-md
-							outline-none	focus:border-primary focus:ring-3 focus:ring-primary/50 dark:bg-card-bg dark:border-dark-border dark:text-dark-text transition-colors duration-600"
-							value={car.location}
-							onChange={handleChange}
-						>
-							<option value="" disabled>
-								Select Location
-							</option>
-							<option value="Jaipur">Jaipur</option>
-							<option value="Udaipur">Udaipur</option>
-							<option value="Kota">Kota</option>
-							<option value="Mumbai">Mumbai</option>
-							<option value="Delhi">Delhi</option>
-							<option value="Gurugram">Gurugram</option>
-						</select>
-					</div>
+					<InputBox
+						value={car.location}
+						label="location"
+						onChange={handleChange}
+						as="select"
+						title="Location"
+						options={[
+							'Jaipur',
+							'Udaipur',
+							'Kota',
+							'Mumbai',
+							'Delhi',
+							'Gurugram',
+						]}
+					/>
 
 					<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-						<div className="flex flex-col w-full">
-							<label htmlFor="cleaningTime">Cleaning Time (Minutes)</label>
-							<input
-								type="number"
-								id="cleaningTime"
-								name="cleaningTime"
-								placeholder="30"
-								className="px-3 py-2.5 mt-1	border border-gray-300 rounded-md outline-none	focus:border-primary focus:ring-3 focus:ring-primary/50 dark:bg-card-bg dark:border-dark-border dark:text-dark-text transition-colors duration-600"
-								value={car.cleaningTime}
-								onChange={handleChange}
-							/>
-						</div>
-						<div className="flex flex-col w-full">
-							<label htmlFor="maintenanceTime">Maint. Time (Minutes)</label>
-							<input
-								type="number"
-								id="maintenanceTime"
-								name="maintenanceTime"
-								placeholder="60"
-								className="px-3 py-2.5 mt-1	border border-gray-300 rounded-md outline-none	focus:border-primary focus:ring-3 focus:ring-primary/50 dark:bg-card-bg dark:border-dark-border dark:text-dark-text transition-colors duration-600"
-								value={car.maintenanceTime}
-								onChange={handleChange}
-							/>
-						</div>
+						<InputBox
+							value={car.cleaningTime}
+							label="cleaningTime"
+							onChange={handleChange}
+							type="number"
+							placeholder="30"
+							title="Cleaning Time (Minutes)"
+						/>
+						<InputBox
+							value={car.maintenanceTime}
+							label="maintenanceTime"
+							onChange={handleChange}
+							type="number"
+							placeholder="60"
+							title="Maint. Time (Minutes)"
+						/>
 					</div>
 				</motion.div>
 
@@ -339,21 +267,18 @@ const AddCar = () => {
 					transition={{ type: "spring", stiffness: 300, damping: 30, delay: 0.25 }}
 					className="grid grid-cols-1 gap-6"
 				>
-					<div className="flex flex-col w-full">
-						<label htmlFor="">Description</label>
-						<textarea
-							rows="6"
-							placeholder="e.g. A luxury sedan with comfortable seating and powerful engine."
-							id="description"
-							name="description"
-							className="px-3 py-2.5 mt-1	border border-gray-300 rounded-md
-							outline-none	focus:border-primary focus:ring-3 focus:ring-primary/50 resize-none dark:bg-card-bg dark:border-dark-border dark:text-dark-text transition-colors duration-600"
-							value={car.description}
-							onChange={handleChange}
-						></textarea>
-					</div>
+					<InputBox
+						value={car.description}
+						label="description"
+						onChange={handleChange}
+						as="textarea"
+						rows={6}
+						placeholder="e.g. A luxury sedan with comfortable seating and powerful engine."
+						title="Description"
+					/>
 				</motion.div>
 
+				{/* submit button  */}
 				<motion.button
 					initial={{ opacity: 0, y: 10 }}
 					animate={{ opacity: 1, y: 0 }}
@@ -381,3 +306,4 @@ const AddCar = () => {
 };
 
 export default AddCar;
+ 

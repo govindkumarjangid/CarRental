@@ -36,6 +36,24 @@ const App = () => {
 
 	useEffect(() => {
 		fetchCars();
+
+		// Global scroll tracking for auto-hiding scrollbars
+		const handleGlobalScroll = (e) => {
+			const target = e.target;
+			if (target instanceof HTMLElement) {
+				target.setAttribute('data-scrolling', 'true');
+				
+				// Clear previous timeout for this element
+				if (target._scrollTimeout) clearTimeout(target._scrollTimeout);
+				
+				target._scrollTimeout = setTimeout(() => {
+					target.setAttribute('data-scrolling', 'false');
+				}, 1000);
+			}
+		};
+
+		window.addEventListener('scroll', handleGlobalScroll, true);
+		return () => window.removeEventListener('scroll', handleGlobalScroll, true);
 	}, []);
 
 	useEffect(() => {

@@ -3,10 +3,12 @@ import FormSkeleton from "../UI/FormSkeleton.jsx";
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { iconList } from "../../assets/assets.jsx";
+import InputBox from "./InputBox.jsx";
 
 const EditCarForm = ({ car: propCar, onClose, isFullPage = false }) => {
     const { setShowEditCar, editCar, updateCar } = useCarStore();
     const targetCar = propCar || editCar;
+    const currency = import.meta.env.VITE_CURRENCY || "$";
 
     const [car, setCar] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -65,7 +67,7 @@ const EditCarForm = ({ car: propCar, onClose, isFullPage = false }) => {
             transition={{ type: "spring", stiffness: 300, damping: 25 }}
             onSubmit={handleSubmit}
             onClick={(e) => e.stopPropagation()}
-            className={`${isFullPage ? "w-full h-full" : "relative max-w-2xl mx-auto bg-white  shadow-2xl md:rounded-md md:max-h-[90vh] md:border border-gray-200 "} px-5 md:px-10 py-8 overflow-y-auto blue-thumb-scrollbar w-full bg-white  cursor-default`}
+            className={`${isFullPage ? "w-full h-full" : "relative max-w-2xl mx-auto bg-white dark:bg-main-bg shadow-2xl md:rounded-md md:max-h-[90vh] md:border border-gray-200 dark:border-dark-border"} px-5 md:px-10 py-8 overflow-y-auto blue-thumb-scrollbar w-full bg-white dark:bg-main-bg cursor-default`}
         >
             {/* title and close button  */}
             <div className="flex items-center justify-between mb-8">
@@ -74,34 +76,34 @@ const EditCarForm = ({ car: propCar, onClose, isFullPage = false }) => {
                         <button
                             type="button"
                             onClick={handleClose}
-                            className="p-2 rounded-full hover:bg-gray-100  transition-all active:scale-90 text-gray-500  border border-gray-100 "
+                            className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-surface transition-all active:scale-90 text-gray-500 dark:text-dark-muted border border-gray-100 dark:border-dark-border cursor-pointer"
                         >
                             <iconList.ArrowLeft size={20} />
                         </button>
                     )}
-                    <h2 className="text-xl md:text-2xl font-bold ">Edit Your Car</h2>
+                    <h2 className="text-xl md:text-2xl font-bold dark:text-white">Edit Your Car</h2>
                 </div>
                 {!isFullPage && (
                     <button
                         type="button"
                         onClick={handleClose}
-                        className="p-2 rounded-md hover:bg-gray-100  transition-all active:scale-95 text-gray-500 "
+                        className="p-2 rounded-md hover:bg-gray-100 dark:hover:bg-surface transition-all active:scale-95 text-gray-500 dark:text-dark-muted"
                     >
                         <iconList.X size={22} className="cursor-pointer" />
                     </button>
                 )}
             </div>
 
-            <div className="flex flex-col gap-5 text-gray-500 text-sm w-full">
+            <div className="flex flex-col gap-5 text-gray-500 text-sm w-full dark:text-dark-muted">
                 {/* car image  */}
                 <div className="flex gap-4 items-center w-full mb-2">
-                    <label htmlFor="car-image" className="cursor-pointer shadow-sm rounded-md border-dashed border-primary border-2 p-2 hover:border-solid">
+                    <label htmlFor="car-image" className="cursor-pointer shadow-sm rounded-md border-dashed border-primary dark:border-accent border-2 p-2 hover:border-solid">
                         {image ? (
                             <img src={URL.createObjectURL(image)} className="h-14 w-26 object-cover rounded-md" alt="car preview" />
                         ) : car?.image ? (
                             <img src={car.image} className="h-14 w-26 object-cover rounded-md" alt="car current" />
                         ) : (
-                            <iconList.CloudUpload className="h-14 text-primary bg-gray-100   px-4 py-3 rounded-md cursor-pointer w-26 border border-gray-300 " />
+                            <iconList.CloudUpload className="h-14 text-primary dark:text-accent bg-gray-100 dark:bg-surface px-4 py-3 rounded-md cursor-pointer w-26 border border-gray-300 dark:border-dark-border" />
                         )}
                         <input
                             type="file"
@@ -112,174 +114,117 @@ const EditCarForm = ({ car: propCar, onClose, isFullPage = false }) => {
                             onChange={(e) => setImage(e.target.files[0])}
                         />
                     </label>
-                    <p className="text-xs md:text-sm text-gray-500">
+                    <p className="text-xs md:text-sm text-gray-500 dark:text-dark-muted">
                         Upload a image of your car
                     </p>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
-                    <div className="flex flex-col w-full">
-                        <label htmlFor="brand" className="mb-1">Brand</label>
-                        <input
-                            name="brand"
-                            id="brand"
-                            value={car.brand}
-                            onChange={handleChange}
-                            className="px-3 py-2.5 border border-gray-300 rounded-md outline-none focus:border-primary focus:ring-3 focus:ring-primary/50 transition-colors duration-600   "
-                            placeholder="e.g. BMW"
-                        />
-                    </div>
-                    <div className="flex flex-col w-full">
-                        <label htmlFor="model" className="mb-1">Model</label>
-                        <input
-                            name="model"
-                            id="model"
-                            value={car.model}
-                            onChange={handleChange}
-                            className="px-3 py-2.5 border border-gray-300 rounded-md outline-none focus:border-primary focus:ring-3 focus:ring-primary/50 transition-colors duration-600   "
-                            placeholder="e.g. X5"
-                        />
-                    </div>
+                    <InputBox
+                        label="brand"
+                        title="Brand"
+                        value={car.brand}
+                        onChange={handleChange}
+                        placeholder="e.g. BMW"
+                    />
+                    <InputBox
+                        label="model"
+                        title="Model"
+                        value={car.model}
+                        onChange={handleChange}
+                        placeholder="e.g. X5"
+                    />
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full">
-                    <div className="flex flex-col w-full">
-                        <label htmlFor="year" className="mb-1">Year</label>
-                        <input
-                            type="number"
-                            name="year"
-                            id="year"
-                            value={car.year}
-                            onChange={handleChange}
-                            className="px-3 py-2.5 border border-gray-300 rounded-md outline-none focus:border-primary focus:ring-3 focus:ring-primary/50 transition-colors duration-600   "
-                        />
-                    </div>
-                    <div className="flex flex-col w-full">
-                        <label htmlFor="pricePerHour" className="mb-1">Price /Hour</label>
-                        <input
-                            type="number"
-                            name="pricePerHour"
-                            id="pricePerHour"
-                            value={car.pricePerHour}
-                            onChange={handleChange}
-                            className="px-3 py-2.5 border border-gray-300 rounded-md outline-none focus:border-primary focus:ring-3 focus:ring-primary/50 transition-colors duration-600   "
-                        />
-                    </div>
-                    <div className="flex flex-col w-full">
-                        <label htmlFor="lateFeePerHour" className="mb-1">Late Fee /Hour</label>
-                        <input
-                            type="number"
-                            name="lateFeePerHour"
-                            id="lateFeePerHour"
-                            value={car.lateFeePerHour}
-                            onChange={handleChange}
-                            className="px-3 py-2.5 border border-gray-300 rounded-md outline-none focus:border-primary focus:ring-3 focus:ring-primary/50 transition-colors duration-600   "
-                        />
-                    </div>
-                    <div className="flex flex-col w-full">
-                        <label htmlFor="category" className="mb-1">Category</label>
-                        <select
-                            name="category"
-                            id="category"
-                            value={car.category}
-                            onChange={handleChange}
-                            className="px-3 py-2.5 border border-gray-300 rounded-md outline-none focus:border-primary focus:ring-3 focus:ring-primary/50 transition-colors duration-600   "
-                        >
-                            <option value="" disabled>Select Category</option>
-                            {["Sedan", "SUV", "MUV", "EV", "Wagon", "Van", "Jeep", "Hatchback"].map(cat => (
-                                <option key={cat} value={cat}>{cat}</option>
-                            ))}
-                        </select>
-                    </div>
+                    <InputBox
+                        label="year"
+                        title="Year"
+                        type="number"
+                        value={car.year}
+                        onChange={handleChange}
+                    />
+                    <InputBox
+                        label="pricePerHour"
+                        title={`Price /Hour (${currency})`}
+                        type="number"
+                        value={car.pricePerHour}
+                        onChange={handleChange}
+                    />
+                    <InputBox
+                        label="lateFeePerHour"
+                        title={`Late Fee /Hour (${currency})`}
+                        type="number"
+                        value={car.lateFeePerHour}
+                        onChange={handleChange}
+                    />
+                    <InputBox
+                        label="category"
+                        title="Category"
+                        as="select"
+                        value={car.category}
+                        onChange={handleChange}
+                        options={["Sedan", "SUV", "MUV", "EV", "Wagon", "Van", "Jeep", "Hatchback"]}
+                    />
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full">
-                    <div className="flex flex-col w-full">
-                        <label htmlFor="transmission" className="mb-1">Transmission</label>
-                        <select
-                            name="transmission"
-                            id="transmission"
-                            value={car.transmission}
-                            onChange={handleChange}
-                            className="px-3 py-2.5 border border-gray-300 rounded-md outline-none focus:border-primary focus:ring-3 focus:ring-primary/50 transition-colors duration-600   "
-                        >
-                            <option value="" disabled>Select</option>
-                            <option value="Automatic">Automatic</option>
-                            <option value="Semi-Automatic">Semi-Automatic</option>
-                            <option value="Manual">Manual</option>
-                        </select>
-                    </div>
-                    <div className="flex flex-col w-full">
-                        <label htmlFor="fuel_type" className="mb-1">Fuel Type</label>
-                        <select
-                            name="fuel_type"
-                            id="fuel_type"
-                            value={car.fuel_type}
-                            onChange={handleChange}
-                            className="px-3 py-2.5 border border-gray-300 rounded-md outline-none focus:border-primary focus:ring-3 focus:ring-primary/50 transition-colors duration-600   "
-                        >
-                            <option value="" disabled>Select Fuel</option>
-                            <option value="Petrol">Petrol</option>
-                            <option value="Diesel">Diesel</option>
-                            <option value="Electric">Electric</option>
-                            <option value="Hybrid">Hybrid</option>
-                        </select>
-                    </div>
-                    <div className="flex flex-col w-full">
-                        <label htmlFor="seating_capacity" className="mb-1">Capacity</label>
-                        <input
-                            type="number"
-                            name="seating_capacity"
-                            id="seating_capacity"
-                            value={car.seating_capacity}
-                            onChange={handleChange}
-                            className="px-3 py-2.5 border border-gray-300 rounded-md outline-none focus:border-primary focus:ring-3 focus:ring-primary/50 transition-colors duration-600   "
-                        />
-                    </div>
+                    <InputBox
+                        label="transmission"
+                        title="Transmission"
+                        as="select"
+                        value={car.transmission}
+                        onChange={handleChange}
+                        options={["Automatic", "Semi-Automatic", "Manual"]}
+                    />
+                    <InputBox
+                        label="fuel_type"
+                        title="Fuel Type"
+                        as="select"
+                        value={car.fuel_type}
+                        onChange={handleChange}
+                        options={["Petrol", "Diesel", "Electric", "Hybrid"]}
+                    />
+                    <InputBox
+                        label="seating_capacity"
+                        title="Capacity"
+                        type="number"
+                        value={car.seating_capacity}
+                        onChange={handleChange}
+                    />
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
-                    <div className="flex flex-col w-full">
-                        <label htmlFor="cleaningTime" className="mb-1">Cleaning (Mins)</label>
-                        <input
-                            type="number"
-                            name="cleaningTime"
-                            id="cleaningTime"
-                            value={car.cleaningTime}
-                            onChange={handleChange}
-                            className="px-3 py-2.5 border border-gray-300 rounded-md outline-none focus:border-primary focus:ring-3 focus:ring-primary/50 transition-colors duration-600   "
-                        />
-                    </div>
-                    <div className="flex flex-col w-full">
-                        <label htmlFor="maintenanceTime" className="mb-1">Maint. (Mins)</label>
-                        <input
-                            type="number"
-                            name="maintenanceTime"
-                            id="maintenanceTime"
-                            value={car.maintenanceTime}
-                            onChange={handleChange}
-                            className="px-3 py-2.5 border border-gray-300 rounded-md outline-none focus:border-primary focus:ring-3 focus:ring-primary/50 transition-colors duration-600   "
-                        />
-                    </div>
-                </div>
-
-                <div className="flex flex-col w-full">
-                    <label htmlFor="description" className="mb-1">Description</label>
-                    <textarea
-                        name="description"
-                        id="description"
-                        rows="4"
-                        value={car.description}
+                    <InputBox
+                        label="cleaningTime"
+                        title="Cleaning (Mins)"
+                        type="number"
+                        value={car.cleaningTime}
                         onChange={handleChange}
-                        className="px-3 py-2.5 border border-gray-300 rounded-md outline-none focus:border-primary focus:ring-3 focus:ring-primary/50 transition-colors duration-600    resize-none"
+                    />
+                    <InputBox
+                        label="maintenanceTime"
+                        title="Maint. (Mins)"
+                        type="number"
+                        value={car.maintenanceTime}
+                        onChange={handleChange}
                     />
                 </div>
+
+                <InputBox
+                    label="description"
+                    title="Description"
+                    as="textarea"
+                    rows={4}
+                    value={car.description}
+                    onChange={handleChange}
+                />
 
                 <div className="mt-4">
                     <button
                         type="submit"
                         disabled={loading}
-                        className={`px-8 py-2.5 rounded-md text-white transition-all active:scale-95 flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer ${loading ? "bg-primary" : "bg-primary hover:bg-primary-dull"}`}
+                        className={`px-8 py-2.5 rounded-md text-white transition-all active:scale-95 flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer dark:text-main-bg ${loading ? "bg-primary dark:bg-accent" : "bg-primary hover:bg-primary-dull dark:bg-accent dark:hover:bg-accent-dull"}`}
                     >
                         {loading ? <iconList.Loader className="animate-spin" size={18} /> : <iconList.Check size={18} />}
                         {loading ? "Updating..." : "Update Car"}
@@ -288,7 +233,6 @@ const EditCarForm = ({ car: propCar, onClose, isFullPage = false }) => {
             </div>
         </motion.form>
     );
-
 
     if (isFullPage) return (
         <div className="w-full h-full bg-white  flex flex-col">
