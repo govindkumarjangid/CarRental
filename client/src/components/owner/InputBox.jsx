@@ -3,7 +3,7 @@ const InputBox = ({ value, onChange, label, type = 'text', placeholder, title, a
 
     const baseClass = "peer w-full border-2 border-gray-200 rounded-lg py-3 px-4 outline-none focus:border-primary focus:ring-3 focus:ring-primary/40 transition-all duration-300 bg-transparent"
 
-    const labelClass = "absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none transition-all duration-200 bg-white dark:bg-main-bg px-1 peer-focus:top-0 peer-focus:text-xs peer-focus:text-primary dark:peer-focus:text-accent peer-[:not(:placeholder-shown)]:top-0 peer-[:not(:placeholder-shown)]:text-xs"
+    const labelClass = `absolute left-4 ${as === 'textarea' ? 'top-4' : 'top-1/2 -translate-y-1/2'} text-gray-500 pointer-events-none transition-all duration-200 bg-white dark:bg-main-bg px-1 peer-focus:top-0 peer-focus:-translate-y-1/2 peer-focus:text-xs peer-focus:text-primary dark:peer-focus:text-accent peer-[:not(:placeholder-shown)]:top-0 peer-[:not(:placeholder-shown)]:-translate-y-1/2 peer-[:not(:placeholder-shown)]:text-xs`
 
     return (
         <div className="relative flex flex-col w-full">
@@ -48,7 +48,7 @@ const InputBox = ({ value, onChange, label, type = 'text', placeholder, title, a
             )}
             <label
                 htmlFor={label}
-                className={`${labelClass} ${as === 'select' && value ? 'top-0 text-xs' : ''}`}
+                className={`${labelClass} ${as === 'select' && value ? 'top-0 -translate-y-1/2 text-xs' : ''}`}
             >
                 {title}
             </label>

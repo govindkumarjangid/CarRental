@@ -18,59 +18,26 @@ body::selection {
       --color-second-bg: #333435;
 }
 
-/* Custom Premium Scrollbar */
 ::-webkit-scrollbar {
-      width: 6px;
-      height: 6px;
+      width: 5px;
+      height: 5px;
 }
 
 ::-webkit-scrollbar-track {
-      background: transparent;
+      background: #f1f1f1;
 }
 
 ::-webkit-scrollbar-thumb {
-      background-color: transparent;
-      border-radius: 20px;
-      border: 2px solid transparent;
-      background-clip: content-box;
-      transition: background-color 0.4s ease;
+      background-color: #2563EB;
 }
 
-/* Show scrollbar on hover or when scrolling (via JS attribute) */
-*:hover::-webkit-scrollbar-thumb,
-*[data-scrolling="true"]::-webkit-scrollbar-thumb {
-      background-color: rgba(37, 99, 235, 0.4);
-}
 
 ::-webkit-scrollbar-thumb:hover {
-      background-color: rgba(37, 99, 235, 0.7) !important;
+      background-color: #1D4ED8;
 }
 
-/* Specific Classes */
-.custom-scrollbar::-webkit-scrollbar-thumb,
-.blue-thumb-scrollbar::-webkit-scrollbar-thumb {
-      background-color: transparent;
-}
-
-.custom-scrollbar:hover::-webkit-scrollbar-thumb,
-.blue-thumb-scrollbar:hover::-webkit-scrollbar-thumb,
-.custom-scrollbar[data-scrolling="true"]::-webkit-scrollbar-thumb,
-.blue-thumb-scrollbar[data-scrolling="true"]::-webkit-scrollbar-thumb {
-      background-color: rgba(37, 99, 235, 0.4);
-}
-
-/* Dark mode adjustments */
-.dark ::-webkit-scrollbar-thumb {
-      background-color: transparent;
-}
-
-.dark *:hover::-webkit-scrollbar-thumb,
-.dark *[data-scrolling="true"]::-webkit-scrollbar-thumb {
-      background-color: rgba(255, 255, 255, 0.1);
-}
-
-.dark ::-webkit-scrollbar-thumb:hover {
-      background-color: rgba(255, 255, 255, 0.3) !important;
+::-webkit-scrollbar-thumb:active {
+      background-color: #1E40AF;
 }
 
 .no-scrollbar::-webkit-scrollbar {
@@ -88,24 +55,29 @@ body::selection {
 }
 
 @keyframes orbit {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+      0% {
+            transform: rotate(0deg);
+      }
+
+      100% {
+            transform: rotate(360deg);
+      }
 }
 
 .orbit-dot {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  width: 10px;
-  height: 10px;
-  margin-left: -5px;
-  border-radius: 50%;
-  transform-origin: 5px 24px;
-  animation: orbit 1.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+      position: absolute;
+      top: 0;
+      left: 50%;
+      width: 10px;
+      height: 10px;
+      margin-left: -5px;
+      border-radius: 50%;
+      transform-origin: 5px 24px;
+      animation: orbit 1.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 }
 
-@media (width >= 48rem) {
-      .orbit-dot{
+@media (width >=48rem) {
+      .orbit-dot {
             transform-origin: 5px 36px;
       }
-    }
+}

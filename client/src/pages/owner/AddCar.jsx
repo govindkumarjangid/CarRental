@@ -136,7 +136,7 @@ const AddCar = () => {
 					initial={{ opacity: 0, y: 10 }}
 					animate={{ opacity: 1, y: 0 }}
 					transition={{ type: "spring", stiffness: 300, damping: 30, delay: 0.1 }}
-					className="grid grid-cols-1 md:grid-cols-3 gap-6"
+					className="grid grid-cols-1 md:grid-cols-4 gap-6"
 				>
 					<InputBox
 						value={car.year}
@@ -170,6 +170,7 @@ const AddCar = () => {
 						onChange={handleChange}
 						as="select"
 						title="Category"
+						placeholder="Select category"
 						options={[
 							'Sedan',
 							'SUV',
@@ -196,6 +197,7 @@ const AddCar = () => {
 						onChange={handleChange}
 						as="select"
 						title="Transmission"
+						placeholder="Select transmission type"
 						options={['Automatic', 'Semi-Automatic', 'Manual']}
 					/>
 
@@ -205,6 +207,7 @@ const AddCar = () => {
 						onChange={handleChange}
 						as="select"
 						title="Fuel Type"
+						placeholder="Select fuel type"
 						options={['Gas', 'Petrol', 'Diesel', 'Electric', 'Hybrid']}
 					/>
 					<InputBox
@@ -230,6 +233,7 @@ const AddCar = () => {
 						onChange={handleChange}
 						as="select"
 						title="Location"
+						placeholder="Select location"
 						options={[
 							'Jaipur',
 							'Udaipur',
@@ -306,4 +310,3 @@ const AddCar = () => {
 };
 
 export default AddCar;
- 
