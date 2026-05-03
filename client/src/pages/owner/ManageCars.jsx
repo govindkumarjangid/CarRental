@@ -7,6 +7,7 @@ import TableSkeleton from "../../components/UI/TableSkeleton.jsx";
 import { useParams, useNavigate } from "react-router-dom";
 import EditCarForm from "../../components/owner/EditCarForm.jsx";
 import EmptyCarState from "../../components/owner/EmptyCarState.jsx";
+import InputBox from "../../components/owner/InputBox.jsx";
 
 const ManageCars = () => {
 	const currency = import.meta.env.VITE_CURRENCY;
@@ -26,9 +27,36 @@ const ManageCars = () => {
 	const [openConfirm, setOpenConfirm] = useState(false);
 	const [deleteId, setDeleteId] = useState(null);
 
+	const [searchTerm, setSearchTerm] = useState("");
+	const [categoryFilter, setCategoryFilter] = useState("All");
+	const [statusFilter, setStatusFilter] = useState("All");
+	const [currentPage, setCurrentPage] = useState(1);
+	const itemsPerPage = 5;
+
 	useEffect(() => {
 		fetchOwnerCars();
 	}, []);
+
+	const filteredCars = cars.filter(car => {
+		const matchesSearch =
+			car.brand.toLowerCase().includes(searchTerm.toLowerCase()) ||
+			car.model.toLowerCase().includes(searchTerm.toLowerCase()) ||
+			car.category.toLowerCase().includes(searchTerm.toLowerCase());
+
+		const matchesCategory = categoryFilter === "All" || car.category === categoryFilter;
+		const matchesStatus = statusFilter === "All" || car.status === statusFilter.toLowerCase();
+
+		return matchesSearch && matchesCategory && matchesStatus;
+	});
+
+	useEffect(() => {
+		setCurrentPage(1);
+	}, [searchTerm, categoryFilter, statusFilter]);
+
+	const totalPages = Math.ceil(filteredCars.length / itemsPerPage);
+	const indexOfLastItem = currentPage * itemsPerPage;
+	const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+	const currentItems = filteredCars.slice(indexOfFirstItem, indexOfLastItem);
 
 	const selectedCar = cars.find(c => c._id === carId);
 
@@ -37,153 +65,239 @@ const ManageCars = () => {
 
 	if (carId && selectedCar) {
 		return (
-			<div className="flex-1 h-full overflow-hidden">
+			<motion.div
+				initial={{ opacity: 0 }}
+				animate={{ opacity: 1 }}
+				transition={{ duration: 0.4, ease: "easeOut" }}
+				className="flex-1 h-full overflow-hidden"
+			>
 				<EditCarForm
 					car={selectedCar}
 					onClose={() => navigate("/owner/manage-cars")}
 					isFullPage={true}
 				/>
-			</div>
+			</motion.div>
 		)
 	}
 
 	return (
-		<div className="px-4 pt-10 md:px-10 flex-1 pb-10">
-			<OwnerTitle
-				title={"Manage Cars"}
-				subTitle={
-					"View all listed cars, update their details, or remove them from the booking platform."
-				}
-			/>
-			<div className="max-w-250 w-full bg-white dark:bg-second-bg shadow-md hover:shadow-lg transition-all duration-300 rounded-xl overflow-hidden mt-6 border border-gray-200 dark:border-dark-border">
-				<motion.table
-					initial={{ opacity: 0, y: 10 }}
-					animate={{ opacity: 1, y: 0 }}
-					transition={{ type: "spring", stiffness: 300, damping: 30 }}
-					className="w-full border-collapse text-left text-sm text-gray-600 dark:text-dark-text"
+		<div className="px-4 pt-10 md:px-10 flex-1 pb-10 max-w-6xl w-full">
+			<div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+				<div>
+					<OwnerTitle
+						title={"Manage Cars"}
+						subTitle={
+							"View all listed cars, update their details, or remove them from the platform."
+						}
+					/>
+				</div>
+				<motion.button
+					initial={{ opacity: 0 }}
+					animate={{ opacity: 1 }}
+					onClick={() => navigate("/owner/add-car")}
+					className="flex items-center gap-2 bg-primary hover:bg-primary-dull text-white px-3 py-2 rounded-md font-medium transition-all shadow-lg active:scale-95 w-fit h-fit cursor-pointer"
 				>
-					<thead className="bg-gray-50 dark:bg-card-bg text-gray-500 dark:text-dark-muted border-b border-gray-200 dark:border-dark-border">
-						<tr>
-							<th className="p-3 font-medium">Car</th>
-							<th className="p-3 font-medium max-md:hidden">
-								Category
-							</th>
-							<th className="p-3 font-medium">Price</th>
-							<th className="p-3 font-medium max-md:hidden">
-								Status
-							</th>
-							<th className="p-3 font-medium">Actions</th>
-						</tr>
-					</thead>
-					<tbody>
-						{cars.map((car, index) => (
-							<motion.tr
-								initial={{ opacity: 0 }}
-								animate={{ opacity: 1 }}
-								transition={{
-									type: "spring", stiffness: 300, damping: 30
-								}}
-								className="border-b last:border-b-0 border-gray-100 hover:bg-gray-50/80 transition-colors duration-200 dark:border-dark-border dark:hover:bg-surface/50"
-								key={index}
-							>
-								<td className="p-3 flex  md:flex-row flex-col items-start gap-3 justify-start">
-									<img
-										src={car.image}
-										alt={car.name}
-										className="h-11 aspect-video rounded-md object-cover"
-									/>
-									<div>
-										<p className="font-medium md:text-base text-xs line-clamp-1">
-											{car.brand} {car.model}
-										</p>
-										<p className="max-md:hidden">
-											{car.seating_capacity} seats ●{" "}
-											{car.transmission}
-										</p>
-									</div>
-								</td>
+					<iconList.Plus size={20} />
+					Add New Car
+				</motion.button>
+			</div>
 
-								<td className="py-3 max-md:hidden">
-									{car.category}
-								</td>
+			{/* Search and Filters */}
+			<div className="flex flex-col md:flex-row gap-4 mt-8 mb-6 items-end">
+				<div className="flex-1 w-full">
+					<InputBox
+						value={searchTerm}
+						onChange={(e) => setSearchTerm(e.target.value)}
+						label="search"
+						placeholder="Search by name, model, or features..."
+						title="Search Cars"
+						icon={iconList.Search}
+					/>
+				</div>
+				<div className="w-full md:w-52">
+					<InputBox
+						as="select"
+						value={categoryFilter}
+						onChange={(e) => setCategoryFilter(e.target.value)}
+						label="category"
+						title="Category"
+						options={['All', 'Sedan', 'SUV', 'MUV', 'EV', 'Wagon', 'Van', 'Jeep', 'Hatchback']}
+					/>
+				</div>
+				<div className="w-full md:w-52">
+					<InputBox
+						as="select"
+						value={statusFilter}
+						onChange={(e) => setStatusFilter(e.target.value)}
+						label="status"
+						title="Status"
+						options={['All', 'Available', 'Cleaning', 'Maintenance', 'Unavailable']}
+					/>
+				</div>
+			</div>
 
-								<td className="md:p-3 md:text-base text-xs font-light">
-									<span>{currency}</span>
-									<span>{car.pricePerHour?.toLocaleString("en-IN")}/hr</span>
-								</td>
-
-								<td className="p-3 max-md:hidden">
-									<select
-										value={car.status}
-										onChange={(e) => updateCarStatus(car._id, e.target.value)}
-										className={`text-[13px] font-medium px-2 py-1 rounded-md outline-none border cursor-pointer transition-all ${
-											car.status === "available"
-											? "bg-green-500/10 text-green-600 border-green-500/20 dark:bg-green-500/20"
-											: car.status === "cleaning"
-											? "bg-blue-500/10 text-blue-600 border-blue-500/20 dark:bg-blue-500/20"
-											: car.status === "maintenance"
-											? "bg-red-500/10 text-red-600 border-red-500/20 dark:bg-red-500/20"
-											: "bg-gray-500/10 text-gray-600 border-gray-500/20 dark:bg-gray-500/20"
-										}`}
+			<div className="max-w-250 w-full bg-white dark:bg-second-bg shadow-md hover:shadow-lg transition-all duration-300 rounded-xl overflow-hidden border border-gray-200 dark:border-dark-border">
+				<div className="overflow-x-auto">
+					<motion.table
+						initial={{ opacity: 0 }}
+						animate={{ opacity: 1 }}
+						transition={{ duration: 0.3 }}
+						className="w-full border-collapse text-left text-sm text-gray-600 dark:text-dark-text"
+					>
+						<thead className="bg-gray-50 dark:bg-card-bg text-gray-500 dark:text-dark-muted border-b border-gray-200 dark:border-dark-border">
+							<tr>
+								<th className="p-3 font-medium">Car</th>
+								<th className="p-3 font-medium max-md:hidden">
+									Category
+								</th>
+								<th className="p-3 font-medium">Price</th>
+								<th className="p-3 font-medium max-md:hidden">
+									Status
+								</th>
+								<th className="p-3 font-medium">Actions</th>
+							</tr>
+						</thead>
+						<tbody>
+							{currentItems.length > 0 ? (
+								currentItems.map((car, index) => (
+									<motion.tr
+										initial={{ opacity: 0 }}
+										animate={{ opacity: 1 }}
+										transition={{
+											type: "spring", stiffness: 300, damping: 30
+										}}
+										className="border-b last:border-b-0 border-gray-100 hover:bg-gray-50/80 transition-colors duration-200 dark:border-dark-border dark:hover:bg-surface/50"
+										key={car._id || index}
 									>
-										<option value="available">Available</option>
-										<option value="cleaning">Cleaning</option>
-										<option value="maintenance">Maintenance</option>
-										<option value="unavailable">Unavailable</option>
-									</select>
-								</td>
-
-								<td className="py-3 px-2">
-									<div className="flex items-center gap-4">
-										<button
-											onClick={() =>
-												updateCarStatus(car._id, car.status === "available" ? "unavailable" : "available")
-											}
-											title="Quick Toggle Availability"
-											className="cursor-pointer active:scale-90 transition-transform duration-300"
-										>
-											{car.status === "available" ? (
-												<iconList.Eye
-													size={18}
-													className="text-green-600"
-												/>
-											) : (
-												<iconList.EyeOff
-													size={18}
-													className="text-red-600"
-												/>
-											)}
-										</button>
-
-										<button
-											onClick={() => {
-												setOpenConfirm(true);
-												setDeleteId(car._id);
-											}}
-											className="cursor-pointer active:scale-90 transition-transform duration-300"
-										>
-											<iconList.Trash2
-												size={18}
-												className="text-red-600"
+										<td className="p-3 flex  md:flex-row flex-col items-start gap-3 justify-start">
+											<img
+												src={car.image}
+												alt={car.name}
+												className="h-11 aspect-video rounded-md object-cover"
 											/>
-										</button>
+											<div>
+												<p className="font-medium md:text-base text-xs line-clamp-1">
+													{car.brand} {car.model}
+												</p>
+												<p className="max-md:hidden">
+													{car.seating_capacity} seats ●{" "}
+													{car.transmission}
+												</p>
+											</div>
+										</td>
 
-										<button
-											onClick={() => navigate(`/owner/manage-cars/${car._id}`)}
-											className="cursor-pointer active:scale-90 transition-transform duration-300"
-											title="Edit Car"
-										>
-											<iconList.EditIcon
-												size={18}
-												className="text-yellow-500"
-											/>
-										</button>
-									</div>
-								</td>
-							</motion.tr>
-						))}
-					</tbody>
-				</motion.table>
+										<td className="py-3 max-md:hidden">
+											{car.category}
+										</td>
+
+										<td className="md:p-3 md:text-base text-xs font-light">
+											<span>{currency}</span>
+											<span>{car.pricePerHour?.toLocaleString("en-IN")}/hr</span>
+										</td>
+
+										<td className="p-3 max-md:hidden">
+											<select
+												value={car.status}
+												onChange={(e) => updateCarStatus(car._id, e.target.value)}
+												className={`text-[13px] font-medium px-2 py-1 rounded-md outline-none border cursor-pointer transition-all ${car.status === "available"
+														? "bg-green-500/10 text-green-600 border-green-500/20 dark:bg-green-500/20"
+														: car.status === "cleaning"
+															? "bg-blue-500/10 text-blue-600 border-blue-500/20 dark:bg-blue-500/20"
+															: car.status === "maintenance"
+																? "bg-red-500/10 text-red-600 border-red-500/20 dark:bg-red-500/20"
+																: "bg-gray-500/10 text-gray-600 border-gray-500/20 dark:bg-gray-500/20"
+													}`}
+											>
+												<option value="available">Available</option>
+												<option value="cleaning">Cleaning</option>
+												<option value="maintenance">Maintenance</option>
+												<option value="unavailable">Unavailable</option>
+											</select>
+										</td>
+
+										<td className="py-3 px-2">
+											<div className="flex items-center gap-4">
+												<button
+													onClick={() =>
+														updateCarStatus(car._id, car.status === "available" ? "unavailable" : "available")
+													}
+													title="Quick Toggle Availability"
+													className="cursor-pointer active:scale-90 transition-transform duration-300"
+												>
+													{car.status === "available" ? (
+														<iconList.Eye
+															size={18}
+															className="text-green-600"
+														/>
+													) : (
+														<iconList.EyeOff
+															size={18}
+															className="text-red-600"
+														/>
+													)}
+												</button>
+
+												<button
+													onClick={() => {
+														setOpenConfirm(true);
+														setDeleteId(car._id);
+													}}
+													className="cursor-pointer active:scale-90 transition-transform duration-300"
+												>
+													<iconList.Trash2
+														size={18}
+														className="text-red-600"
+													/>
+												</button>
+
+												<button
+													onClick={() => navigate(`/owner/manage-cars/${car._id}`)}
+													className="cursor-pointer active:scale-90 transition-transform duration-300"
+													title="Edit Car"
+												>
+													<iconList.EditIcon
+														size={18}
+														className="text-yellow-500"
+													/>
+												</button>
+											</div>
+										</td>
+									</motion.tr>
+								))
+							) : (
+								<tr>
+									<td colSpan="5" className="p-10 text-center text-gray-400 italic">
+										No cars found matching your search.
+									</td>
+								</tr>
+							)}
+						</tbody>
+					</motion.table>
+				</div>
+
+				{/* Pagination */}
+				{totalPages > 1 && (
+					<div className="p-4 border-t border-gray-100 dark:border-dark-border flex items-center justify-center gap-6 bg-gray-50/50 dark:bg-card-bg/30">
+						<button
+							disabled={currentPage === 1}
+							onClick={() => setCurrentPage(prev => prev - 1)}
+							className="p-2 rounded-xl bg-white dark:bg-second-bg border border-gray-200 dark:border-dark-border shadow-sm hover:bg-gray-100 dark:hover:bg-surface disabled:opacity-50 disabled:cursor-not-allowed transition-all active:scale-90 cursor-pointer"
+						>
+							<iconList.ChevronLeft size={20} />
+						</button>
+						<span className="text-sm font-semibold text-gray-600 dark:text-dark-text">
+							Page <span className="text-primary">{currentPage}</span> of {totalPages}
+						</span>
+						<button
+							disabled={currentPage === totalPages}
+							onClick={() => setCurrentPage(prev => prev + 1)}
+							className="p-2 rounded-xl bg-white dark:bg-second-bg border border-gray-200 dark:border-dark-border shadow-sm hover:bg-gray-100 dark:hover:bg-surface disabled:opacity-50 disabled:cursor-not-allowed transition-all active:scale-90 cursor-pointer"
+						>
+							<iconList.ChevronRight size={20} />
+						</button>
+					</div>
+				)}
+
 
 				<AnimatePresence>
 					{openConfirm && (

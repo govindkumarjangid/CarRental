@@ -1,5 +1,5 @@
 
-const InputBox = ({ value, onChange, label, type = 'text', placeholder, title, as = 'input', options = [], rows = 4, }) => {
+const InputBox = ({ value, onChange, label, type = 'text', placeholder, title, as = 'input', options = [], rows = 4, icon: Icon }) => {
 
     const baseClass = "peer w-full border-2 border-gray-200 rounded-lg py-3 px-4 outline-none focus:border-primary focus:ring-3 focus:ring-primary/40 transition-all duration-300 bg-transparent"
 
@@ -7,12 +7,17 @@ const InputBox = ({ value, onChange, label, type = 'text', placeholder, title, a
 
     return (
         <div className="relative flex flex-col w-full">
+            {Icon && (
+                <div className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 z-10">
+                    <Icon size={18} />
+                </div>
+            )}
             {as === 'textarea' ? (
                 <textarea
                     id={label}
                     name={label}
                     placeholder=" "
-                    className={`${baseClass} resize-none`}
+                    className={`${baseClass} resize-none ${Icon ? 'pr-10' : ''}`}
                     value={value}
                     onChange={onChange}
                     rows={rows}
@@ -21,7 +26,7 @@ const InputBox = ({ value, onChange, label, type = 'text', placeholder, title, a
                 <select
                     id={label}
                     name={label}
-                    className={baseClass}
+                    className={`${baseClass} ${Icon ? 'pr-10' : ''}`}
                     value={value}
                     onChange={onChange}
                     required
@@ -41,7 +46,7 @@ const InputBox = ({ value, onChange, label, type = 'text', placeholder, title, a
                     id={label}
                     name={label}
                     placeholder=" "
-                    className={baseClass}
+                    className={`${baseClass} ${Icon ? 'pr-10' : ''}`}
                     value={value}
                     onChange={onChange}
                 />

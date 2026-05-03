@@ -5,6 +5,7 @@ import { useBookingStore } from "../../store/useBookingStore.js";
 import TableSkeleton from "../../components/UI/TableSkeleton.jsx";
 import BookingPopup from "../../components/owner/BookingPopup.jsx";
 import EmptyBookingState from "../../components/owner/EmptyBookingState.jsx";
+import InputBox from "../../components/owner/InputBox.jsx";
 import { iconList } from "../../assets/assets.jsx";
 import { useParams, useNavigate } from "react-router-dom";
 
@@ -23,12 +24,40 @@ const ManageBookings = () => {
 
 	const [openConfirm, setOpenConfirm] = useState(false);
 	const [deleteId, setDeleteId] = useState(null);
-	const [visibleCount, setVisibleCount] = useState(10);
+
+	const [searchTerm, setSearchTerm] = useState("");
+	const [statusFilter, setStatusFilter] = useState("All");
+	const [paymentStatusFilter, setPaymentStatusFilter] = useState("All");
+	const [currentPage, setCurrentPage] = useState(1);
+	const itemsPerPage = 8;
 
 
 	useEffect(() => {
 		fetchOwnerBookings();
 	}, []);
+
+	// Filter bookings based on search and dropdowns
+	const filteredBookings = bookings.filter(booking => {
+		const matchesSearch =
+			booking.car.brand.toLowerCase().includes(searchTerm.toLowerCase()) ||
+			booking.car.model.toLowerCase().includes(searchTerm.toLowerCase());
+
+		const matchesStatus = statusFilter === "All" || booking.status === statusFilter.toLowerCase();
+		const matchesPayment = paymentStatusFilter === "All" || booking.paymentStatus === paymentStatusFilter.toLowerCase();
+
+		return matchesSearch && matchesStatus && matchesPayment;
+	});
+
+	// Reset to first page when filters change
+	useEffect(() => {
+		setCurrentPage(1);
+	}, [searchTerm, statusFilter, paymentStatusFilter]);
+
+	// Pagination logic
+	const totalPages = Math.ceil(filteredBookings.length / itemsPerPage);
+	const indexOfLastItem = currentPage * itemsPerPage;
+	const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+	const currentItems = filteredBookings.slice(indexOfFirstItem, indexOfLastItem);
 
 	const selectedBooking = bookings.find(b => b._id === bookingId);
 
@@ -43,27 +72,65 @@ const ManageBookings = () => {
 
 	if (bookingId && selectedBooking) {
 		return (
-			<div className="flex-1 h-full overflow-hidden">
+			<motion.div
+				initial={{ opacity: 0 }}
+				animate={{ opacity: 1 }}
+				transition={{ duration: 0.4 }}
+				className="flex-1 h-full overflow-hidden"
+			>
 				<BookingPopup
 					selectedBooking={selectedBooking}
 					setSelectedBooking={() => navigate("/owner/manage-bookings")}
 					isFullPage={true}
 				/>
-			</div>
+			</motion.div>
 		)
 	}
 
-	const displayedBookings = bookings.slice(0, visibleCount);
-
 	return (
-		<div className="px-4 pt-10 md:px-10 flex-1 pb-10">
+		<div className="px-4 pt-10 md:px-10 flex-1 pb-10 max-w-6xl w-full">
 			<OwnerTitle
 				title={"Manage Bookings"}
 				subTitle={
 					"Track all customer bookings, approve or cancel requests, and manage booking statuses."
 				}
 			/>
-			<div className="max-w-250 w-full bg-white dark:bg-second-bg shadow-md hover:shadow-lg transition-all duration-300 rounded-xl overflow-hidden mt-6 border border-gray-200 dark:border-dark-border mb-10">
+
+			{/* Search and Filters */}
+			<div className="flex flex-col md:flex-row gap-4 mt-8 mb-6 items-end">
+				<div className="flex-1 w-full">
+					<InputBox
+						value={searchTerm}
+						onChange={(e) => setSearchTerm(e.target.value)}
+						label="search"
+						placeholder="Search by car brand or model..."
+						title="Search Bookings"
+						icon={iconList.Search}
+					/>
+				</div>
+				<div className="w-full md:w-52">
+					<InputBox
+						as="select"
+						value={statusFilter}
+						onChange={(e) => setStatusFilter(e.target.value)}
+						label="status"
+						title="Booking Status"
+						options={['All', 'Pending', 'Confirmed', 'Completed', 'Cancelled']}
+					/>
+				</div>
+				<div className="w-full md:w-52">
+					<InputBox
+						as="select"
+						value={paymentStatusFilter}
+						onChange={(e) => setPaymentStatusFilter(e.target.value)}
+						label="payment"
+						title="Payment Status"
+						options={['All', 'Pending', 'Confirmed', 'Failed']}
+					/>
+				</div>
+			</div>
+
+			<div className="max-w-250 w-full bg-white dark:bg-second-bg shadow-md hover:shadow-lg transition-all duration-300 rounded-xl overflow-hidden border border-gray-200 dark:border-dark-border mb-10">
 				<div className="overflow-x-auto">
 					<motion.table
 						initial={{ opacity: 0 }}
@@ -87,137 +154,156 @@ const ManageBookings = () => {
 							</tr>
 						</thead>
 						<tbody>
-							{displayedBookings.map((booking, index) => (
-								<motion.tr
-									initial={{ opacity: 0 }}
-									animate={{ opacity: 1 }}
-									transition={{
-										type: "spring", stiffness: 300, damping: 30
-									}}
-									onClick={() => navigate(`/owner/manage-bookings/${booking._id}`)}
-									className="border-b last:border-b-0 border-gray-100 hover:bg-gray-50/80 transition-colors duration-200 dark:border-dark-border dark:hover:bg-surface/50 cursor-pointer"
-									key={index}
-								>
-									<td className="p-3 flex md:flex-row flex-col items-start gap-3 justify-start">
-										<img
-											src={booking.car.image}
-											alt={booking.car.name}
-											className="h-11 aspect-video rounded-md object-cover"
-										/>
-										<div>
-											<p className="font-medium md:text-base text-xs line-clamp-1">
-												{booking.car.brand} {booking.car.model}
-											</p>
-											<p className="max-md:hidden text-[11px] text-gray-400">
-												{booking.car.seating_capacity} seats ●{" "}
-												{booking.car.transmission}
-											</p>
-										</div>
-									</td>
-
-									<td className="p-3 max-md:hidden">
-										<div className="flex flex-col gap-0.5">
-											<p className="text-[13px] font-bold text-gray-800 dark:text-dark-text whitespace-nowrap">
-												{(() => {
-													const diff = new Date(booking.returnDate) - new Date(booking.pickupDate);
-													const totalHours = Math.floor(diff / (1000 * 60 * 60));
-													const days = Math.floor(totalHours / 24);
-													const hours = totalHours % 24;
-													return `${days > 0 ? `${days}d ` : ""}${hours > 0 ? `${hours}h` : days === 0 ? "0h" : ""}`;
-												})()}
-											</p>
-											<p className="text-[10px] text-gray-400 font-medium whitespace-nowrap">
-												{new Date(booking.pickupDate).toLocaleString('en-IN', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' })} - {new Date(booking.returnDate).toLocaleString('en-IN', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' })}
-											</p>
-										</div>
-									</td>
-
-									<td className="p-3 md:text-base text-xs font-light max-md:hidden">
-										<span>{currency}</span>
-										<span>{booking.price.toLocaleString("en-IN")}</span>
-									</td>
-
-									<td className="p-3 max-md:hidden">
-										<div className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[11px] font-medium uppercase tracking-wide ${booking.paymentMethod === "online"
-											? "bg-blue-500/10 text-blue-600 border border-blue-500/20"
-											: "bg-emerald-500/10 text-emerald-600 border border-emerald-500/20"
-											}`}>
-											{booking.paymentMethod}
-										</div>
-									</td>
-
-									<td className="p-3 max-md:hidden">
-										{booking.paymentStatus === "pending" ? (
-											<select
-												value={booking.paymentStatus}
-												onClick={(e) => e.stopPropagation()}
-												onChange={(e) => changePaymentStatus(booking._id, e.target.value)}
-												className={`text-[12px] font-medium px-2 py-1 rounded-md outline-none border cursor-pointer transition-all bg-yellow-500/10 text-yellow-600 border-yellow-500/20 dark:bg-yellow-500/20`}
-											>
-												<option value="pending">Pending</option>
-												<option value="confirmed">Confirmed</option>
-												<option value="failed">Failed</option>
-											</select>
-										) : (
-											<div className={`inline-flex px-2 py-1 rounded-md text-[12px] font-medium border ${booking.paymentStatus === "confirmed"
-												? "bg-green-500/10 text-green-600 border-green-500/20"
-												: "bg-red-500/10 text-red-600 border-red-500/20"
-												}`}>
-												{booking.paymentStatus.charAt(0).toUpperCase() + booking.paymentStatus.slice(1)}
+							{currentItems.length > 0 ? (
+								currentItems.map((booking, index) => (
+									<motion.tr
+										initial={{ opacity: 0 }}
+										animate={{ opacity: 1 }}
+										transition={{
+											type: "spring", stiffness: 300, damping: 30
+										}}
+										onClick={() => navigate(`/owner/manage-bookings/${booking._id}`)}
+										className="border-b last:border-b-0 border-gray-100 hover:bg-gray-50/80 transition-colors duration-200 dark:border-dark-border dark:hover:bg-surface/50 cursor-pointer"
+										key={booking._id || index}
+									>
+										<td className="p-3 flex md:flex-row flex-col items-start gap-3 justify-start">
+											<img
+												src={booking.car.image}
+												alt={booking.car.name}
+												className="h-11 aspect-video rounded-md object-cover"
+											/>
+											<div>
+												<p className="font-medium md:text-base text-xs line-clamp-1">
+													{booking.car.brand} {booking.car.model}
+												</p>
+												<p className="max-md:hidden text-[11px] text-gray-400">
+													{booking.car.seating_capacity} seats ●{" "}
+													{booking.car.transmission}
+												</p>
 											</div>
-										)}
-									</td>
+										</td>
 
-									<td className="p-3">
-										<div className="flex items-center gap-3">
-											{["pending", "confirmed"].includes(booking.status) ? (
+										<td className="p-3 max-md:hidden">
+											<div className="flex flex-col gap-0.5">
+												<p className="text-[13px] font-bold text-gray-800 dark:text-dark-text whitespace-nowrap">
+													{(() => {
+														const diff = new Date(booking.returnDate) - new Date(booking.pickupDate);
+														const totalHours = Math.floor(diff / (1000 * 60 * 60));
+														const days = Math.floor(totalHours / 24);
+														const hours = totalHours % 24;
+														return `${days > 0 ? `${days}d ` : ""}${hours > 0 ? `${hours}h` : days === 0 ? "0h" : ""}`;
+													})()}
+												</p>
+												<p className="text-[10px] text-gray-400 font-medium whitespace-nowrap">
+													{new Date(booking.pickupDate).toLocaleString('en-IN', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' })} - {new Date(booking.returnDate).toLocaleString('en-IN', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' })}
+												</p>
+											</div>
+										</td>
+
+										<td className="p-3 md:text-base text-xs font-light max-md:hidden">
+											<span>{currency}</span>
+											<span>{booking.price.toLocaleString("en-IN")}</span>
+										</td>
+
+										<td className="p-3 max-md:hidden">
+											<div className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[11px] font-medium uppercase tracking-wide ${booking.paymentMethod === "online"
+												? "bg-blue-500/10 text-blue-600 border border-blue-500/20"
+												: "bg-emerald-500/10 text-emerald-600 border border-emerald-500/20"
+												}`}>
+												{booking.paymentMethod}
+											</div>
+										</td>
+
+										<td className="p-3 max-md:hidden">
+											{booking.paymentStatus === "pending" ? (
 												<select
-													value={booking.status}
+													value={booking.paymentStatus}
 													onClick={(e) => e.stopPropagation()}
-													onChange={(e) => changeBookingStatus(booking._id, e.target.value)}
-													className={`text-[12px] font-medium px-2 py-1 rounded-md outline-none border cursor-pointer transition-all ${booking.status === "confirmed"
-														? "bg-green-500/10 text-green-600 border-green-500/20 dark:bg-green-500/20"
-														: "bg-yellow-500/10 text-yellow-600 border-yellow-500/20 dark:bg-yellow-500/20"
-														}`}
+													onChange={(e) => changePaymentStatus(booking._id, e.target.value)}
+													className={`text-[12px] font-medium px-2 py-1 rounded-md outline-none border cursor-pointer transition-all bg-yellow-500/10 text-yellow-600 border-yellow-500/20 dark:bg-yellow-500/20`}
 												>
 													<option value="pending">Pending</option>
 													<option value="confirmed">Confirmed</option>
-													<option value="completed">Completed</option>
-													<option value="cancelled">Cancelled</option>
+													<option value="failed">Failed</option>
 												</select>
 											) : (
-												<div className={`px-2 py-1 rounded-md text-[12px] font-medium border ${booking.status === "completed"
-													? "bg-blue-500/10 text-blue-600 border-blue-500/20"
+												<div className={`inline-flex px-2 py-1 rounded-md text-[12px] font-medium border ${booking.paymentStatus === "confirmed"
+													? "bg-green-500/10 text-green-600 border-green-500/20"
 													: "bg-red-500/10 text-red-600 border-red-500/20"
 													}`}>
-													{booking.status.charAt(0).toUpperCase() + booking.status.slice(1)}
+													{booking.paymentStatus.charAt(0).toUpperCase() + booking.paymentStatus.slice(1)}
 												</div>
 											)}
-										</div>
+										</td>
+
+										<td className="p-3">
+											<div className="flex items-center gap-3">
+												{["pending", "confirmed"].includes(booking.status) ? (
+													<select
+														value={booking.status}
+														onClick={(e) => e.stopPropagation()}
+														onChange={(e) => changeBookingStatus(booking._id, e.target.value)}
+														className={`text-[12px] font-medium px-2 py-1 rounded-md outline-none border cursor-pointer transition-all ${booking.status === "confirmed"
+															? "bg-green-500/10 text-green-600 border-green-500/20 dark:bg-green-500/20"
+															: "bg-yellow-500/10 text-yellow-600 border-yellow-500/20 dark:bg-yellow-500/20"
+															}`}
+													>
+														<option value="pending">Pending</option>
+														<option value="confirmed">Confirmed</option>
+														<option value="completed">Completed</option>
+														<option value="cancelled">Cancelled</option>
+													</select>
+												) : (
+													<div className={`px-2 py-1 rounded-md text-[12px] font-medium border ${booking.status === "completed"
+														? "bg-blue-500/10 text-blue-600 border-blue-500/20"
+														: "bg-red-500/10 text-red-600 border-red-500/20"
+														}`}>
+														{booking.status.charAt(0).toUpperCase() + booking.status.slice(1)}
+													</div>
+												)}
+											</div>
+										</td>
+										<td className="p-3">
+											<button
+												onClick={(e) => handleDelete(e, booking._id)}
+												className="cursor-pointer active:scale-90 transition-transform duration-300"
+												title="Delete Booking"
+											>
+												<iconList.Trash2 size={18} className="text-red-600" />
+											</button>
+										</td>
+									</motion.tr>
+								))
+							) : (
+								<tr>
+									<td colSpan="7" className="p-10 text-center text-gray-400 italic font-medium">
+										No bookings found matching your search.
 									</td>
-									<td className="p-3">
-										<button
-											onClick={(e) => handleDelete(e, booking._id)}
-											className="cursor-pointer active:scale-90 transition-transform duration-300"
-											title="Delete Booking"
-										>
-											<iconList.Trash2 size={18} className="text-red-600" />
-										</button>
-									</td>
-								</motion.tr>
-							))}
+								</tr>
+							)}
 						</tbody>
 					</motion.table>
 				</div>
 
-				{bookings.length > visibleCount && (
-					<div className="p-6 flex justify-center border-t border-gray-100 dark:border-dark-border bg-gray-50/30 dark:bg-card-bg/20">
+				{/* Pagination */}
+				{totalPages > 1 && (
+					<div className="p-4 border-t border-gray-100 dark:border-dark-border flex items-center justify-center gap-6 bg-gray-50/50 dark:bg-card-bg/30">
 						<button
-							onClick={() => setVisibleCount(prev => prev + 10)}
-							className="px-8 py-3 bg-primary text-white font-bold text-sm rounded-md hover:bg-primary/90 transition-all active:scale-95 flex items-center gap-2 cursor-pointer"
+							disabled={currentPage === 1}
+							onClick={() => setCurrentPage(prev => prev - 1)}
+							className="p-2 rounded-xl bg-white dark:bg-second-bg border border-gray-200 dark:border-dark-border shadow-sm hover:bg-gray-100 dark:hover:bg-surface disabled:opacity-50 disabled:cursor-not-allowed transition-all active:scale-90 cursor-pointer"
 						>
-							<iconList.Plus size={18} />
-							Load More Bookings
+							<iconList.ChevronLeft size={20} />
+						</button>
+						<span className="text-sm font-semibold text-gray-600 dark:text-dark-text">
+							Page <span className="text-primary">{currentPage}</span> of {totalPages}
+						</span>
+						<button
+							disabled={currentPage === totalPages}
+							onClick={() => setCurrentPage(prev => prev + 1)}
+							className="p-2 rounded-xl bg-white dark:bg-second-bg border border-gray-200 dark:border-dark-border shadow-sm hover:bg-gray-100 dark:hover:bg-surface disabled:opacity-50 disabled:cursor-not-allowed transition-all active:scale-90 cursor-pointer"
+						>
+							<iconList.ChevronRight size={20} />
 						</button>
 					</div>
 				)}
