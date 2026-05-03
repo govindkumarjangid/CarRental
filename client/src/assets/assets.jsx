@@ -61,7 +61,8 @@ import {
 	Paperclip,
 	Image,
 	FileText,
-	Download
+	Download,
+	Home
 } from "lucide-react";
 
 export const cityList = [
@@ -131,7 +132,8 @@ export const iconList = {
 	Paperclip,
 	Image,
 	FileText,
-	Download
+	Download,
+	Home
 };
 
 export const assets = {

@@ -8,9 +8,9 @@ const TableSkeleton = () => {
         <div className="w-48 h-8 bg-gray-200  rounded-md mb-2"></div>
         <div className="w-full max-w-md h-4 bg-gray-200  rounded-md"></div>
       </div>
-      
+
       {/* Table Container Skeleton */}
-      <div className="max-w-[1000px] w-full bg-white  shadow-sm rounded-xl overflow-hidden mt-6 border border-gray-200 ">
+      <div className="max-w-250 w-full bg-white  shadow-sm rounded-xl overflow-hidden mt-6 border border-gray-200 ">
         <div className="w-full">
           {/* Header */}
           <div className="bg-gray-50  border-b border-gray-200  flex p-4">

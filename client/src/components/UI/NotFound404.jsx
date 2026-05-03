@@ -1,49 +1,60 @@
-import { Home } from "lucide-react";
+import { motion } from "framer-motion";
+import { iconList } from "../../assets/assets.jsx";
+import { useNavigate } from "react-router-dom";
 
 const NotFound404 = () => {
-  return (
-    <div className="relative min-h-screen w-full bg-white overflow-hidden flex flex-col items-center justify-center px-4 sm:px-6 md:px-10 py-10">
-      <h1
-        className="
-          font-black leading-none select-none mb-3 sm:mb-6
-          text-[110px] sm:text-[140px] md:text-[200px] lg:text-[260px]
-        "
-      >
-        <span className="bg-linear-to-br from-blue-500 to-blue-700 bg-clip-text text-transparent">
-          4
-        </span>
-        <span className="bg-linear-to-br from-green-500 to-green-700 bg-clip-text text-transparent">
-          0
-        </span>
-        <span className="bg-linear-to-br from-blue-500 to-blue-700 bg-clip-text text-transparent">
-          4
-        </span>
-      </h1>
+	const navigate = useNavigate();
 
-      {/* ================= SUBTEXT ================= */}
-      <h2 className="text-lg sm:text-2xl md:text-3xl font-bold text-gray-800 mb-8 sm:mb-12 text-center">
-        Page Not Found
-      </h2>
+	return (
+		<div className="h-full w-full bg-white dark:bg-main-bg overflow-hidden flex flex-col items-center justify-center px-4 relative">
+			<motion.div
+				initial={{ opacity: 0, y: 20 }}
+				animate={{ opacity: 1, y: 0 }}
+				transition={{ duration: 0.6 }}
+				className="text-center z-10"
+			>
+				<h1 className="text-[120px] md:text-[180px] font-black leading-none tracking-tighter text-gray-900 dark:text-white flex justify-center">
+					<motion.span initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.3 }}>4</motion.span>
+					<motion.span initial={{ scale: 0.5, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ delay: 0.4 }} className="text-primary mx-2">0</motion.span>
+					<motion.span initial={{ x: 20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.5 }}>4</motion.span>
+				</h1>
 
-      {/* ================= BUTTON ================= */}
-      <button
-        onClick={() => (window.location.href = "/")}
-        className="
-          group flex items-center gap-2 sm:gap-3
-          px-6 sm:px-10 md:px-14
-          py-3 sm:py-4 md:py-6
-          text-base sm:text-lg md:text-xl font-bold text-white rounded-md
-          bg-linear-to-r from-blue-600 to-blue-700
-          transition-all duration-300
-          hover:scale-105 active:scale-95
-          shadow-xl cursor-pointer
-        "
-      >
-        <Home className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7" />
-        Go Home
-      </button>
-    </div>
-  );
+				<motion.div
+					initial={{ opacity: 0 }}
+					animate={{ opacity: 1 }}
+					transition={{ delay: 0.6 }}
+				>
+					<h2 className="text-2xl md:text-4xl font-bold text-gray-800 dark:text-dark-text mt-4">
+						Oops! Wrong Turn.
+					</h2>
+					<p className="text-gray-500 dark:text-dark-muted mt-4 max-w-md mx-auto text-lg">
+						The page you're looking for has been moved or doesn't exist. Let's get you back on the right track.
+					</p>
+				</motion.div>
+
+				<motion.div
+					initial={{ opacity: 0, y: 10 }}
+					animate={{ opacity: 1, y: 0 }}
+					transition={{ delay: 0.8 }}
+					className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4"
+				>
+					<button
+						onClick={() => navigate("/")}
+						className="group flex items-center gap-3 px-5 py-2 bg-primary hover:bg-primary-dull text-white rounded-md font-bold text-lg transition-all shadow-xl hover:shadow-primary/20 active:scale-95 cursor-pointer"
+					>
+						<iconList.Home size={20} />
+						Back to Home
+					</button>
+					<button
+						onClick={() => navigate(-1)}
+						className="flex items-center gap-2 px-5 py-1.5 bg-white dark:bg-second-bg border-2 border-gray-100 dark:border-dark-border text-gray-700 dark:text-dark-text rounded-md font-bold text-lg hover:bg-gray-50 dark:hover:bg-surface transition-all active:scale-95 cursor-pointer"
+					>
+						Go Back
+					</button>
+				</motion.div>
+			</motion.div>
+		</div>
+	);
 };
 
 export default NotFound404;
