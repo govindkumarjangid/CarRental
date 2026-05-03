@@ -341,7 +341,7 @@ const Chats = () => {
           {/* chats list  */}
           <div className="flex-1 overflow-y-auto">
             {chatLoading ?
-              [1, 2, 3, 4, 5].map((chat, index) => (
+              [1, 2, 3, 4].map((chat, index) => (
                 <ChatSkeletonList key={index} />
               ))
               :

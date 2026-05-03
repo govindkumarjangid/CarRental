@@ -81,3 +81,23 @@ body::selection {
             transform-origin: 5px 36px;
       }
 }
+
+@keyframes shimmer {
+      0% {
+            background-position: -200% 0;
+      }
+      100% {
+            background-position: 200% 0;
+      }
+}
+
+.shimmer {
+      background: linear-gradient(
+            90deg,
+            #f6f7f8 25%,
+            #edeef1 50%,
+            #f6f7f8 75%
+      );
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite linear;
+}

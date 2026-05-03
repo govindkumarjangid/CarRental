@@ -67,7 +67,7 @@ const ManageBookings = () => {
 		setOpenConfirm(true);
 	}
 
-	if (loading && bookings.length === 0) return <TableSkeleton />;
+	if (loading && bookings.length === 0) return <TableSkeleton showAddButton={false} />;
 	if (bookings.length === 0 && !loading) return <EmptyBookingState />;
 
 	if (bookingId && selectedBooking) {
