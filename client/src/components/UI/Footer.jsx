@@ -34,6 +34,8 @@ const Footer = () => {
 							transition={{ duration: 0.6 }}
 							src={assets.logo}
 							alt="logo"
+							width="120"
+							height="28"
 							className="h-6 md:h-7"
 						/>
 

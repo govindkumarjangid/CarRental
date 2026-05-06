@@ -59,6 +59,8 @@ const Navbar = () => {
 					<img
 						src={assets.logo}
 						alt="logo"
+						width="120"
+						height="28"
 						className="h-6 md:h-7 object-contain cursor-pointer "
 					/>
 

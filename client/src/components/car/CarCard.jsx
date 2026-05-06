@@ -34,6 +34,9 @@ const CarCard = ({ car, index }) => {
 					src={optimizeImage(car.image, { width: 450 })}
 					alt={`${car.brand} ${car.model} showcase`}
 					loading="lazy"
+					decoding="async"
+					width="450"
+					height="240"
 					className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
 				/>
 

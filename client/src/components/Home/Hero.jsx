@@ -214,6 +214,9 @@ const Hero = () => {
 														src={car.image}
 														className="w-16 h-10 rounded object-cover"
 														alt={car.model}
+														width="64"
+														height="40"
+														loading="lazy"
 													/>
 												</td>
 

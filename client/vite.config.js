@@ -9,15 +9,19 @@ export default defineConfig({
       output: {
         manualChunks(id) {
           if (id.includes('node_modules')) {
-            if (id.includes('framer-motion')) return 'vendor-motion';
+            if (id.includes('motion') || id.includes('framer-motion')) return 'vendor-motion';
             if (id.includes('lucide-react')) return 'vendor-icons';
             if (id.includes('react')) return 'vendor-react';
-            return 'vendor';
+            if (id.includes('axios') || id.includes('zustand')) return 'vendor-utils';
+            return 'vendor-others';
           }
         },
       },
     },
     chunkSizeWarningLimit: 1000,
+    cssCodeSplit: true,
+    minify: 'esbuild',
+    reportCompressedSize: false,
   },
 })
 

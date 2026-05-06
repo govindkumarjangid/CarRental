@@ -10,28 +10,22 @@
  */
 export const optimizeImage = (url, { width, height, quality = 'auto', format = 'webp' } = {}) => {
   if (!url) return '';
-  
-  try {
-    const urlObj = new URL(url);
+  if (url.startsWith('/')) return url;
 
-    // Check if it's already optimized or has parameters
-    if (urlObj.searchParams.has('tr'))
-        return url;
+  const urlObj = new URL(url);
 
-    const tr = [];
-    if (width) tr.push(`w-${width}`);
-    if (height) tr.push(`h-${height}`);
-    if (quality) tr.push(`q-${quality}`);
-    if (format) tr.push(`f-${format}`);
-
-    if (tr.length > 0) {
-      urlObj.searchParams.set('tr', tr.join(','));
-    }
-
-    return urlObj.toString();
-  } catch (e) {
-    // If URL is invalid or relative, return as is
+  if (urlObj.searchParams.has('tr'))
     return url;
-  }
+
+  const tr = [];
+  if (width) tr.push(`w-${width}`);
+  if (height) tr.push(`h-${height}`);
+  if (quality) tr.push(`q-${quality}`);
+  if (format) tr.push(`f-${format}`);
+
+  if (tr.length > 0)
+    urlObj.searchParams.set('tr', tr.join(','));
+
+  return urlObj.toString();
 };
 

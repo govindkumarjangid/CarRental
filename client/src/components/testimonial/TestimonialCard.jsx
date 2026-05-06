@@ -15,6 +15,10 @@ const TestimonialCard = ({ review, index }) => {
 					className="w-10 h-10 rounded-full"
 					src={review?.imageUrl}
 					alt={review?.name}
+					width="40"
+					height="40"
+					loading="lazy"
+					decoding="async"
 				/>
 				<div>
 					<p className="text-lg ">{review?.name}</p>
