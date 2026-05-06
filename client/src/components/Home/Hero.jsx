@@ -140,6 +140,7 @@ const Hero = () => {
 					src={optimizeImage(assets.main_car, { width: 800 })}
 					alt="Premium luxury rental car"
 					fetchPriority="high"
+					loading="eager"
 					width="800"
 					height="400"
 					className="max-h-74 w-auto object-contain mb-18"
