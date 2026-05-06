@@ -42,5 +42,5 @@ const Testmonial = () => {
 		</div>
 	);
 };
-export default Testmonial;
 
+export default Testmonial;

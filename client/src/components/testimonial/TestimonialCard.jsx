@@ -1,4 +1,5 @@
-import { motion, iconList, OptimizedImage } from "../../index.js"
+import { motion } from "motion/react";
+import {iconList, OptimizedImage } from "../../index.js"
 
 const TestimonialCard = ({ review, index }) => {
 	return (
