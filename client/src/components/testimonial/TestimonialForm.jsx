@@ -1,6 +1,8 @@
+import { useState, useEffect } from "react";
+import { AnimatePresence, motion } from 'framer-motion';
+import { toast } from "react-hot-toast";
 import { useAuthStore } from "../../store/useAuthStore.js";
-import { motion, iconList, useState, toast, useEffect } from "../../index.js";
-import { AnimatePresence } from 'framer-motion'
+import { iconList } from "../../index.js";
 import InputBox from '../owner/InputBox.jsx';
 
 const TestimonialForm = () => {

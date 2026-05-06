@@ -1,6 +1,12 @@
+import { useState, useRef } from "react";
+import { useNavigate } from "react-router-dom";
+
 import { useAuthStore } from "../../store/useAuthStore.js";
-import { useState, useNavigate, useRef, motion, iconList } from "../../index.js";
+import { motion, iconList } from "../../index.js";
 import InputBox from '../owner/InputBox.jsx';
+import { useAuthStore } from "../../store/useAuthStore.js";
+import InputBox from '../owner/InputBox.jsx';
+
 
 const Login = () => {
 	const { signup, login, isLoading, setShowLogin } = useAuthStore();
@@ -71,11 +77,10 @@ const Login = () => {
 							<button
 								type="button"
 								onClick={() => setRole("user")}
-								className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg border-2 text-sm font-semibold cursor-pointer transition-all duration-200 ${
-									role === "user"
+								className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg border-2 text-sm font-semibold cursor-pointer transition-all duration-200 ${role === "user"
 										? "border-primary bg-primary/10 text-primary"
 										: "border-gray-200 text-gray-400 hover:border-gray-300"
-								}`}
+									}`}
 							>
 								<iconList.User size={16} />
 								User
@@ -83,11 +88,10 @@ const Login = () => {
 							<button
 								type="button"
 								onClick={() => setRole("owner")}
-								className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg border-2 text-sm font-semibold cursor-pointer transition-all duration-200 ${
-									role === "owner"
+								className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg border-2 text-sm font-semibold cursor-pointer transition-all duration-200 ${role === "owner"
 										? "border-primary bg-primary/10 text-primary"
 										: "border-gray-200 text-gray-400 hover:border-gray-300"
-								}`}
+									}`}
 							>
 								<iconList.CarFront size={16} />
 								Owner

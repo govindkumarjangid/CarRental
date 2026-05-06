@@ -1,6 +1,7 @@
-import { useCarStore } from "../store/useCarStore.js";
 import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
+
+import { useCarStore } from "../store/useCarStore.js";
 import CarCard from "../components/car/CarCard.jsx";
 import CarCardSkeleton from "../components/car/CarCardSkeleton.jsx";
 import { Title } from "../components/UI/Title.jsx";

@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useParams, useNavigate } from "react-router-dom";
+
 import { Title as OwnerTitle } from "../../components/owner/Title.jsx";
 import { useBookingStore } from "../../store/useBookingStore.js";
 import TableSkeleton from "../../components/UI/TableSkeleton.jsx";
@@ -7,7 +9,6 @@ import BookingPopup from "../../components/owner/BookingPopup.jsx";
 import EmptyBookingState from "../../components/owner/EmptyBookingState.jsx";
 import InputBox from "../../components/owner/InputBox.jsx";
 import { iconList } from "../../assets/assets.jsx";
-import { useParams, useNavigate } from "react-router-dom";
 
 const ManageBookings = () => {
 	const {
@@ -293,7 +294,7 @@ const ManageBookings = () => {
 								</tr>
 							)}
 						</tbody>
-							
+
 					</motion.table>
 				</div>
 

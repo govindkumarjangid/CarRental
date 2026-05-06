@@ -135,7 +135,7 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
 									mass: 0.8,
 									exit: { type: "tween", duration: 0.15, ease: "easeInOut" }
 								}}
-								className="absolute top-[60px] right-0 left-0 z-50 bg-white/95 backdrop-blur-xl pt-6 pb-2 border-b border-gray-200 max-h-[calc(100vh-60px)] flex flex-col pointer-events-auto shadow-2xl"
+								className="absolute top-15 right-0 left-0 z-50 bg-white/95 backdrop-blur-xl pt-6 pb-2 border-b border-gray-200 max-h-[calc(100vh-60px)] flex flex-col pointer-events-auto shadow-2xl"
 							>
 								<SidebarContent {...sidebarProps} />
 							</motion.div>
