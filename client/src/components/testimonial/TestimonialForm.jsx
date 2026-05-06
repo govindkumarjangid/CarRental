@@ -51,15 +51,15 @@ const TestimonialForm = () => {
 			<motion.form
 				onSubmit={(e) => handleSubmit(e)}
 				onClick={(e) => e.stopPropagation()}
-				initial={{ scale: 0.9, opacity: 0 }}
+				initial={{ scale: 0.95, opacity: 0 }}
 				animate={{ scale: 1, opacity: 1 }}
-				exit={{ scale: 0.9, opacity: 0 }}
+				exit={{ scale: 0.95, opacity: 0 }}
 				transition={{
 					type: "spring",
 					stiffness: 300,
 					damping: 25
 				}}
-				className="bg-white md:rounded-md w-full h-full md:h-fit max-w-2xl md:max-h-[90vh] overflow-y-auto shadow-2xl relative p-6 md:p-8"
+				className="bg-white md:rounded-md w-full h-full md:h-fit max-w-2xl md:max-h-[90vh] overflow-y-auto shadow-2xl relative p-4 md:p-6"
 			>
 				<div className="flex items-center justify-between mb-4">
 					<h2 className="text-xl font-semibold"
@@ -103,7 +103,7 @@ const TestimonialForm = () => {
 				</div>
 
 				{/* name & email  */}
-				<div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+				<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
 					<InputBox
 						label="name"
 						title="Name"
@@ -121,7 +121,7 @@ const TestimonialForm = () => {
 					/>
 				</div>
 
-				<div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+				<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
 					<InputBox
 						label="location"
 						title="Location"
@@ -158,7 +158,7 @@ const TestimonialForm = () => {
 
 				<button
 					type="submit"
-					className="flex items-center justify-center gap-2 px-6 py-2.5 bg-primary text-white rounded-md w-max mt-4 mb-2 hover:bg-primary/90 active:scale-95 transition cursor-pointer"
+					className="flex items-center justify-center gap-2 sm:px-6 sm:py-2.5 py-2 px-4 bg-primary text-white rounded-md w-max mt-4 mb-2 hover:bg-primary/90 active:scale-95 transition cursor-pointer md:text-base text-sm font-semibold"
 					disabled={loading}
 				>
 					{loading ? (
