@@ -1,10 +1,9 @@
 import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 
 import { useAuthStore } from "../../store/useAuthStore.js";
-import { motion, iconList } from "../../index.js";
-import InputBox from '../owner/InputBox.jsx';
-import { useAuthStore } from "../../store/useAuthStore.js";
+import { iconList } from "../../index.js";
 import InputBox from '../owner/InputBox.jsx';
 
 
@@ -78,8 +77,8 @@ const Login = () => {
 								type="button"
 								onClick={() => setRole("user")}
 								className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg border-2 text-sm font-semibold cursor-pointer transition-all duration-200 ${role === "user"
-										? "border-primary bg-primary/10 text-primary"
-										: "border-gray-200 text-gray-400 hover:border-gray-300"
+									? "border-primary bg-primary/10 text-primary"
+									: "border-gray-200 text-gray-400 hover:border-gray-300"
 									}`}
 							>
 								<iconList.User size={16} />
@@ -89,8 +88,8 @@ const Login = () => {
 								type="button"
 								onClick={() => setRole("owner")}
 								className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg border-2 text-sm font-semibold cursor-pointer transition-all duration-200 ${role === "owner"
-										? "border-primary bg-primary/10 text-primary"
-										: "border-gray-200 text-gray-400 hover:border-gray-300"
+									? "border-primary bg-primary/10 text-primary"
+									: "border-gray-200 text-gray-400 hover:border-gray-300"
 									}`}
 							>
 								<iconList.CarFront size={16} />
