@@ -1,7 +1,7 @@
 const Loader = () => {
     return (
         <div className="flex justify-center items-center h-[80vh]">
-            <div className="relative md:w-[72px] md:h-[72px] w-[48px] h-[48px]">
+            <div className="relative md:w-18 md:h-18 w-12 h-12">
                 <div className="orbit-dot bg-primary opacity-10"  style={{ animationDelay: '-0s' }}></div>
                 <div className="orbit-dot bg-primary opacity-25"  style={{ animationDelay: '-0.15s' }}></div>
                 <div className="orbit-dot bg-primary opacity-40"  style={{ animationDelay: '-0.30s' }}></div>

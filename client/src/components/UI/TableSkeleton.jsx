@@ -20,7 +20,7 @@ const TableSkeleton = ({ showAddButton = true }) => {
       </div>
 
       {/* Table Container Skeleton */}
-      <div className="w-full bg-white dark:bg-second-bg shadow-sm rounded-xl overflow-hidden border border-gray-200 dark:border-dark-border">
+      <div className="w-full bg-white dark:bg-second-bg rounded-xl overflow-hidden border border-gray-200 dark:border-dark-border">
         <div className="w-full">
           {/* Header */}
           <div className="bg-gray-50 dark:bg-card-bg border-b border-gray-200 dark:border-dark-border flex p-4">

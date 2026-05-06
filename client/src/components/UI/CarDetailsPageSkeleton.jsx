@@ -66,7 +66,7 @@ const CarDetailsPageSkeleton = () => {
         </div>
 
         {/* RIGHT / BOOKING FORM */}
-        <div className="h-fit sticky top-18 rounded-xl p-6 bg-gray-50/50 dark:bg-card-bg border border-gray-200 dark:border-dark-border shadow-sm">
+        <div className="h-fit sticky top-18 rounded-xl p-6 bg-gray-50/50 dark:bg-card-bg border border-gray-200 dark:border-dark-border">
           <div className="flex items-center gap-2 mb-4">
             <div className="w-24 h-8 shimmer rounded-md" />
             <div className="w-12 h-5 shimmer rounded-md opacity-70" />

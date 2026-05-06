@@ -8,6 +8,7 @@ import { motion } from "framer-motion";
 import { toast } from "react-hot-toast";
 import { iconList } from "../assets/assets.jsx";
 import InputBox from "../components/owner/InputBox.jsx";
+import { optimizeImage } from "../lib/imageOptimization.js";
 
 const Cardetails = () => {
 	const [car, setCar] = useState(null);
@@ -162,7 +163,7 @@ const Cardetails = () => {
 							{/* IMAGE WITH SMOOTH HOVER */}
 							<div>
 								<motion.img
-									src={car.image}
+									src={optimizeImage(car.image, { width: 1000 })}
 									initial={{ opacity: 0, y: 24, scale: 1.02 }}
 									animate={{ opacity: 1, y: 0, scale: 1 }}
 									transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1], delay: 0.08 }}

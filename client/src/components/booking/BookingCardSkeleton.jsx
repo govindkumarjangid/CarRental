@@ -1,6 +1,6 @@
 const BookingCardSkeleton = () => {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-4 gap-6 p-6 rounded-xl mt-5 first:mt-12 backdrop-blur-sm border border-gray-200 dark:border-dark-border bg-white/50 dark:bg-second-bg/50 shadow-sm">
+    <div className="grid grid-cols-1 md:grid-cols-4 gap-6 p-6 rounded-xl mt-5 first:mt-12 backdrop-blur-sm border border-gray-200 dark:border-dark-border bg-white/50 dark:bg-second-bg/50">
 
       {/* Column 1: Image and Car details */}
       <div className="md:col-span-1">

@@ -1,6 +1,7 @@
 import { useAuthStore } from "../../store/useAuthStore.js";
 import { motion, useInView, useNavigate, useRef } from "../../index.js";
 import { assets } from "../../assets/assets.jsx";
+import { optimizeImage } from "../../lib/imageOptimization.js";
 
 const Banner = () => {
 
@@ -54,10 +55,14 @@ const Banner = () => {
 						className="mt-6 md:mt-14 flex justify-center items-center"
 					>
 						<img
-							src={assets.banner_car_image}
+							src={optimizeImage(assets.banner_car_image, { width: 600 })}
 							alt="car-banner"
+							width="400"
+							height="200"
 							className="w-full h-auto max-w-sm"
+							loading="lazy"
 						/>
+
 					</motion.div>
 				</motion.div>
 			</div>

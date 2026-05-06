@@ -61,8 +61,8 @@ const Navbar = () => {
 						src={assets.logo}
 						alt="logo"
 						className="h-6 md:h-7 object-contain cursor-pointer "
-						loading="lazy"
 					/>
+
 				</Link>
 
 				{/* menu links  */}

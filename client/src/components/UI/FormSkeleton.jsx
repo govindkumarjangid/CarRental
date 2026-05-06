@@ -3,7 +3,7 @@ import React from 'react';
 const FormSkeleton = () => {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm">
-      <div className="max-w-4xl mx-auto bg-white dark:bg-second-bg px-8 py-8 shadow-2xl rounded-xl w-full max-h-[90vh] overflow-hidden border border-gray-200 dark:border-dark-border">
+      <div className="max-w-4xl mx-auto bg-white dark:bg-second-bg px-8 py-8 rounded-xl w-full max-h-[90vh] overflow-hidden border border-gray-200 dark:border-dark-border">
         {/* Title */}
         <div className="flex justify-between items-center mb-6">
           <div className="w-48 h-8 shimmer rounded-lg"></div>

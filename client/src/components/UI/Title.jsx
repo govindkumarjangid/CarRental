@@ -1,4 +1,5 @@
 import { useRef, motion, useInView} from "../../index.js"
+
 export const Title = ({ title, subTitle, align }) => {
 
 	const ref = useRef(null);
@@ -14,9 +15,10 @@ export const Title = ({ title, subTitle, align }) => {
 				align === "left" && "md:items-start md:text-left"
 			}`}
 		>
-			<h1 className="font-semibold text-4xl md:text-[40px] text-gray-800 ">
+			<h2 className="font-semibold text-4xl md:text-[40px] text-gray-800 ">
 				{title}
-			</h1>
+			</h2>
+
 			<p className="text-sm md:text-base text-gray-700/90 mt-4 max-w-156 ">
 				{subTitle}
 			</p>

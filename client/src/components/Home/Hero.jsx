@@ -1,4 +1,6 @@
 import { cityList, assets } from "../../assets/assets.jsx";
+import { optimizeImage } from "../../lib/imageOptimization.js";
+
 import { useCarStore } from "../../store/useCarStore.js";
 import {
 	useState,
@@ -32,39 +34,38 @@ const Hero = () => {
 
 				{/* heading  */}
 				<motion.h1
-					initial={{ opacity: 0, y: 100 }}
+					initial={{ opacity: 0, y: 15 }}
 					animate={{ opacity: 1, y: 0 }}
-					transition={{ duration: 0.7, ease: "easeOut", delay: 0.1 }}
-					className="text-4xl md:text-5xl font-semibold text-gray-800  mt-15"
+					transition={{ duration: 0.5, ease: "easeOut" }}
+					className="text-4xl md:text-5xl font-extrabold text-gray-900 mt-15"
 				>
 					Luxury cars on Rent
 				</motion.h1>
 				<motion.p
-					initial={{ opacity: 0, y: 100 }}
+					initial={{ opacity: 0, y: 15 }}
 					animate={{ opacity: 1, y: 0 }}
-					transition={{ duration: 0.7, ease: "easeOut", delay: 0.3 }}
-					className='text-md text-gray-600'>Experience the pninacle of automotive excellence, curted for your journey.</motion.p>
+					transition={{ duration: 0.5, ease: "easeOut", delay: 0.05 }}
+					className='text-md text-gray-800 font-semibold'>Experience the pinnacle of automotive excellence, curated for your journey.</motion.p>
 
 				{/* check car availability form  */}
 				<motion.form
 					onSubmit={handleSubmit}
-					initial={{ opacity: 0, scale: 0.9, y: 50 }}
-					animate={{ opacity: 1, scale: 1, y: 0 }}
-					transition={{ duration: 0.7, ease: "easeOut", delay: 0.7 }}
-					className="flex flex-col md:flex-row items-center md:items-center justify-between px-4 py-5 rounded-lg w-full max-w-120 md:max-w-200 bg-white shadow-[0px_8px_20px_rgba(0,0,0,0.1)]     "
+					initial={{ opacity: 0, y: 20 }}
+					animate={{ opacity: 1, y: 0 }}
+					transition={{ duration: 0.5, ease: "easeOut", delay: 0.1 }}
+					className="flex flex-col md:flex-row items-center md:items-center justify-between px-4 py-5 rounded-lg w-full max-w-120 md:max-w-200 bg-white shadow-[0px_8px_30px_rgba(0,0,0,0.15)] border border-gray-100"
 				>
 					<div className="flex flex-col md:flex-row items-center md:items-center md:justify-center gap-10 md:ml-8">
 						<div className="flex flex-row items-center gap-2 md:flex-col">
-							<p className="px-1 text-sm text-gray-500  text-center ">
-								{pickupLocation
-									? pickupLocation
-									: "Please select location"}
+							<label htmlFor="pickup-location" className="sr-only">Pickup Location</label>
+							<p id="location-label" className="px-1 text-sm text-gray-700 font-bold text-center ">
+								{pickupLocation || "Please select location"}
 							</p>
 							<select
-								onChange={(e) =>
-									setPickupLocation(e.target.value)
-								}
-								className="outline-none border border-gray-300 bg-gray-100 p-2 px-4 rounded-md max-w-47 focus:border-primary focus:ring-2 focus:ring-primary/50   "
+								id="pickup-location"
+								aria-labelledby="location-label"
+								onChange={(e) => setPickupLocation(e.target.value)}
+								className="outline-none border border-gray-300 bg-gray-50 p-2 px-4 rounded-md max-w-47 focus:border-primary focus:ring-2 focus:ring-primary/20 text-gray-900 font-semibold"
 							>
 								<option value="" >Pickup Location</option>
 								{cityList.map((city, index) => (
@@ -77,7 +78,7 @@ const Hero = () => {
 						<div className="flex flex-row items-center gap-2  md:flex-col">
 							<label
 								htmlFor="pickup-date"
-								className=""
+								className="text-sm font-bold text-gray-800"
 							>
 								Pick-up Date
 							</label>
@@ -87,13 +88,13 @@ const Hero = () => {
 								id="pickup-date"
 								min={new Date().toISOString().split("T")[0]}
 								onChange={(e) => setPickupDate(e.target.value)}
-								className="text-sm text-gray-500 bg-gray-100 p-2 px-4 rounded-md outline-none border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/50   "
+								className="text-sm text-gray-800 bg-gray-50 p-2 px-4 rounded-md outline-none border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 font-bold"
 							/>
 						</div>
 						<div className="flex flex-row items-center gap-2  md:flex-col">
 							<label
 								htmlFor="return-date"
-								className=""
+								className="text-sm font-bold text-gray-800"
 							>
 								Return Date
 							</label>
@@ -102,23 +103,26 @@ const Hero = () => {
 								name="return-date"
 								id="return-date"
 								onChange={(e) => setReturnDate(e.target.value)}
-								className="text-sm text-gray-500 bg-gray-100 p-2 px-4 rounded-md outline-none border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/50   "
+								className="text-sm text-gray-800 bg-gray-50 p-2 px-4 rounded-md outline-none border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 font-bold"
 							/>
 						</div>
 						<button
 							type="submit"
-							className={`cursor-pointer flex items-center justify-center gap-1 px-5 py-2  transition-all text-white rounded-lg shadow-[0px_3px_20px_rgba(0,0,0,0.2)]      active:scale-95 ${loading
+							aria-label="Search available cars"
+							className={`cursor-pointer flex items-center justify-center gap-1 px-5 py-2.5 transition-all text-white rounded-lg shadow-lg active:scale-95 font-bold ${loading
 								? "bg-primary cursor-not-allowed opacity-90"
 								: "bg-primary hover:bg-primary-dull"
 								}`}
 						>
-							{loading ? (<div className="flex items-center gap-2 justify-center">
-								<iconList.Loader
-									size={16}
-									className="h-5 w-5 animate-spin text-white"
-								/>
-								<span>Search...</span>
-							</div>) : (
+							{loading ? (
+								<div className="flex items-center gap-2 justify-center">
+									<iconList.Loader
+										size={16}
+										className="h-5 w-5 animate-spin text-white"
+									/>
+									<span>Search...</span>
+								</div>
+							) : (
 								<div className="flex items-center gap-2 justify-center">
 									<iconList.Search size={18} />
 									<span>Search</span>
@@ -130,14 +134,19 @@ const Hero = () => {
 
 				{/* main car image  */}
 				<motion.img
-					initial={{ opacity: 0, y: 100 }}
+					initial={{ opacity: 0, y: 15 }}
 					animate={{ opacity: 1, y: 0 }}
-					transition={{ duration: 0.7, ease: "easeOut", delay: 0.5 }}
-					src={assets.main_car}
-					alt="car"
-					loading="lazy"
-					className="max-h-74 mb-18"
+					transition={{ duration: 0.5, ease: "easeOut", delay: 0.05 }}
+					src={optimizeImage(assets.main_car, { width: 800 })}
+					alt="Premium luxury rental car"
+					fetchpriority="high"
+					width="800"
+					height="400"
+					className="max-h-74 w-auto object-contain mb-18"
 				/>
+
+
+
 
 				{/* available cars modal  */}
 				<AnimatePresence>

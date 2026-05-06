@@ -1,10 +1,9 @@
-import { lazy, Suspense } from "react";
 import { useCarStore } from "../../store/useCarStore.js";
 import { iconList, motion, Title, useNavigate, CarCardSkeleton, useEffect } from "../../index.js";
-
-const CarCard = lazy(() => import('../car/CarCard.jsx'));
+import CarCard from '../car/CarCard.jsx';
 
 const FeaturedSection = () => {
+
 	const { carsLoading: loading, cars, fetchCars } = useCarStore();
 	const navigate = useNavigate();
 
@@ -27,11 +26,10 @@ const FeaturedSection = () => {
 							[1, 2, 3].map(i => <CarCardSkeleton key={i} />)
 						) : (
 							cars.slice(0, 3).map((car, index) => (
-								<Suspense key={car._id} fallback={<CarCardSkeleton />}>
-									<CarCard car={car} index={index} />
-								</Suspense>
+								<CarCard key={car._id} car={car} index={index} />
 							))
 						)
+
 					}
 				</div>
 				<motion.button

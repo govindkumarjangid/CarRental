@@ -4,7 +4,8 @@ const CarDetailsSkeleton = () => {
       <div className="hidden md:block h-6 shimmer rounded w-32 mb-2" />
 
       {/* Car Image Skeleton */}
-      <div className="rounded-lg md:rounded-xl w-20 h-16 md:w-full md:h-48 shimmer shadow-sm shrink-0" />
+      <div className="rounded-lg md:rounded-xl w-20 h-16 md:w-full md:h-48 shimmer shrink-0" />
+
 
       {/* Details Skeleton */}
       <div className="flex flex-col flex-1 min-w-0 space-y-3 mt-2">

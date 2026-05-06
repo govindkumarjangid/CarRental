@@ -1,4 +1,5 @@
 import {motion,useRef, useInView, iconList, useNavigate} from "../../index.js"
+import { optimizeImage } from "../../lib/imageOptimization.js";
 
 const CarCard = ({ car, index }) => {
 	const navigate = useNavigate();
@@ -23,72 +24,75 @@ const CarCard = ({ car, index }) => {
 				mass: 0.6,
 				delay: index * 0.1,
 			}}
-			className="h-full w-full group rounded-xl overflow-hidden shadow-lg hover:-translate-y-2 transition-all duration-500 cursor-pointer hover:shadow-[0_4px_24px_rgba(0,0,0,0.35)] active:scale-99"
+			className="h-full w-full group rounded-xl overflow-hidden shadow-lg hover:-translate-y-2 transition-all duration-500 cursor-pointer hover:shadow-[0_4px_24px_rgba(0,0,0,0.35)] active:scale-99 bg-white border border-gray-100"
 			onClick={handleClick}
+			aria-label={`View details for ${car.brand} ${car.model}`}
 		>
 			{/* image & availability & price  */}
 			<div className="relative h-60 overflow-hidden">
 				<img
-					src={car.image}
-					alt="car-image"
+					src={optimizeImage(car.image, { width: 450 })}
+					alt={`${car.brand} ${car.model} showcase`}
 					loading="lazy"
 					className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
 				/>
+
 				<div className="absolute top-4 left-4 flex flex-col gap-2">
-					<p className={`text-white text-[10px] px-2 py-1 font-semibold rounded-md shadow-lg backdrop-blur-md uppercase tracking-wider ${
+					<p className={`text-white text-[10px] px-2 py-1 font-bold rounded-md shadow-lg backdrop-blur-md uppercase tracking-wider ${
 						car.status === "available"
-						? "bg-green-500/80"
+						? "bg-green-600/90"
 						: car.status === "cleaning"
-						? "bg-blue-500/80"
+						? "bg-blue-600/90"
 						: car.status === "maintenance"
-						? "bg-red-500/80"
-						: "bg-gray-500/80"
+						? "bg-red-600/90"
+						: "bg-gray-600/90"
 					}`}>
 						{car.status}
 					</p>
 				</div>
 
-				<div className="absolute bottom-4 right-4 border border-white/80 backdrop-blur-sm text-white/80 px-3 py-2 rounded-xl">
-					<span className="font-semibold">
+				<div className="absolute bottom-4 right-4 border border-white/80 backdrop-blur-sm text-white px-3 py-2 rounded-xl font-bold">
+					<span>
 						{currency} {car.pricePerHour}
 					</span>
-					<span className="text-sm text-white/80"> / hr</span>
+					<span className="text-sm opacity-90"> / hr</span>
 				</div>
 			</div>
 
-			<div className="p-4 sm:p-5 ">
+			<div className="p-4 sm:p-5">
 				{/* brand & model & catrgory  */}
 				<div className="flex justify-between items-start mb-2">
 					<div>
-						<h3 className="text-lg font-medium">
+						<h3 className="text-lg font-bold text-gray-900">
 							{car.brand} {car.model}
 						</h3>
-						<p className="text-muted-foreground  text-sm">
-							{car.category} ◉ {car.year}
+						<p className="text-gray-700 font-medium text-sm">
+							{car.category} <span className="opacity-50">◉</span> {car.year}
 						</p>
 					</div>
 				</div>
 
 				{/* feactures  */}
-				<div className="mt-4 grid grid-cols-2 gap-y-2 text-gray-600  ">
-					<div className="flex items-center text-sm text-muted-foreground ">
-						<iconList.Users size={15} className="mr-1" />
+				<div className="mt-4 grid grid-cols-2 gap-y-2 text-gray-800 font-medium">
+					<div className="flex items-center text-sm">
+						<iconList.Users size={15} className="mr-1 text-primary" />
 						<span>{car.seating_capacity} Seats</span>
 					</div>
-					<div className="flex items-center text-sm text-muted-foreground ">
-						<iconList.Fuel size={15} className="mr-1" />
+					<div className="flex items-center text-sm">
+						<iconList.Fuel size={15} className="mr-1 text-primary" />
 						<span>{car.fuel_type}</span>
 					</div>
-					<div className="flex items-center text-sm text-muted-foreground ">
-						<iconList.Car size={15} className="mr-1" />
+					<div className="flex items-center text-sm">
+						<iconList.Car size={15} className="mr-1 text-primary" />
 						<span>{car.transmission}</span>
 					</div>
-					<div className="flex items-center text-sm text-muted-foreground ">
-						<iconList.MapPin size={15} className="mr-1" />
+					<div className="flex items-center text-sm">
+						<iconList.MapPin size={15} className="mr-1 text-primary" />
 						<span>{car.location}</span>
 					</div>
 				</div>
 			</div>
+
 		</motion.div>
 	);
 };

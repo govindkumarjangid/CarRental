@@ -33,22 +33,36 @@
 		<!-- Theme Color (Mobile Browsers) -->
 		<meta name="theme-color" content="#0f172a" />
 
-		<!-- Fonts (Optimized: preconnect) -->
+		<!-- Fonts (Optimized: preconnect & non-blocking) -->
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-		<link
-			href="https://fonts.googleapis.com/css2?family=Fira+Code&family=Outfit:wght@100..900&family=Poppins:ital,wght@0,100..900;1,100..900&display=swap"
-			rel="stylesheet"
+		<link rel="preconnect" href="https://ik.imagekit.io" />
+		
+		<link 
+			rel="preload" 
+			as="style" 
+			href="https://fonts.googleapis.com/css2?family=Fira+Code&family=Outfit:wght@100..900&family=Poppins:wght@100..900&display=swap" 
 		/>
+		<link 
+			rel="stylesheet" 
+			href="https://fonts.googleapis.com/css2?family=Fira+Code&family=Outfit:wght@100..900&family=Poppins:wght@100..900&display=swap" 
+			media="print" 
+			onload="this.media='all'" 
+		/>
+		<noscript>
+			<link 
+				rel="stylesheet" 
+				href="https://fonts.googleapis.com/css2?family=Fira+Code&family=Outfit:wght@100..900&family=Poppins:wght@100..900&display=swap" 
+			/>
+		</noscript>
 	</head>
+
 
 	<body>
 		<div id="root"></div>
 
 		<!-- Main App -->
 		<script type="module" src="/src/main.jsx"></script>
-
-		<!-- Razorpay -->
-		<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 	</body>
 </html>
+
