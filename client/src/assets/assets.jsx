@@ -1,5 +1,4 @@
 import logo from "./logo.svg";
-import main_car from "./main_car.png";
 import banner_car_image from "./banner_car_image.png";
 import {
 	Plus,
@@ -138,7 +137,7 @@ export const iconList = {
 
 export const assets = {
 	logo,
-	main_car,
+	main_car: "/main_car.png",
 	banner_car_image,
 };
 
