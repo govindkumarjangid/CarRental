@@ -1,6 +1,7 @@
+import { useEffect } from "react";
 import { useAuthStore } from "../../store/useAuthStore.js";
 import MarqueeRow from "./MarqueeRow.jsx";
-import { iconList, Title,useEffect } from "../../index.js";
+import { iconList, Title } from "../../index.js";
 
 const Testmonial = () => {
 	const { reviews, setShowReview, fetchReviews } = useAuthStore();

@@ -1,4 +1,5 @@
-import { useRef, motion, useInView} from "../../index.js"
+import { motion, useInView } from "framer-motion";
+import { useRef } from "react";
 
 export const Title = ({ title, subTitle, align }) => {
 
@@ -11,9 +12,8 @@ export const Title = ({ title, subTitle, align }) => {
 			initial={{ opacity: 0, y: 50 }}
 			animate={isInView ? { opacity: 1, y: 0 } : {}}
 			transition={{ duration: 0.7, ease: "easeOut" }}
-			className={`flex flex-col justify-center items-center  text-center ${
-				align === "left" && "md:items-start md:text-left"
-			}`}
+			className={`flex flex-col justify-center items-center  text-center ${align === "left" && "md:items-start md:text-left"
+				}`}
 		>
 			<h2 className="font-semibold text-4xl md:text-[40px] text-gray-800 ">
 				{title}
