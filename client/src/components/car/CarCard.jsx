@@ -1,5 +1,4 @@
 import {motion,useRef, useInView, iconList, useNavigate, OptimizedImage} from "../../index.js"
-import { optimizeImage } from "../../lib/imageOptimization.js";
 
 const CarCard = ({ car, index }) => {
 	const navigate = useNavigate();

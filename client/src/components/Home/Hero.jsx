@@ -1,12 +1,11 @@
 import { cityList, assets } from "../../assets/assets.jsx";
-import { optimizeImage } from "../../lib/imageOptimization.js";
-
 import { useCarStore } from "../../store/useCarStore.js";
 import {
 	useState,
 	motion,
 	iconList,
-	AnimatePresence, useNavigate
+	AnimatePresence, useNavigate,
+	ResponsiveImage
 } from "../../index.js"
 
 
