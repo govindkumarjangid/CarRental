@@ -37,12 +37,12 @@ const Banner = () => {
 						</p>
 						<button
 							onClick={() => {
-								user ? navigate("/owner/add-car") : setShowLogin(true);
+								user?.role === "owner" ? navigate("/owner/add-car") : user ? navigate("/cars") : setShowLogin(true);
 								scrollTo(0, 0);
 							}}
 							className="bg-white text-primary px-6 py-3 rounded-lg hover:bg-gray-100 transition-all duration-200      active:scale-95 cursor-pointer"
 						>
-							{user ? "List Your Car" : "Get Started"}
+							{user?.role === "owner" ? "List Your Car" : user?.role === "user" ? "Explore Cars" : "Get Started"}
 						</button>
 					</div>
 

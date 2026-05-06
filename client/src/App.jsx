@@ -3,8 +3,9 @@ import { useCarStore } from "./store/useCarStore.js";
 import { Toaster } from "react-hot-toast";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { useEffect, lazy, Suspense, useState } from "react";
+import { Loader } from "lucide-react";
 import { AnimatePresence } from "framer-motion";
-import { Navbar, Footer, ProtectRoute, HomeSkeleton, CarsPageSkeleton, DashboardSkeleton, TableSkeleton, FormSkeleton, CarDetailsPageSkeleton, UserTableSkeleton, iconList } from "./index.js";
+import { Navbar, Footer, ProtectRoute, HomeSkeleton, CarsPageSkeleton, DashboardSkeleton, TableSkeleton, FormSkeleton, CarDetailsPageSkeleton, UserTableSkeleton } from "./index.js";
 
 import ScrollToTop from "./components/UI/ScrollToTop.jsx";
 
@@ -118,7 +119,7 @@ const App = () => {
 					<Route path="/owner" element={
 						<ProtectRoute>
 							<Suspense fallback={<div className="h-screen w-full flex flex-col gap-4 items-center justify-center text-gray-500">
-								<iconList.Loader className="animate-spin" size={40} />
+								<Loader className="animate-spin" size={40} />
 								<span>Loading Dashboard...</span>
 							</div>}>
 								<Layout />

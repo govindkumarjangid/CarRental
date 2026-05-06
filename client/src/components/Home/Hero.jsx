@@ -3,7 +3,8 @@ import { useCarStore } from "../../store/useCarStore.js";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { iconList, ResponsiveImage } from "../../index.js"
+import { Search, Loader, X } from "lucide-react";
+import { ResponsiveImage, IconButton } from "../../index.js";
 
 
 const Hero = () => {
@@ -112,7 +113,7 @@ const Hero = () => {
 						>
 							{loading ? (
 								<div className="flex items-center gap-2 justify-center">
-									<iconList.Loader
+									<Loader
 										size={16}
 										className="h-5 w-5 animate-spin text-white"
 									/>
@@ -120,7 +121,7 @@ const Hero = () => {
 								</div>
 							) : (
 								<div className="flex items-center gap-2 justify-center">
-									<iconList.Search size={18} />
+									<Search size={18} />
 									<span>Search</span>
 								</div>
 							)}
@@ -130,14 +131,37 @@ const Hero = () => {
 
 				{/* main car image  */}
 				<div className="max-h-74 mb-18">
-					<ResponsiveImage
-						src={assets.main_car}
-						alt="Premium luxury rental car"
-						width={800}
-						height={400}
-						priority={true}
-						className="max-h-74 w-auto object-contain"
-					/>
+					<picture>
+						{/* AVIF Sources */}
+						<source
+							type="image/avif"
+							srcSet="/main_car-400.avif 400w, /main_car-800.avif 800w, /main_car-1200.avif 1200w"
+							sizes="(max-width: 640px) 400px, (max-width: 1024px) 800px, 1200px"
+						/>
+						{/* WebP Sources */}
+						<source
+							type="image/webp"
+							srcSet="/main_car-400.webp 400w, /main_car-800.webp 800w, /main_car-1200.webp 1200w"
+							sizes="(max-width: 640px) 400px, (max-width: 1024px) 800px, 1200px"
+						/>
+						{/* Fallback PNG Sources */}
+						<source
+							type="image/png"
+							srcSet="/main_car-400.png 400w, /main_car-800.png 800w, /main_car-1200.png 1200w"
+							sizes="(max-width: 640px) 400px, (max-width: 1024px) 800px, 1200px"
+						/>
+						{/* Default Fallback Image */}
+						<img
+							src="/main_car.png"
+							alt="Premium luxury rental car"
+							width="1200"
+							height="600"
+							loading="eager"
+							fetchpriority="high"
+							decoding="async"
+							className="max-h-74 w-auto object-contain mx-auto"
+						/>
+					</picture>
 				</div>
 
 
@@ -158,18 +182,16 @@ const Hero = () => {
 							className="fixed inset-x-0 bottom-0 sm:inset-auto sm:bottom-4 sm:right-4 z-50 bg-white shadow-2xl rounded-t-md sm:rounded-md w-full sm:w-105 md:w-130 md:max-h-[80vh] overflow-y-auto blue-thumb-scrollbar  "
 						>
 							<div className="sticky top-0 bg-white flex justify-between items-center px-2 py-2 border-b border-gray-400  ">
-								<h3 className="font-semibold">
+								<h2 className="font-semibold">
 									Available Cars
-								</h3>
+								</h2>
 
-								<motion.button
-									whileTap={{ scale: 0.8, rotate: 90 }}
-									whileHover={{ scale: 1.1 }}
+								<IconButton
+									label="Close"
+									icon={X}
 									onClick={() => setOpen(false)}
-									className="text-primary text-xl font-bold cursor-pointer"
-								>
-									<iconList.X />
-								</motion.button>
+									className="text-primary hover:bg-primary/10 cursor-pointer"
+								/>
 							</div>
 
 							<div className="max-h-72 overflow-y-auto overflow-x-auto">

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 
 import { useAuthStore } from "../../store/useAuthStore.js";
-import { iconList } from "../../index.js";
+import { User, CarFront, Loader, X } from "lucide-react";
 import InputBox from '../owner/InputBox.jsx';
 
 
@@ -50,12 +50,14 @@ const Login = () => {
 				onClick={(e) => e.stopPropagation()}
 				className="flex flex-col gap-4 m-auto items-start p-8 py-12 w-80 sm:w-88 text-gray-500 rounded-lg shadow-xl border border-gray-200 bg-white z-200"
 			>
-				<p className="text-3xl font-medium m-auto">
-					<span className="text-primary ">
-						User
-					</span>
-					{state === "login" ? " Login" : " Sign Up"}
-				</p>
+				<div className="flex justify-between items-center w-full">
+					<p className="text-3xl font-medium mx-auto pl-8">
+						<span className="text-primary ">
+							User
+						</span>
+						{state === "login" ? " Login" : " Sign Up"}
+					</p>
+				</div>
 
 				{/* name field  */}
 				{state === "register" && (
@@ -81,7 +83,7 @@ const Login = () => {
 									: "border-gray-200 text-gray-400 hover:border-gray-300"
 									}`}
 							>
-								<iconList.User size={16} />
+								<User size={16} />
 								User
 							</button>
 							<button
@@ -92,7 +94,7 @@ const Login = () => {
 									: "border-gray-200 text-gray-400 hover:border-gray-300"
 									}`}
 							>
-								<iconList.CarFront size={16} />
+								<CarFront size={16} />
 								Owner
 							</button>
 						</div>
@@ -158,7 +160,7 @@ const Login = () => {
 				>
 					{isLoading ? (
 						<div className="flex items-center gap-2 justify-center">
-							<iconList.Loader
+							<Loader
 								size={16}
 								className="h-5 w-5 animate-spin text-white"
 							/>

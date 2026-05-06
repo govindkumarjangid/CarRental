@@ -5,7 +5,8 @@ import { motion, useInView } from "framer-motion";
 import { useState, useEffect, useRef } from "react";
 import { iconList, ResponsiveImage } from "../../index.js"
 import { AnimatePresence } from 'framer-motion'
-import { LogOut } from "lucide-react";
+import { LogOut, User, X, TextAlignEnd, CircleUser, EditIcon, CircleCheckBig } from "lucide-react";
+import { UserAvatar, IconButton } from "../../index.js";
 
 const Navbar = () => {
 
@@ -116,31 +117,26 @@ const Navbar = () => {
 								Login
 							</button>
 						) : (
-							<div
-								className="cursor-pointer flex items-center gap-2 text-gray-500  hover:text-primary  font-medium active:scale-95 transition-all"
+							<IconButton
+								label="User Profile"
+								icon={User}
+								size={26}
+								className="text-primary bg-primary/10 p-1.5 hover:bg-primary hover:text-white transition-all duration-300 cursor-pointer"
 								onClick={() => {
 									setOpenPopup(!openPopup);
 									setOpen(false);
 								}}
-							>
-								<iconList.User size={37} className="rounded-full bg-primary/10 text-primary   p-1.5 hover:bg-primary hover:text-white transition-all duration-300" />
-							</div>
+							/>
 						)}
 
 						{/* Mobile toggle button  */}
-						<button
+						<IconButton
+							label={open ? "Close Menu" : "Open Menu"}
+							icon={open ? X : TextAlignEnd}
+							size={22}
+							className="sm:hidden text-gray-600 hover:bg-primary/10 cursor-pointer"
 							onClick={() => setOpen(!open)}
-							className="sm:hidden flex items-center justify-center p-2 cursor-pointer hover:bg-primary/10 rounded-full transition-all active:scale-95 "
-						>
-							{open ? (
-								<iconList.X size={22} className="text-gray-600" />
-							) : (
-								<iconList.TextAlignEnd
-									size={22}
-									className="text-gray-600"
-								/>
-							)}
-						</button>
+						/>
 					</div>
 				</div>
 
@@ -167,7 +163,7 @@ const Navbar = () => {
 								animate={{ opacity: 1, scale: 1 }}
 								exit={{ opacity: 0, scale: 0.95 }}
 								transition={{ duration: 0.2, ease: 'easeOut' }}
-								className="flex flex-col gap-4 p-6 bg-white  border border-gray-100  shadow-2xl fixed z-999 cursor-default sm:w-[320px] sm:top-18 sm:right-4 sm:rounded-md sm:items-center max-sm:bottom-0 max-sm:left-0 max-sm:right-0 max-sm:pb-10 max-sm:rounded-t-xl"
+								className="flex flex-col gap-4 p-6 bg-white  border border-gray-200  shadow-2xl fixed z-999 cursor-default sm:w-[320px] sm:top-20 sm:right-4 sm:rounded-md sm:items-center max-sm:bottom-0 max-sm:left-0 max-sm:right-0 max-sm:pb-10 max-sm:rounded-t-xl"
 								onClick={(e) => e.stopPropagation()}
 							>
 								{/* Drag handle — mobile only */}
@@ -176,19 +172,20 @@ const Navbar = () => {
 								<div className="w-full flex items-center gap-4">
 									<label htmlFor="image" className="relative group cursor-pointer shrink-0">
 										{image || user?.image ? (
-											<img
+											<UserAvatar
 												src={image ? URL.createObjectURL(image) : user?.image}
-												alt="profile"
-												className="h-16 w-16 rounded-full border-2 border-primary/20 aspect-square object-cover group-hover:border-primary/40 transition-all"
+												name={user?.name}
+												size={64}
+												className="h-16 w-16 border-2 border-primary/20 group-hover:border-primary/40 transition-all"
 											/>
 										) : (
-											<div className="h-16 w-16 rounded-full bg-gray-100  flex items-center justify-center">
-												<iconList.CircleUser size={40} className="text-gray-400 " />
+											<div className="h-16 w-16 rounded-full bg-gray-100 flex items-center justify-center">
+												<CircleUser size={40} className="text-gray-400" />
 											</div>
 										)}
 										<input type="file" id="image" name="image" accept="image/*" hidden onChange={(e) => setImage(e.target.files[0])} />
 										<div className="absolute inset-0 hidden bg-black/40 rounded-full group-hover:flex items-center justify-center transition-all">
-											<iconList.EditIcon size={20} className="text-white" />
+											<EditIcon size={20} className="text-white" />
 										</div>
 									</label>
 									<div className="flex flex-col overflow-hidden">

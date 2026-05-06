@@ -2,11 +2,24 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import { visualizer } from 'rollup-plugin-visualizer'
+import viteImagemin from 'vite-plugin-imagemin'
 
 export default defineConfig({
   plugins: [
     react(),
     tailwindcss(),
+    viteImagemin({
+      gifsicle: { optimizationLevel: 7, interlaced: false },
+      optipng: { optimizationLevel: 7 },
+      mozjpeg: { quality: 80 },
+      pngquant: { quality: [0.8, 0.9], speed: 4 },
+      svgo: {
+        plugins: [
+          { name: 'removeViewBox' },
+          { name: 'removeEmptyAttrs', active: false },
+        ],
+      },
+    }),
     visualizer({
       open: false,
       filename: 'bundle-stats.html',
@@ -19,12 +32,13 @@ export default defineConfig({
       output: {
         manualChunks(id) {
           if (id.includes('node_modules')) {
-            if (id.includes('motion') || id.includes('framer-motion')) return 'vendor-motion';
-            if (id.includes('lucide-react')) return 'vendor-icons';
-            if (id.includes('react') || id.includes('react-dom') || id.includes('react-router')) return 'vendor-react-core';
-            if (id.includes('chart.js') || id.includes('react-chartjs-2')) return 'vendor-charts';
-            if (id.includes('axios') || id.includes('zustand') || id.includes('socket.io') || id.includes('react-hot-toast')) return 'vendor-utils';
-            return 'vendor-others';
+            if (id.includes('react') || id.includes('react-dom') || id.includes('react-router-dom')) {
+              return 'react-vendor';
+            }
+            if (id.includes('framer-motion') || id.includes('lucide-react')) {
+              return 'ui-vendor';
+            }
+            return 'vendor';
           }
         },
       },

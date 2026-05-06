@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-import {iconList, OptimizedImage } from "../../index.js"
+import { iconList, UserAvatar } from "../../index.js"
 
 const TestimonialCard = ({ review, index }) => {
 	return (
@@ -12,12 +12,11 @@ const TestimonialCard = ({ review, index }) => {
 			className="bg-white p-4 rounded-lg hover:-translate-y-2 hover:shadow-lg transition-all duration-300 border-2 border-light w-full h-full"
 		>
 			<div className="flex items-center gap-3">
-				<OptimizedImage
+				<UserAvatar
 					src={review?.imageUrl}
-					renderedWidth={40}
-					renderedHeight={40}
-					alt={review?.name}
-					className="w-10 h-10 rounded-full"
+					name={review?.name}
+					size={40}
+					className="w-10 h-10"
 				/>
 				<div>
 					<p className="text-lg ">{review?.name}</p>

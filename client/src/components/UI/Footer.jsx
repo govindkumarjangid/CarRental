@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { iconList, ResponsiveImage } from "../../index.js"
+import { Facebook, Instagram, Twitter, Mail, MapPin, Phone } from "lucide-react";
+import { ResponsiveImage } from "../../index.js"
 import { assets } from "../../assets/assets.jsx";
 
 const Footer = () => {
@@ -45,19 +46,22 @@ const Footer = () => {
 
 						<div className="flex items-center gap-4">
 							{[
-								iconList.Facebook,
-								iconList.Instagram,
-								iconList.Twitter,
-								iconList.Mail,
-							].map((Icon, index) => (
-								<motion.div
+								{ Icon: Facebook, label: "Facebook" },
+								{ Icon: Instagram, label: "Instagram" },
+								{ Icon: Twitter, label: "Twitter" },
+								{ Icon: Mail, label: "Email" },
+							].map(({ Icon, label }, index) => (
+								<motion.a
 									key={index}
+									href="#"
+									aria-label={label}
+									title={label}
 									whileHover={{ scale: 1.15, y: -4 }}
 									whileTap={{ scale: 0.95 }}
-									className="cursor-pointer"
+									className="cursor-pointer text-gray-500/80 hover:text-primary transition-colors"
 								>
-									<Icon className="w-5 h-5 transition-colors hover:text-primary " />
-								</motion.div>
+									<Icon className="w-5 h-5" />
+								</motion.a>
 							))}
 						</div>
 					</motion.div>
@@ -116,15 +120,15 @@ const Footer = () => {
 						</h4>
 						<ul className="flex flex-col gap-3 text-sm">
 							<li className="flex items-center gap-2">
-								<iconList.MapPin size={16} className="text-primary " />
+								<MapPin size={16} className="text-primary " />
 								<span>Jaipur, IN 302015</span>
 							</li>
 							<li className="flex items-center gap-2">
-								<iconList.Mail size={16} className="text-primary " />
+								<Mail size={16} className="text-primary " />
 								<span>car@example.com</span>
 							</li>
 							<li className="flex items-center gap-2">
-								<iconList.Plus size={16} className="text-primary " />
+								<Phone size={16} className="text-primary " />
 								<span>+91-7342162313</span>
 							</li>
 						</ul>

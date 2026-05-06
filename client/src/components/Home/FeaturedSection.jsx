@@ -2,7 +2,8 @@ import { useCarStore } from "../../store/useCarStore.js";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-import { iconList, Title, CarCardSkeleton } from "../../index.js";
+import { ArrowRight } from "lucide-react";
+import { Title, CarCardSkeleton } from "../../index.js";
 import CarCard from '../car/CarCard.jsx';
 
 const FeaturedSection = () => {
@@ -46,7 +47,7 @@ const FeaturedSection = () => {
 					className="flex group items-center justify-center gap-2 px-6 py-2 border-2 border-gray-500 text-gray-600 hover:bg-primary rounded-md mt-18 cursor-pointer hover:text-light hover:border-light     active:scale-95 transition-all duration-300"
 				>
 					Explore all cars{" "}
-					<iconList.ArrowRight className="w-4 h-4 stroke-2 group-hover:translate-x-2 transition-transform duration-400" />
+					<ArrowRight className="w-4 h-4 stroke-2 group-hover:translate-x-2 transition-transform duration-400" />
 				</motion.button>
 			</div>
 		</>

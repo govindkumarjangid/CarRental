@@ -23,6 +23,8 @@ import UserTableSkeleton from "./components/UI/UserTableSkeleton.jsx";
 import CarDetailsPageSkeleton from "./components/UI/CarDetailsPageSkeleton.jsx";
 import OptimizedImage from "./components/UI/OptimizedImage.jsx";
 import ResponsiveImage from "./components/UI/ResponsiveImage.jsx";
+import IconButton from "./components/UI/IconButton.jsx";
+import UserAvatar from "./components/UI/UserAvatar.jsx";
 
 export {
     Navbar,
@@ -49,5 +51,7 @@ export {
     CarDetailsPageSkeleton,
     OptimizedImage,
     ResponsiveImage,
+    IconButton,
+    UserAvatar,
     iconList
 }
