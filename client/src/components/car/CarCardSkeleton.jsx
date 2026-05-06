@@ -1,6 +1,6 @@
 const CarCardSkeleton = () => {
   return (
-    <div className="h-full w-90 group rounded-xl overflow-hidden border border-gray-200 dark:border-dark-border transition-all duration-500 bg-white dark:bg-second-bg">
+    <div className="h-full w-90 group rounded-xl overflow-hidden border border-gray-100 transition-all duration-500 bg-white">
       {/* Image skeleton */}
       <div className="w-full h-56 shimmer"></div>
       <div className="px-4 py-6">

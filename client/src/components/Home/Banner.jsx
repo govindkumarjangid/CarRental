@@ -8,15 +8,16 @@ const Banner = () => {
 	const navigate = useNavigate();
 	const ref = useRef(null);
 	const isInView = useInView(ref, { once: true });
+
 	return (
 		<>
-			<div className=" max-w-8xl m-auto    w-full py-20 px-3">
+			<div className="max-w-8xl m-auto w-full py-20 px-3">
 				<motion.div
 					ref={ref}
 					initial={{ opacity: 0, y: 100 }}
 					animate={isInView ? { opacity: 1, y: 0 } : {}}
 					transition={{ duration: 0.9, ease: "easeInOut" }}
-					className="flex flex-col md:flex-row md:items-center justify-between px-8 md:pl-14 pt-10 bg-linear-to-r from-[#0558FE] to-[#A9CFFF] max-w-6xl rounded-2xl overflow-hidden     md:mx-auto"
+					className="flex flex-col md:flex-row md:items-center justify-between px-8 md:pl-14 pt-10 bg-linear-to-r from-primary/80 via-primary/90 to-primary-dull max-w-6xl rounded-2xl overflow-hidden md:mx-auto shadow-lg"
 				>
 					<div className="md:max-w-lg text-left pb-8">
 						<h2 className="text-3xl md:text-4xl text-white mb-4">

@@ -1,9 +1,10 @@
+import { lazy, Suspense, useEffect } from "react";
+import { useAnimation, motion } from 'motion/react'
+
 import { useAuthStore } from "../../store/useAuthStore.js";
-import TestimonialCard from "./TestimonialCard";
 import TestimonialSkeleton from "./TestimonialSkeleton";
-import { useAnimation } from 'motion/react'
-import { motion } from "../../index.js";
-import { useEffect } from "react";
+
+const TestimonialCard = lazy(() => import("./TestimonialCard.jsx"));
 
 const MarqueeRow = ({ items, reverse }) => {
   const { reviewLoading } = useAuthStore();
@@ -44,7 +45,9 @@ const MarqueeRow = ({ items, reverse }) => {
               key={index}
               className="pointer-events-auto shrink-0 w-70 sm:w-80 md:w-90"
             >
-              <TestimonialCard review={review} index={index}/>
+              <Suspense fallback={<TestimonialSkeleton />}>
+                <TestimonialCard review={review} />
+              </Suspense>
             </div>
           ))
         )

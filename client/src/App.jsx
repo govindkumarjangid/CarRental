@@ -3,27 +3,7 @@ import { useCarStore } from "./store/useCarStore.js";
 import { Toaster } from "react-hot-toast";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { useEffect } from "react";
-import {
-	Home,
-	Cars,
-	Layout,
-	ChatPage,
-	Chats,
-	Login,
-	AddCar,
-	Navbar,
-	Mybookings,
-	Cardetails,
-	Footer,
-	AllUsers,
-	Dashboard,
-	ProtectRoute,
-	ManageCars,
-	NotFound404,
-	TestimonialForm,
-	EditCarForm,
-	ManageBookings,
-} from "./index.js";
+import { Home, Cars, Layout, ChatPage, Chats, Login, AddCar, Navbar, Mybookings, Cardetails, Footer, AllUsers, Dashboard, ProtectRoute, ManageCars, NotFound404, TestimonialForm, EditCarForm, ManageBookings } from "./index.js";
 
 import ScrollToTop from "./components/UI/ScrollToTop.jsx";
 

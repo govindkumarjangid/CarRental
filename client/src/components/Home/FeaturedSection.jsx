@@ -1,7 +1,8 @@
-
+import { lazy, Suspense } from "react";
 import { useCarStore } from "../../store/useCarStore.js";
-import { iconList, motion, Title, useNavigate, CarCardSkeleton, CarCard, useEffect } from "../../index.js";
+import { iconList, motion, Title, useNavigate, CarCardSkeleton, useEffect } from "../../index.js";
 
+const CarCard = lazy(() => import('../car/CarCard.jsx'));
 
 const FeaturedSection = () => {
 	const { carsLoading: loading, cars, fetchCars } = useCarStore();
@@ -22,28 +23,24 @@ const FeaturedSection = () => {
 				</div>
 				<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-18">
 					{
-						loading ? (
+						loading && cars.length == 0 ? (
 							[1, 2, 3].map(i => <CarCardSkeleton key={i} />)
 						) : (
 							cars.slice(0, 3).map((car, index) => (
-								<div key={car._id}>
+								<Suspense key={car._id} fallback={<CarCardSkeleton />}>
 									<CarCard car={car} index={index} />
-								</div>
+								</Suspense>
 							))
 						)
 					}
 				</div>
 				<motion.button
-					initial={{ scale: 0.8, opacity: 0 }}
-					animate={{ scale: 1, opacity: 1 }}
-					transition={{ duration: 0.5, delay: 1.2, ease: "easeOut" }}
+					initial={{ opacity: 0 }}
+					animate={{ opacity: 1 }}
+					transition={{ duration: 0.2, ease: "easeOut" }}
 					onClick={() => {
 						navigate("/cars");
-						window.scrollTo({
-							top: 0,
-							left: 0,
-							behavior: "smooth",
-						});
+						window.scrollTo({ top: 0, behavior: "smooth" });
 					}}
 					className="flex group items-center justify-center gap-2 px-6 py-2 border-2 border-gray-500 text-gray-600 hover:bg-primary rounded-md mt-18 cursor-pointer hover:text-light hover:border-light     active:scale-95 transition-all duration-300"
 				>

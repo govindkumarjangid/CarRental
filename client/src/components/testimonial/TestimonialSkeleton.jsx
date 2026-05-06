@@ -1,6 +1,6 @@
 const TestimonialSkeleton = () => {
   return (
-    <div className="bg-white dark:bg-second-bg p-5 rounded-xl border border-gray-100 dark:border-dark-border w-full h-full shadow-sm">
+    <div className="bg-white p-5 rounded-xl border border-gray-100 w-full h-full">
       {/* Header: Image and Name info */}
       <div className="flex items-center gap-4">
         {/* Profile Image Skeleton */}
