@@ -133,18 +133,16 @@ const Hero = () => {
 				</motion.form>
 
 				{/* main car image  */}
-				<motion.img
-					initial={{ opacity: 0, y: 15 }}
-					animate={{ opacity: 1, y: 0 }}
-					transition={{ duration: 0.5, ease: "easeOut", delay: 0.05 }}
-					src={optimizeImage(assets.main_car, { width: 800 })}
-					alt="Premium luxury rental car"
-					fetchPriority="high"
-					loading="eager"
-					width="800"
-					height="400"
-					className="max-h-74 w-auto object-contain mb-18"
-				/>
+				<div className="max-h-74 mb-18">
+					<ResponsiveImage
+						src={assets.main_car}
+						alt="Premium luxury rental car"
+						width={800}
+						height={400}
+						priority={true}
+						className="max-h-74 w-auto object-contain"
+					/>
+				</div>
 
 
 

@@ -30,6 +30,9 @@ import { toast } from "react-hot-toast";
 import ScrollToBottom from "react-scroll-to-bottom";
 import { Check, CheckCheck } from "lucide-react";
 
+import OptimizedImage from "./components/UI/OptimizedImage.jsx";
+import ResponsiveImage from "./components/UI/ResponsiveImage.jsx";
+
 export {
     Navbar,
     Footer,
@@ -69,6 +72,9 @@ export {
     AnimatePresence,
     useParams,
     ScrollToBottom,
-    Check, CheckCheck
+    Check, CheckCheck,
+
+    OptimizedImage,
+    ResponsiveImage
 
 }

@@ -9,7 +9,8 @@ import {
 	useState,
 	useEffect,
 	useRef,
-	iconList
+	iconList,
+	ResponsiveImage
 } from "../../index.js"
 import { AnimatePresence } from 'framer-motion'
 import { LogOut } from "lucide-react";
@@ -56,14 +57,13 @@ const Navbar = () => {
 			<div className="max-w-7xl m-auto flex items-center justify-between h-auto ">
 				{/* logo  */}
 				<Link to="/">
-					<img
+					<ResponsiveImage
 						src={assets.logo}
 						alt="logo"
-						width="120"
-						height="28"
+						width={120}
+						height={28}
 						className="h-6 md:h-7 object-contain cursor-pointer "
 					/>
-
 				</Link>
 
 				{/* menu links  */}

@@ -1,4 +1,4 @@
-import { motion, iconList } from "../../index.js"
+import { motion, iconList, OptimizedImage } from "../../index.js"
 
 const TestimonialCard = ({ review, index }) => {
 	return (
@@ -11,14 +11,12 @@ const TestimonialCard = ({ review, index }) => {
 			className="bg-white p-4 rounded-lg hover:-translate-y-2 hover:shadow-lg transition-all duration-300 border-2 border-light w-full h-full"
 		>
 			<div className="flex items-center gap-3">
-				<img
-					className="w-10 h-10 rounded-full"
+				<OptimizedImage
 					src={review?.imageUrl}
+					renderedWidth={40}
+					renderedHeight={40}
 					alt={review?.name}
-					width="40"
-					height="40"
-					loading="lazy"
-					decoding="async"
+					className="w-10 h-10 rounded-full"
 				/>
 				<div>
 					<p className="text-lg ">{review?.name}</p>

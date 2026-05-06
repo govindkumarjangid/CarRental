@@ -1,4 +1,4 @@
-import {motion,useRef, useInView, iconList, useNavigate} from "../../index.js"
+import {motion,useRef, useInView, iconList, useNavigate, OptimizedImage} from "../../index.js"
 import { optimizeImage } from "../../lib/imageOptimization.js";
 
 const CarCard = ({ car, index }) => {
@@ -30,13 +30,11 @@ const CarCard = ({ car, index }) => {
 		>
 			{/* image & availability & price  */}
 			<div className="relative h-60 overflow-hidden">
-				<img
-					src={optimizeImage(car.image, { width: 450 })}
+				<OptimizedImage
+					src={car.image}
+					renderedWidth={450}
+					renderedHeight={240}
 					alt={`${car.brand} ${car.model} showcase`}
-					loading="lazy"
-					decoding="async"
-					width="450"
-					height="240"
 					className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
 				/>
 

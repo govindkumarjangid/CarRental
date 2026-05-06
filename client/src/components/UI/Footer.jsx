@@ -1,4 +1,4 @@
-import {motion, iconList, Link} from "../../index.js"
+import {motion, iconList, Link, ResponsiveImage} from "../../index.js"
 import { assets } from "../../assets/assets.jsx";
 
 const Footer = () => {
@@ -28,14 +28,11 @@ const Footer = () => {
 							transition: { duration: 0.6, ease: "easeOut" },
 						},
 					}} className="space-y-6">
-						<motion.img
-							initial={{ opacity: 0, scale: 0.9 }}
-							whileInView={{ opacity: 1, scale: 1 }}
-							transition={{ duration: 0.6 }}
+						<ResponsiveImage
 							src={assets.logo}
 							alt="logo"
-							width="120"
-							height="28"
+							width={120}
+							height={28}
 							className="h-6 md:h-7"
 						/>
 
