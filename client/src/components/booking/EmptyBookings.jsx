@@ -1,4 +1,6 @@
-import { Link, iconList, motion } from "../../index.js";
+import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
+import { iconList } from "../../index.js";
 
 const EmptyBookings = () => {
   return (

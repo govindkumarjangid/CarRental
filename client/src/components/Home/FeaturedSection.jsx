@@ -1,5 +1,8 @@
 import { useCarStore } from "../../store/useCarStore.js";
-import { iconList, motion, Title, useNavigate, CarCardSkeleton, useEffect } from "../../index.js";
+import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { iconList, Title, CarCardSkeleton } from "../../index.js";
 import CarCard from '../car/CarCard.jsx';
 
 const FeaturedSection = () => {

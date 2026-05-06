@@ -2,8 +2,8 @@ import { useAuthStore } from "./store/useAuthStore.js";
 import { useCarStore } from "./store/useCarStore.js";
 import { Toaster } from "react-hot-toast";
 import { Routes, Route, useLocation } from "react-router-dom";
-import { useEffect, lazy, Suspense } from "react";
-import { AnimatePresence } from "motion/react";
+import { useEffect, lazy, Suspense, useState } from "react";
+import { AnimatePresence } from "framer-motion";
 import { Navbar, Footer, ProtectRoute, HomeSkeleton, CarsPageSkeleton, DashboardSkeleton, TableSkeleton, FormSkeleton, CarDetailsPageSkeleton, UserTableSkeleton, iconList } from "./index.js";
 
 import ScrollToTop from "./components/UI/ScrollToTop.jsx";

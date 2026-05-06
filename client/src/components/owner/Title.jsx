@@ -1,4 +1,4 @@
-import {motion} from "../../index.js"
+import { motion } from "framer-motion";
 
 export const Title = ({ title, subTitle }) => {
 	return (

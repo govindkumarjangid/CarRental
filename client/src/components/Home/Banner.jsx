@@ -1,5 +1,7 @@
 import { useAuthStore } from "../../store/useAuthStore.js";
-import { motion, useInView, useNavigate, useRef } from "../../index.js";
+import { motion, useInView } from "framer-motion";
+import { useNavigate } from "react-router-dom";
+import { useRef } from "react";
 import { assets } from "../../assets/assets.jsx";
 import { optimizeImage } from "../../lib/imageOptimization.js";
 

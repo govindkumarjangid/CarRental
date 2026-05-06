@@ -1,4 +1,7 @@
-import {motion,useRef, useInView, iconList, useNavigate, OptimizedImage} from "../../index.js"
+import { motion, useInView } from "framer-motion";
+import { useRef } from "react";
+import { useNavigate } from "react-router-dom";
+import { iconList, OptimizedImage } from "../../index.js"
 
 const CarCard = ({ car, index }) => {
 	const navigate = useNavigate();

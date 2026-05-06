@@ -1,4 +1,6 @@
-import {motion, iconList, Link, ResponsiveImage} from "../../index.js"
+import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
+import { iconList, ResponsiveImage } from "../../index.js"
 import { assets } from "../../assets/assets.jsx";
 
 const Footer = () => {

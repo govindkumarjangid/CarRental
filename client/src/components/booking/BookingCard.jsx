@@ -1,4 +1,6 @@
-import { motion, useRef, useInView, iconList } from "../../index.js"
+import { motion, useInView } from "framer-motion";
+import { useRef } from "react";
+import { iconList } from "../../index.js"
 
 const BookingCard = ({ booking, index }) => {
 	const currency = import.meta.env.VITE_CURRENCY;

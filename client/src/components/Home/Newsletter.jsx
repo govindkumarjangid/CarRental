@@ -1,4 +1,5 @@
-import { motion, Title as UserTitle } from "../../index.js";
+import { motion } from "framer-motion";
+import { Title as UserTitle } from "../../index.js";
 
 const Newsletter = () => {
 

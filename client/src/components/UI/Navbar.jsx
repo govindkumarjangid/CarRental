@@ -1,17 +1,9 @@
 import { menuLinks, assets } from "../../assets/assets.jsx";
 import { useAuthStore } from "../../store/useAuthStore.js";
-import {
-	Link,
-	useNavigate,
-	useLocation,
-	motion,
-	useInView,
-	useState,
-	useEffect,
-	useRef,
-	iconList,
-	ResponsiveImage
-} from "../../index.js"
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import { motion, useInView } from "framer-motion";
+import { useState, useEffect, useRef } from "react";
+import { iconList, ResponsiveImage } from "../../index.js"
 import { AnimatePresence } from 'framer-motion'
 import { LogOut } from "lucide-react";
 

@@ -1,12 +1,9 @@
 import { cityList, assets } from "../../assets/assets.jsx";
 import { useCarStore } from "../../store/useCarStore.js";
-import {
-	useState,
-	motion,
-	iconList,
-	AnimatePresence, useNavigate,
-	ResponsiveImage
-} from "../../index.js"
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { useNavigate } from "react-router-dom";
+import { iconList, ResponsiveImage } from "../../index.js"
 
 
 const Hero = () => {

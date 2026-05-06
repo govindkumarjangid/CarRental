@@ -22,9 +22,8 @@ export default defineConfig({
             if (id.includes('motion') || id.includes('framer-motion')) return 'vendor-motion';
             if (id.includes('lucide-react')) return 'vendor-icons';
             if (id.includes('react') || id.includes('react-dom') || id.includes('react-router')) return 'vendor-react-core';
-            if (id.includes('axios') || id.includes('zustand') || id.includes('socket.io')) return 'vendor-utils';
-            if (id.includes('react-hot-toast')) return 'vendor-ui';
-
+            if (id.includes('chart.js') || id.includes('react-chartjs-2')) return 'vendor-charts';
+            if (id.includes('axios') || id.includes('zustand') || id.includes('socket.io') || id.includes('react-hot-toast')) return 'vendor-utils';
             return 'vendor-others';
           }
         },
