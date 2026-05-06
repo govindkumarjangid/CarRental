@@ -24,3 +24,4 @@ const CarCardSkeleton = () => {
 };
 
 export default CarCardSkeleton;
+

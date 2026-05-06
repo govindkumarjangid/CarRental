@@ -119,3 +119,4 @@ const BookingCard = ({ booking, index }) => {
 };
 
 export default BookingCard;
+

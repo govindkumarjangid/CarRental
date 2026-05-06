@@ -33,3 +33,4 @@ const TestimonialSkeleton = () => {
 };
 
 export default TestimonialSkeleton;
+

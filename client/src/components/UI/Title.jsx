@@ -25,3 +25,4 @@ export const Title = ({ title, subTitle, align }) => {
 		</motion.div>
 	);
 };
+

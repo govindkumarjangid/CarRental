@@ -6,14 +6,14 @@ const NotFound404 = () => {
 	const navigate = useNavigate();
 
 	return (
-		<div className="h-full w-full bg-white dark:bg-main-bg overflow-hidden flex flex-col items-center justify-center px-4 relative">
+		<div className="h-full w-full bg-white overflow-hidden flex flex-col items-center justify-center px-4 relative">
 			<motion.div
 				initial={{ opacity: 0, y: 20 }}
 				animate={{ opacity: 1, y: 0 }}
 				transition={{ duration: 0.6 }}
 				className="text-center z-10"
 			>
-				<h1 className="text-[120px] md:text-[180px] font-black leading-none tracking-tighter text-gray-900 dark:text-white flex justify-center">
+				<h1 className="text-[120px] md:text-[180px] font-black leading-none tracking-tighter text-gray-900 flex justify-center">
 					<motion.span initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.3 }}>4</motion.span>
 					<motion.span initial={{ scale: 0.5, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ delay: 0.4 }} className="text-primary mx-2">0</motion.span>
 					<motion.span initial={{ x: 20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.5 }}>4</motion.span>
@@ -24,10 +24,10 @@ const NotFound404 = () => {
 					animate={{ opacity: 1 }}
 					transition={{ delay: 0.6 }}
 				>
-					<h2 className="text-2xl md:text-4xl font-bold text-gray-800 dark:text-dark-text mt-4">
+					<h2 className="text-2xl md:text-4xl font-bold text-gray-800 mt-4">
 						Oops! Wrong Turn.
 					</h2>
-					<p className="text-gray-500 dark:text-dark-muted mt-4 max-w-md mx-auto text-lg">
+					<p className="text-gray-500 mt-4 max-w-md mx-auto text-lg">
 						The page you're looking for has been moved or doesn't exist. Let's get you back on the right track.
 					</p>
 				</motion.div>
@@ -47,7 +47,7 @@ const NotFound404 = () => {
 					</button>
 					<button
 						onClick={() => navigate(-1)}
-						className="flex items-center gap-2 px-5 py-1.5 bg-white dark:bg-second-bg border-2 border-gray-100 dark:border-dark-border text-gray-700 dark:text-dark-text rounded-md font-bold text-lg hover:bg-gray-50 dark:hover:bg-surface transition-all active:scale-95 cursor-pointer"
+						className="flex items-center gap-2 px-5 py-1.5 bg-white border-2 border-gray-100 text-gray-700 rounded-md font-bold text-lg hover:bg-gray-50 transition-all active:scale-95 cursor-pointer"
 					>
 						Go Back
 					</button>
@@ -58,3 +58,4 @@ const NotFound404 = () => {
 };
 
 export default NotFound404;
+

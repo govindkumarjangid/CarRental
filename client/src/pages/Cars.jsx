@@ -91,13 +91,13 @@ const Cars = () => {
 
 	return (
 		<>
-			<div className="max-w-8xl m-auto flex flex-col items-center pb-20 dark:bg-main-bg relative">
+			<div className="max-w-8xl m-auto flex flex-col items-center pb-20 relative">
 				{/* search bar and title  */}
 				<motion.div
 					initial={{ opacity: 0, y: 50 }}
 					animate={{ opacity: 1, y: 0 }}
 					transition={{ duration: 0.6, ease: "easeOut" }}
-					className=" bg-light dark:bg-second-bg w-full py-20 px-4 flex flex-col justify-center items-center"
+					className=" bg-light w-full py-20 px-4 flex flex-col justify-center items-center"
 				>
 					{/* title  */}
 					<Title
@@ -110,18 +110,18 @@ const Cars = () => {
 						initial={{ opacity: 0, y: 20 }}
 						animate={{ opacity: 1, y: 0 }}
 						transition={{ duration: 0.6, ease: "easeOut", delay: 0.3 }}
-						className="mt-8 flex items-center justify-between gap-4 border border-gray-300 dark:border-dark-border px-4 py-1 rounded-lg shadow-xl max-w-96 md:max-w-3xl bg-white dark:bg-card-bg w-full focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20"
+						className="mt-8 flex items-center justify-between gap-4 border border-gray-300 px-4 py-1 rounded-lg shadow-xl max-w-96 md:max-w-3xl bg-white w-full focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20"
 					>
 						<label htmlFor="car-search" className="sr-only">Search cars by brand, model, or features</label>
-						<iconList.Search size={18} className="text-gray-600 dark:text-dark-muted" />
+						<iconList.Search size={18} className="text-gray-600" />
 						<input
 							id="car-search"
 							type="text"
 							onChange={(e) => setInput(e.target.value)}
 							placeholder="Search by make, model, or features"
-							className="outline-none py-2 flex-9 dark:bg-card-bg dark:text-dark-text dark:placeholder:text-dark-muted text-gray-800 font-medium"
+							className="outline-none py-2 flex-9 text-gray-800 font-medium"
 						/>
-						<iconList.Funnel size={18} className="text-gray-600 dark:text-dark-muted" />
+						<iconList.Funnel size={18} className="text-gray-600" />
 					</motion.div>
 
 				</motion.div>
@@ -139,17 +139,17 @@ const Cars = () => {
 					<div className="relative flex items-center w-full md:flex-1 min-w-0 overflow-hidden group px-2">
 						{/* Gradient Overlays for Blur Effect */}
 						{showLeftArrow && (
-							<div className="absolute left-0 top-0 bottom-0 w-14 z-10 pointer-events-none bg-linear-to-r from-white via-white/80 to-transparent dark:from-main-bg dark:via-main-bg/80" />
+							<div className="absolute left-0 top-0 bottom-0 w-14 z-10 pointer-events-none bg-linear-to-r from-white via-white/80 to-transparent" />
 						)}
 						{showRightArrow && (
-							<div className="absolute right-0 top-0 bottom-0 w-14 z-10 pointer-events-none bg-linear-to-l from-white via-white/80 to-transparent dark:from-main-bg dark:via-main-bg/80" />
+							<div className="absolute right-0 top-0 bottom-0 w-14 z-10 pointer-events-none bg-linear-to-l from-white via-white/80 to-transparent" />
 						)}
 
 						{showLeftArrow && (
 							<button
 								onClick={() => scroll("left")}
 								aria-label="Scroll filter brands left"
-								className="absolute left-0 z-20 bg-white/90 dark:bg-card-bg/90 p-1.5 rounded-full  cursor-pointer hover:bg-primary hover:text-white transition-all duration-300 border border-gray-200 dark:border-dark-border text-primary active:scale-90"
+								className="absolute left-0 z-20 bg-white/90 p-1.5 rounded-full  cursor-pointer hover:bg-primary hover:text-white transition-all duration-300 border border-gray-200 text-primary active:scale-90"
 							>
 								<iconList.ChevronLeft size={18} />
 							</button>
@@ -178,7 +178,7 @@ const Cars = () => {
 							<button
 								onClick={() => scroll("right")}
 								aria-label="Scroll filter brands right"
-								className="absolute right-0 z-20 bg-white/90 dark:bg-card-bg/90 p-1.5 rounded-full  cursor-pointer hover:bg-primary hover:text-white transition-all duration-300 border border-gray-200 dark:border-dark-border text-primary active:scale-90"
+								className="absolute right-0 z-20 bg-white/90 p-1.5 rounded-full  cursor-pointer hover:bg-primary hover:text-white transition-all duration-300 border border-gray-200 text-primary active:scale-90"
 							>
 								<iconList.ChevronRight size={18} />
 							</button>
@@ -198,7 +198,7 @@ const Cars = () => {
 									setOpenFuel(false);
 									setOpenTransmission(false);
 								}}
-								className={`flex items-center gap-2 px-3 py-1.5 border rounded-lg text-sm font-semibold transition-all duration-300 cursor-pointer ${modelFilter ? "bg-primary text-white border-primary" : "bg-white dark:bg-card-bg text-gray-700 dark:text-dark-text border-gray-300 dark:border-dark-border"
+								className={`flex items-center gap-2 px-3 py-1.5 border rounded-lg text-sm font-semibold transition-all duration-300 cursor-pointer ${modelFilter ? "bg-primary text-white border-primary" : "bg-white text-gray-700 border-gray-300"
 									}`}
 							>
 								{modelFilter || "Category"}
@@ -210,7 +210,7 @@ const Cars = () => {
 									role="listbox"
 									initial={{ opacity: 0, scale: 0.95, y: -10 }}
 									animate={{ opacity: 1, scale: 1, y: 0 }}
-									className="absolute z-50 left-0 w-40 bg-white dark:bg-card-bg border border-gray-200 dark:border-dark-border rounded-xl mt-2 shadow-2xl p-1"
+									className="absolute z-50 left-0 w-40 bg-white border border-gray-200 rounded-xl mt-2 shadow-2xl p-1"
 								>
 									{["All", "SUV", "MUV", "EV", "Wagon", "Sedan", "Van", "Jeep", "Hatchback"].map((opt) => (
 										<div
@@ -221,7 +221,7 @@ const Cars = () => {
 												setModelFilter(opt === "All" ? "" : opt);
 												setOpenModel(false);
 											}}
-											className={`cursor-pointer px-3 py-1.5 rounded-md text-sm transition-colors font-medium ${modelFilter === (opt === "All" ? "" : opt) ? "bg-primary text-white" : "hover:bg-gray-100 dark:hover:bg-dark-muted/20 text-gray-700 dark:text-dark-text"}`}
+											className={`cursor-pointer px-3 py-1.5 rounded-md text-sm transition-colors font-medium ${modelFilter === (opt === "All" ? "" : opt) ? "bg-primary text-white" : "hover:bg-gray-100 text-gray-700"}`}
 										>
 											{opt}
 										</div>
@@ -241,7 +241,7 @@ const Cars = () => {
 									setOpenModel(false);
 									setOpenTransmission(false);
 								}}
-								className={`flex items-center gap-2 px-3 py-1.5 border rounded-lg text-sm font-semibold transition-all duration-300 cursor-pointer ${fuelFilter ? "bg-primary text-white border-primary" : "bg-white dark:bg-card-bg text-gray-700 dark:text-dark-text border-gray-300 dark:border-dark-border"
+								className={`flex items-center gap-2 px-3 py-1.5 border rounded-lg text-sm font-semibold transition-all duration-300 cursor-pointer ${fuelFilter ? "bg-primary text-white border-primary" : "bg-white text-gray-700 border-gray-300"
 									}`}
 							>
 								{fuelFilter || "Fuel Type"}
@@ -253,7 +253,7 @@ const Cars = () => {
 									role="listbox"
 									initial={{ opacity: 0, scale: 0.95, y: -10 }}
 									animate={{ opacity: 1, scale: 1, y: 0 }}
-									className="absolute z-50 left-0 w-40 bg-white dark:bg-card-bg border border-gray-200 dark:border-dark-border rounded-xl mt-2 shadow-2xl p-1"
+									className="absolute z-50 left-0 w-40 bg-white border border-gray-200 rounded-xl mt-2 shadow-2xl p-1"
 								>
 									{["All", "Petrol", "Diesel", "Hybrid", "Electric", "Gas"].map((opt) => (
 										<div
@@ -264,7 +264,7 @@ const Cars = () => {
 												setFuelFilter(opt === "All" ? "" : opt);
 												setOpenFuel(false);
 											}}
-											className={`cursor-pointer px-3 py-1.5 rounded-md text-sm transition-colors font-medium ${fuelFilter === (opt === "All" ? "" : opt) ? "bg-primary text-white" : "hover:bg-gray-100 dark:hover:bg-dark-muted/20 text-gray-700 dark:text-dark-text"}`}
+											className={`cursor-pointer px-3 py-1.5 rounded-md text-sm transition-colors font-medium ${fuelFilter === (opt === "All" ? "" : opt) ? "bg-primary text-white" : "hover:bg-gray-100 text-gray-700"}`}
 										>
 											{opt}
 										</div>
@@ -284,7 +284,7 @@ const Cars = () => {
 									setOpenModel(false);
 									setOpenFuel(false);
 								}}
-								className={`flex items-center gap-2 px-3 py-1.5 border rounded-lg text-sm font-semibold transition-all duration-300 cursor-pointer ${transmissionFilter ? "bg-primary text-white border-primary" : "bg-white dark:bg-card-bg text-gray-700 dark:text-dark-text border-gray-300 dark:border-dark-border"
+								className={`flex items-center gap-2 px-3 py-1.5 border rounded-lg text-sm font-semibold transition-all duration-300 cursor-pointer ${transmissionFilter ? "bg-primary text-white border-primary" : "bg-white text-gray-700 border-gray-300"
 									}`}
 							>
 								{transmissionFilter || "Transmission"}
@@ -296,7 +296,7 @@ const Cars = () => {
 									role="listbox"
 									initial={{ opacity: 0, scale: 0.95, y: -10 }}
 									animate={{ opacity: 1, scale: 1, y: 0 }}
-									className="absolute z-50 right-0 w-40 bg-white dark:bg-card-bg border border-gray-200 dark:border-dark-border rounded-xl mt-2 shadow-2xl p-1"
+									className="absolute z-50 right-0 w-40 bg-white border border-gray-200 rounded-xl mt-2 shadow-2xl p-1"
 								>
 									{["All", "Manual", "Automatic", "Semi-Automatic", ].map((opt) => (
 										<div
@@ -307,7 +307,7 @@ const Cars = () => {
 												setTransmissionFilter(opt === "All" ? "" : opt);
 												setOpenTransmission(false);
 											}}
-											className={`cursor-pointer px-3 py-1.5 rounded-md text-sm transition-colors font-medium ${transmissionFilter === (opt === "All" ? "" : opt) ? "bg-primary text-white" : "hover:bg-gray-100 dark:hover:bg-dark-muted/20 text-gray-700 dark:text-dark-text"}`}
+											className={`cursor-pointer px-3 py-1.5 rounded-md text-sm transition-colors font-medium ${transmissionFilter === (opt === "All" ? "" : opt) ? "bg-primary text-white" : "hover:bg-gray-100 text-gray-700"}`}
 										>
 											{opt}
 										</div>

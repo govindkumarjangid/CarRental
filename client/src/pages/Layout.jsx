@@ -18,7 +18,7 @@ const Layout = () => {
 	}, [pathname]);
 
 	return (
-		<div className="h-screen flex flex-col overflow-hidden dark:bg-main-bg dark:text-dark-text">
+		<div className="h-screen flex flex-col overflow-hidden">
 			{/* Navbar */}
 			<NavbarOwner toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} isSidebarOpen={isSidebarOpen} />
 
@@ -40,3 +40,4 @@ const Layout = () => {
 };
 
 export default Layout;
+

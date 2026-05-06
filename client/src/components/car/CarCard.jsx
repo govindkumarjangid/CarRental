@@ -98,3 +98,4 @@ const CarCard = ({ car, index }) => {
 };
 
 export default CarCard;
+

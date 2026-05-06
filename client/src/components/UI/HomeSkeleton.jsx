@@ -6,17 +6,17 @@ const HomeSkeleton = () => {
       {/* Hero Skeleton - Matching Hero.jsx structure */}
       <div className="max-w-8xl m-auto flex flex-col items-center gap-6 py-20 px-4">
         {/* Heading */}
-        <div className="h-12 w-3/4 max-w-lg bg-gray-200 dark:bg-dark-border rounded-lg" />
-        <div className="h-4 w-1/2 max-w-sm bg-gray-200 dark:bg-dark-border rounded-md" />
-        
-        {/* Search Form Placeholder */}
-        <div className="w-full max-w-4xl h-24 bg-white dark:bg-card-bg rounded-xl mt-8" />
+        <div className="h-12 w-3/4 max-w-lg bg-gray-200 rounded-lg" />
+        <div className="h-4 w-1/2 max-w-sm bg-gray-200 rounded-md" />
 
-        
+        {/* Search Form Placeholder */}
+        <div className="w-full max-w-3xl h-24 bg-gray-100 rounded-xl mt-8" />
+
+
         {/* Main Car Image Placeholder */}
-        <div className="w-full max-w-3xl h-64 bg-gray-200 dark:bg-dark-border rounded-2xl mt-10" />
+        <div className="w-full max-w-3xl h-64 bg-gray-200 rounded-2xl mt-10" />
       </div>
-      
+
       {/* Featured Section Skeleton */}
 
       <div className="max-w-7xl mx-auto py-20 px-4">
@@ -32,7 +32,7 @@ const HomeSkeleton = () => {
       </div>
 
       {/* Banner Skeleton */}
-      <div className="w-full h-96 shimmer my-10" />
+      <div className="w-full h-96 shimmer my-10 max-w-7xl mx-auto rounded-2xl" />
 
       {/* Testimonials Skeleton */}
       <div className="max-w-7xl mx-auto py-20 px-4">
@@ -48,3 +48,4 @@ const HomeSkeleton = () => {
 };
 
 export default HomeSkeleton;
+

@@ -278,7 +278,7 @@ const Chats = () => {
   };
 
   return (
-    <div className="absolute inset-0 flex flex-col overflow-hidden bg-gray-50/30 dark:bg-main-bg text-gray-800 dark:text-dark-text">
+    <div className="absolute inset-0 flex flex-col overflow-hidden bg-gray-50/30 text-gray-800">
 
       {/* title  */}
       <div className={`px-4 pt-4 md:px-8 md:pt-6 mb-2 md:mb-4 shrink-0 transition-all ${activeChat ? "hidden md:block" : "block"}`}>
@@ -288,12 +288,12 @@ const Chats = () => {
         />
       </div>
 
-      <div className={`flex flex-1 w-full overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 bg-white dark:bg-second-bg border-t border-gray-200 dark:border-dark-border`}>
+      <div className={`flex flex-1 w-full overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 bg-white border-t border-gray-200`}>
 
         {/* CHAT LIST */}
-        <div className={`w-full md:w-80 lg:w-90 shrink-0 border-r border-gray-200 dark:border-dark-border flex flex-col bg-white dark:bg-second-bg ${activeChat ? "hidden md:flex" : "flex"}`}>
+        <div className={`w-full md:w-80 lg:w-90 shrink-0 border-r border-gray-200 flex flex-col bg-white ${activeChat ? "hidden md:flex" : "flex"}`}>
           {/* chat list header  */}
-          <div className="h-16 flex items-center justify-between px-5 border-b border-gray-100 dark:border-dark-border shrink-0 bg-gray-50/50 dark:bg-second-bg relative overflow-hidden">
+          <div className="h-16 flex items-center justify-between px-5 border-b border-gray-100 shrink-0 bg-gray-50/50 relative overflow-hidden">
             <AnimatePresence mode="wait">
               {!showSearch ? (
                 <motion.h2
@@ -301,7 +301,7 @@ const Chats = () => {
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -20 }}
-                  className="text-lg font-bold text-gray-800 dark:text-dark-text"
+                  className="text-lg font-bold text-gray-800"
                 >
                   Recent Chats
                 </motion.h2>
@@ -311,7 +311,7 @@ const Chats = () => {
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: 20 }}
-                  className="flex-1 flex items-center bg-gray-100 dark:bg-card-bg rounded-full px-3 py-1.5"
+                  className="flex-1 flex items-center bg-gray-100 rounded-full px-3 py-1.5"
                 >
                   <iconList.Search size={16} className="text-gray-400 mr-2" />
                   <input
@@ -320,7 +320,7 @@ const Chats = () => {
                     placeholder="Search chats..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="flex-1 bg-transparent border-none outline-none text-sm dark:text-dark-text"
+                    className="flex-1 bg-transparent border-none outline-none text-sm"
                   />
                   <button onClick={() => { setShowSearch(false); setSearchQuery(""); }}>
                     <iconList.X size={16} className="text-gray-400 cursor-pointer" />
@@ -331,7 +331,7 @@ const Chats = () => {
             {!showSearch && (
               <button
                 onClick={() => setShowSearch(true)}
-                className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-surface text-gray-500 transition-colors cursor-pointer"
+                className="p-2 rounded-full hover:bg-gray-100 text-gray-500 transition-colors cursor-pointer"
               >
                 <iconList.Search size={20} />
               </button>
@@ -354,36 +354,36 @@ const Chats = () => {
                   <div
                     key={chat._id}
                     onClick={() => navigate(`${navPrefix}/${other?._id || ""}`)}
-                    className={`flex items-center gap-3 px-4 py-3 cursor-pointer border-b border-gray-50 dark:border-dark-border/50 transition-colors hover:bg-gray-100 rounded-md relative ${isActive ? "bg-primary/10 text-primary" : ""}`}
+                    className={`flex items-center gap-3 px-4 py-3 cursor-pointer border-b border-gray-50 transition-colors hover:bg-gray-100 rounded-md relative ${isActive ? "bg-primary/10 text-primary" : ""}`}
                   >
 
                     {isActive && (
-                      <motion.div className="absolute left-0 top-2 h-13 w-1.5 bg-primary rounded-r dark:bg-accent" />
+                      <motion.div className="absolute left-0 top-2 h-13 w-1.5 bg-primary rounded-r" />
                     )}
                     <div className="relative shrink-0">
                       {
                         other?.image ?
                           <img src={other?.image} alt={other?.name} className="h-11 w-11 border-2 border-gray-300 rounded-full aspect-square" />
                           : <>
-                            <iconList.CircleUser size={46} strokeWidth={1.5} className={isActive ? "text-primary" : "text-gray-400 dark:text-gray-500"} />
+                            <iconList.CircleUser size={46} strokeWidth={1.5} className={isActive ? "text-primary" : "text-gray-400"} />
                           </>
                       }
                       <span
-                        className={`absolute bottom-0 right-0 h-3.5 w-3.5 rounded-full border-2 border-white dark:border-second-bg ${isOnline ? "bg-green-500" : "bg-gray-400"}`}
+                        className={`absolute bottom-0 right-0 h-3.5 w-3.5 rounded-full border-2 border-white ${isOnline ? "bg-green-500" : "bg-gray-400"}`}
                       />
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex justify-between items-baseline mb-0.5">
-                        <div className="font-semibold truncate text-[15px] text-gray-900 dark:text-dark-text">
+                        <div className="font-semibold truncate text-[15px] text-gray-900">
                           {other?.name || "Unknown"}
                         </div>
                         {chat.lastMessage && (
-                          <span className="text-[11px] font-medium text-gray-400 dark:text-dark-muted shrink-0 ml-2">
+                          <span className="text-[11px] font-medium text-gray-400 shrink-0 ml-2">
                             {formatShortTime(chat.lastMessage.createdAt)}
                           </span>
                         )}
                       </div>
-                      <div className="text-[13px] text-gray-500 dark:text-dark-muted overflow-hidden line-clamp-1 pr-2">
+                      <div className="text-[13px] text-gray-500 overflow-hidden line-clamp-1 pr-2">
                         {chat.lastMessage?.message || "No messages yet"}
                       </div>
                     </div>
@@ -395,18 +395,18 @@ const Chats = () => {
 
         {/* CHAT AREA */}
         {messageLoading ? (
-          <div className="flex-1 hidden md:block">
+          <div className={`flex-1 ${activeChat ? "flex" : "hidden md:block"}`}>
             <OwnerChatMessageSkeleton />
           </div>
         ) : (
-          <div className={`flex flex-col flex-1 bg-[#efe7de] dark:bg-[#0b141a] ${activeChat ? "flex" : "hidden md:flex"}`}>
+          <div className={`flex flex-col flex-1 bg-[#efe7de] ${activeChat ? "flex" : "hidden md:flex"}`}>
 
             {/* HEADER */}
             {activeChat ? (
-              <div className="h-16 flex items-center gap-3 px-4 bg-white/80 backdrop-blur-md dark:bg-second-bg/90 border-b border-gray-200 dark:border-dark-border shadow-sm z-10 shrink-0">
+              <div className="h-16 flex items-center gap-3 px-4 bg-white/80 backdrop-blur-md border-b border-gray-200 shadow-sm z-10 shrink-0">
                 <button
                   onClick={() => navigate(navPrefix)}
-                  className="md:hidden p-2 -ml-2 rounded-full hover:bg-gray-100 dark:hover:bg-surface text-gray-600 dark:text-dark-muted transition-colors active:scale-95 cursor-pointer"
+                  className="md:hidden p-2 -ml-2 rounded-full hover:bg-gray-100 text-gray-600 transition-colors active:scale-95 cursor-pointer"
                 >
                   <iconList.ArrowLeft size={18} />
                 </button>
@@ -417,15 +417,15 @@ const Chats = () => {
                       getOtherUser(activeChat)?.image ?
                         <img src={getOtherUser(activeChat)?.image} alt={getOtherUser(activeChat)?.name} className="h-11 w-11 border-2 border-gray-300 rounded-full aspect-square" />
                         : <>
-                          <iconList.CircleUser size={46} strokeWidth={1.5} className={activeChat ? "text-primary" : "text-gray-400 dark:text-gray-500"} />
+                          <iconList.CircleUser size={46} strokeWidth={1.5} className={activeChat ? "text-primary" : "text-gray-400"} />
                         </>
                     }
                     {activeChat && onlineUsers.includes(getOtherUser(activeChat)?._id) && (
-                      <span className="absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-white dark:border-second-bg bg-green-500" />
+                      <span className="absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-white bg-green-500" />
                     )}
                   </div>
                   <div className="flex flex-col">
-                    <span className="font-bold text-[15px] text-gray-900 dark:text-dark-text leading-tight">
+                    <span className="font-bold text-[15px] text-gray-900 leading-tight">
                       {getOtherUser(activeChat)?.name || "Unknown User"}
                     </span>
                     {typingChatId ? (
@@ -433,7 +433,7 @@ const Chats = () => {
                         typing...
                       </span>
                     ) : (
-                      <span className="text-[12px] text-gray-500 dark:text-dark-muted mt-0.5">
+                      <span className="text-[12px] text-gray-500 mt-0.5">
                         {onlineUsers.includes(getOtherUser(activeChat)?._id) ? "Online" : "Offline"}
                       </span>
                     )}
@@ -441,15 +441,15 @@ const Chats = () => {
                 </div>
               </div>
             ) : (
-              <div className="h-16 flex items-center px-6 bg-white dark:bg-second-bg border-b border-gray-200 dark:border-dark-border shrink-0">
-                <h2 className="text-lg font-bold text-gray-800 dark:text-dark-text">Chat Preview</h2>
+              <div className="h-16 flex items-center px-6 bg-white border-b border-gray-200 shrink-0">
+                <h2 className="text-lg font-bold text-gray-800">Chat Preview</h2>
               </div>
             )}
 
             {/* MESSAGES */}
             <div className="flex-1 min-h-0 relative">
               {activeChat ? (
-                <div ref={scrollContainerRef} className="h-full w-full overflow-y-auto custom-scrollbar bg-[url('https://i.pinimg.com/736x/8c/98/99/8c98994518b575bfd8c949e91d20548b.jpg')] bg-repeat bg-bg-size-[400px] dark:opacity-90 dark:bg-blend-overlay dark:bg-black/20">
+                <div ref={scrollContainerRef} className="h-full w-full overflow-y-auto custom-scrollbar bg-[url('https://i.pinimg.com/736x/8c/98/99/8c98994518b575bfd8c949e91d20548b.jpg')] bg-repeat bg-bg-size-[400px]">
                   {/* Spacer to push messages to bottom when there are few of them */}
                   <div className="flex flex-col min-h-full">
                     <div className="flex-1" />
@@ -462,14 +462,14 @@ const Chats = () => {
                             transition={{ duration: 0.2 }}
                             key={m._id}
                             className={`relative max-w-[85%] md:max-w-[70%] w-fit px-3 py-1.5 text-[14px] rounded-xl leading-snug wrap-break-words shadow-sm ${m.senderRole === user.role
-                              ? "ml-auto bg-[#d9fdd3] dark:bg-[#005c4b] text-[#111b21] dark:text-[#e9edef] rounded-br-sm"
-                              : "bg-white dark:bg-[#202c33] text-[#111b21] dark:text-[#e9edef] rounded-bl-sm border border-transparent dark:border-none shadow-sm"
+                              ? "ml-auto bg-[#d9fdd3] text-[#111b21] rounded-br-sm"
+                              : "bg-white text-[#111b21] rounded-bl-sm border border-transparent shadow-sm"
                               }`}
                           >
                             {m.attachments && m.attachments.length > 0 && (
                               <div className={`flex flex-col gap-2 mb-2 ${m.attachments.length > 1 ? "grid grid-cols-2" : ""}`}>
                                 {m.attachments.map((att, idx) => (
-                                  <div key={idx} className="group relative rounded-lg overflow-hidden border border-black/5 dark:border-white/10 shadow-sm bg-black/5 dark:bg-black/20">
+                                  <div key={idx} className="group relative rounded-lg overflow-hidden border border-black/5 shadow-sm bg-black/5">
                                     {att.type === 'image' ? (
                                       <>
                                         <img
@@ -489,14 +489,14 @@ const Chats = () => {
                                         </button>
                                       </>
                                     ) : (
-                                      <div className="flex items-center justify-between p-1.5 hover:bg-black/5 dark:hover:bg-white/5 transition-colors">
+                                      <div className="flex items-center justify-between p-1.5 hover:bg-black/5 transition-colors">
                                         <a
                                           href={att.url}
                                           target="_blank"
                                           rel="noreferrer"
                                           className="flex items-center gap-2 text-[13px] text-inherit no-underline min-w-0"
                                         >
-                                          <div className="h-9 w-9 shrink-0 flex items-center justify-center bg-white dark:bg-card-bg rounded-lg shadow-sm">
+                                          <div className="h-9 w-9 shrink-0 flex items-center justify-center bg-white rounded-lg shadow-sm">
                                             <iconList.FileText className="text-red-500" size={20} />
                                           </div>
                                           <div className="flex flex-col min-w-0">
@@ -506,7 +506,7 @@ const Chats = () => {
                                         </a>
                                         <button
                                           onClick={() => handleDownload(att.url, att.name || "document.pdf")}
-                                          className="h-7 w-7 flex items-center justify-center text-gray-500 hover:text-primary dark:text-dark-muted dark:hover:text-accent transition-colors cursor-pointer"
+                                          className="h-7 w-7 flex items-center justify-center text-gray-500 hover:text-primary transition-colors cursor-pointer"
                                           title="Download"
                                         >
                                           <iconList.Download size={16} />
@@ -518,12 +518,12 @@ const Chats = () => {
                               </div>
                             )}
                             {m.message && <p className="whitespace-pre-wrap">{m.message}</p>}
-                            <div className={`flex items-center justify-end gap-1 mt-1 text-[10px] font-medium ${m.senderRole === user.role ? "text-[#667781] dark:text-[#8696a0]" : "text-[#667781] dark:text-[#8696a0]"}`}>
+                            <div className={`flex items-center justify-end gap-1 mt-1 text-[10px] font-medium ${m.senderRole === user.role ? "text-[#667781]" : "text-[#667781]"}`}>
                               <span>{formatMessageTime(m.createdAt).split('•').pop().trim()}</span>
                               {m.senderRole === user.role && (
                                 <span className="ml-0.5">
                                   {m.status === 'sending' ? (
-                                    <iconList.Clock size={11} className="text-[#667781] dark:text-[#8696a0]" />
+                                    <iconList.Clock size={11} className="text-[#667781]" />
                                   ) : m.seenByReceiver ? (
                                     <CheckCheck size={15} className="text-[#53bdeb]" />
                                   ) : m.delivered ? (
@@ -543,11 +543,11 @@ const Chats = () => {
               ) : (
                 <div className="h-full flex items-center justify-center bg-white">
                   <div className="flex flex-col items-center gap-4 max-w-xs text-center">
-                    <div className="h-24 w-24 bg-blue-50 dark:bg-surface rounded-full flex items-center justify-center mb-2">
-                      <iconList.MessageCircleMore size={48} className="text-primary/60 dark:text-accent/60" />
+                    <div className="h-24 w-24 bg-blue-50 rounded-full flex items-center justify-center mb-2">
+                      <iconList.MessageCircleMore size={48} className="text-primary/60" />
                     </div>
-                    <h3 className="text-xl font-bold text-gray-800 dark:text-dark-text">Your Messages</h3>
-                    <p className="text-gray-500 dark:text-dark-muted text-[15px]">
+                    <h3 className="text-xl font-bold text-gray-800">Your Messages</h3>
+                    <p className="text-gray-500 text-[15px]">
                       Select a conversation from the list to start chatting with your customers.
                     </p>
                   </div>
@@ -557,7 +557,7 @@ const Chats = () => {
 
             {/* INPUT */}
             {activeChat && (
-              <div className="p-3 md:p-4 bg-[#f0f2f5] dark:bg-[#202c33] border-t border-gray-200 dark:border-dark-border shrink-0">
+              <div className="p-3 md:p-4 bg-[#f0f2f5] border-t border-gray-200 shrink-0">
                 {/* ATTACHMENT PREVIEW */}
                 {attachments.length > 0 && (
                   <div className="flex gap-3 mb-3 max-w-4xl mx-auto overflow-x-auto pb-2 scrollbar-hide">
@@ -568,20 +568,21 @@ const Chats = () => {
                           initial={{ opacity: 0, scale: 0.8, y: 10 }}
                           animate={{ opacity: 1, scale: 1, y: 0 }}
                           exit={{ opacity: 0, scale: 0.8, y: 10 }}
-                          className="relative h-20 w-20 md:h-24 md:w-24 shrink-0 rounded-xl overflow-hidden border-2 border-white dark:border-dark-border shadow-md bg-white dark:bg-card-bg group"
+                          className="relative h-20 w-20 md:h-24 md:w-24 shrink-0 rounded-xl overflow-hidden border-2 border-white shadow-md bg-white group"
                         >
                           {file.type === 'image' ? (
                             <img src={file.preview} alt="" className="h-full w-full object-cover" />
                           ) : (
-                            <div className="h-full w-full flex flex-col items-center justify-center p-2 bg-red-50 dark:bg-red-900/10">
+                            <div className="h-full w-full flex flex-col items-center justify-center p-2 bg-red-50">
                               <iconList.FileText className="text-red-500 mb-1" size={24} />
-                              <span className="text-[10px] font-medium truncate w-full text-center px-1 dark:text-dark-text">{file.name}</span>
+                              <span className="text-[10px] font-medium truncate w-full text-center px-1">{file.name}</span>
                             </div>
                           )}
                           <button
                             onClick={() => removeAttachment(index)}
                             className="absolute top-1 right-1 h-6 w-6 bg-black/60 hover:bg-red-500 text-white rounded-full flex items-center justify-center transition-all duration-200 shadow-sm opacity-0 group-hover:opacity-100 cursor-pointer scale-90 hover:scale-100"
                           >
+
                             <iconList.X size={14} />
                           </button>
                         </motion.div>
@@ -601,12 +602,12 @@ const Chats = () => {
                   />
                   <button
                     onClick={() => fileInputRef.current.click()}
-                    className="h-12 w-12 shrink-0 rounded-full flex items-center justify-center text-gray-500 dark:text-dark-muted hover:bg-gray-200 dark:hover:bg-[#2a3942] transition-colors cursor-pointer"
+                    className="h-12 w-12 shrink-0 rounded-full flex items-center justify-center text-gray-500 hover:bg-gray-200 transition-colors cursor-pointer"
                   >
                     <iconList.Paperclip size={22} />
                   </button>
 
-                  <div className="flex-1 bg-white dark:bg-[#2a3942] rounded-3xl flex items-center px-5 py-0.5 border-2 border-transparent focus-within:border-primary/20 transition-all shadow-sm">
+                  <div className="flex-1 bg-white rounded-3xl flex items-center px-5 py-0.5 border-2 border-transparent focus-within:border-primary/20 transition-all shadow-sm">
                     <input
                       type="text"
                       value={input}
@@ -624,7 +625,7 @@ const Chats = () => {
                         if (e.key === "Enter") handleSend();
                       }}
                       placeholder="Type your message..."
-                      className="w-full bg-transparent border-none outline-none py-3 text-[15px] text-gray-800 dark:text-[#d1d7db] placeholder-gray-500 dark:placeholder-gray-400 "
+                      className="w-full bg-transparent border-none outline-none py-3 text-[15px] text-gray-800 placeholder-gray-500 "
                     />
                   </div>
 
@@ -632,8 +633,8 @@ const Chats = () => {
                     onClick={handleSend}
                     disabled={!input.trim() && attachments.length === 0}
                     className={`h-12 w-12 md:h-12.5 md:w-12.5 shrink-0 rounded-full flex items-center justify-center transition-all duration-200 ${input.trim() || attachments.length > 0
-                      ? "bg-primary dark:bg-accent text-white dark:text-main-bg shadow-md hover:shadow-lg hover:-translate-y-0.5 active:scale-95 active:translate-y-0 cursor-pointer"
-                      : "bg-gray-200 dark:bg-[#2a3942] text-gray-400 dark:text-gray-500 cursor-not-allowed"
+                      ? "bg-primary text-white shadow-md hover:shadow-lg hover:-translate-y-0.5 active:scale-95 active:translate-y-0 cursor-pointer"
+                      : "bg-gray-200 text-gray-400 cursor-not-allowed"
                       }`}
                   >
                     <iconList.Send size={20} className="ml-1" />
@@ -650,3 +651,4 @@ const Chats = () => {
 };
 
 export default Chats;
+

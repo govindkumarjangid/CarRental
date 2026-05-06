@@ -1,5 +1,4 @@
 import { menuLinks, assets } from "../../assets/assets.jsx";
-import { useThemeStore } from "../../store/useThemeStore.js";
 import { useAuthStore } from "../../store/useAuthStore.js";
 import {
 	Link,
@@ -237,3 +236,4 @@ const Navbar = () => {
 };
 
 export default Navbar;
+

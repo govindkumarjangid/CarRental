@@ -58,3 +58,4 @@ const MarqueeRow = ({ items, reverse }) => {
 };
 
 export default MarqueeRow;
+

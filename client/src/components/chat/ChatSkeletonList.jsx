@@ -1,10 +1,10 @@
 const ChatSkeletonList = () => {
     return (
-        <div className="flex items-center gap-3 px-4 py-4 border-b border-gray-50 dark:border-dark-border/30 w-full bg-white dark:bg-second-bg">
+        <div className="flex items-center gap-3 px-4 py-4 border-b border-gray-50 w-full bg-white">
             {/* Avatar Skeleton */}
             <div className="relative shrink-0">
                 <div className="h-[46px] w-[46px] shimmer rounded-full" />
-                <div className="absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-white dark:border-second-bg shimmer" />
+                <div className="absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-white shimmer" />
             </div>
 
             {/* Text Container */}

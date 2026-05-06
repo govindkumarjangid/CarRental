@@ -43,9 +43,9 @@ const Login = () => {
 				transition={{ duration: 0.4 }}
 				onSubmit={handleSubmit}
 				onClick={(e) => e.stopPropagation()}
-				className="flex flex-col gap-4 m-auto items-start p-8 py-12 w-80 sm:w-88 text-gray-500 rounded-lg shadow-xl border border-gray-200 bg-white dark:bg-main-bg dark:border-dark-border z-200"
+				className="flex flex-col gap-4 m-auto items-start p-8 py-12 w-80 sm:w-88 text-gray-500 rounded-lg shadow-xl border border-gray-200 bg-white z-200"
 			>
-				<p className="text-3xl font-medium m-auto dark:text-white">
+				<p className="text-3xl font-medium m-auto">
 					<span className="text-primary ">
 						User
 					</span>
@@ -73,8 +73,8 @@ const Login = () => {
 								onClick={() => setRole("user")}
 								className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg border-2 text-sm font-semibold cursor-pointer transition-all duration-200 ${
 									role === "user"
-										? "border-primary bg-primary/10 text-primary dark:border-accent dark:bg-accent/10 dark:text-accent"
-										: "border-gray-200 text-gray-400 hover:border-gray-300 dark:border-dark-border dark:hover:border-dark-muted"
+										? "border-primary bg-primary/10 text-primary"
+										: "border-gray-200 text-gray-400 hover:border-gray-300"
 								}`}
 							>
 								<iconList.User size={16} />
@@ -85,8 +85,8 @@ const Login = () => {
 								onClick={() => setRole("owner")}
 								className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg border-2 text-sm font-semibold cursor-pointer transition-all duration-200 ${
 									role === "owner"
-										? "border-primary bg-primary/10 text-primary dark:border-accent dark:bg-accent/10 dark:text-accent"
-										: "border-gray-200 text-gray-400 hover:border-gray-300 dark:border-dark-border dark:hover:border-dark-muted"
+										? "border-primary bg-primary/10 text-primary"
+										: "border-gray-200 text-gray-400 hover:border-gray-300"
 								}`}
 							>
 								<iconList.CarFront size={16} />
@@ -174,3 +174,4 @@ const Login = () => {
 };
 
 export default Login;
+

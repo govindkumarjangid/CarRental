@@ -20,10 +20,10 @@ const TableSkeleton = ({ showAddButton = true }) => {
       </div>
 
       {/* Table Container Skeleton */}
-      <div className="w-full bg-white dark:bg-second-bg rounded-xl overflow-hidden border border-gray-200 dark:border-dark-border">
+      <div className="w-full bg-white rounded-xl overflow-hidden border border-gray-200">
         <div className="w-full">
           {/* Header */}
-          <div className="bg-gray-50 dark:bg-card-bg border-b border-gray-200 dark:border-dark-border flex p-4">
+          <div className="bg-gray-50 border-b border-gray-200 flex p-4">
             <div className="h-4 shimmer rounded-md w-1/4 mr-4"></div>
             <div className="h-4 shimmer rounded-md w-1/4 mr-4 hidden md:block"></div>
             <div className="h-4 shimmer rounded-md w-1/6 mr-4 hidden md:block"></div>
@@ -32,7 +32,7 @@ const TableSkeleton = ({ showAddButton = true }) => {
           </div>
           {/* Rows */}
           {[1, 2, 3, 4, 5, 6].map((item) => (
-            <div key={item} className="flex border-b last:border-b-0 border-gray-100 dark:border-dark-border p-4 items-center gap-4">
+            <div key={item} className="flex border-b last:border-b-0 border-gray-100 p-4 items-center gap-4">
               {/* Car Info Column */}
               <div className="flex items-center gap-3 flex-1 md:flex-none md:w-1/4">
                 <div className="h-11 aspect-video shimmer rounded-md shrink-0"></div>
@@ -62,3 +62,4 @@ const TableSkeleton = ({ showAddButton = true }) => {
 };
 
 export default TableSkeleton;
+

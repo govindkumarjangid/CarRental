@@ -20,3 +20,4 @@ const RevenueCard = ({ revenue, currency }) => {
 };
 
 export default RevenueCard;
+

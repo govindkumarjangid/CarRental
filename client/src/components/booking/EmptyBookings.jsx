@@ -38,3 +38,4 @@ const EmptyBookings = () => {
   );
 }
 export default EmptyBookings;
+

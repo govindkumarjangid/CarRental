@@ -26,3 +26,4 @@ const StatCard = ({ card, index, colorMap }) => {
 };
 
 export default StatCard;
+

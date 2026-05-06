@@ -174,3 +174,4 @@ export const RevenueHistoryChart = ({ history, currency }) => (
     </div>
   </motion.div>
 );
+

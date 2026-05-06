@@ -67,7 +67,7 @@ const EditCarForm = ({ car: propCar, onClose, isFullPage = false }) => {
             transition={{ type: "spring", stiffness: 300, damping: 25 }}
             onSubmit={handleSubmit}
             onClick={(e) => e.stopPropagation()}
-            className={`${isFullPage ? "w-full h-full" : "relative max-w-2xl mx-auto bg-white dark:bg-main-bg shadow-2xl md:rounded-md md:max-h-[90vh] md:border border-gray-200 dark:border-dark-border"} px-5 md:px-10 py-8 overflow-y-auto blue-thumb-scrollbar w-full bg-white dark:bg-main-bg cursor-default`}
+            className={`${isFullPage ? "w-full h-full" : "relative max-w-2xl mx-auto bg-white shadow-2xl md:rounded-md md:max-h-[90vh] md:border border-gray-200"} px-5 md:px-10 py-8 overflow-y-auto blue-thumb-scrollbar w-full bg-white cursor-default`}
         >
             {/* title and close button  */}
             <div className="flex items-center justify-between mb-8">
@@ -76,34 +76,34 @@ const EditCarForm = ({ car: propCar, onClose, isFullPage = false }) => {
                         <button
                             type="button"
                             onClick={handleClose}
-                            className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-surface transition-all active:scale-90 text-gray-500 dark:text-dark-muted border border-gray-100 dark:border-dark-border cursor-pointer"
+                            className="p-2 rounded-full hover:bg-gray-100 transition-all active:scale-90 text-gray-500 border border-gray-100 cursor-pointer"
                         >
                             <iconList.ArrowLeft size={20} />
                         </button>
                     )}
-                    <h2 className="text-xl md:text-2xl font-bold dark:text-white">Edit Your Car</h2>
+                    <h2 className="text-xl md:text-2xl font-bold">Edit Your Car</h2>
                 </div>
                 {!isFullPage && (
                     <button
                         type="button"
                         onClick={handleClose}
-                        className="p-2 rounded-md hover:bg-gray-100 dark:hover:bg-surface transition-all active:scale-95 text-gray-500 dark:text-dark-muted"
+                        className="p-2 rounded-md hover:bg-gray-100 transition-all active:scale-95 text-gray-500"
                     >
                         <iconList.X size={22} className="cursor-pointer" />
                     </button>
                 )}
             </div>
 
-            <div className="flex flex-col gap-5 text-gray-500 text-sm w-full dark:text-dark-muted">
+            <div className="flex flex-col gap-5 text-gray-500 text-sm w-full">
                 {/* car image  */}
                 <div className="flex gap-4 items-center w-full mb-2">
-                    <label htmlFor="car-image" className="cursor-pointer shadow-sm rounded-md border-dashed border-primary dark:border-accent border-2 p-2 hover:border-solid">
+                    <label htmlFor="car-image" className="cursor-pointer shadow-sm rounded-md border-dashed border-primary border-2 p-2 hover:border-solid">
                         {image ? (
                             <img src={URL.createObjectURL(image)} className="h-14 w-26 object-cover rounded-md" alt="car preview" />
                         ) : car?.image ? (
                             <img src={car.image} className="h-14 w-26 object-cover rounded-md" alt="car current" />
                         ) : (
-                            <iconList.CloudUpload className="h-14 text-primary dark:text-accent bg-gray-100 dark:bg-surface px-4 py-3 rounded-md cursor-pointer w-26 border border-gray-300 dark:border-dark-border" />
+                            <iconList.CloudUpload className="h-14 text-primary bg-gray-100 px-4 py-3 rounded-md cursor-pointer w-26 border border-gray-300" />
                         )}
                         <input
                             type="file"
@@ -114,7 +114,7 @@ const EditCarForm = ({ car: propCar, onClose, isFullPage = false }) => {
                             onChange={(e) => setImage(e.target.files[0])}
                         />
                     </label>
-                    <p className="text-xs md:text-sm text-gray-500 dark:text-dark-muted">
+                    <p className="text-xs md:text-sm text-gray-500">
                         Upload a image of your car
                     </p>
                 </div>
@@ -224,7 +224,7 @@ const EditCarForm = ({ car: propCar, onClose, isFullPage = false }) => {
                     <button
                         type="submit"
                         disabled={loading}
-                        className={`px-8 py-2.5 rounded-md text-white transition-all active:scale-95 flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer dark:text-main-bg ${loading ? "bg-primary dark:bg-accent" : "bg-primary hover:bg-primary-dull dark:bg-accent dark:hover:bg-accent-dull"}`}
+                        className={`px-8 py-2.5 rounded-md text-white transition-all active:scale-95 flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer ${loading ? "bg-primary" : "bg-primary hover:bg-primary-dull"}`}
                     >
                         {loading ? <iconList.Loader className="animate-spin" size={18} /> : <iconList.Check size={18} />}
                         {loading ? "Updating..." : "Update Car"}
@@ -254,3 +254,4 @@ const EditCarForm = ({ car: propCar, onClose, isFullPage = false }) => {
 };
 
 export default EditCarForm;
+

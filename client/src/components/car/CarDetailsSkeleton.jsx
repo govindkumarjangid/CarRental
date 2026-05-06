@@ -1,6 +1,6 @@
 const CarDetailsSkeleton = () => {
   return (
-    <div className="w-full shrink-0 border-b md:border-b-0 md:border-r border-gray-200 dark:border-dark-border p-3 md:p-6 flex flex-row md:flex-col items-center md:items-start gap-4 md:bg-gray-50/30 dark:md:bg-card-bg/20">
+    <div className="w-full shrink-0 border-b md:border-b-0 md:border-r border-gray-200 p-3 md:p-6 flex flex-row md:flex-col items-center md:items-start gap-4 md:bg-gray-50/30">
       <div className="hidden md:block h-6 shimmer rounded w-32 mb-2" />
 
       {/* Car Image Skeleton */}
@@ -21,3 +21,4 @@ const CarDetailsSkeleton = () => {
 };
 
 export default CarDetailsSkeleton;
+

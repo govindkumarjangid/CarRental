@@ -61,3 +61,4 @@ const RecentBookings = ({ bookings, currency }) => {
 };
 
 export default RecentBookings;
+

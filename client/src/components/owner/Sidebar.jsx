@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { iconList } from "../../assets/assets.jsx";
 
 const SidebarContent = ({ user, image, setImage, handleUpdateImage, location, MotionNavLink, setIsSidebarOpen }) => (
-	<div className="flex flex-col h-full w-full items-center">
+	<div className="flex flex-col h-full w-full items-center relative">
 		{/* Profile Image */}
 		<div className="group relative flex justify-center">
 			<label htmlFor="image">
@@ -112,27 +112,38 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
 	return (
 		<>
 			{/* Mobile Sidebar (Dropdown Style) */}
-			<div className="md:hidden absolute inset-0 z-50 pointer-events-none">
+			<div className="md:hidden fixed inset-0 z-50 pointer-events-none">
 				<AnimatePresence>
 					{isSidebarOpen && (
-						<motion.div
-							initial={{ x: "100%", opacity: 0 }}
-							animate={{ x: 0, opacity: 1 }}
-							exit={{ x: "100%", opacity: 0 }}
-							transition={{
-								type: "spring",
-								stiffness: 350,
-								damping: 35,
-								mass: 0.8,
-								exit: { type: "tween", duration: 0.15, ease: "easeInOut" }
-							}}
-							className="absolute top-0 left-0 right-0 z-50 bg-white pt-6 pb-2 border-b border-gray-200 max-h-screen flex flex-col pointer-events-auto"
-						>
-							<SidebarContent {...sidebarProps} />
-						</motion.div>
+						<>
+							{/* Backdrop blur overlay */}
+							<motion.div
+								initial={{ opacity: 0 }}
+								animate={{ opacity: 1 }}
+								exit={{ opacity: 0 }}
+								onClick={() => setIsSidebarOpen(false)}
+								className="fixed inset-0 backdrop-blur-sm pointer-events-auto"
+							/>
+							<motion.div
+								initial={{ x: "100%", opacity: 0 }}
+								animate={{ x: 0, opacity: 1 }}
+								exit={{ x: "100%", opacity: 0 }}
+								transition={{
+									type: "spring",
+									stiffness: 350,
+									damping: 35,
+									mass: 0.8,
+									exit: { type: "tween", duration: 0.15, ease: "easeInOut" }
+								}}
+								className="absolute top-[60px] right-0 left-0 z-50 bg-white/95 backdrop-blur-xl pt-6 pb-2 border-b border-gray-200 max-h-[calc(100vh-60px)] flex flex-col pointer-events-auto shadow-2xl"
+							>
+								<SidebarContent {...sidebarProps} />
+							</motion.div>
+						</>
 					)}
 				</AnimatePresence>
 			</div>
+
 
 			{/* Desktop Sidebar */}
 			<div className="hidden md:flex relative z-50 h-full flex-col items-center pt-8 w-60 bg-white border-r border-gray-200 text-sm overflow-x-hidden shrink-0">
@@ -143,3 +154,4 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
 };
 
 export default Sidebar;
+

@@ -14,10 +14,10 @@ const Newsletter = () => {
 					initial={{ opacity: 0, y: 30 }}
 					animate={{ opacity: 1, y: 0 }}
 					transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
-					className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 sm:gap-2 mt-10 border-2 border-slate-300 rounded-xl w-[95%] sm:w-full max-w-3xl p-3 sm:p-4 bg-white focus-within:border-primary focus-within:ring-4 focus-within:ring-primary/20 transition-all duration-300"
+					className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 sm:gap-2 mt-10 border-2 border-slate-300 rounded-xl w-[95%] sm:w-full max-w-3xl p-3 sm:p-4 bg-white focus-within:border-primary focus-within:ring-4 focus-within:ring-primary/40 transition-all duration-300"
 				>
 					<label htmlFor="newsletter-email" className="sr-only">Email address</label>
-					<input 
+					<input
 						id="newsletter-email"
 						className="flex-1 bg-transparent outline-none text-sm sm:text-base md:text-lg text-gray-800 placeholder:text-slate-500 px-2 min-h-11"
 						placeholder="Enter your email address"
@@ -25,7 +25,7 @@ const Newsletter = () => {
 						required
 					/>
 
-					<button 
+					<button
 						aria-label="Subscribe to newsletter"
 						className="bg-primary text-white rounded-lg h-11 sm:h-12 px-4 sm:px-8 w-full sm:w-auto flex items-center justify-center hover:bg-primary-dull active:scale-95 transition text-sm sm:text-base md:text-lg cursor-pointer font-semibold"
 					>
@@ -39,3 +39,4 @@ const Newsletter = () => {
 };
 
 export default Newsletter;
+

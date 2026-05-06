@@ -29,12 +29,12 @@ const CarDetailsPageSkeleton = () => {
               </div>
             </div>
 
-            <hr className="border-gray-100 dark:border-dark-border my-6" />
+            <hr className="border-gray-100 my-6" />
 
             {/* Features icons grid */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
               {[1, 2, 3, 4].map((item) => (
-                <div key={item} className="flex flex-col items-center bg-gray-50/50 dark:bg-card-bg p-4 rounded-xl border border-gray-100 dark:border-dark-border">
+                <div key={item} className="flex flex-col items-center bg-gray-50/50 p-4 rounded-xl border border-gray-100">
                   <div className="w-8 h-8 shimmer rounded-full mb-2" />
                   <div className="w-16 h-3 shimmer rounded-md opacity-60" />
                 </div>
@@ -66,12 +66,12 @@ const CarDetailsPageSkeleton = () => {
         </div>
 
         {/* RIGHT / BOOKING FORM */}
-        <div className="h-fit sticky top-18 rounded-xl p-6 bg-gray-50/50 dark:bg-card-bg border border-gray-200 dark:border-dark-border">
+        <div className="h-fit sticky top-18 rounded-xl p-6 bg-gray-50/50 border border-gray-100">
           <div className="flex items-center gap-2 mb-4">
             <div className="w-24 h-8 shimmer rounded-md" />
             <div className="w-12 h-5 shimmer rounded-md opacity-70" />
           </div>
-          <hr className="border-gray-200 dark:border-dark-border my-4" />
+          <hr className="border-gray-200 my-4" />
 
           <div className="space-y-4 mb-8">
             <div className="space-y-2">
@@ -98,3 +98,4 @@ const CarDetailsPageSkeleton = () => {
 };
 
 export default CarDetailsPageSkeleton;
+

@@ -161,3 +161,4 @@ export const ownerMenuLinks = [
 	{ name: "All Users", path: "/owner/users", icon: <Users /> },
 	{ name: "All Chats", path: "/owner/chats", icon: <MessageCircleMore /> }
 ];
+

@@ -59,7 +59,7 @@ const Dashboard = () => {
 	if (loading) return <DashboardSkeleton />;
 
 	return (
-		<div className="px-4 pt-10 md:px-10 flex-1 max-w-7xl pb-10 dark:text-dark-text">
+		<div className="px-4 pt-10 md:px-10 flex-1 max-w-7xl pb-10">
 			<OwnerTitle
 				title="Admin Dashboard"
 				subTitle="Monitor overall platform performance including total cars, bookings, revenue, and recent activities"
@@ -67,7 +67,7 @@ const Dashboard = () => {
 
 			{/* Fleet Overview Section */}
 			<section className="mt-8">
-				<h2 className="text-lg font-bold mb-4 flex items-center gap-2 dark:text-dark-text border-b border-gray-100 dark:border-dark-border pb-2">
+				<h2 className="text-lg font-bold mb-4 flex items-center gap-2 border-b border-gray-100 pb-2">
 					<iconList.Car className="text-primary" size={22} /> Fleet Overview
 				</h2>
 				<div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-4 w-full mb-6">
@@ -80,7 +80,7 @@ const Dashboard = () => {
 
 			{/* Booking Analytics Section */}
 			<section className="mt-12">
-				<h2 className="text-lg font-bold mb-4 flex items-center gap-2 dark:text-dark-text border-b border-gray-100 dark:border-dark-border pb-2">
+				<h2 className="text-lg font-bold mb-4 flex items-center gap-2 border-b border-gray-100 pb-2">
 					<iconList.ClipboardList className="text-indigo-600" size={22} /> Booking Analytics
 				</h2>
 				<div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-4 w-full mb-6">
@@ -93,7 +93,7 @@ const Dashboard = () => {
 
 			{/* Financial Performance Section */}
 			<section className="mt-12">
-				<h2 className="text-lg font-bold mb-4 flex items-center gap-2 dark:text-dark-text border-b border-gray-100 dark:border-dark-border pb-2">
+				<h2 className="text-lg font-bold mb-4 flex items-center gap-2 border-b border-gray-100 pb-2">
 					<iconList.Wallet className="text-emerald-600" size={22} /> Financial Performance
 				</h2>
 				<div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 w-full mb-6">
@@ -117,3 +117,4 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+

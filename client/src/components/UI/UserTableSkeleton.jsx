@@ -10,10 +10,10 @@ const UserTableSkeleton = () => {
       </div>
       
       {/* Table Container Skeleton */}
-      <div className="w-full bg-white dark:bg-second-bg rounded-xl overflow-hidden border border-gray-200 dark:border-dark-border">
+      <div className="w-full bg-white rounded-xl overflow-hidden border border-gray-200">
         <div className="w-full">
           {/* Header */}
-          <div className="bg-gray-50 dark:bg-card-bg border-b border-gray-200 dark:border-dark-border flex p-4">
+          <div className="bg-gray-50 border-b border-gray-200 flex p-4">
             <div className="h-4 shimmer rounded-md w-12 mr-4"></div>
             <div className="h-4 shimmer rounded-md flex-1"></div>
             <div className="h-4 shimmer rounded-md w-1/4 hidden md:block mx-4"></div>
@@ -21,7 +21,7 @@ const UserTableSkeleton = () => {
           </div>
           {/* Rows */}
           {[1, 2, 3, 4, 5, 6, 7].map((item) => (
-            <div key={item} className="flex border-b last:border-b-0 border-gray-100 dark:border-dark-border p-4 items-center">
+            <div key={item} className="flex border-b last:border-b-0 border-gray-100 p-4 items-center">
               {/* Image Column */}
               <div className="w-11 h-11 shimmer rounded-full shrink-0 mr-4"></div>
 
@@ -50,3 +50,4 @@ const UserTableSkeleton = () => {
 };
 
 export default UserTableSkeleton;
+

@@ -52,7 +52,7 @@ const AllUsers = () => {
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ type: "spring", stiffness: 300, damping: 30 }}
-              className="rounded-xl border border-gray-200 dark:border-dark-border bg-white dark:bg-second-bg shadow-sm p-4"
+              className="rounded-xl border border-gray-200 bg-white shadow-sm p-4"
             >
               <div className="flex items-start gap-3">
                 <div className="w-12 h-12 rounded-full bg-primary flex items-center justify-center text-white font-semibold text-xl shrink-0 overflow-hidden">
@@ -68,10 +68,10 @@ const AllUsers = () => {
                 </div>
 
                 <div className="min-w-0 flex-1">
-                  <p className="text-base font-semibold text-gray-900 dark:text-dark-text truncate">
+                  <p className="text-base font-semibold text-gray-900 truncate">
                     {user.name}
                   </p>
-                  <p className="text-sm text-gray-500 dark:text-dark-muted truncate">
+                  <p className="text-sm text-gray-500 truncate">
                     {user.email}
                   </p>
 
@@ -82,7 +82,7 @@ const AllUsers = () => {
                       name="userStatus"
                       value={user.isBlocked ? "block" : "unblock"}
                       onChange={(e) => handleBlockToggle(user._id, e.target.value === "block")}
-                      className={`outline-none px-3 py-1.5 rounded-md cursor-pointer text-sm border ${user.isBlocked ? "bg-red-300/30 text-red-500 border-red-200 dark:border-red-500/20" : "bg-green-300/30 text-green-500 border-green-200 dark:border-green-500/20"}`}
+                      className={`outline-none px-3 py-1.5 rounded-md cursor-pointer text-sm border ${user.isBlocked ? "bg-red-300/30 text-red-500 border-red-200" : "bg-green-300/30 text-green-500 border-green-200"}`}
                     >
                       <option value="block">Block</option>
                       <option value="unblock">Unblock</option>
@@ -98,11 +98,11 @@ const AllUsers = () => {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ type: "spring", stiffness: 300, damping: 30 }}
-          className="hidden md:table w-full border-collapse border-spacing-0 bg-white dark:bg-second-bg shadow-md hover:shadow-lg transition-all duration-300 rounded-xl overflow-hidden border border-gray-200 dark:border-dark-border"
+          className="hidden md:table w-full border-collapse border-spacing-0 bg-white shadow-md hover:shadow-lg transition-all duration-300 rounded-xl overflow-hidden border border-gray-200"
         >
 
           {/* All Users Table */}
-          <thead className="bg-gray-50 dark:bg-card-bg text-gray-500 dark:text-dark-muted border-b border-gray-200 dark:border-dark-border">
+          <thead className="bg-gray-50 text-gray-500 border-b border-gray-200">
             <tr className="text-left">
               <th className="py-3 px-4">Image</th>
               <th className="py-3 px-4 font-semibold">
@@ -116,14 +116,14 @@ const AllUsers = () => {
           </thead>
 
 
-          <tbody className="text-sm text-gray-600 dark:text-dark-text">
+          <tbody className="text-sm text-gray-600">
             {AllUsers.map((user, index) => (
               <motion.tr
                 key={index}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                className="hover:bg-gray-50/80 transition-colors duration-200 text-left border-b last:border-b-0 border-gray-100 dark:border-dark-border dark:hover:bg-surface/50"
+                className="hover:bg-gray-50/80 transition-colors duration-200 text-left border-b last:border-b-0 border-gray-100"
               >
                 <td className="px-4 py-2">
                   <div className="flex items-center gap-4">
@@ -144,8 +144,8 @@ const AllUsers = () => {
                 {/* USER COLUMN */}
                 <td className="px-4 py-2">
                   <div className="flex flex-col">
-                    <span className="text-base md:text-xl font-semibold dark:text-dark-text">{user.name}</span>
-                    <span className="text-base dark:text-dark-muted">{user.email}</span>
+                    <span className="text-base md:text-xl font-semibold">{user.name}</span>
+                    <span className="text-base">{user.email}</span>
                   </div>
                 </td>
 
@@ -176,3 +176,4 @@ const AllUsers = () => {
 }
 
 export default AllUsers;
+

@@ -243,3 +243,4 @@ const BookingPopup = ({ setSelectedBooking, selectedBooking, isFullPage = false 
 };
 
 export default BookingPopup;
+

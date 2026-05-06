@@ -39,8 +39,8 @@ const ManageBookings = () => {
 	// Filter bookings based on search and dropdowns
 	const filteredBookings = bookings.filter(booking => {
 		const matchesSearch =
-			booking.car.brand.toLowerCase().includes(searchTerm.toLowerCase()) ||
-			booking.car.model.toLowerCase().includes(searchTerm.toLowerCase());
+			(booking.car?.brand || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
+			(booking.car?.model || "").toLowerCase().includes(searchTerm.toLowerCase());
 
 		const matchesStatus = statusFilter === "All" || booking.status === statusFilter.toLowerCase();
 		const matchesPayment = paymentStatusFilter === "All" || booking.paymentStatus === paymentStatusFilter.toLowerCase();
@@ -130,15 +130,15 @@ const ManageBookings = () => {
 				</div>
 			</div>
 
-			<div className="max-w-250 w-full bg-white dark:bg-second-bg shadow-md hover:shadow-lg transition-all duration-300 rounded-xl overflow-hidden border border-gray-200 dark:border-dark-border mb-10">
+			<div className="max-w-250 w-full bg-white shadow-md hover:shadow-lg transition-all duration-300 rounded-xl overflow-hidden border border-gray-200 mb-10">
 				<div className="overflow-x-auto">
 					<motion.table
 						initial={{ opacity: 0 }}
 						animate={{ opacity: 1 }}
 						transition={{ duration: 0.4 }}
-						className="w-full border-collapse text-left text-sm text-gray-600 dark:text-dark-text"
+						className="w-full border-collapse text-left text-sm text-gray-600"
 					>
-						<thead className="bg-gray-50 dark:bg-card-bg text-gray-500 dark:text-dark-muted border-b border-gray-200 dark:border-dark-border">
+						<thead className="bg-gray-50 text-gray-500 border-b border-gray-200">
 							<tr>
 								<th className="p-3 font-medium">Car</th>
 								<th className="p-3 font-medium max-md:hidden">
@@ -163,29 +163,40 @@ const ManageBookings = () => {
 											type: "spring", stiffness: 300, damping: 30
 										}}
 										onClick={() => navigate(`/owner/manage-bookings/${booking._id}`)}
-										className="border-b last:border-b-0 border-gray-100 hover:bg-gray-50/80 transition-colors duration-200 dark:border-dark-border dark:hover:bg-surface/50 cursor-pointer"
+										className="border-b last:border-b-0 border-gray-100 hover:bg-gray-50/80 transition-colors duration-200 cursor-pointer"
 										key={booking._id || index}
 									>
 										<td className="p-3 flex md:flex-row flex-col items-start gap-3 justify-start">
-											<img
-												src={booking.car.image}
-												alt={booking.car.name}
-												className="h-11 aspect-video rounded-md object-cover"
-											/>
-											<div>
-												<p className="font-medium md:text-base text-xs line-clamp-1">
-													{booking.car.brand} {booking.car.model}
-												</p>
-												<p className="max-md:hidden text-[11px] text-gray-400">
-													{booking.car.seating_capacity} seats ●{" "}
-													{booking.car.transmission}
-												</p>
-											</div>
+											{booking.car ? (
+												<>
+													<img
+														src={booking.car.image}
+														alt={booking.car.brand}
+														className="h-11 aspect-video rounded-md object-cover"
+													/>
+													<div>
+														<p className="font-medium md:text-base text-xs line-clamp-1">
+															{booking.car.brand} {booking.car.model}
+														</p>
+														<p className="max-md:hidden text-[11px] text-gray-400">
+															{booking.car.seating_capacity} seats ●{" "}
+															{booking.car.transmission}
+														</p>
+													</div>
+												</>
+											) : (
+												<div className="flex items-center gap-2">
+													<div className="h-11 aspect-video rounded-md bg-gray-100 flex items-center justify-center">
+														<iconList.TriangleAlert size={18} className="text-gray-400" />
+													</div>
+													<p className="text-sm text-red-500 font-medium italic">Car Deleted</p>
+												</div>
+											)}
 										</td>
 
 										<td className="p-3 max-md:hidden">
 											<div className="flex flex-col gap-0.5">
-												<p className="text-[13px] font-bold text-gray-800 dark:text-dark-text whitespace-nowrap">
+												<p className="text-[13px] font-bold text-gray-800 whitespace-nowrap">
 													{(() => {
 														const diff = new Date(booking.returnDate) - new Date(booking.pickupDate);
 														const totalHours = Math.floor(diff / (1000 * 60 * 60));
@@ -220,7 +231,7 @@ const ManageBookings = () => {
 													value={booking.paymentStatus}
 													onClick={(e) => e.stopPropagation()}
 													onChange={(e) => changePaymentStatus(booking._id, e.target.value)}
-													className={`text-[12px] font-medium px-2 py-1 rounded-md outline-none border cursor-pointer transition-all bg-yellow-500/10 text-yellow-600 border-yellow-500/20 dark:bg-yellow-500/20`}
+													className={`text-[12px] font-medium px-2 py-1 rounded-md outline-none border cursor-pointer transition-all bg-yellow-500/10 text-yellow-600 border-yellow-500/20`}
 												>
 													<option value="pending">Pending</option>
 													<option value="confirmed">Confirmed</option>
@@ -244,8 +255,8 @@ const ManageBookings = () => {
 														onClick={(e) => e.stopPropagation()}
 														onChange={(e) => changeBookingStatus(booking._id, e.target.value)}
 														className={`text-[12px] font-medium px-2 py-1 rounded-md outline-none border cursor-pointer transition-all ${booking.status === "confirmed"
-															? "bg-green-500/10 text-green-600 border-green-500/20 dark:bg-green-500/20"
-															: "bg-yellow-500/10 text-yellow-600 border-yellow-500/20 dark:bg-yellow-500/20"
+															? "bg-green-500/10 text-green-600 border-green-500/20"
+															: "bg-yellow-500/10 text-yellow-600 border-yellow-500/20"
 															}`}
 													>
 														<option value="pending">Pending</option>
@@ -282,26 +293,27 @@ const ManageBookings = () => {
 								</tr>
 							)}
 						</tbody>
+							
 					</motion.table>
 				</div>
 
 				{/* Pagination */}
 				{totalPages > 1 && (
-					<div className="p-4 border-t border-gray-100 dark:border-dark-border flex items-center justify-center gap-6 bg-gray-50/50 dark:bg-card-bg/30">
+					<div className="p-4 border-t border-gray-100 flex items-center justify-center gap-6 bg-gray-50/50">
 						<button
 							disabled={currentPage === 1}
 							onClick={() => setCurrentPage(prev => prev - 1)}
-							className="p-2 rounded-xl bg-white dark:bg-second-bg border border-gray-200 dark:border-dark-border shadow-sm hover:bg-gray-100 dark:hover:bg-surface disabled:opacity-50 disabled:cursor-not-allowed transition-all active:scale-90 cursor-pointer"
+							className="p-2 rounded-xl bg-white border border-gray-200 shadow-sm hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition-all active:scale-90 cursor-pointer"
 						>
 							<iconList.ChevronLeft size={20} />
 						</button>
-						<span className="text-sm font-semibold text-gray-600 dark:text-dark-text">
+						<span className="text-sm font-semibold text-gray-600">
 							Page <span className="text-primary">{currentPage}</span> of {totalPages}
 						</span>
 						<button
 							disabled={currentPage === totalPages}
 							onClick={() => setCurrentPage(prev => prev + 1)}
-							className="p-2 rounded-xl bg-white dark:bg-second-bg border border-gray-200 dark:border-dark-border shadow-sm hover:bg-gray-100 dark:hover:bg-surface disabled:opacity-50 disabled:cursor-not-allowed transition-all active:scale-90 cursor-pointer"
+							className="p-2 rounded-xl bg-white border border-gray-200 shadow-sm hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition-all active:scale-90 cursor-pointer"
 						>
 							<iconList.ChevronRight size={20} />
 						</button>
@@ -332,13 +344,13 @@ const ManageBookings = () => {
 								stiffness: 400,
 								damping: 25
 							}}
-							className="relative bg-white dark:bg-gray-900 rounded-md shadow-2xl w-full max-w-md p-6 overflow-hidden"
+							className="relative bg-white rounded-md shadow-2xl w-full max-w-md p-6 overflow-hidden"
 						>
-							<h2 className="text-xl font-semibold text-center dark:text-white">
+							<h2 className="text-xl font-semibold text-center">
 								Delete booking?
 							</h2>
 
-							<p className="text-center mt-2 text-gray-600 dark:text-gray-300">
+							<p className="text-center mt-2 text-gray-600">
 								Are you sure you want to delete this booking record? This
 								action cannot be undone.
 							</p>
@@ -370,5 +382,6 @@ const ManageBookings = () => {
 };
 
 export default ManageBookings;
+
 
 

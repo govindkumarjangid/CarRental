@@ -37,7 +37,7 @@ const Hero = () => {
 					initial={{ opacity: 0, y: 15 }}
 					animate={{ opacity: 1, y: 0 }}
 					transition={{ duration: 0.5, ease: "easeOut" }}
-					className="text-4xl md:text-5xl font-extrabold text-gray-900 mt-15"
+					className="text-4xl md:text-5xl font-bold text-gray-900 mt-15"
 				>
 					Luxury cars on Rent
 				</motion.h1>
@@ -45,7 +45,7 @@ const Hero = () => {
 					initial={{ opacity: 0, y: 15 }}
 					animate={{ opacity: 1, y: 0 }}
 					transition={{ duration: 0.5, ease: "easeOut", delay: 0.05 }}
-					className='text-md text-gray-800 font-semibold'>Experience the pinnacle of automotive excellence, curated for your journey.</motion.p>
+					className='text-md text-gray-800 font-medium'>Experience the pinnacle of automotive excellence, curated for your journey.</motion.p>
 
 				{/* check car availability form  */}
 				<motion.form
@@ -58,14 +58,14 @@ const Hero = () => {
 					<div className="flex flex-col md:flex-row items-center md:items-center md:justify-center gap-10 md:ml-8">
 						<div className="flex flex-row items-center gap-2 md:flex-col">
 							<label htmlFor="pickup-location" className="sr-only">Pickup Location</label>
-							<p id="location-label" className="px-1 text-sm text-gray-700 font-bold text-center ">
+							<p id="location-label" className="px-1 text-sm text-gray-700 font-medium text-center ">
 								{pickupLocation || "Please select location"}
 							</p>
 							<select
 								id="pickup-location"
 								aria-labelledby="location-label"
 								onChange={(e) => setPickupLocation(e.target.value)}
-								className="outline-none border border-gray-300 bg-gray-50 p-2 px-4 rounded-md max-w-47 focus:border-primary focus:ring-2 focus:ring-primary/20 text-gray-900 font-semibold"
+								className="outline-none border-2 border-gray-200 bg-gray-50 p-2 px-4 rounded-md max-w-47 focus:border-primary focus:ring-3 focus:ring-primary/50 text-gray-900 font-medium transition-all duration-200"
 							>
 								<option value="" >Pickup Location</option>
 								{cityList.map((city, index) => (
@@ -78,7 +78,7 @@ const Hero = () => {
 						<div className="flex flex-row items-center gap-2  md:flex-col">
 							<label
 								htmlFor="pickup-date"
-								className="text-sm font-bold text-gray-800"
+								className="text-sm font-medium text-gray-800"
 							>
 								Pick-up Date
 							</label>
@@ -88,13 +88,13 @@ const Hero = () => {
 								id="pickup-date"
 								min={new Date().toISOString().split("T")[0]}
 								onChange={(e) => setPickupDate(e.target.value)}
-								className="text-sm text-gray-800 bg-gray-50 p-2 px-4 rounded-md outline-none border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 font-bold"
+								className="text-sm text-gray-800 bg-gray-50 p-2 px-4 rounded-md outline-none border-2 border-gray-200 focus:border-primary focus:ring-3 focus:ring-primary/50 font-medium transition-all duration-200"
 							/>
 						</div>
 						<div className="flex flex-row items-center gap-2  md:flex-col">
 							<label
 								htmlFor="return-date"
-								className="text-sm font-bold text-gray-800"
+								className="text-sm font-medium text-gray-800"
 							>
 								Return Date
 							</label>
@@ -103,13 +103,13 @@ const Hero = () => {
 								name="return-date"
 								id="return-date"
 								onChange={(e) => setReturnDate(e.target.value)}
-								className="text-sm text-gray-800 bg-gray-50 p-2 px-4 rounded-md outline-none border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 font-bold"
+								className="text-sm text-gray-800 bg-gray-50 p-2 px-4 rounded-md outline-none border-2 border-gray-200 focus:border-primary focus:ring-3 focus:ring-primary/50 font-medium transition-all duration-200"
 							/>
 						</div>
 						<button
 							type="submit"
 							aria-label="Search available cars"
-							className={`cursor-pointer flex items-center justify-center gap-1 px-5 py-2.5 transition-all text-white rounded-lg shadow-lg active:scale-95 font-bold ${loading
+							className={`cursor-pointer flex items-center justify-center gap-1 px-5 py-2.5 transition-all text-white rounded-lg shadow-lg active:scale-95 font-semibold ${loading
 								? "bg-primary cursor-not-allowed opacity-90"
 								: "bg-primary hover:bg-primary-dull"
 								}`}
@@ -139,7 +139,7 @@ const Hero = () => {
 					transition={{ duration: 0.5, ease: "easeOut", delay: 0.05 }}
 					src={optimizeImage(assets.main_car, { width: 800 })}
 					alt="Premium luxury rental car"
-					fetchpriority="high"
+					fetchPriority="high"
 					width="800"
 					height="400"
 					className="max-h-74 w-auto object-contain mb-18"
@@ -242,3 +242,4 @@ const Hero = () => {
 };
 
 export default Hero;
+

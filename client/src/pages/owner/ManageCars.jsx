@@ -136,15 +136,15 @@ const ManageCars = () => {
 				</div>
 			</div>
 
-			<div className="max-w-250 w-full bg-white dark:bg-second-bg shadow-md hover:shadow-lg transition-all duration-300 rounded-xl overflow-hidden border border-gray-200 dark:border-dark-border">
+			<div className="max-w-250 w-full bg-white shadow-md hover:shadow-lg transition-all duration-300 rounded-xl overflow-hidden border border-gray-200">
 				<div className="overflow-x-auto">
 					<motion.table
 						initial={{ opacity: 0 }}
 						animate={{ opacity: 1 }}
 						transition={{ duration: 0.3 }}
-						className="w-full border-collapse text-left text-sm text-gray-600 dark:text-dark-text"
+						className="w-full border-collapse text-left text-sm text-gray-600"
 					>
-						<thead className="bg-gray-50 dark:bg-card-bg text-gray-500 dark:text-dark-muted border-b border-gray-200 dark:border-dark-border">
+						<thead className="bg-gray-50 text-gray-500 border-b border-gray-200">
 							<tr>
 								<th className="p-3 font-medium">Car</th>
 								<th className="p-3 font-medium max-md:hidden">
@@ -166,7 +166,7 @@ const ManageCars = () => {
 										transition={{
 											type: "spring", stiffness: 300, damping: 30
 										}}
-										className="border-b last:border-b-0 border-gray-100 hover:bg-gray-50/80 transition-colors duration-200 dark:border-dark-border dark:hover:bg-surface/50"
+										className="border-b last:border-b-0 border-gray-100 hover:bg-gray-50/80 transition-colors duration-200"
 										key={car._id || index}
 									>
 										<td className="p-3 flex  md:flex-row flex-col items-start gap-3 justify-start">
@@ -200,12 +200,12 @@ const ManageCars = () => {
 												value={car.status}
 												onChange={(e) => updateCarStatus(car._id, e.target.value)}
 												className={`text-[13px] font-medium px-2 py-1 rounded-md outline-none border cursor-pointer transition-all ${car.status === "available"
-														? "bg-green-500/10 text-green-600 border-green-500/20 dark:bg-green-500/20"
+														? "bg-green-500/10 text-green-600 border-green-500/20"
 														: car.status === "cleaning"
-															? "bg-blue-500/10 text-blue-600 border-blue-500/20 dark:bg-blue-500/20"
+															? "bg-blue-500/10 text-blue-600 border-blue-500/20"
 															: car.status === "maintenance"
-																? "bg-red-500/10 text-red-600 border-red-500/20 dark:bg-red-500/20"
-																: "bg-gray-500/10 text-gray-600 border-gray-500/20 dark:bg-gray-500/20"
+																? "bg-red-500/10 text-red-600 border-red-500/20"
+																: "bg-gray-500/10 text-gray-600 border-gray-500/20"
 													}`}
 											>
 												<option value="available">Available</option>
@@ -277,21 +277,21 @@ const ManageCars = () => {
 
 				{/* Pagination */}
 				{totalPages > 1 && (
-					<div className="p-4 border-t border-gray-100 dark:border-dark-border flex items-center justify-center gap-6 bg-gray-50/50 dark:bg-card-bg/30">
+					<div className="p-4 border-t border-gray-100 flex items-center justify-center gap-6 bg-gray-50/50">
 						<button
 							disabled={currentPage === 1}
 							onClick={() => setCurrentPage(prev => prev - 1)}
-							className="p-2 rounded-xl bg-white dark:bg-second-bg border border-gray-200 dark:border-dark-border shadow-sm hover:bg-gray-100 dark:hover:bg-surface disabled:opacity-50 disabled:cursor-not-allowed transition-all active:scale-90 cursor-pointer"
+							className="p-2 rounded-xl bg-white border border-gray-200 shadow-sm hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition-all active:scale-90 cursor-pointer"
 						>
 							<iconList.ChevronLeft size={20} />
 						</button>
-						<span className="text-sm font-semibold text-gray-600 dark:text-dark-text">
+						<span className="text-sm font-semibold text-gray-600">
 							Page <span className="text-primary">{currentPage}</span> of {totalPages}
 						</span>
 						<button
 							disabled={currentPage === totalPages}
 							onClick={() => setCurrentPage(prev => prev + 1)}
-							className="p-2 rounded-xl bg-white dark:bg-second-bg border border-gray-200 dark:border-dark-border shadow-sm hover:bg-gray-100 dark:hover:bg-surface disabled:opacity-50 disabled:cursor-not-allowed transition-all active:scale-90 cursor-pointer"
+							className="p-2 rounded-xl bg-white border border-gray-200 shadow-sm hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition-all active:scale-90 cursor-pointer"
 						>
 							<iconList.ChevronRight size={20} />
 						</button>
@@ -321,13 +321,13 @@ const ManageCars = () => {
 									stiffness: 400,
 									damping: 25
 								}}
-								className="relative bg-white dark:bg-gray-900 rounded-md shadow-2xl w-full max-w-md p-6 overflow-hidden border border-gray-100 dark:border-dark-border"
+								className="relative bg-white rounded-md shadow-2xl w-full max-w-md p-6 overflow-hidden border border-gray-100"
 							>
-								<h2 className="text-xl font-semibold text-center dark:text-white">
+								<h2 className="text-xl font-semibold text-center">
 									Delete car?
 								</h2>
 
-								<p className="text-center mt-2 text-gray-600 dark:text-gray-300">
+								<p className="text-center mt-2 text-gray-600">
 									Are you sure you want to delete this car? This
 									action cannot be undone.
 								</p>
@@ -361,3 +361,4 @@ const ManageCars = () => {
 };
 
 export default ManageCars;
+

@@ -36,3 +36,4 @@ const CarsPageSkeleton = () => {
 };
 
 export default CarsPageSkeleton;
+

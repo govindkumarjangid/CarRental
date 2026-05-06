@@ -3,7 +3,8 @@ import { useCarStore } from "./store/useCarStore.js";
 import { Toaster } from "react-hot-toast";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { useEffect, lazy, Suspense } from "react";
-import { Navbar, Footer, ProtectRoute, HomeSkeleton, CarsPageSkeleton, DashboardSkeleton, TableSkeleton, FormSkeleton, CarDetailsPageSkeleton, UserTableSkeleton } from "./index.js";
+import { AnimatePresence } from "motion/react";
+import { Navbar, Footer, ProtectRoute, HomeSkeleton, CarsPageSkeleton, DashboardSkeleton, TableSkeleton, FormSkeleton, CarDetailsPageSkeleton, UserTableSkeleton, iconList } from "./index.js";
 
 import ScrollToTop from "./components/UI/ScrollToTop.jsx";
 
@@ -30,7 +31,7 @@ const TestimonialForm = lazy(() => import("./components/testimonial/TestimonialF
 const EditCarForm = lazy(() => import("./components/owner/EditCarForm.jsx"));
 
 const App = () => {
-	
+
 	const { showLogin, showReview, token, fetchUser } = useAuthStore();
 	const { fetchCars, showEditCar } = useCarStore();
 	const location = useLocation();
@@ -45,17 +46,39 @@ const App = () => {
 		if (token) fetchUser();
 	}, [token]);
 
+	// Prevent double scrollbar when modals are open
+	useEffect(() => {
+		const isModalOpen = showLogin || showReview || showEditCar;
+		const mainElement = document.querySelector('main');
+		if (mainElement) {
+			if (isModalOpen) {
+				mainElement.classList.add('overflow-hidden');
+				mainElement.classList.remove('overflow-y-auto');
+			} else {
+				if (!isChatPath && !isOwnerPath) {
+					mainElement.classList.add('overflow-y-auto');
+					mainElement.classList.remove('overflow-hidden');
+				} else {
+					mainElement.classList.add('overflow-hidden');
+					mainElement.classList.remove('overflow-y-auto');
+				}
+			}
+		}
+	}, [showLogin, showReview, showEditCar, isChatPath, isOwnerPath]);
+
 	return (
-		<div className="h-screen flex flex-col dark:bg-main-bg overflow-hidden">
+		<div className="h-screen flex flex-col overflow-hidden">
 			<ScrollToTop />
 			<Toaster position="right-bottom" reverseOrder={true} />
 			{!isOwnerPath && <Navbar />}
 
 			<main className={`flex-1 min-h-0 overflow-x-hidden ${!isChatPath && !isOwnerPath ? "overflow-y-auto custom-scrollbar" : "overflow-hidden"}`}>
 				<Suspense fallback={<div className="h-screen w-full shimmer" />}>
-					{showLogin && <Login />}
-					{showReview && <TestimonialForm />}
-					{showEditCar && <EditCarForm />}
+					<AnimatePresence mode="wait">
+						{showLogin && <Login key="login-modal" />}
+						{showReview && <TestimonialForm key="review-modal" />}
+						{showEditCar && <EditCarForm key="edit-car-modal" />}
+					</AnimatePresence>
 				</Suspense>
 
 				<Routes>
@@ -94,7 +117,10 @@ const App = () => {
 
 					<Route path="/owner" element={
 						<ProtectRoute>
-							<Suspense fallback={<div className="h-screen w-full flex items-center justify-center">Loading Dashboard...</div>}>
+							<Suspense fallback={<div className="h-screen w-full flex flex-col gap-4 items-center justify-center text-gray-500">
+								<iconList.Loader className="animate-spin" size={40} />
+								<span>Loading Dashboard...</span>
+							</div>}>
 								<Layout />
 							</Suspense>
 						</ProtectRoute>
@@ -156,4 +182,5 @@ const App = () => {
 };
 
 export default App;
+
 
