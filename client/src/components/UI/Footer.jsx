@@ -75,9 +75,9 @@ const Footer = () => {
 							transition: { duration: 0.6, ease: "easeOut" },
 						},
 					}} className="space-y-4">
-						<h4 className="text-sm font-bold tracking-wider text-gray-900  uppercase">
+						<h3 className="text-sm font-bold tracking-wider text-gray-900  uppercase">
 							Quick Links
-						</h4>
+						</h3>
 						<ul className="flex flex-col gap-3 text-sm">
 							<li><Link to="/" className="hover:text-primary  transition-colors">Home</Link></li>
 							<li><Link to="/cars" className="hover:text-primary  transition-colors">Browse Cars</Link></li>
@@ -95,9 +95,9 @@ const Footer = () => {
 							transition: { duration: 0.6, ease: "easeOut" },
 						},
 					}} className="space-y-4">
-						<h4 className="text-sm font-bold tracking-wider text-gray-900  uppercase">
+						<h3 className="text-sm font-bold tracking-wider text-gray-900  uppercase">
 							Resources
-						</h4>
+						</h3>
 						<ul className="flex flex-col gap-3 text-sm">
 							<li><Link className="hover:text-primary  transition-colors">Help Center</Link></li>
 							<li><Link className="hover:text-primary  transition-colors">Terms of Service</Link></li>
@@ -115,9 +115,9 @@ const Footer = () => {
 							transition: { duration: 0.6, ease: "easeOut" },
 						},
 					}} className="space-y-4">
-						<h4 className="text-sm font-bold tracking-wider text-gray-900  uppercase">
+						<h3 className="text-sm font-bold tracking-wider text-gray-900  uppercase">
 							Contact
-						</h4>
+						</h3>
 						<ul className="flex flex-col gap-3 text-sm">
 							<li className="flex items-center gap-2">
 								<MapPin size={16} className="text-primary " />
