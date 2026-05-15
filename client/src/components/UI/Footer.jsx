@@ -34,9 +34,9 @@ const Footer = () => {
 						<ResponsiveImage
 							src={assets.logo}
 							alt="logo"
-							width={120}
-							height={28}
-							className="h-6 md:h-7"
+							width={150}
+							height={40}
+							className="h-8 md:h-10 object-contain cursor-pointer "
 						/>
 
 						<p className="text-sm leading-relaxed max-w-xs">
@@ -137,13 +137,13 @@ const Footer = () => {
 
 				{/* Divider */}
 				<motion.hr variants={{
-						hidden: { opacity: 0, y: 20 },
-						show: {
-							opacity: 1,
-							y: 0,
-							transition: { duration: 0.6, ease: "easeOut" },
-						},
-					}} className="border-gray-200 " />
+					hidden: { opacity: 0, y: 20 },
+					show: {
+						opacity: 1,
+						y: 0,
+						transition: { duration: 0.6, ease: "easeOut" },
+					},
+				}} className="border-gray-200 " />
 
 				{/* Bottom Row */}
 				<motion.div

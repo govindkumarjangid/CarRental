@@ -53,9 +53,9 @@ const Navbar = () => {
 					<ResponsiveImage
 						src={assets.logo}
 						alt="logo"
-						width={120}
-						height={28}
-						className="h-6 md:h-7 object-contain cursor-pointer "
+						width={150}
+						height={40}
+						className="h-8 md:h-10 object-contain cursor-pointer"
 					/>
 				</Link>
 
