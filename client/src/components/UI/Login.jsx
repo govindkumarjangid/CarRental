@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 
@@ -17,7 +17,6 @@ const Login = () => {
 	const [role, setRole] = useState("user");
 
 	const navigate = useNavigate();
-	const ref = useRef(null);
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
@@ -39,13 +38,12 @@ const Login = () => {
 			animate={{ opacity: 1 }}
 			exit={{ opacity: 0 }}
 			transition={{ duration: 0.3 }}
-			className="fixed top-0 left-0 right-0 bottom-0 z-100 text-sm text-gray-600 flex items-center backdrop-blur-md h-full w-full justify-center"
+			className="fixed inset-0 z-100 text-gray-600 flex items-center backdrop-blur-xs justify-center bg-blue-700/5"
 		>
 			<motion.form
-				ref={ref}
-				initial={{ scale: 0.8, opacity: 0 }}
-				animate={{ scale: 1, opacity: 1 }}
-				transition={{ duration: 0.4 }}
+				initial={{ opacity: 0 }}
+				animate={{ opacity: 1 }}
+				transition={{ duration: 0.4, delay: 0.2 }}
 				onSubmit={handleSubmit}
 				onClick={(e) => e.stopPropagation()}
 				className="flex flex-col gap-4 m-auto items-start p-8 py-12 w-80 sm:w-88 text-gray-500 rounded-lg shadow-xl border border-gray-200 bg-white z-200"

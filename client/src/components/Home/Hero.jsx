@@ -27,7 +27,7 @@ const Hero = () => {
 
 	return (
 		<>
-			<div className="max-w-8xl m-auto flex flex-col justify-center items-center gap-6 bg-light text-center  px-2">
+			<div className="max-w-8xl m-auto flex flex-col justify-center items-center gap-6 bg-light text-center px-2">
 
 				{/* heading  */}
 				<motion.h1
@@ -38,6 +38,7 @@ const Hero = () => {
 				>
 					Luxury cars on Rent
 				</motion.h1>
+
 				<motion.p
 					initial={{ opacity: 0, y: 15 }}
 					animate={{ opacity: 1, y: 0 }}
@@ -163,8 +164,6 @@ const Hero = () => {
 						/>
 					</picture>
 				</div>
-
-
 
 
 				{/* available cars modal  */}
