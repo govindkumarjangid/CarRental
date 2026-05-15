@@ -69,7 +69,7 @@ const ManageCars = () => {
 			<motion.div
 				initial={{ opacity: 0 }}
 				animate={{ opacity: 1 }}
-				transition={{ duration: 0.4, ease: "easeOut" }}
+				transition={{ duration: 0.4, ease: "easeIn" }}
 				className="flex-1 h-full overflow-hidden"
 			>
 				<EditCarForm
@@ -201,12 +201,12 @@ const ManageCars = () => {
 												value={car.status}
 												onChange={(e) => updateCarStatus(car._id, e.target.value)}
 												className={`text-[13px] font-medium px-2 py-1 rounded-md outline-none border cursor-pointer transition-all ${car.status === "available"
-														? "bg-green-500/10 text-green-600 border-green-500/20"
-														: car.status === "cleaning"
-															? "bg-blue-500/10 text-blue-600 border-blue-500/20"
-															: car.status === "maintenance"
-																? "bg-red-500/10 text-red-600 border-red-500/20"
-																: "bg-gray-500/10 text-gray-600 border-gray-500/20"
+													? "bg-green-500/10 text-green-600 border-green-500/20"
+													: car.status === "cleaning"
+														? "bg-blue-500/10 text-blue-600 border-blue-500/20"
+														: car.status === "maintenance"
+															? "bg-red-500/10 text-red-600 border-red-500/20"
+															: "bg-gray-500/10 text-gray-600 border-gray-500/20"
 													}`}
 											>
 												<option value="available">Available</option>
@@ -300,29 +300,27 @@ const ManageCars = () => {
 				)}
 
 
-				<AnimatePresence>
-					{openConfirm && (
+
+				{openConfirm && (
+					<AnimatePresence>
 						<div className="fixed inset-0 flex items-center justify-center z-999 px-4">
 							{/* Semi-transparent Backdrop */}
 							<motion.div
 								initial={{ opacity: 0 }}
 								animate={{ opacity: 1 }}
 								exit={{ opacity: 0 }}
+								transition={{ duration: 0.3 }}
 								onClick={() => setOpenConfirm(false)}
-								className="absolute inset-0 backdrop-blur-sm bg-black/20"
+								className="absolute inset-0 backdrop-blur-xs bg-blue-700/5"
 							/>
 
 							{/* Modal Content */}
 							<motion.div
-								initial={{ opacity: 0, scale: 0.9, y: 20 }}
-								animate={{ opacity: 1, scale: 1, y: 0 }}
-								exit={{ opacity: 0, scale: 0.9, y: 20 }}
-								transition={{
-									type: "spring",
-									stiffness: 400,
-									damping: 25
-								}}
-								className="relative bg-white rounded-md shadow-2xl w-full max-w-md p-6 overflow-hidden border border-gray-100"
+								initial={{ opacity: 0 }}
+								animate={{ opacity: 1 }}
+								exit={{ opacity: 0 }}
+								transition={{ delay: 0.2, duration: 0.5 }}
+								className="relative bg-white rounded-xl shadow-2xl w-full max-w-md p-6 overflow-hidden border border-gray-100"
 							>
 								<h2 className="text-xl font-semibold text-center">
 									Delete car?
@@ -353,8 +351,9 @@ const ManageCars = () => {
 								</div>
 							</motion.div>
 						</div>
-					)}
-				</AnimatePresence>
+					</AnimatePresence>
+				)}
+
 
 			</div>
 		</div>

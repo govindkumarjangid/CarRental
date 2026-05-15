@@ -48,10 +48,10 @@ const BookingPopup = ({ setSelectedBooking, selectedBooking, isFullPage = false 
 
     const content = (
         <motion.div
-            initial={isFullPage ? { opacity: 0 } : { y: "100%" }}
-            animate={isFullPage ? { opacity: 1 } : { y: 0 }}
-            exit={isFullPage ? { opacity: 0 } : { y: "100%" }}
-            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 1 }}
+            transition={{ type: "spring", stiffness: 300, damping: 30, duration: 0.5 }}
             onClick={(e) => e.stopPropagation()}
             className={`${isFullPage ? "w-full h-full" : "w-full md:max-w-6xl h-screen md:h-[85vh] rounded-none md:rounded-[3rem] shadow-2xl border border-gray-100 "} bg-white  overflow-hidden flex flex-col md:flex-row relative`}
         >
@@ -125,7 +125,7 @@ const BookingPopup = ({ setSelectedBooking, selectedBooking, isFullPage = false 
                             <p className="text-xs text-gray-400  font-medium mb-0.5">Renter Details</p>
                             <h4 className="font-bold text-gray-900  text-lg truncate">{user?.name || "Premium User"}</h4>
                             <p className="text-sm text-gray-500  flex items-center justify-center sm:justify-start gap-1.5 truncate">
-                             {user?.email}
+                                {user?.email}
                             </p>
                         </div>
                     </div>

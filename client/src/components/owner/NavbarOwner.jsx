@@ -22,7 +22,7 @@ const NavbarOwner = ({ toggleSidebar, isSidebarOpen }) => {
 				<img
 					src={assets.logo}
 					alt="logo"
-					className="h-5 md:h-7 "
+					className="h-7 md:h-9"
 					loading="lazy"
 				/>
 			</Link>

@@ -323,28 +323,26 @@ const ManageBookings = () => {
 			</div>
 
 			{/* Delete Confirmation Modal */}
-			<AnimatePresence>
-				{openConfirm && (
+
+			{openConfirm && (
+				<AnimatePresence>
 					<div className="fixed inset-0 flex items-center justify-center z-999 px-4">
 						{/* Semi-transparent Backdrop */}
 						<motion.div
 							initial={{ opacity: 0 }}
 							animate={{ opacity: 1 }}
 							exit={{ opacity: 0 }}
+							transition={{ duration: 0.3 }}
 							onClick={() => setOpenConfirm(false)}
-							className="absolute inset-0 backdrop-blur-sm"
+							className="absolute inset-0 backdrop-blur-xs bg-blue-700/5"
 						/>
 
 						{/* Modal Content */}
 						<motion.div
-							initial={{ opacity: 0, scale: 0.9, y: 20 }}
-							animate={{ opacity: 1, scale: 1, y: 0 }}
-							exit={{ opacity: 0, scale: 0.9, y: 20 }}
-							transition={{
-								type: "spring",
-								stiffness: 400,
-								damping: 25
-							}}
+							initial={{ opacity: 0 }}
+							animate={{ opacity: 1 }}
+							exit={{ opacity: 0 }}
+							transition={{ delay: 0.2, duration: 0.4 }}
 							className="relative bg-white rounded-md shadow-2xl w-full max-w-md p-6 overflow-hidden"
 						>
 							<h2 className="text-xl font-semibold text-center">
@@ -376,8 +374,9 @@ const ManageBookings = () => {
 							</div>
 						</motion.div>
 					</div>
-				)}
-			</AnimatePresence>
+				</AnimatePresence>
+			)}
+
 		</div>
 	);
 };

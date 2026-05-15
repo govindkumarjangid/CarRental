@@ -61,9 +61,9 @@ const EditCarForm = ({ car: propCar, onClose, isFullPage = false }) => {
 
     const formContent = (
         <motion.form
-            initial={isFullPage ? { opacity: 0 } : { scale: 0.9, opacity: 0 }}
-            animate={isFullPage ? { opacity: 1 } : { scale: 1, opacity: 1 }}
-            exit={isFullPage ? { opacity: 0 } : { scale: 0.9, opacity: 0 }}
+            initial={isFullPage ? { opacity: 0 } : { opacity: 0 }}
+            animate={isFullPage ? { opacity: 1 } : { opacity: 1 }}
+            exit={isFullPage ? { opacity: 0 } : { opacity: 0 }}
             transition={{ type: "spring", stiffness: 300, damping: 25 }}
             onSubmit={handleSubmit}
             onClick={(e) => e.stopPropagation()}
@@ -97,7 +97,7 @@ const EditCarForm = ({ car: propCar, onClose, isFullPage = false }) => {
             <div className="flex flex-col gap-5 text-gray-500 text-sm w-full">
                 {/* car image  */}
                 <div className="flex gap-4 items-center w-full mb-2">
-                    <label htmlFor="car-image" className="cursor-pointer shadow-sm rounded-md border-dashed border-primary border-2 p-2 hover:border-solid">
+                    <label htmlFor="car-image" className="cursor-pointer shadow-sm rounded-md border-dashed border-primary border-2 p-2 hover:border-solid transition-all duration-300">
                         {image ? (
                             <img src={URL.createObjectURL(image)} className="h-14 w-26 object-cover rounded-md" alt="car preview" />
                         ) : car?.image ? (

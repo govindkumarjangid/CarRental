@@ -122,20 +122,20 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
 								animate={{ opacity: 1 }}
 								exit={{ opacity: 0 }}
 								onClick={() => setIsSidebarOpen(false)}
-								className="fixed inset-0 backdrop-blur-sm pointer-events-auto"
+								className="fixed inset-0 backdrop-blur-xs bg-blue-700/5 pointer-events-auto"
 							/>
 							<motion.div
-								initial={{ x: "100%", opacity: 0 }}
-								animate={{ x: 0, opacity: 1 }}
-								exit={{ x: "100%", opacity: 0 }}
+								initial={{ scaleY: 0, opacity: 0, y: -600 }}
+								animate={{ scaleY: 1, opacity: 1, y: 0 }}
+								exit={{ scaleY: 0, opacity: 0, y: -600 }}
 								transition={{
 									type: "spring",
 									stiffness: 350,
 									damping: 35,
 									mass: 0.8,
-									exit: { type: "tween", duration: 0.15, ease: "easeInOut" }
+									exit: { type: "tween", duration: 0.4, ease: "easeInOut" }
 								}}
-								className="absolute top-15 right-0 left-0 z-50 bg-white/95 backdrop-blur-xl pt-6 pb-2 border-b border-gray-200 max-h-[calc(100vh-60px)] flex flex-col pointer-events-auto shadow-2xl"
+								className="absolute top-14 right-0 left-0 z-50 bg-white/95 backdrop-blur-xl pt-6 pb-2 border-b border-gray-200 max-h-[calc(100vh-60px)] flex flex-col pointer-events-auto shadow-2xl"
 							>
 								<SidebarContent {...sidebarProps} />
 							</motion.div>
