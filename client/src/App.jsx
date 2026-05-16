@@ -47,26 +47,6 @@ const App = () => {
 		if (token) fetchUser();
 	}, [token]);
 
-	// // Prevent double scrollbar when modals are open
-	// useEffect(() => {
-	// 	const isModalOpen = showLogin || showReview || showEditCar;
-	// 	const mainElement = document.querySelector('main');
-	// 	if (mainElement) {
-	// 		if (isModalOpen) {
-	// 			mainElement.classList.add('overflow-hidden');
-	// 			mainElement.classList.remove('overflow-y-auto');
-	// 		} else {
-	// 			if (!isChatPath && !isOwnerPath) {
-	// 				mainElement.classList.add('overflow-y-auto');
-	// 				mainElement.classList.remove('overflow-hidden');
-	// 			} else {
-	// 				mainElement.classList.add('overflow-hidden');
-	// 				mainElement.classList.remove('overflow-y-auto');
-	// 			}
-	// 		}
-	// 	}
-	// }, [showLogin, showReview, showEditCar, isChatPath, isOwnerPath]);
-
 	return (
 		<div className="h-screen flex flex-col overflow-hidden">
 			<ScrollToTop />
