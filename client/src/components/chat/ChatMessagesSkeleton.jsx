@@ -24,12 +24,12 @@ const ChatMessagesSkeleton = () => {
         <div className="absolute inset-0 overflow-y-auto p-4 md:p-6 custom-scrollbar bg-[url('https://i.pinimg.com/736x/8c/98/99/8c98994518b575bfd8c949e91d20548b.jpg')] bg-repeat bg-bg-size-[400px]">
           <div className="flex flex-col min-h-full">
             <div className="flex-1" />
-            <div className="space-y-4 flex flex-col p-1">
-              <div className="h-14 shimmer rounded-2xl rounded-bl-sm w-[60%] md:w-[40%] self-start border border-transparent" />
-              <div className="h-14 shimmer bg-[#d9fdd3]! rounded-2xl rounded-br-sm w-[70%] md:w-[50%] self-end" />
-              <div className="h-14 shimmer rounded-2xl rounded-bl-sm w-[50%] md:w-[35%] self-start border border-transparent" />
-              <div className="h-14 shimmer bg-[#d9fdd3]! rounded-2xl rounded-br-sm w-[80%] md:w-[60%] self-end" />
-              <div className="h-14 shimmer rounded-2xl rounded-bl-sm w-[45%] md:w-[30%] self-start border border-transparent" />
+            <div className="space-y-3 flex flex-col p-1">
+              <div className="h-14 shimmer rounded-2xl rounded-bl-sm w-[80%] md:w-[40%] self-start shadow-sm" />
+              <div className="h-16 shimmer !bg-[#d9fdd3] rounded-2xl rounded-br-sm w-[70%] md:w-[50%] self-end shadow-sm" />
+              <div className="h-14 shimmer rounded-2xl rounded-bl-sm w-[50%] md:w-[35%] self-start shadow-sm" />
+              <div className="h-20 shimmer !bg-[#d9fdd3] rounded-2xl rounded-br-sm w-[85%] md:w-[60%] self-end shadow-sm" />
+              <div className="h-14 shimmer rounded-2xl rounded-bl-sm w-[45%] md:w-[30%] self-start shadow-sm" />
             </div>
           </div>
         </div>

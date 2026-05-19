@@ -61,9 +61,9 @@ const EditCarForm = ({ car: propCar, onClose, isFullPage = false }) => {
 
     const formContent = (
         <motion.form
-            initial={isFullPage ? { opacity: 0 } : { opacity: 0 }}
-            animate={isFullPage ? { opacity: 1 } : { opacity: 1 }}
-            exit={isFullPage ? { opacity: 0 } : { opacity: 0 }}
+            initial={isFullPage ? { opacity: 0, filter: "blur(10px)" } : { opacity: 0 }}
+            animate={isFullPage ? { opacity: 1, filter: "blur(0px)" } : { opacity: 1 }}
+            exit={isFullPage ? { opacity: 0, filter: "blur(10px)" } : { opacity: 0 }}
             transition={{ type: "spring", stiffness: 300, damping: 25 }}
             onSubmit={handleSubmit}
             onClick={(e) => e.stopPropagation()}

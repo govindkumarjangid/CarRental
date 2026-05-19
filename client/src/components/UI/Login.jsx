@@ -41,8 +41,9 @@ const Login = () => {
 			className="fixed inset-0 z-100 text-gray-600 flex items-center backdrop-blur-xs justify-center bg-blue-700/5"
 		>
 			<motion.form
-				initial={{ opacity: 0 }}
-				animate={{ opacity: 1 }}
+				initial={{ opacity: 0, filter: "blur(5px)", scale: 0.95 }}
+				animate={{ opacity: 1, filter: "blur(0px)", scale: 1 }}
+				exit={{ opacity: 0, filter: "blur(10px)", scale: 0.95 }}
 				transition={{ duration: 0.4, delay: 0.2 }}
 				onSubmit={handleSubmit}
 				onClick={(e) => e.stopPropagation()}

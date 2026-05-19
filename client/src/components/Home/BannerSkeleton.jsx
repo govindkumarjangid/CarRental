@@ -1,5 +1,3 @@
-import React from "react";
-
 const BannerSkeleton = () => {
     return (
         <div className="max-w-8xl m-auto w-full py-20 px-3">
@@ -12,11 +10,11 @@ const BannerSkeleton = () => {
                     <div className="h-3 w-[80%] bg-gray-100 rounded shimmer" />
                     <div className="h-3 w-1/2 bg-gray-100 rounded shimmer" />
 
-                    <div className="h-10 w-32 bg-gray-100 rounded-md mt-8 shimmer"></div>
+                    <div className="h-10 w-32 bg-gray-100 rounded-md mt-8 shimmer" />
                 </div>
 
                 {/* right image */}
-                <div className="w-80 h-50 bg-gray-100 rounded-lg ml-5 mt-5 md:mt-0 shimmer"></div>
+                <div className="w-80 h-50 bg-gray-100 rounded-lg ml-5 mt-5 md:mt-0 shimmer" />
             </div>
         </div>
     );

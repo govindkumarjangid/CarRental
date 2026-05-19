@@ -39,19 +39,20 @@ const AllUsers = () => {
   if (loading) return <UserTableSkeleton />;
 
   return (
-    <div className="px-4 pt-10 md:px-10 flex-1 pb-10">
+    <div className="px-4 py-10 md:px-10 flex-1 w-full max-w-6xl mx-auto">
       <OwnerTitle
         title="All Users"
         subTitle="Manage all users of the car rental system. View, block or unblock users as necessary to maintain an up-to-date user database."
       />
-      <div className="max-w-250 w-full mt-6">
+      <div className="w-full mt-6">
         <div className="md:hidden space-y-3">
           {AllUsers.map((user, index) => (
             <motion.div
-              key={index}
+              layout
+              key={user._id || index}
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ type: "spring", stiffness: 300, damping: 30 }}
+              transition={{ type: "spring", stiffness: 300, damping: 30, delay: index * 0.05 }}
               className="rounded-xl border border-gray-200 bg-white shadow-sm p-4"
             >
               <div className="flex items-start gap-3">
@@ -94,11 +95,8 @@ const AllUsers = () => {
           ))}
         </div>
 
-        <motion.table
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ type: "spring", stiffness: 300, damping: 30 }}
-          className="hidden md:table w-full border-collapse border-spacing-0 bg-white shadow-md hover:shadow-lg transition-all duration-300 rounded-xl overflow-hidden border border-gray-200"
+        <table
+          className="hidden md:table w-full border-collapse border-spacing-0 bg-white shadow-md transition-all duration-300 rounded-xl overflow-hidden border border-gray-200"
         >
 
           {/* All Users Table */}
@@ -119,10 +117,11 @@ const AllUsers = () => {
           <tbody className="text-sm text-gray-600">
             {AllUsers.map((user, index) => (
               <motion.tr
-                key={index}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                layout
+                key={user._id || index}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ type: "spring", stiffness: 300, damping: 30, delay: index * 0.05 }}
                 className="hover:bg-gray-50/80 transition-colors duration-200 text-left border-b last:border-b-0 border-gray-100"
               >
                 <td className="px-4 py-2">
@@ -169,7 +168,7 @@ const AllUsers = () => {
               </motion.tr>
             ))}
           </tbody>
-        </motion.table>
+        </table>
       </div>
     </div >
   )

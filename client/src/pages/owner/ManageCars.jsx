@@ -66,23 +66,26 @@ const ManageCars = () => {
 
 	if (carId && selectedCar) {
 		return (
-			<motion.div
-				initial={{ opacity: 0 }}
-				animate={{ opacity: 1 }}
-				transition={{ duration: 0.4, ease: "easeIn" }}
-				className="flex-1 h-full overflow-hidden"
-			>
-				<EditCarForm
-					car={selectedCar}
-					onClose={() => navigate("/owner/manage-cars")}
-					isFullPage={true}
-				/>
-			</motion.div>
+			<AnimatePresence>
+				<motion.div
+					initial={{ opacity: 0, filter: "blur(5px)" }}
+					animate={{ opacity: 1, filter: "blur(0px)" }}
+					exit={{ opacity: 0, filter: "blur(5px)" }}
+					transition={{ duration: 0.4, ease: "easeInOut" }}
+					className="flex-1 h-full overflow-hidden"
+				>
+					<EditCarForm
+						car={selectedCar}
+						onClose={() => navigate("/owner/manage-cars")}
+						isFullPage={true}
+					/>
+				</motion.div>
+			</AnimatePresence>
 		)
 	}
 
 	return (
-		<div className="px-4 pt-10 md:px-10 flex-1 pb-10 max-w-6xl w-full">
+		<div className="px-4 py-10 md:px-10 flex-1 w-full max-w-6xl mx-auto">
 			<div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
 				<div>
 					<OwnerTitle
@@ -137,8 +140,8 @@ const ManageCars = () => {
 				</div>
 			</div>
 
-			<div className="max-w-250 w-full bg-white shadow-md hover:shadow-lg transition-all duration-300 rounded-xl overflow-hidden border border-gray-200">
-				<div className="overflow-x-auto">
+			<div className="w-full max-h-115 h-full bg-white shadow-md transition-all duration-300 rounded-xl overflow-hidden border border-gray-200">
+				<div className="overflow-x-auto relative">
 					<motion.table
 						initial={{ opacity: 0 }}
 						animate={{ opacity: 1 }}
@@ -274,41 +277,51 @@ const ManageCars = () => {
 							)}
 						</tbody>
 					</motion.table>
+
+
+					{/* Pagination */}
+					{totalPages > 0 && (
+						<div className="p-4 border-t border-gray-100 flex items-center justify-center gap-6 bg-gray-50/50">
+							<button
+								disabled={currentPage === 1}
+								onClick={() => setCurrentPage(prev => prev - 1)}
+								className="p-2 rounded-md bg-primary hover:bg-primary-dull border border-gray-200 shadow-sm disabled:opacity-905 disabled:cursor-not-allowed transition-all active:scale-95 cursor-pointer text-white"
+							>
+								<iconList.ChevronLeft size={20} />
+							</button>
+							<span className="text-sm font-semibold text-gray-600">
+								{
+									Array.from({ length: totalPages }).map((_, index) => (
+										<button
+											key={index}
+											onClick={() => setCurrentPage(index + 1)}
+											className={`px-3 py-1 rounded-md transition-colors m-1 cursor-pointer ${currentPage === index + 1 ? "bg-primary text-white" : "bg-gray-200 text-gray-600 hover:bg-gray-300"}`}
+										>
+											{index + 1}
+										</button>
+									))
+								}
+							</span>
+							<button
+								disabled={currentPage === totalPages}
+								onClick={() => setCurrentPage(prev => prev + 1)}
+								className="p-2 rounded-md bg-primary hover:bg-primary-dull border border-gray-200 shadow-sm disabled:opacity-95 disabled:cursor-not-allowed transition-all active:scale-95 cursor-pointer text-white"
+							>
+								<iconList.ChevronRight size={20} />
+							</button>
+						</div>
+					)}
 				</div>
 
-				{/* Pagination */}
-				{totalPages > 1 && (
-					<div className="p-4 border-t border-gray-100 flex items-center justify-center gap-6 bg-gray-50/50">
-						<button
-							disabled={currentPage === 1}
-							onClick={() => setCurrentPage(prev => prev - 1)}
-							className="p-2 rounded-xl bg-white border border-gray-200 shadow-sm hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition-all active:scale-90 cursor-pointer"
-						>
-							<iconList.ChevronLeft size={20} />
-						</button>
-						<span className="text-sm font-semibold text-gray-600">
-							Page <span className="text-primary">{currentPage}</span> of {totalPages}
-						</span>
-						<button
-							disabled={currentPage === totalPages}
-							onClick={() => setCurrentPage(prev => prev + 1)}
-							className="p-2 rounded-xl bg-white border border-gray-200 shadow-sm hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition-all active:scale-90 cursor-pointer"
-						>
-							<iconList.ChevronRight size={20} />
-						</button>
-					</div>
-				)}
 
-
-
-				{openConfirm && (
-					<AnimatePresence>
+				<AnimatePresence>
+					{openConfirm && (
 						<div className="fixed inset-0 flex items-center justify-center z-999 px-4">
 							{/* Semi-transparent Backdrop */}
 							<motion.div
 								initial={{ opacity: 0 }}
 								animate={{ opacity: 1 }}
-								exit={{ opacity: 0 }}
+								exit={{ opacity: 0, filter: "blur(5px)", scale: 0.95 }}
 								transition={{ duration: 0.3 }}
 								onClick={() => setOpenConfirm(false)}
 								className="absolute inset-0 backdrop-blur-xs bg-blue-700/5"
@@ -316,9 +329,9 @@ const ManageCars = () => {
 
 							{/* Modal Content */}
 							<motion.div
-								initial={{ opacity: 0 }}
-								animate={{ opacity: 1 }}
-								exit={{ opacity: 0 }}
+								initial={{ opacity: 0, filter: "blur(5px)", scale: 0.95 }}
+								animate={{ opacity: 1, filter: "blur(0px)", scale: 1 }}
+								exit={{ opacity: 0, filter: "blur(5px)", scale: 0.95 }}
 								transition={{ delay: 0.2, duration: 0.5 }}
 								className="relative bg-white rounded-xl shadow-2xl w-full max-w-md p-6 overflow-hidden border border-gray-100"
 							>
@@ -333,26 +346,26 @@ const ManageCars = () => {
 
 								<div className="flex justify-between gap-6 mt-6 md:px-10 px-4">
 									<button
-										className="w-1/2 py-2 rounded-md border bg-primary hover:bg-primary-dull text-white cursor-pointer active:scale-90 hover:scale-105 transition-transform duration-300 flex justify-center items-center gap-4"
+										className="w-1/2 py-2 rounded-md border bg-primary hover:bg-primary-dull text-white cursor-pointer active:scale-95 transition-transform duration-300 flex justify-center items-center gap-4 mx-2"
 										onClick={() => setOpenConfirm(false)}
 									>
-										Cancel <iconList.X size={20} />
+										Cancel
 									</button>
 
 									<button
-										className="w-1/2 py-2 rounded-md bg-red-500 hover:bg-red-600 text-white cursor-pointer active:scale-90 hover:scale-105 transition-transform duration-300 flex justify-center items-center gap-4"
+										className="w-1/2 py-2 rounded-md bg-red-500 hover:bg-red-600 text-white cursor-pointer active:scale-95 transition-transform duration-300 flex justify-center items-center gap-4 mx-2"
 										onClick={() => {
 											deleteCar(deleteId);
 											setOpenConfirm(false);
 										}}
 									>
-										Delete <iconList.Trash2 size={18} />
+										Delete
 									</button>
 								</div>
 							</motion.div>
 						</div>
-					</AnimatePresence>
-				)}
+					)}
+				</AnimatePresence>
 
 
 			</div>

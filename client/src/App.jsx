@@ -55,7 +55,7 @@ const App = () => {
 
 			<main className={`flex-1 min-h-0 overflow-x-hidden ${!isChatPath && !isOwnerPath ? "overflow-y-auto custom-scrollbar" : "overflow-hidden"}`}>
 				<Suspense fallback={<div className="h-screen w-full shimmer" />}>
-					<AnimatePresence mode="wait">
+					<AnimatePresence>
 						{showLogin && <Login key="login-modal" />}
 						{showReview && <TestimonialForm key="review-modal" />}
 						{showEditCar && <EditCarForm key="edit-car-modal" />}

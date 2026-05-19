@@ -71,7 +71,10 @@ const SidebarContent = ({ user, image, setImage, handleUpdateImage, location, Mo
 						<span className="text-[15px] cursor-pointer">{link.name}</span>
 
 						{isActive && (
-							<motion.div className="absolute right-0 top-2 h-8 w-1.5 bg-primary rounded-l " />
+							<div
+								layoutId="activeTabIndicator"
+								className="absolute right-0 top-2 h-8 w-1.5 bg-primary rounded-l"
+							/>
 						)}
 					</MotionNavLink>
 				);

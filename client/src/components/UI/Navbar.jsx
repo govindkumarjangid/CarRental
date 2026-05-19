@@ -16,7 +16,7 @@ const Navbar = () => {
 
 	const { user, isOwner, logout, setShowLogin, updateProfileImage } = useAuthStore();
 	const navigate = useNavigate();
-	console.log(user)
+	// console.log(user)
 
 	const location = useLocation();
 
@@ -120,7 +120,7 @@ const Navbar = () => {
 						) : (
 							user?.image ? (
 								<button
-								    className="rounded-full border-2 border-primary/20 hover:border-primary/40 transition-all active:scale-95"
+									className="rounded-full border-2 border-primary/20 hover:border-primary/40 transition-all active:scale-95"
 									onClick={() => {
 										setOpenPopup(!openPopup);
 										setOpen(false);
@@ -161,25 +161,25 @@ const Navbar = () => {
 
 
 				{/* User Profile Popup */}
-				{openPopup && user && (
-					<>
-						<AnimatePresence>
+				<AnimatePresence>
+					{openPopup && user && (
+						<>
 							<motion.div
 								key="backdrop"
 								initial={{ opacity: 0 }}
 								animate={{ opacity: 1 }}
 								exit={{ opacity: 0 }}
-								transition={{ duration: 0.3 }}
+								transition={{ duration: 0.3, ease: 'easeInOut' }}
 								className="fixed inset-0 z-100 backdrop-blur-sm bg-blue-700/5"
 								onClick={() => setOpenPopup(false)}
 							/>
 							<motion.div
 								key="popup"
-								initial={{ opacity: 0 }}
-								animate={{ opacity: 1 }}
-								exit={{ opacity: 0 }}
-								transition={{ duration: 0.4, ease: 'easeOut', delay: 0.2 }}
-								className="flex flex-col gap-4 p-6 sm:p-8 bg-white border border-gray-200 shadow-2xl fixed z-999 cursor-default sm:w-105 sm:top-1/2 sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-xl max-sm:bottom-0 max-sm:left-0 max-sm:right-0 max-sm:pb-10 max-sm:rounded-t-xl"
+								initial={{ opacity: 0, filter: "blur(5px)", scale: 0.95 }}
+								animate={{ opacity: 1, filter: "blur(0px)", scale: 1 }}
+								exit={{ opacity: 0, filter: "blur(5px)", scale: 0.95 }}
+								transition={{ duration: 0.3, ease: 'easeInOut', delay: 0.2 }}
+								className="flex flex-col gap-4 p-6 sm:p-8 bg-white border border-gray-200 shadow-3xl fixed z-999 cursor-default sm:w-105 sm:top-1/2 sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-xl max-sm:bottom-0 max-sm:left-0 max-sm:right-0 max-sm:pb-10 max-sm:rounded-t-xl"
 								onClick={(e) => e.stopPropagation()}
 							>
 								{/* Drag handle  */}
@@ -248,10 +248,9 @@ const Navbar = () => {
 									</button>
 								)}
 							</motion.div>
-						</AnimatePresence>
-					</>
-
-				)}
+						</>
+					)}
+				</AnimatePresence>
 
 			</div>
 		</motion.div>

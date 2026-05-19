@@ -354,7 +354,7 @@ const Chats = () => {
                   <div
                     key={chat._id}
                     onClick={() => navigate(`${navPrefix}/${other?._id || ""}`)}
-                    className={`flex items-center gap-3 px-4 py-3 cursor-pointer border-b border-gray-50 transition-colors hover:bg-gray-100 rounded-md relative ${isActive ? "bg-primary/10 text-primary" : ""}`}
+                    className={`flex items-center gap-3 px-4 py-3 cursor-pointer border-b border-gray-50 transition-colors rounded-md relative ${isActive ? "bg-primary/20 text-primary" : "hover:bg-gray-100 "}`}
                   >
 
                     {isActive && (
@@ -374,7 +374,7 @@ const Chats = () => {
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex justify-between items-baseline mb-0.5">
-                        <div className="font-semibold truncate text-[15px] text-gray-900">
+                        <div className={`font-semibold truncate text-[15px] text-gray-900 isolate ${chat.lastMessage && !chat.lastMessage.seenByReceiver && chat.lastMessage.senderRole !== user.role ? "text-primary" : ""}`}>
                           {other?.name || "Unknown"}
                         </div>
                         {chat.lastMessage && (

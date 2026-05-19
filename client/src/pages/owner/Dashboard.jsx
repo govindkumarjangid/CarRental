@@ -59,7 +59,7 @@ const Dashboard = () => {
 	if (loading) return <DashboardSkeleton />;
 
 	return (
-		<div className="px-4 pt-10 md:px-10 flex-1 max-w-7xl pb-10">
+		<div className="px-4 py-10 md:px-10 flex-1 w-full max-w-6xl mx-auto">
 			<OwnerTitle
 				title="Admin Dashboard"
 				subTitle="Monitor overall platform performance including total cars, bookings, revenue, and recent activities"

@@ -2,7 +2,7 @@ import React from 'react';
 
 const TableSkeleton = ({ showAddButton = true }) => {
   return (
-    <div className="px-4 pt-10 pb-10 md:px-10 flex-1 w-full max-w-6xl">
+    <div className="px-4 py-10 md:px-10 flex-1 w-full max-w-6xl mx-auto">
       {/* Title Area Skeleton */}
       <div className="mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div className="space-y-3">
@@ -13,7 +13,7 @@ const TableSkeleton = ({ showAddButton = true }) => {
       </div>
 
       {/* Filters Skeleton */}
-      <div className="flex flex-col md:flex-row gap-4 mb-8">
+      <div className="flex flex-col md:flex-row gap-4 mb-6">
         <div className="flex-1 h-12 shimmer rounded-lg"></div>
         <div className="w-full md:w-52 h-12 shimmer rounded-lg"></div>
         <div className="w-full md:w-52 h-12 shimmer rounded-lg"></div>
@@ -41,12 +41,12 @@ const TableSkeleton = ({ showAddButton = true }) => {
                   <div className="h-3 shimmer rounded-md w-1/2 opacity-60"></div>
                 </div>
               </div>
-              
+
               {/* Other Columns */}
               <div className="h-5 shimmer rounded-md w-1/4 hidden md:block"></div>
               <div className="h-5 shimmer rounded-md w-1/6 hidden md:block"></div>
               <div className="h-5 shimmer rounded-md w-1/6 hidden md:block"></div>
-              
+
               {/* Actions */}
               <div className="flex gap-3 ml-auto">
                 <div className="h-8 w-8 shimmer rounded-full"></div>
