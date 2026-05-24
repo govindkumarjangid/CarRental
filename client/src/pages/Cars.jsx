@@ -199,7 +199,7 @@ const Cars = () => {
 									setOpenFuel(false);
 									setOpenTransmission(false);
 								}}
-								className={`flex items-center gap-2 px-3 py-1.5 border rounded-lg text-sm font-semibold transition-all duration-300 cursor-pointer ${modelFilter ? "bg-primary text-white border-primary" : "bg-white text-gray-700 border-gray-300"
+								className={`flex items-center gap-2 px-3 py-1.5 border rounded-xl text-sm font-semibold transition-all duration-300 cursor-pointer ${modelFilter ? "bg-primary text-white border-primary" : "bg-white text-gray-700 border-gray-300"
 									}`}
 							>
 								{modelFilter || "Category"}
@@ -211,7 +211,7 @@ const Cars = () => {
 									role="listbox"
 									initial={{ opacity: 0, scale: 0.95, y: -10 }}
 									animate={{ opacity: 1, scale: 1, y: 0 }}
-									className="absolute z-50 left-0 w-40 bg-white border border-gray-200 rounded-xl mt-2 shadow-2xl p-1"
+									className="absolute z-50 left-0 w-40 bg-white border border-gray-200 rounded-2xl mt-2 shadow-2xl p-1"
 								>
 									{["All", "SUV", "MUV", "EV", "Wagon", "Sedan", "Van", "Jeep", "Hatchback"].map((opt) => (
 										<div
@@ -222,7 +222,7 @@ const Cars = () => {
 												setModelFilter(opt === "All" ? "" : opt);
 												setOpenModel(false);
 											}}
-											className={`cursor-pointer px-3 py-1.5 rounded-md text-sm transition-colors font-medium ${modelFilter === (opt === "All" ? "" : opt) ? "bg-primary text-white" : "hover:bg-gray-100 text-gray-700"}`}
+											className={`cursor-pointer mb-1 px-3 py-1.5 rounded-xl text-sm transition-colors font-medium ${modelFilter === (opt === "All" ? "" : opt) ? "bg-primary text-white" : "hover:bg-gray-100 text-gray-700"}`}
 										>
 											{opt}
 										</div>
@@ -242,7 +242,7 @@ const Cars = () => {
 									setOpenModel(false);
 									setOpenTransmission(false);
 								}}
-								className={`flex items-center gap-2 px-3 py-1.5 border rounded-lg text-sm font-semibold transition-all duration-300 cursor-pointer ${fuelFilter ? "bg-primary text-white border-primary" : "bg-white text-gray-700 border-gray-300"
+								className={`flex items-center gap-2 px-3 py-1.5 border rounded-xl text-sm font-semibold transition-all duration-300 cursor-pointer ${fuelFilter ? "bg-primary text-white border-primary" : "bg-white text-gray-700 border-gray-300"
 									}`}
 							>
 								{fuelFilter || "Fuel Type"}
@@ -254,7 +254,7 @@ const Cars = () => {
 									role="listbox"
 									initial={{ opacity: 0, scale: 0.95, y: -10 }}
 									animate={{ opacity: 1, scale: 1, y: 0 }}
-									className="absolute z-50 left-0 w-40 bg-white border border-gray-200 rounded-xl mt-2 shadow-2xl p-1"
+									className="absolute z-50 left-0 w-40 bg-white border border-gray-200 rounded-2xl mt-2 shadow-2xl p-1"
 								>
 									{["All", "Petrol", "Diesel", "Hybrid", "Electric", "Gas"].map((opt) => (
 										<div
@@ -265,7 +265,7 @@ const Cars = () => {
 												setFuelFilter(opt === "All" ? "" : opt);
 												setOpenFuel(false);
 											}}
-											className={`cursor-pointer px-3 py-1.5 rounded-md text-sm transition-colors font-medium ${fuelFilter === (opt === "All" ? "" : opt) ? "bg-primary text-white" : "hover:bg-gray-100 text-gray-700"}`}
+											className={`cursor-pointer px-3 py-1.5 rounded-xl text-sm transition-colors font-medium mb-1 ${fuelFilter === (opt === "All" ? "" : opt) ? "bg-primary text-white" : "hover:bg-gray-100 text-gray-700"}`}
 										>
 											{opt}
 										</div>
@@ -285,7 +285,7 @@ const Cars = () => {
 									setOpenModel(false);
 									setOpenFuel(false);
 								}}
-								className={`flex items-center gap-2 px-3 py-1.5 border rounded-lg text-sm font-semibold transition-all duration-300 cursor-pointer ${transmissionFilter ? "bg-primary text-white border-primary" : "bg-white text-gray-700 border-gray-300"
+								className={`flex items-center gap-2 px-3 py-1.5 border rounded-xl text-sm font-semibold transition-all duration-300 cursor-pointer ${transmissionFilter ? "bg-primary text-white border-primary" : "bg-white text-gray-700 border-gray-300"
 									}`}
 							>
 								{transmissionFilter || "Transmission"}
@@ -297,7 +297,7 @@ const Cars = () => {
 									role="listbox"
 									initial={{ opacity: 0, scale: 0.95, y: -10 }}
 									animate={{ opacity: 1, scale: 1, y: 0 }}
-									className="absolute z-50 right-0 w-40 bg-white border border-gray-200 rounded-xl mt-2 shadow-2xl p-1"
+									className="absolute z-50 right-0 w-40 bg-white border border-gray-200 rounded-2xl mt-2 shadow-2xl p-1"
 								>
 									{["All", "Manual", "Automatic", "Semi-Automatic", ].map((opt) => (
 										<div
@@ -308,7 +308,7 @@ const Cars = () => {
 												setTransmissionFilter(opt === "All" ? "" : opt);
 												setOpenTransmission(false);
 											}}
-											className={`cursor-pointer px-3 py-1.5 rounded-md text-sm transition-colors font-medium ${transmissionFilter === (opt === "All" ? "" : opt) ? "bg-primary text-white" : "hover:bg-gray-100 text-gray-700"}`}
+											className={`cursor-pointer px-3 py-1.5 rounded-xl text-sm transition-colors font-medium mb-1 ${transmissionFilter === (opt === "All" ? "" : opt) ? "bg-primary text-white" : "hover:bg-gray-100 text-gray-700"}`}
 										>
 											{opt}
 										</div>
