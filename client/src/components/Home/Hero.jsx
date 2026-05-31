@@ -25,6 +25,8 @@ const Hero = () => {
 		setOpen(true);
 	};
 
+	const inputClasses = "text-sm text-gray-800 bg-gray-50 p-2 px-4 rounded-xl outline-none border-2 border-gray-200 focus:border-primary focus:ring-3 focus:ring-primary/50 font-medium transition-all duration-200 cursor-pointer";
+
 	return (
 		<>
 			<div className="max-w-8xl m-auto flex flex-col justify-center items-center gap-6 bg-light text-center px-2">
@@ -51,7 +53,7 @@ const Hero = () => {
 					initial={{ opacity: 0, y: 20 }}
 					animate={{ opacity: 1, y: 0 }}
 					transition={{ duration: 0.5, ease: "easeOut", delay: 0.1 }}
-					className="flex flex-col md:flex-row items-center md:items-center justify-between px-4 py-5 rounded-lg w-full max-w-120 md:max-w-200 bg-white shadow-[0px_8px_30px_rgba(0,0,0,0.15)] border border-gray-100"
+					className="flex flex-col md:flex-row items-center md:items-center justify-between px-4 py-5 rounded-3xl w-full max-w-120 md:max-w-200 bg-white shadow-[0px_8px_30px_rgba(0,0,0,0.15)] border border-gray-200"
 				>
 					<div className="flex flex-col md:flex-row items-center md:items-center md:justify-center gap-10 md:ml-8">
 						<div className="flex flex-row items-center gap-2 md:flex-col">
@@ -63,7 +65,7 @@ const Hero = () => {
 								id="pickup-location"
 								aria-labelledby="location-label"
 								onChange={(e) => setPickupLocation(e.target.value)}
-								className="outline-none border-2 border-gray-200 bg-gray-50 p-2 px-4 rounded-md max-w-47 focus:border-primary focus:ring-3 focus:ring-primary/50 text-gray-900 font-medium transition-all duration-200"
+								className={inputClasses}
 							>
 								<option value="" >Pickup Location</option>
 								{cityList.map((city, index) => (
@@ -86,7 +88,7 @@ const Hero = () => {
 								id="pickup-date"
 								min={new Date().toISOString().split("T")[0]}
 								onChange={(e) => setPickupDate(e.target.value)}
-								className="text-sm text-gray-800 bg-gray-50 p-2 px-4 rounded-md outline-none border-2 border-gray-200 focus:border-primary focus:ring-3 focus:ring-primary/50 font-medium transition-all duration-200"
+								className={inputClasses}
 							/>
 						</div>
 						<div className="flex flex-row items-center gap-2  md:flex-col">
@@ -101,13 +103,13 @@ const Hero = () => {
 								name="return-date"
 								id="return-date"
 								onChange={(e) => setReturnDate(e.target.value)}
-								className="text-sm text-gray-800 bg-gray-50 p-2 px-4 rounded-md outline-none border-2 border-gray-200 focus:border-primary focus:ring-3 focus:ring-primary/50 font-medium transition-all duration-200"
+								className={inputClasses}
 							/>
 						</div>
 						<button
 							type="submit"
 							aria-label="Search available cars"
-							className={`cursor-pointer flex items-center justify-center gap-1 px-5 py-2.5 transition-all text-white rounded-lg shadow-lg active:scale-95 font-semibold ${loading
+							className={`cursor-pointer flex items-center justify-center gap-1 px-4 py-2 transition-all text-white rounded-xl shadow-lg active:scale-98 font-medium ${loading
 								? "bg-primary cursor-not-allowed opacity-90"
 								: "bg-primary hover:bg-primary-dull"
 								}`}

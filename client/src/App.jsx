@@ -50,7 +50,18 @@ const App = () => {
 	return (
 		<div className="h-screen flex flex-col overflow-hidden">
 			<ScrollToTop />
-			<Toaster position="right-bottom" reverseOrder={true} />
+			<Toaster
+				position="right-bottom"
+				reverseOrder={true}
+				toastOptions={{
+					duration: 3000,
+					style: {
+						borderRadius: "12px",
+						fontSize: "14px",
+					},
+				}}
+
+			/>
 			{!isOwnerPath && <Navbar />}
 
 			<main className={`flex-1 min-h-0 overflow-x-hidden ${!isChatPath && !isOwnerPath ? "overflow-y-auto custom-scrollbar" : "overflow-hidden"}`}>

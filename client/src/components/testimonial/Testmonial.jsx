@@ -22,7 +22,7 @@ const Testmonial = () => {
 			<div className="flex justify-end px-3 max-w-7xl m-auto">
 				<button
 					onClick={() => setShowReview(true)}
-					className="flex group items-center justify-center gap-2 px-3 py-0.5 border-2 border-gray-500 text-gray-600 hover:bg-primary rounded-md mt-18 cursor-pointer hover:text-light hover:border-light     active:scale-95 transition-all duration-300"
+					className="flex group items-center justify-center gap-2 px-3 py-0.5 border-2 border-gray-500 text-gray-600 hover:bg-primary rounded-xl mt-18 cursor-pointer hover:text-light hover:border-light active:scale-98 transition-all duration-300"
 				>
 					Add
 				</button>

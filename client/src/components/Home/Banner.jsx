@@ -20,7 +20,7 @@ const Banner = () => {
 					initial={{ opacity: 0, y: 100 }}
 					animate={isInView ? { opacity: 1, y: 0 } : {}}
 					transition={{ duration: 0.9, ease: "easeInOut" }}
-					className="flex flex-col md:flex-row md:items-center justify-between px-8 md:pl-14 pt-10 bg-linear-to-r from-primary/80 via-primary/90 to-primary-dull max-w-6xl rounded-2xl overflow-hidden md:mx-auto shadow-lg"
+					className="flex flex-col md:flex-row md:items-center justify-between px-8 md:pl-14 pt-10 bg-linear-to-r from-primary/80 via-primary/90 to-primary-dull max-w-6xl rounded-3xl overflow-hidden md:mx-auto shadow-lg"
 				>
 					<div className="md:max-w-lg text-left pb-8">
 						<h2 className="text-3xl md:text-4xl text-white mb-4">
@@ -40,7 +40,7 @@ const Banner = () => {
 								user?.role === "owner" ? navigate("/owner/add-car") : user ? navigate("/cars") : setShowLogin(true);
 								scrollTo(0, 0);
 							}}
-							className="bg-white text-primary px-6 py-3 rounded-lg hover:bg-gray-100 transition-all duration-200      active:scale-95 cursor-pointer"
+							className="bg-white text-primary px-6 py-2 rounded-xl hover:bg-gray-100 transition-all duration-200 active:scale-98 cursor-pointer"
 						>
 							{user?.role === "owner" ? "List Your Car" : user?.role === "user" ? "Explore Cars" : "Get Started"}
 						</button>

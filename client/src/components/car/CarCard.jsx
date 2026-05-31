@@ -26,7 +26,7 @@ const CarCard = ({ car, index }) => {
 				mass: 0.6,
 				delay: index * 0.1,
 			}}
-			className="h-full w-full group rounded-xl overflow-hidden shadow-lg hover:-translate-y-2 transition-all duration-500 cursor-pointer hover:shadow-[0_4px_24px_rgba(0,0,0,0.35)] active:scale-99 bg-white border border-gray-100"
+			className="h-full w-full group rounded-3xl overflow-hidden shadow-lg hover:-translate-y-2 transition-all duration-500 cursor-pointer hover:shadow-[0_4px_24px_rgba(0,0,0,0.35)] active:scale-99 bg-white border border-gray-100"
 			onClick={handleClick}
 			aria-label={`View details for ${car.brand} ${car.model}`}
 		>
@@ -41,7 +41,7 @@ const CarCard = ({ car, index }) => {
 				/>
 
 				<div className="absolute top-4 left-4 flex flex-col gap-2">
-					<p className={`text-white text-[10px] px-2 py-1 font-bold rounded-md shadow-lg backdrop-blur-md uppercase tracking-wider ${
+					<p className={`text-white text-[10px] px-2 py-1 font-bold rounded-lg shadow-lg backdrop-blur-md uppercase tracking-wider ${
 						car.status === "available"
 						? "bg-green-600/90"
 						: car.status === "cleaning"
@@ -54,7 +54,7 @@ const CarCard = ({ car, index }) => {
 					</p>
 				</div>
 
-				<div className="absolute bottom-4 right-4 border border-white/80 backdrop-blur-sm text-white px-3 py-2 rounded-xl font-bold">
+				<div className="absolute bottom-4 right-4 border border-white/80 backdrop-blur-sm text-white px-3 py-2 rounded-2xl font-bold">
 					<span>
 						{currency} {car.pricePerHour}
 					</span>
