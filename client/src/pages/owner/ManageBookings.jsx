@@ -134,7 +134,7 @@ const ManageBookings = () => {
 				</div>
 			</div>
 
-			<div className="w-full max-h-115 h-full bg-white shadow-md transition-all duration-300 rounded-xl overflow-hidden border border-gray-200">
+			<div className="w-full bg-white shadow-sm transition-all duration-300 rounded-3xl border border-gray-200 flex flex-col">
 				<div className="overflow-x-auto relative">
 					<motion.table
 						initial={{ opacity: 0 }}
@@ -176,7 +176,7 @@ const ManageBookings = () => {
 													<img
 														src={booking.car.image}
 														alt={booking.car.brand}
-														className="h-11 aspect-video rounded-md object-cover"
+														className="h-11 aspect-video rounded-xl object-cover"
 													/>
 													<div>
 														<p className="font-medium md:text-base text-xs line-clamp-1">
@@ -221,7 +221,7 @@ const ManageBookings = () => {
 										</td>
 
 										<td className="p-3 max-md:hidden">
-											<div className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[11px] font-medium uppercase tracking-wide ${booking.paymentMethod === "online"
+											<div className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-xl text-[11px] font-medium uppercase tracking-wide ${booking.paymentMethod === "online"
 												? "bg-blue-500/10 text-blue-600 border border-blue-500/20"
 												: "bg-emerald-500/10 text-emerald-600 border border-emerald-500/20"
 												}`}>
@@ -235,14 +235,14 @@ const ManageBookings = () => {
 													value={booking.paymentStatus}
 													onClick={(e) => e.stopPropagation()}
 													onChange={(e) => changePaymentStatus(booking._id, e.target.value)}
-													className={`text-[12px] font-medium px-2 py-1 rounded-md outline-none border cursor-pointer transition-all bg-yellow-500/10 text-yellow-600 border-yellow-500/20`}
+													className={`text-[12px] font-medium px-2 py-1 rounded-xl outline-none border cursor-pointer transition-all bg-yellow-500/10 text-yellow-600 border-yellow-500/20`}
 												>
 													<option value="pending">Pending</option>
 													<option value="confirmed">Confirmed</option>
 													<option value="failed">Failed</option>
 												</select>
 											) : (
-												<div className={`inline-flex px-2 py-1 rounded-md text-[12px] font-medium border ${booking.paymentStatus === "confirmed"
+												<div className={`inline-flex px-2 py-1 rounded-xl text-[12px] font-medium border ${booking.paymentStatus === "confirmed"
 													? "bg-green-500/10 text-green-600 border-green-500/20"
 													: "bg-red-500/10 text-red-600 border-red-500/20"
 													}`}>
@@ -258,7 +258,7 @@ const ManageBookings = () => {
 														value={booking.status}
 														onClick={(e) => e.stopPropagation()}
 														onChange={(e) => changeBookingStatus(booking._id, e.target.value)}
-														className={`text-[12px] font-medium px-2 py-1 rounded-md outline-none border cursor-pointer transition-all ${booking.status === "confirmed"
+														className={`text-[12px] font-medium px-2 py-1 rounded-xl outline-none border cursor-pointer transition-all ${booking.status === "confirmed"
 															? "bg-green-500/10 text-green-600 border-green-500/20"
 															: "bg-yellow-500/10 text-yellow-600 border-yellow-500/20"
 															}`}
@@ -269,7 +269,7 @@ const ManageBookings = () => {
 														<option value="cancelled">Cancelled</option>
 													</select>
 												) : (
-													<div className={`px-2 py-1 rounded-md text-[12px] font-medium border ${booking.status === "completed"
+													<div className={`px-2 py-1 rounded-xl text-[12px] font-medium border ${booking.status === "completed"
 														? "bg-blue-500/10 text-blue-600 border-blue-500/20"
 														: "bg-red-500/10 text-red-600 border-red-500/20"
 														}`}>
@@ -307,7 +307,7 @@ const ManageBookings = () => {
 						<button
 							disabled={currentPage === 1}
 							onClick={() => setCurrentPage(prev => prev - 1)}
-							className="p-2 rounded-md bg-primary hover:bg-primary-dull border border-gray-200 shadow-sm disabled:opacity-90 disabled:cursor-not-allowed transition-all active:scale-95 cursor-pointer text-white"
+							className="p-2 rounded-2xl bg-primary hover:bg-primary-dull border border-gray-200 shadow-sm disabled:opacity-90 disabled:cursor-not-allowed transition-all active:scale-95 cursor-pointer text-white"
 						>
 							<iconList.ChevronLeft size={20} />
 						</button>
@@ -317,7 +317,7 @@ const ManageBookings = () => {
 									<button
 										key={index}
 										onClick={() => setCurrentPage(index + 1)}
-										className={`px-3 py-1 rounded-md transition-colors m-1 ${currentPage === index + 1 ? "bg-primary text-white" : "bg-gray-200 text-gray-600 hover:bg-gray-300"}`}
+										className={`px-3 py-1 rounded-full transition-colors m-1 ${currentPage === index + 1 ? "bg-primary text-white" : "bg-gray-200 text-gray-600 hover:bg-gray-300"}`}
 									>
 										{index + 1}
 									</button>
@@ -327,7 +327,7 @@ const ManageBookings = () => {
 						<button
 							disabled={currentPage === totalPages}
 							onClick={() => setCurrentPage(prev => prev + 1)}
-							className="p-2 rounded-md bg-primary hover:bg-primary-dull border border-gray-200 shadow-sm disabled:opacity-90 disabled:cursor-not-allowed transition-all active:scale-95 cursor-pointer text-white"
+							className="p-2 rounded-2xl bg-primary hover:bg-primary-dull border border-gray-200 shadow-sm disabled:opacity-90 disabled:cursor-not-allowed transition-all active:scale-95 cursor-pointer text-white"
 						>
 							<iconList.ChevronRight size={20} />
 						</button>
@@ -355,8 +355,8 @@ const ManageBookings = () => {
 							initial={{ opacity: 0 }}
 							animate={{ opacity: 1 }}
 							exit={{ opacity: 0 }}
-							transition={{ delay: 0.2, duration: 0.4 }}
-							className="relative bg-white rounded-md shadow-2xl w-full max-w-md p-6 overflow-hidden"
+							transition={{ duration: 0.2 }}
+							className="relative bg-white rounded-3xl shadow-sm w-full max-w-md p-6 overflow-hidden"
 						>
 							<h2 className="text-xl font-semibold text-center">
 								Delete booking?
@@ -369,14 +369,14 @@ const ManageBookings = () => {
 
 							<div className="flex justify-between gap-6 mt-6 md:px-10 px-4">
 								<button
-									className="w-1/2 py-2 rounded-md border bg-primary hover:bg-primary-dull text-white cursor-pointer active:scale-95 transition-transform duration-300 flex justify-center items-center gap-4 mx-2"
+									className="w-1/2 py-2 rounded-2xl border bg-primary hover:bg-primary-dull text-white cursor-pointer active:scale-98 transition-all duration-300 flex justify-center items-center gap-4 mx-2"
 									onClick={() => setOpenConfirm(false)}
 								>
 									Cancel
 								</button>
 
 								<button
-									className="w-1/2 py-2 rounded-md bg-red-500 hover:bg-red-600 text-white cursor-pointer active:scale-95 transition-transform duration-300 flex justify-center items-center gap-4 mx-2"
+									className="w-1/2 py-2 rounded-2xl bg-red-500 hover:bg-red-600 text-white cursor-pointer active:scale-98 transition-all duration-300 flex justify-center items-center gap-4 mx-2"
 									onClick={() => {
 										deleteBooking(deleteId);
 										setOpenConfirm(false);

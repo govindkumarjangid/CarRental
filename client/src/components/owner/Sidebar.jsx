@@ -83,7 +83,7 @@ const SidebarContent = ({ user, image, setImage, handleUpdateImage, location, Mo
 
 		{/* Redirect Button */}
 		<div className="w-full p-4 mt-auto border-t border-gray-100  md:hidden">
-			<NavLink to="/" className="flex items-center justify-center gap-2 w-full py-2.5 bg-primary hover:bg-primary-dull text-white rounded-md font-medium transition-colors shadow-sm">
+			<NavLink to="/" className="flex items-center justify-center gap-2 w-full py-2.5 bg-primary hover:bg-primary-dull text-white rounded-2xl font-medium transition-colors shadow-sm">
 				<iconList.ArrowLeft size={18} />
 				<span>Back to Home</span>
 			</NavLink>

@@ -99,7 +99,7 @@ const ManageCars = () => {
 					initial={{ opacity: 0 }}
 					animate={{ opacity: 1 }}
 					onClick={() => navigate("/owner/add-car")}
-					className="flex items-center gap-2 bg-primary hover:bg-primary-dull text-white px-3 py-2 rounded-md font-medium transition-all shadow-lg active:scale-95 w-fit h-fit cursor-pointer"
+					className="flex items-center gap-2 bg-primary hover:bg-primary-dull text-white px-3 py-2 rounded-2xl font-medium transition-all shadow-lg active:scale-95 w-fit h-fit cursor-pointer"
 				>
 					<iconList.Plus size={20} />
 					Add New Car
@@ -140,8 +140,8 @@ const ManageCars = () => {
 				</div>
 			</div>
 
-			<div className="w-full max-h-115 h-full bg-white shadow-md transition-all duration-300 rounded-xl overflow-hidden border border-gray-200">
-				<div className="overflow-x-auto relative">
+			<div className="w-full bg-white shadow-sm transition-all duration-300 rounded-3xl border border-gray-200 flex flex-col">
+				<div className="relative overflow-x-auto">
 					<motion.table
 						initial={{ opacity: 0 }}
 						animate={{ opacity: 1 }}
@@ -170,14 +170,14 @@ const ManageCars = () => {
 										transition={{
 											type: "spring", stiffness: 300, damping: 30
 										}}
-										className="border-b last:border-b-0 border-gray-100 hover:bg-gray-50/80 transition-colors duration-200"
+										className="border-b last:border-b-0 border-gray-100 hover:bg-gray-50/80 transition-colors duration-200 pb-10"
 										key={car._id || index}
 									>
 										<td className="p-3 flex  md:flex-row flex-col items-start gap-3 justify-start">
 											<img
 												src={car.image}
 												alt={car.name}
-												className="h-11 aspect-video rounded-md object-cover"
+												className="h-11 aspect-video rounded-xl object-cover"
 											/>
 											<div>
 												<p className="font-medium md:text-base text-xs line-clamp-1">
@@ -203,7 +203,7 @@ const ManageCars = () => {
 											<select
 												value={car.status}
 												onChange={(e) => updateCarStatus(car._id, e.target.value)}
-												className={`text-[13px] font-medium px-2 py-1 rounded-md outline-none border cursor-pointer transition-all ${car.status === "available"
+												className={`text-[13px] font-medium px-2 py-1 rounded-xl outline-none border cursor-pointer transition-all ${car.status === "available"
 													? "bg-green-500/10 text-green-600 border-green-500/20"
 													: car.status === "cleaning"
 														? "bg-blue-500/10 text-blue-600 border-blue-500/20"
@@ -285,7 +285,7 @@ const ManageCars = () => {
 							<button
 								disabled={currentPage === 1}
 								onClick={() => setCurrentPage(prev => prev - 1)}
-								className="p-2 rounded-md bg-primary hover:bg-primary-dull border border-gray-200 shadow-sm disabled:opacity-905 disabled:cursor-not-allowed transition-all active:scale-95 cursor-pointer text-white"
+								className="p-2 rounded-2xl bg-primary hover:bg-primary-dull border border-gray-200 shadow-sm disabled:opacity-905 disabled:cursor-not-allowed transition-all active:scale-95 cursor-pointer text-white"
 							>
 								<iconList.ChevronLeft size={20} />
 							</button>
@@ -295,7 +295,7 @@ const ManageCars = () => {
 										<button
 											key={index}
 											onClick={() => setCurrentPage(index + 1)}
-											className={`px-3 py-1 rounded-md transition-colors m-1 cursor-pointer ${currentPage === index + 1 ? "bg-primary text-white" : "bg-gray-200 text-gray-600 hover:bg-gray-300"}`}
+											className={`px-3 py-1 rounded-full transition-colors m-1 cursor-pointer ${currentPage === index + 1 ? "bg-primary text-white" : "bg-gray-200 text-gray-600 hover:bg-gray-300"}`}
 										>
 											{index + 1}
 										</button>
@@ -305,7 +305,7 @@ const ManageCars = () => {
 							<button
 								disabled={currentPage === totalPages}
 								onClick={() => setCurrentPage(prev => prev + 1)}
-								className="p-2 rounded-md bg-primary hover:bg-primary-dull border border-gray-200 shadow-sm disabled:opacity-95 disabled:cursor-not-allowed transition-all active:scale-95 cursor-pointer text-white"
+								className="p-2 rounded-2xl bg-primary hover:bg-primary-dull border border-gray-200 shadow-sm disabled:opacity-95 disabled:cursor-not-allowed transition-all active:scale-95 cursor-pointer text-white"
 							>
 								<iconList.ChevronRight size={20} />
 							</button>
@@ -322,7 +322,7 @@ const ManageCars = () => {
 								initial={{ opacity: 0 }}
 								animate={{ opacity: 1 }}
 								exit={{ opacity: 0, filter: "blur(5px)", scale: 0.95 }}
-								transition={{ duration: 0.3 }}
+								transition={{ duration: 0.1 }}
 								onClick={() => setOpenConfirm(false)}
 								className="absolute inset-0 backdrop-blur-xs bg-blue-700/5"
 							/>
@@ -333,7 +333,7 @@ const ManageCars = () => {
 								animate={{ opacity: 1, filter: "blur(0px)", scale: 1 }}
 								exit={{ opacity: 0, filter: "blur(5px)", scale: 0.95 }}
 								transition={{ delay: 0.2, duration: 0.5 }}
-								className="relative bg-white rounded-xl shadow-2xl w-full max-w-md p-6 overflow-hidden border border-gray-100"
+								className="relative bg-white rounded-3xl shadow-sm w-full max-w-md p-6 overflow-hidden border border-gray-100"
 							>
 								<h2 className="text-xl font-semibold text-center">
 									Delete car?
@@ -346,14 +346,14 @@ const ManageCars = () => {
 
 								<div className="flex justify-between gap-6 mt-6 md:px-10 px-4">
 									<button
-										className="w-1/2 py-2 rounded-md border bg-primary hover:bg-primary-dull text-white cursor-pointer active:scale-95 transition-transform duration-300 flex justify-center items-center gap-4 mx-2"
+										className="w-1/2 py-2 rounded-2xl border bg-primary hover:bg-primary-dull text-white cursor-pointer active:scale-98 transition-transform duration-300 flex justify-center items-center gap-4 mx-2"
 										onClick={() => setOpenConfirm(false)}
 									>
 										Cancel
 									</button>
 
 									<button
-										className="w-1/2 py-2 rounded-md bg-red-500 hover:bg-red-600 text-white cursor-pointer active:scale-95 transition-transform duration-300 flex justify-center items-center gap-4 mx-2"
+										className="w-1/2 py-2 rounded-2xl bg-red-500 hover:bg-red-600 text-white cursor-pointer active:scale-98 transition-transform duration-300 flex justify-center items-center gap-4 mx-2"
 										onClick={() => {
 											deleteCar(deleteId);
 											setOpenConfirm(false);
