@@ -159,7 +159,7 @@ const AllUsers = () => {
                     name="userStatus"
                     value={user.isBlocked ? "block" : "unblock"}
                     onChange={(e) => handleBlockToggle(user._id, e.target.value === "block")}
-                    className={`outline-none px-2 py-1 rounded-md cursor-pointer ${user.isBlocked ? "bg-red-300/30 text-red-500" : "bg-green-300/30 text-green-500"}`}
+                    className={`outline-none px-2 py-1 rounded-xl cursor-pointer ${user.isBlocked ? "bg-red-300/30 text-red-500" : "bg-green-300/30 text-green-500"}`}
                   >
                     <option value="block">Block</option>
                     <option value="unblock">Unblock</option>

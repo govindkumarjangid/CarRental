@@ -161,14 +161,12 @@ const ManageBookings = () => {
 							{currentItems.length > 0 ? (
 								currentItems.map((booking, index) => (
 									<motion.tr
-										initial={{ opacity: 0 }}
-										animate={{ opacity: 1 }}
-										transition={{
-											type: "spring", stiffness: 300, damping: 30
-										}}
+										key={booking._id || index}
+										i initial={{ opacity: 0, y: 10 }}
+										animate={{ opacity: 1, y: 0 }}
+										transition={{ type: "spring", stiffness: 300, damping: 30, delay: index * 0.05 }}
 										onClick={() => navigate(`/owner/manage-bookings/${booking._id}`)}
 										className="border-b last:border-b-0 border-gray-100 hover:bg-gray-50/80 transition-colors duration-200 cursor-pointer"
-										key={booking._id || index}
 									>
 										<td className="p-3 flex md:flex-row flex-col items-start gap-3 justify-start">
 											{booking.car ? (

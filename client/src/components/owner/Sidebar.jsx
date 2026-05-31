@@ -62,7 +62,7 @@ const SidebarContent = ({ user, image, setImage, handleUpdateImage, location, Mo
 						to={{ pathname: link.path, scrollTo: (0, 0) }}
 						whileTap={{ scale: 0.97 }}
 						onClick={() => setIsSidebarOpen(false)}
-						className={`relative flex items-center gap-3 rounded-2xl w-full py-3 pl-6 md:pl-6 first:mt-3 transition-colors cursor-pointer ${isActive
+						className={`relative flex items-center gap-3 rounded-xl w-full py-3 pl-6 md:pl-6 first:mt-3 transition-colors cursor-pointer ${isActive
 							? "bg-primary/20 text-primary font-semibold  "
 							: "text-gray-500 hover:bg-gray-100  "
 							}`}

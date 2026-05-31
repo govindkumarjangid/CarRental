@@ -354,7 +354,7 @@ const Chats = () => {
                   <div
                     key={chat._id}
                     onClick={() => navigate(`${navPrefix}/${other?._id || ""}`)}
-                    className={`flex items-center gap-3 px-4 py-3 cursor-pointer border-b border-gray-50 transition-colors rounded-md relative ${isActive ? "bg-primary/20 text-primary" : "hover:bg-gray-100 "}`}
+                    className={`flex items-center gap-3 px-4 py-3 cursor-pointer border-b border-gray-50 transition-colors rounded-xl relative ${isActive ? "bg-primary/20 text-primary" : "hover:bg-gray-100 "}`}
                   >
 
                     {isActive && (
