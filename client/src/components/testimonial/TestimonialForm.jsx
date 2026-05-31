@@ -2,8 +2,9 @@ import { useState, useEffect } from "react";
 import { AnimatePresence, motion } from 'framer-motion';
 import { toast } from "react-hot-toast";
 
+import { X } from "lucide-react";
 import { useAuthStore } from "../../store/useAuthStore.js";
-import { iconList } from "../../index.js";
+import { IconButton, iconList } from "../../index.js";
 import InputBox from '../owner/InputBox.jsx';
 
 const TestimonialForm = () => {
@@ -66,20 +67,20 @@ const TestimonialForm = () => {
 						ease: "easeOut"
 					}}
 					key="testimonial-form"
-					className="bg-white md:rounded-md w-full h-full md:h-fit max-w-2xl md:max-h-[90vh] overflow-y-auto shadow-2xl relative p-4 md:p-6"
+					className="bg-white rounded-3xl w-full h-full md:h-fit max-w-2xl md:max-h-[90vh] overflow-y-auto shadow-sm relative p-4 md:p-6"
 				>
 					<div className="flex items-center justify-between mb-4">
 						<h2 className="text-xl font-semibold"
 						>
 							Add Your Review
 						</h2>
-						<button
-							type="button"
+
+						<IconButton
+							label="Close"
+							icon={X}
 							onClick={() => setShowReview(false)}
-							className="bg-gray-100 p-1 h-8 w-8 rounded-md text-gray-600 hover:text-gray-700 cursor-pointer active:scale-95 transition-transform duration-200"
-						>
-							<iconList.X size={25} />
-						</button>
+							className="text-gray-500 hover:bg-gray-100 hover:text-gray-800 cursor-pointer transition-colors"
+						/>
 					</div>
 
 					{/* photo */}
@@ -91,10 +92,10 @@ const TestimonialForm = () => {
 								<img
 									src={URL.createObjectURL(image)}
 									alt="car preview"
-									className="h-12 w-20 object-cover rounded-md"
+									className="h-12 w-20 object-cover rounded-2xl"
 								/>
 							) : (
-								<iconList.CloudUpload className="h-14 text-primary bg-gray-100 px-4 py-3 rounded-md cursor-pointer w-26 border border-gray-200" />
+								<iconList.CloudUpload className="h-14 text-primary bg-gray-100 px-4 py-3 rounded-2xl cursor-pointer w-26 border border-gray-200" />
 							)}
 
 							<input
@@ -165,7 +166,7 @@ const TestimonialForm = () => {
 
 					<button
 						type="submit"
-						className="flex items-center justify-center gap-2 sm:px-6 sm:py-2.5 py-2 px-4 bg-primary text-white rounded-md w-max mt-4 mb-2 hover:bg-primary/90 active:scale-95 transition cursor-pointer md:text-base text-sm font-semibold"
+						className="flex items-center justify-center gap-2 sm:px-6 sm:py-2.5 py-2 px-4 bg-primary text-white rounded-2xl w-max mt-4 mb-2 hover:bg-primary/90 active:scale-95 transition cursor-pointer md:text-base text-sm font-medium"
 						disabled={loading}
 					>
 						{loading ? (

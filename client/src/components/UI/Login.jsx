@@ -47,7 +47,7 @@ const Login = () => {
 				transition={{ duration: 0.4, delay: 0.2 }}
 				onSubmit={handleSubmit}
 				onClick={(e) => e.stopPropagation()}
-				className="flex flex-col gap-4 m-auto items-start p-8 py-12 w-80 sm:w-88 text-gray-500 rounded-lg shadow-xl border border-gray-200 bg-white z-200"
+				className="flex flex-col gap-4 m-auto items-start p-8 py-12 w-80 sm:w-88 text-gray-500 rounded-3xl shadow-sm border border-gray-200 bg-white z-200"
 			>
 				<div className="flex justify-between items-center w-full">
 					<p className="text-3xl font-medium mx-auto pl-8">
@@ -58,17 +58,6 @@ const Login = () => {
 					</p>
 				</div>
 
-				{/* name field  */}
-				{state === "register" && (
-					<InputBox
-						label="name"
-						title="Name"
-						value={name}
-						onChange={(e) => setName(e.target.value)}
-						placeholder="Full Name"
-					/>
-				)}
-
 				{/* role selector */}
 				{state === "register" && (
 					<div className="w-full">
@@ -77,7 +66,7 @@ const Login = () => {
 							<button
 								type="button"
 								onClick={() => setRole("user")}
-								className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg border-2 text-sm font-semibold cursor-pointer transition-all duration-200 ${role === "user"
+								className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-2xl border-2 text-sm font-semibold cursor-pointer transition-all duration-200 ${role === "user"
 									? "border-primary bg-primary/10 text-primary"
 									: "border-gray-200 text-gray-400 hover:border-gray-300"
 									}`}
@@ -88,7 +77,7 @@ const Login = () => {
 							<button
 								type="button"
 								onClick={() => setRole("owner")}
-								className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg border-2 text-sm font-semibold cursor-pointer transition-all duration-200 ${role === "owner"
+								className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-2xl border-2 text-sm font-semibold cursor-pointer transition-all duration-200 ${role === "owner"
 									? "border-primary bg-primary/10 text-primary"
 									: "border-gray-200 text-gray-400 hover:border-gray-300"
 									}`}
@@ -98,6 +87,17 @@ const Login = () => {
 							</button>
 						</div>
 					</div>
+				)}
+
+				{/* name field  */}
+				{state === "register" && (
+					<InputBox
+						label="name"
+						title="Name"
+						value={name}
+						onChange={(e) => setName(e.target.value)}
+						placeholder="Full Name"
+					/>
 				)}
 
 				{/* email field  */}
@@ -153,7 +153,7 @@ const Login = () => {
 					className={`${isLoading
 						? "opacity-90 cursor-not-allowed bg-primary"
 						: "bg-primary hover:bg-primary-dull"
-						} transition-all text-white w-full py-2 rounded-lg mt-2
+						} transition-all text-white w-full py-2 rounded-2xl mt-2
             cursor-pointer active:scale-95
             `}
 				>

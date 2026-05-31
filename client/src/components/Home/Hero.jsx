@@ -184,7 +184,7 @@ const Hero = () => {
 								exit={{ opacity: 0, scale: 0.95 }}
 								transition={{ type: "spring", stiffness: 300, damping: 30 }}
 								onClick={(e) => e.stopPropagation()}
-								className="bg-white shadow-xl rounded-2xl sm:rounded-3xl w-full max-w-lg max-h-[85vh] flex flex-col overflow-hidden"
+								className="bg-white shadow-sm rounded-3xl w-full max-w-lg max-h-[85vh] flex flex-col overflow-hidden"
 							>
 								<div className="sticky top-0 bg-white flex justify-between items-center px-4 py-3 border-b border-gray-200 z-10">
 									<h2 className="font-semibold text-lg text-gray-800">
