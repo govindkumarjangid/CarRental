@@ -111,7 +111,7 @@ const Cars = () => {
 						initial={{ opacity: 0, y: 20 }}
 						animate={{ opacity: 1, y: 0 }}
 						transition={{ duration: 0.6, ease: "easeOut", delay: 0.3 }}
-						className="mt-8 flex items-center justify-between gap-4 border border-gray-300 px-4 py-1 rounded-lg shadow-xl max-w-96 md:max-w-3xl bg-white w-full focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20"
+						className="mt-8 flex items-center justify-between gap-4 border-2 border-gray-300 px-4 py-1 rounded-2xl shadow-sm max-w-96 md:max-w-3xl bg-white w-full focus-within:border-primary transition-all duration-300"
 					>
 						<label htmlFor="car-search" className="sr-only">Search cars by brand, model, or features</label>
 						<iconList.Search size={18} className="text-gray-600" />
@@ -341,7 +341,7 @@ const Cars = () => {
 							transition={{ duration: 0.8, ease: "easeIn" }}
 							onClick={handleLoadMore}
 							disabled={isLoadingMore}
-							className={`flex group items-center justify-center gap-2 px-6 py-2 border-2  rounded-md mt-18 transition-all duration-300
+							className={`flex group items-center justify-center gap-2 px-6 py-2 border-2  rounded-2xl mt-18 transition-all duration-300
 								${isLoadingMore
 									? 'border-gray-300 text-gray-400 cursor-wait'
 									: 'border-gray-500 text-gray-600 hover:bg-primary cursor-pointer hover:text-light hover:border-light active:scale-95'
@@ -350,7 +350,7 @@ const Cars = () => {
 							{isLoadingMore ? (
 								<>
 									Loading...
-									<iconList.Loader size={22} className="animate-spin" />
+									<iconList.Loader size={20} className="animate-spin" />
 								</>
 							) : (
 								<>

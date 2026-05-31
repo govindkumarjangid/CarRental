@@ -26,7 +26,7 @@ const CarCard = ({ car, index }) => {
 				mass: 0.6,
 				delay: index * 0.1,
 			}}
-			className="h-full w-full group rounded-3xl overflow-hidden shadow-lg hover:-translate-y-2 transition-all duration-500 cursor-pointer hover:shadow-[0_4px_24px_rgba(0,0,0,0.35)] active:scale-99 bg-white border border-gray-100"
+			className="h-full w-full group rounded-3xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-500 cursor-pointer active:scale-99 bg-white border border-gray-100"
 			onClick={handleClick}
 			aria-label={`View details for ${car.brand} ${car.model}`}
 		>

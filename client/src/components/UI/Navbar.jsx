@@ -163,35 +163,30 @@ const Navbar = () => {
 				{/* User Profile Popup */}
 				<AnimatePresence>
 					{openPopup && user && (
-						<>
-							<motion.div
-								key="backdrop"
-								initial={{ opacity: 0 }}
-								animate={{ opacity: 1 }}
-								exit={{ opacity: 0 }}
-								transition={{ duration: 0.3, ease: 'easeInOut' }}
-								className="fixed inset-0 z-100 backdrop-blur-sm bg-blue-700/5"
-								onClick={() => setOpenPopup(false)}
-							/>
+						<motion.div
+							key="backdrop"
+							initial={{ opacity: 0 }}
+							animate={{ opacity: 1 }}
+							exit={{ opacity: 0 }}
+							transition={{ duration: 0.2 }}
+							className="fixed inset-0 z-100 flex items-center justify-center bg-primary/5 backdrop-blur-sm p-4"
+							onClick={() => setOpenPopup(false)}
+						>
 							<motion.div
 								key="popup"
-								initial={{ opacity: 0, filter: "blur(5px)", scale: 0.95 }}
-								animate={{ opacity: 1, filter: "blur(0px)", scale: 1 }}
-								exit={{ opacity: 0, filter: "blur(5px)", scale: 0.95 }}
-								transition={{ duration: 0.3, ease: 'easeInOut', delay: 0.2 }}
-								className="flex flex-col gap-4 p-6 sm:p-8 bg-white border border-gray-200 shadow-3xl fixed z-999 cursor-default sm:w-105 sm:top-1/2 sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-xl max-sm:bottom-0 max-sm:left-0 max-sm:right-0 max-sm:pb-10 max-sm:rounded-t-xl"
+								initial={{ opacity: 0, scale: 0.95 }}
+								animate={{ opacity: 1, scale: 1 }}
+								exit={{ opacity: 0, scale: 0.95 }}
+								transition={{ type: "spring", stiffness: 300, damping: 30 }}
+								className="relative flex flex-col gap-4 p-6 sm:p-8 bg-white border border-gray-200 shadow-xl cursor-default w-full max-w-105 rounded-3xl"
 								onClick={(e) => e.stopPropagation()}
 							>
-								{/* Drag handle  */}
-								<div className="w-10 h-1 bg-gray-300  rounded-full mx-auto -mt-2 mb-1 sm:hidden" />
-
-								<button
-									type="button"
+								<IconButton
+									label="Close"
+									icon={X}
 									onClick={() => setOpenPopup(false)}
-									className="bg-gray-100 hidden sm:block absolute right-2 top-2 p-1 h-8 w-8 rounded-md text-gray-600 hover:text-gray-700 cursor-pointer active:scale-95 transition-transform duration-200"
-								>
-									<iconList.X size={25} />
-								</button>
+									className="text-gray-500 hover:bg-gray-100 hover:text-gray-800 cursor-pointer transition-colors absolute top-3 right-3"
+								/>
 
 
 								<div className="w-full flex items-center gap-4">
@@ -233,7 +228,7 @@ const Navbar = () => {
 
 								<button
 									onClick={handleLogout}
-									className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-primary hover:bg-primary-dull   rounded-xl text-sm cursor-pointer text-white active:scale-[0.98] font-bold transition-all shadow-md group">
+									className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-primary hover:bg-primary-dull rounded-2xl text-sm cursor-pointer text-white active:scale-[0.98] font-bold transition-all shadow-md group">
 									<LogOut size={18} className="group-hover:-translate-x-0.5 transition-transform" />
 									Logout Account
 								</button>
@@ -241,14 +236,14 @@ const Navbar = () => {
 								{image && (
 									<button
 										onClick={handleImageUpload}
-										className="flex items-center justify-center gap-1 text-xs font-bold shadow-lg transition-all bg-green-500 text-white hover:bg-green-600 px-4 py-2 sm:absolute sm:-top-3 sm:right-0 sm:rounded-full max-sm:w-full max-sm:rounded-xl max-sm:text-sm cursor-pointer active:scale-95"
+										className="flex items-center justify-center gap-1 text-xs font-bold shadow-lg transition-all bg-green-500 text-white hover:bg-green-600 px-4 py-2 absolute -top-3 right-0 rounded-full cursor-pointer active:scale-95"
 									>
 										<iconList.CircleCheckBig size={14} />
 										Save Avatar
 									</button>
 								)}
 							</motion.div>
-						</>
+						</motion.div>
 					)}
 				</AnimatePresence>
 

@@ -17,14 +17,14 @@ const BookingCard = ({ booking, index }) => {
 				ease: "easeInOut",
 				delay: index * 0.05,
 			}}
-			className="grid grid-cols-1 md:grid-cols-4 gap-6 p-6 rounded-lg mt-5 first:mt-12 backdrop-blur-sm border border-gray-200   "
+			className="grid grid-cols-1 md:grid-cols-4 gap-6 p-6 rounded-3xl mt-5 first:mt-12 backdrop-blur-sm border border-gray-200 shadow-sm"
 		>
 			<div className="md:col-span-1 ">
 				<img
 					src={booking?.car?.image}
 					alt="car-image"
 					loading="lazy"
-					className="w-full h-auto aspect-video object-cover rounded-lg"
+					className="w-full h-auto aspect-video object-cover rounded-2xl"
 				/>
 				<p className="text-lg font-medium mt-2">
 					{booking?.car?.brand} {booking?.car?.model}
@@ -37,11 +37,11 @@ const BookingCard = ({ booking, index }) => {
 
 			<div className="md:col-span-2">
 				<div className="flex items-center gap-2">
-					<p className="px-3 py-1 bg-light rounded ">
+					<p className="px-3 py-1 bg-light rounded-lg">
 						Booking # {index + 1}
 					</p>
 					<p
-						className={`px-3 py-1 text-sm rounded ${booking?.status === "confirmed"
+						className={`px-3 py-1 text-sm rounded-lg ${booking?.status === "confirmed"
 							? "bg-green-400/15 text-gray-600 "
 							: booking?.status === "cancelled"
 								? " bg-red-400/15 text-red-900"

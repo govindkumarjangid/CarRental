@@ -53,7 +53,7 @@ const Hero = () => {
 					initial={{ opacity: 0, y: 20 }}
 					animate={{ opacity: 1, y: 0 }}
 					transition={{ duration: 0.5, ease: "easeOut", delay: 0.1 }}
-					className="flex flex-col md:flex-row items-center md:items-center justify-between px-4 py-5 rounded-3xl w-full max-w-120 md:max-w-200 bg-white shadow-[0px_8px_30px_rgba(0,0,0,0.15)] border border-gray-200"
+					className="flex flex-col md:flex-row items-center md:items-center justify-between px-4 py-5 rounded-3xl w-full max-w-120 md:max-w-200 bg-white shadow-sm border border-gray-200"
 				>
 					<div className="flex flex-col md:flex-row items-center md:items-center md:justify-center gap-10 md:ml-8">
 						<div className="flex flex-row items-center gap-2 md:flex-col">
@@ -109,7 +109,7 @@ const Hero = () => {
 						<button
 							type="submit"
 							aria-label="Search available cars"
-							className={`cursor-pointer flex items-center justify-center gap-1 px-4 py-2 transition-all text-white rounded-xl shadow-lg active:scale-98 font-medium ${loading
+							className={`cursor-pointer flex items-center justify-center gap-1 px-4 py-2 transition-all text-white rounded-2xl shadow-lg active:scale-98 font-medium ${loading
 								? "bg-primary cursor-not-allowed opacity-90"
 								: "bg-primary hover:bg-primary-dull"
 								}`}
@@ -172,87 +172,82 @@ const Hero = () => {
 				<AnimatePresence>
 					{availableCars.length > 0 && open && (
 						<motion.div
-							initial={{ opacity: 0, x: 100 }}
-							animate={{ opacity: 1, x: 0 }}
-							exit={{ opacity: 0, x: 100 }}
-							transition={{
-								type: "spring",
-								stiffness: 120,
-								damping: 20,
-							}}
-							className="fixed inset-x-0 bottom-0 sm:inset-auto sm:bottom-4 sm:right-4 z-50 bg-white shadow-2xl rounded-t-md sm:rounded-md w-full sm:w-105 md:w-130 md:max-h-[80vh] overflow-y-auto blue-thumb-scrollbar  "
+							initial={{ opacity: 0 }}
+							animate={{ opacity: 1 }}
+							exit={{ opacity: 0 }}
+							className="fixed inset-0 z-50 flex items-center justify-center bg-primary/5 backdrop-blur-sm p-4"
+							onClick={() => setOpen(false)}
 						>
-							<div className="sticky top-0 bg-white flex justify-between items-center px-2 py-2 border-b border-gray-400  ">
-								<h2 className="font-semibold">
-									Available Cars
-								</h2>
+							<motion.div
+								initial={{ opacity: 0, scale: 0.95 }}
+								animate={{ opacity: 1, scale: 1 }}
+								exit={{ opacity: 0, scale: 0.95 }}
+								transition={{ type: "spring", stiffness: 300, damping: 30 }}
+								onClick={(e) => e.stopPropagation()}
+								className="bg-white shadow-xl rounded-2xl sm:rounded-3xl w-full max-w-lg max-h-[85vh] flex flex-col overflow-hidden"
+							>
+								<div className="sticky top-0 bg-white flex justify-between items-center px-4 py-3 border-b border-gray-200 z-10">
+									<h2 className="font-semibold text-lg text-gray-800">
+										Available Cars
+									</h2>
 
-								<IconButton
-									label="Close"
-									icon={X}
-									onClick={() => setOpen(false)}
-									className="text-primary hover:bg-primary/10 cursor-pointer"
-								/>
-							</div>
+									<IconButton
+										label="Close"
+										icon={X}
+										onClick={() => setOpen(false)}
+										className="text-gray-500 hover:bg-gray-100 hover:text-gray-800 cursor-pointer transition-colors"
+									/>
+								</div>
 
-							<div className="max-h-72 overflow-y-auto overflow-x-auto">
-								<table className="w-full text-sm">
-									<thead className="py-2 bg-gray-100 z-20 ">
-										<tr className="bg-gray-100">
-											<th className="p-2 text-left">
-												Image
-											</th>
-											<th className="py-2 text-left">
-												Car
-											</th>
-											<th className="py-2 text-left">
-												Price
-											</th>
-										</tr>
-									</thead>
+								<div className="overflow-y-auto overflow-x-auto p-4 blue-thumb-scrollbar">
+									<table className="w-full text-sm border-separate" style={{ borderSpacing: "0 8px" }}>
+										<thead className="sticky top-0 bg-white z-20">
+											<tr className="bg-gray-100 text-gray-600">
+												<th className="p-3 text-left rounded-l-xl">Image</th>
+												<th className="py-3 text-left">Car</th>
+												<th className="py-3 text-left rounded-r-xl">Price</th>
+											</tr>
+										</thead>
 
-									<motion.tbody
-										initial="hidden"
-										animate="show"
-										transition={{ staggerChildren: 0.08 }}
-									>
-										{availableCars.map((car) => (
-											<motion.tr
-												key={car._id}
-												className="cursor-pointer hover:bg-gray-100 "
-												onClick={() =>
-													navigate(
-														`/car-details/${car._id}`
-													)
-												}
-											>
-												<td className="p-2">
-													<img
-														src={car.image}
-														className="w-16 h-10 rounded object-cover"
-														alt={car.model}
-														width="64"
-														height="40"
-														loading="lazy"
-													/>
-												</td>
+										<motion.tbody
+											initial="hidden"
+											animate="show"
+											transition={{ staggerChildren: 0.08 }}
+										>
+											{availableCars.map((car) => (
+												<motion.tr
+													key={car._id}
+													className="cursor-pointer bg-white hover:bg-gray-50 transition-colors group shadow-sm rounded-xl"
+													onClick={() => navigate(`/car-details/${car._id}`)}
+												>
+													<td className="p-3 rounded-l-xl border-y border-l border-gray-100 border-x-0 border-r-0!">
+														<img
+															src={car.image}
+															className="w-16 h-10 rounded-lg object-cover"
+															alt={car.model}
+															width="64"
+															height="40"
+															loading="lazy"
+														/>
+													</td>
 
-												<td className="py-2 font-medium text-left">
-													{car.brand} {car.model}
-													<div className="text-xs text-gray-500">
-														{car.category}
-													</div>
-												</td>
+													<td className="py-3 font-medium text-left border-y border-x-0 border-gray-100 border-l-0! border-r-0!">
+														{car.brand} {car.model}
+														<div className="text-xs text-gray-500">
+															{car.category}
+														</div>
+													</td>
 
-												<td className="py-2 font-semibold text-left">
-													{currency}
-													{car.pricePerHour}/hr.
-												</td>
-											</motion.tr>
-										))}
-									</motion.tbody>
-								</table>
-							</div>
+													<td className="py-3 pr-3 font-semibold text-left text-primary rounded-r-xl border-y border-r border-gray-100 border-x-0 border-l-0!">
+														{currency}
+														{car.pricePerHour}/hr.
+													</td>
+												</motion.tr>
+											))}
+										</motion.tbody>
+									</table>
+								</div>
+							</motion.div>
 						</motion.div>
 					)}
 				</AnimatePresence>

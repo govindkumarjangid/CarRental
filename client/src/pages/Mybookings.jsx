@@ -65,7 +65,7 @@ const Mybookings = () => {
 						transition={{ duration: 0.8, ease: "easeIn" }}
 						onClick={handleLoadMore}
 						disabled={isLoadingMore}
-						className={`flex group items-center justify-center gap-2 px-5 py-2 border-2  rounded-md mb-5 transition-all duration-300
+						className={`flex group items-center justify-center gap-2 px-5 py-2 border-2  rounded-2xl mb-5 transition-all duration-300
 								${isLoadingMore
 								? 'border-gray-300 text-gray-400 cursor-wait'
 								: 'border-gray-500 text-gray-600 hover:bg-primary cursor-pointer hover:text-light hover:border-light active:scale-95'
@@ -74,7 +74,7 @@ const Mybookings = () => {
 						{isLoadingMore ? (
 							<>
 								Loading...
-								<iconList.Loader size={22} className="animate-spin" />
+								<iconList.Loader size={20} className="animate-spin" />
 							</>
 						) : (
 							<>
