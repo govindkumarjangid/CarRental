@@ -39,7 +39,7 @@ const SidebarContent = ({ user, image, setImage, handleUpdateImage, location, Mo
 		{image && (
 			<button
 				onClick={handleUpdateImage}
-				className="absolute top-0 right-0 flex items-center gap-1 px-3 py-1.5 bg-primary/10 text-primary rounded-md text-xs disabled:opacity-50 cursor-pointer hover:bg-primary/20 transition-colors"
+				className="absolute top-0 right-0 flex items-center gap-1 px-3 py-1.5 bg-primary/10 text-primary rounded-2xl text-xs disabled:opacity-50 cursor-pointer hover:bg-primary/20 transition-colors"
 			>
 				Save
 				<iconList.CircleCheckBig className="h-3 w-3 ml-1" />
@@ -62,7 +62,7 @@ const SidebarContent = ({ user, image, setImage, handleUpdateImage, location, Mo
 						to={{ pathname: link.path, scrollTo: (0, 0) }}
 						whileTap={{ scale: 0.97 }}
 						onClick={() => setIsSidebarOpen(false)}
-						className={`relative flex items-center gap-3 rounded-md w-full py-3 pl-6 md:pl-6 first:mt-3 transition-colors cursor-pointer ${isActive
+						className={`relative flex items-center gap-3 rounded-2xl w-full py-3 pl-6 md:pl-6 first:mt-3 transition-colors cursor-pointer ${isActive
 							? "bg-primary/20 text-primary font-semibold  "
 							: "text-gray-500 hover:bg-gray-100  "
 							}`}
@@ -73,7 +73,7 @@ const SidebarContent = ({ user, image, setImage, handleUpdateImage, location, Mo
 						{isActive && (
 							<div
 								layoutId="activeTabIndicator"
-								className="absolute right-0 top-2 h-8 w-1.5 bg-primary rounded-l"
+								className="absolute right-0 top-2 h-8 w-1.5 bg-primary rounded-l-2xl"
 							/>
 						)}
 					</MotionNavLink>

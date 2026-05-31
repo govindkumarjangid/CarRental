@@ -7,14 +7,14 @@ const RecentBookings = ({ bookings, currency }) => {
     <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      className="p-6 border border-gray-200   rounded-xl w-full shadow-sm"
+      className="p-6 border border-gray-200  rounded-3xl w-full shadow-sm"
     >
-      <h2 className="text-lg font-bold mb-1 ">Recent Bookings</h2>
+      <h2 className="text-lg font-bold mb-1">Recent Bookings</h2>
       <p className="text-gray-500 text-sm mb-6 ">Latest customer transactions</p>
-      
-      <div className="space-y-4">
+
+      <div className="space-y-1">
         {bookings.map((booking, index) => (
-          <div key={index} className="flex items-center justify-between p-3 rounded-lg hover:bg-gray-50  transition-colors">
+          <div key={index} className="flex items-center justify-between p-3 rounded-2xl hover:bg-gray-50  transition-colors">
             <div className="flex items-center gap-3">
               <div className={`flex items-center justify-center w-10 h-10 rounded-full ${
                 booking.status === "pending" ? "bg-yellow-100 text-yellow-600" :

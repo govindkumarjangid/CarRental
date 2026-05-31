@@ -7,7 +7,7 @@ const RevenueCard = ({ revenue, currency }) => {
     <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      className="p-6 border border-gray-200   rounded-xl max-w-sm w-full shadow-sm flex flex-col justify-center items-center text-center"
+      className="p-6 border border-gray-200 rounded-3xl max-w-sm w-full shadow-sm flex flex-col justify-center items-center text-center"
     >
       <div className="bg-purple-100  p-4 rounded-full mb-4">
         <iconList.IndianRupee className="text-purple-600" size={32} />

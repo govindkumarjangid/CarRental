@@ -87,7 +87,7 @@ const AddCar = () => {
 								className="h-14 w-26 object-cover rounded-md"
 							/>
 						) : (
-							<iconList.CloudUpload className="h-14 text-primary bg-gray-100 px-4 py-3 rounded-md cursor-pointer w-26 border border-gray-300" />
+							<iconList.CloudUpload className="h-14 text-primary bg-gray-100 px-4 py-3 rounded-2xl cursor-pointer w-26 border border-gray-300" />
 						)}
 
 						<input
@@ -289,7 +289,7 @@ const AddCar = () => {
 					transition={{ type: "spring", stiffness: 300, damping: 30, delay: 0.3 }}
 					type="submit"
 					disabled={loading}
-					className={` px-5 py-2.5 mt-4 rounded-md text-white font-semibold text-base transition-all active:scale-95 mb-10 w-fit ${loading ? "cursor-not-allowed bg-primary" : "bg-primary hover:bg-primary-dull cursor-pointer"}`}
+					className={` px-5 py-2.5 mt-4 rounded-2xl text-white font-medium text-base transition-all active:scale-95 mb-10 w-fit ${loading ? "cursor-not-allowed bg-primary" : "bg-primary hover:bg-primary-dull cursor-pointer"}`}
 				>
 					{loading ? (
 						<span className="flex items-center gap-2">
