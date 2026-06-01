@@ -170,7 +170,7 @@ const Cardetails = () => {
 									transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1], delay: 0.08 }}
 									alt="main-car-image"
 									loading="lazy"
-									className="w-full h-auto md:max-h-100 object-cover rounded-xl shadow-md"
+									className="w-full h-auto md:max-h-100 object-cover rounded-3xl shadow-sm"
 								/>
 							</div>
 
@@ -192,7 +192,7 @@ const Cardetails = () => {
 										<h1 className="text-3xl font-bold">
 											{car.brand} {car.model}
 										</h1>
-										<span className={`text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-widest ${car.status === "available"
+										<span className={`text-[10px] px-2 py-0.5 rounded-3xl font-bold uppercase tracking-widest ${car.status === "available"
 											? "bg-green-500/20 text-green-500 border border-green-500/50"
 											: car.status === "cleaning"
 												? "bg-blue-500/20 text-blue-500 border border-blue-500/50"
@@ -254,7 +254,7 @@ const Cardetails = () => {
 												stiffness: 200,
 												delay: 0.2 * index,
 											}}
-											className="flex flex-col items-center bg-light p-4 rounded-lg"
+											className="flex flex-col items-center bg-light p-4 rounded-3xl shadow-sm"
 										>
 											{icon}
 											<p className="">
@@ -319,7 +319,7 @@ const Cardetails = () => {
 							initial={{ opacity: 0, x: 18 }}
 							animate={{ opacity: 1, x: 0 }}
 							transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1], delay: 0.14 }}
-							className="shadow-lg h-max sticky top-10 rounded-xl p-6 space-y-6 text-gray-500"
+							className="shadow-sm h-max sticky top-10 rounded-3xl p-6 space-y-6 text-gray-500"
 						>
 							{/* price per day  */}
 							<p className="flex items-center justify-between text-2xl text-gray-800 font-semibold">
@@ -357,7 +357,7 @@ const Cardetails = () => {
 									<button
 										type="button"
 										onClick={() => setPaymentMode("offline")}
-										className={`cursor-pointer active:scale-98 px-3 py-2 rounded-md border text-sm font-semibold transition-all ${paymentMode === "offline"
+										className={`cursor-pointer active:scale-98 px-3 py-2 rounded-xl border text-sm font-semibold transition-all shadow-sm ${paymentMode === "offline"
 											? "bg-primary text-white border-primary"
 											: "bg-white text-gray-600 border-gray-200 hover:border-gray-300"}`}
 									>
@@ -366,7 +366,7 @@ const Cardetails = () => {
 									<button
 										type="button"
 										onClick={() => setPaymentMode("online")}
-										className={`cursor-pointer active:scale-98 px-3 py-2 rounded-md border text-sm font-semibold transition-all ${paymentMode === "online"
+										className={`cursor-pointer active:scale-98 px-3 py-2 rounded-xl border text-sm font-semibold transition-all shadow-sm ${paymentMode === "online"
 											? "bg-primary text-white border-primary"
 											: "bg-white text-gray-600 border-gray-200 hover:border-gray-300"}`}
 									>
@@ -380,7 +380,7 @@ const Cardetails = () => {
 								type="button"
 								disabled={isBookDisabled}
 								onClick={handleBookNow}
-								className={`w-full transition-all py-3 font-medium text-white rounded-md ${isSubmitting
+								className={`w-full transition-all py-3 font-medium text-white rounded-2xl ${isSubmitting
 									? "bg-primary cursor-wait opacity-90"
 									: isBookDisabled
 										? "bg-gray-400 cursor-not-allowed opacity-70"

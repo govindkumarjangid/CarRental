@@ -289,7 +289,7 @@ const ChatPage = () => {
               <h2 className="hidden md:block text-lg font-bold mb-2 tracking-tight">Booking Details</h2>
 
               <img
-                className="rounded-lg md:rounded-xl w-20 h-16 md:w-full md:h-48 object-cover shadow-sm border border-gray-100"
+                className="rounded-lg md:rounded-3xl w-20 h-16 md:w-full md:h-48 object-cover shadow-sm border border-gray-100"
                 src={carDetails?.image}
                 alt="car"
               />
@@ -301,8 +301,8 @@ const ChatPage = () => {
                 </h3>
 
                 <div className="text-xs md:text-sm text-gray-500 mt-1.5 flex gap-1.5 items-center flex-wrap font-medium">
-                  <span className="bg-gray-100 px-2 py-0.5 rounded-md">{carDetails?.transmission}</span>
-                  <span className="bg-gray-100 px-2 py-0.5 rounded-md">{carDetails?.fuel_type}</span>
+                  <span className="bg-gray-100 px-3 py-0.5 rounded-xl">{carDetails?.transmission}</span>
+                  <span className="bg-gray-100 px-3 py-0.5 rounded-xl">{carDetails?.fuel_type}</span>
                   <span className="text-emerald-600 font-bold ml-1">{currency}{carDetails?.pricePerHour}/hour</span>
                 </div>
               </div>
