@@ -272,7 +272,7 @@ export const updateUserImage = wrapAsync(async (req, res) => {
 
 //* get all users (for admin)
 export const getAllUsers = wrapAsync(async (_, res) => {
-  const users = await User.find({ role: 'user' }).select('-password');
+  const users = await User.find().select('-password');
   res.json({ success: true, users });
 });
 
