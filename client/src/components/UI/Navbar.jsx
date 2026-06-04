@@ -197,7 +197,7 @@ const Navbar = () => {
 
 								{isOwner && (
 									<button
-										className="cursor-pointer hover:text-primary font-medium transition-colors text-lg"
+										className="cursor-pointer hover:text-primary font-medium transition-colors text-lg text-left"
 										onClick={() => {
 											navigate("/owner");
 											setOpen(false);

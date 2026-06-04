@@ -269,7 +269,7 @@ const ChatPage = () => {
   };
 
   return (
-    <div className="max-w-8xl mx-auto md:px-8 lg:px-16 xl:px-24
+    <div className="max-w-7xl mx-auto md:px-8 lg:px-16
     bg-gray-50/50 h-full overflow-hidden flex flex-col">
 
       <div className="w-full h-full bg-white flex flex-col md:flex-row overflow-hidden">
