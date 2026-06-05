@@ -1,5 +1,5 @@
 import { useCarStore } from "../../store/useCarStore.js";
-import FormSkeleton from "../UI/FormSkeleton.jsx";
+import { FormSkeleton } from "../skeletons";
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { iconList } from "../../assets/assets.jsx";

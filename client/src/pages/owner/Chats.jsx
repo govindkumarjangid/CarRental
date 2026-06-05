@@ -6,8 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Check, CheckCheck } from "lucide-react";
 import { iconList } from "../../assets/assets.jsx";
 import { Title as OwnerTitle } from "../../components/owner/Title.jsx";
-import ChatSkeletonList from "../../components/chat/ChatSkeletonList.jsx";
-import OwnerChatMessageSkeleton from "../../components/chat/OwnerChatMessageSkeleton.jsx";
+import { ChatSkeletonList, OwnerChatMessageSkeleton } from "../../components/skeletons";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 
 const Chats = () => {

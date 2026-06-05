@@ -5,7 +5,7 @@ import { AnimatePresence, motion } from "framer-motion";
 
 import { iconList } from "../../assets/assets.jsx";
 import { Title as OwnerTitle } from "../../components/owner/Title.jsx";
-import TableSkeleton from "../../components/UI/TableSkeleton.jsx";
+import { TableSkeleton } from "../../components/skeletons";
 import EditCarForm from "../../components/owner/EditCarForm.jsx";
 import EmptyCarState from "../../components/owner/EmptyCarState.jsx";
 import InputBox from "../../components/owner/InputBox.jsx";

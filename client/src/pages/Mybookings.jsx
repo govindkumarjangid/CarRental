@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import BookingCard from "../components/booking/BookingCard.jsx";
 import EmptyBookings from "../components/booking/EmptyBookings.jsx";
-import BookingCardSkeleton from "../components/booking/BookingCardSkeleton.jsx";
+import { BookingCardSkeleton } from "../components/skeletons";
 import { Title } from "../components/UI/Title.jsx";
 import { iconList } from "../assets/assets.jsx";
 

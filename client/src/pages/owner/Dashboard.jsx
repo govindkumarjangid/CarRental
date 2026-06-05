@@ -2,7 +2,7 @@ import { useAuthStore } from "../../store/useAuthStore.js";
 import { useEffect } from "react";
 import { iconList } from "../../assets/assets.jsx";
 import { Title as OwnerTitle } from "../../components/owner/Title.jsx";
-import DashboardSkeleton from "../../components/UI/DashboardSkeleton.jsx";
+import { DashboardSkeleton } from "../../components/skeletons";
 import StatCard from "../../components/owner/StatCard.jsx";
 import RecentBookings from "../../components/owner/RecentBookings.jsx";
 import RevenueCard from "../../components/owner/RevenueCard.jsx";

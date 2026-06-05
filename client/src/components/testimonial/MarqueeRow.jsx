@@ -2,7 +2,7 @@ import { lazy, Suspense, useEffect } from "react";
 import { useAnimation, motion } from 'motion/react'
 
 import { useAuthStore } from "../../store/useAuthStore.js";
-import TestimonialSkeleton from "./TestimonialSkeleton";
+import { TestimonialSkeleton } from "../skeletons";
 
 const TestimonialCard = lazy(() => import("./TestimonialCard.jsx"));
 

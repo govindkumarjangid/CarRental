@@ -7,8 +7,7 @@ import { useAuthStore } from "../store/useAuthStore.js";
 import { useCarStore } from "../store/useCarStore.js";
 import { useChatStore } from "../store/useChatStore.js";
 import { useBookingStore } from "../store/useBookingStore.js";
-import CarDetailsSkeleton from "../components/car/CarDetailsSkeleton.jsx";
-import ChatMessagesSkeleton from "../components/chat/ChatMessagesSkeleton.jsx";
+import { CarDetailsSkeleton, ChatMessagesSkeleton } from "../components/skeletons";
 import socket from '../socket.js';
 import { iconList } from "../assets/assets.jsx";
 

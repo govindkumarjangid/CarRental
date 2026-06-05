@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 
 import { useCarStore } from "../store/useCarStore.js";
 import CarCard from "../components/car/CarCard.jsx";
-import CarCardSkeleton from "../components/car/CarCardSkeleton.jsx";
+import { CarCardSkeleton } from "../components/skeletons";
 import { Title } from "../components/UI/Title.jsx";
 import { iconList } from "../assets/assets.jsx";
 
@@ -322,7 +322,7 @@ const Cars = () => {
 
 
 				{/* cards grid  */}
-				<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-14 px-5 md:px-30">
+				<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-14 px-5 md:px-30 w-full max-w-7xl">
 					{loading ? [1, 2, 3, 4, 5, 6].map((_, index) =>
 						<CarCardSkeleton index={index} key={index} />
 					) : filteredCars.slice(0, visibleCount).map((car, index) => (

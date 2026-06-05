@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { toast } from "react-hot-toast";
 
-import CarDetailsPageSkeleton from "../components/UI/CarDetailsPageSkeleton";
+import { CarDetailsPageSkeleton } from "../components/skeletons";
 import { useAuthStore } from "../store/useAuthStore.js";
 import { useCarStore } from "../store/useCarStore.js";
 import { useBookingStore } from "../store/useBookingStore.js";

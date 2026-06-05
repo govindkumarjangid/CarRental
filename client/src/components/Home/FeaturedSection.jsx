@@ -24,7 +24,7 @@ const FeaturedSection = () => {
 						subTitle="Explore our selection of premium veficles avaiable for your best adventure"
 					/>
 				</div>
-				<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-18">
+				<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-18 w-full">
 					{
 						loading && cars.length == 0 ? (
 							[1, 2, 3].map(i => <CarCardSkeleton key={i} />)

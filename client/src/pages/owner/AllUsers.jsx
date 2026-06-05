@@ -1,4 +1,4 @@
-import UserTableSkeleton from '../../components/UI/UserTableSkeleton';
+import { UserTableSkeleton } from '../../components/skeletons';
 import { useAuthStore } from '../../store/useAuthStore';
 import { useEffect } from 'react';
 import { motion } from 'framer-motion';
