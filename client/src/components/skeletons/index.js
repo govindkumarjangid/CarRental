@@ -10,7 +10,6 @@ export { default as CarDetailsPageSkeleton } from './CarDetailsPageSkeleton.jsx'
 export { default as CarsPageSkeleton } from './CarsPageSkeleton.jsx';
 export { default as DashboardSkeleton } from './DashboardSkeleton.jsx';
 export { default as FormSkeleton } from './FormSkeleton.jsx';
-export { default as HomeSkeleton } from './HomeSkeleton.jsx';
 export { default as TableSkeleton } from './TableSkeleton.jsx';
 export { default as UserTableSkeleton } from './UserTableSkeleton.jsx';
 export { default as HeroSkeleton } from './HeroSkeleton.jsx';
@@ -18,3 +17,4 @@ export { default as FeaturedSectionSkeleton } from './FeaturedSectionSkeleton.js
 export { default as TestimonialSectionSkeleton } from './TestimonialSectionSkeleton.jsx';
 export { default as NewsletterSkeleton } from './NewsletterSkeleton.jsx';
 export { default as LoginSkeleton } from './LoginSkeleton.jsx';
+export { default as TestimonialFormSkeleton } from './TestimonialFormSkeleton.jsx';

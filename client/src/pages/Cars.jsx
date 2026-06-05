@@ -132,7 +132,7 @@ const Cars = () => {
 					initial={{ opacity: 0, y: 30 }}
 					animate={{ opacity: 1, y: 0 }}
 					transition={{ duration: 0.6, ease: "easeOut", delay: 0.5 }}
-					className="flex flex-col md:flex-row items-center justify-between gap-4 mt-4 w-full px-5 md:px-19 max-w-7xl"
+					className="flex flex-col md:flex-row items-center justify-between gap-4 mt-4 w-full px-6 md:px-16 max-w-7xl"
 				>
 					<p className="text-gray-700 font-medium w-full md:w-auto text-center md:text-left">
 						Showing <span className="text-primary font-bold">{filteredCars.length}</span> results
@@ -322,7 +322,7 @@ const Cars = () => {
 
 
 				{/* cards grid  */}
-				<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-14 px-5 md:px-30 w-full max-w-7xl">
+				<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-14 px-6 md:px-16 w-full max-w-7xl">
 					{loading ? [1, 2, 3, 4, 5, 6].map((_, index) =>
 						<CarCardSkeleton index={index} key={index} />
 					) : filteredCars.slice(0, visibleCount).map((car, index) => (

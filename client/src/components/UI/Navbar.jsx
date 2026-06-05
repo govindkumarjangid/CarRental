@@ -173,7 +173,7 @@ const Navbar = () => {
 							}}
 							className="w-full bg-light flex flex-col items-center pointer-events-auto shadow-2xl overflow-hidden"
 						>
-							<div className="w-full flex flex-col items-center gap-8 pt-10 pb-6 px-6">
+							<div className="w-full flex flex-col items-start gap-8 pt-10 pb-6 px-6 border-t border-gray-300">
 								{menuLinks.filter(link => !(link.name === "Chat with owner" && isOwner)).map((menuLink, index) => {
 									const isActive = location.pathname === menuLink.path;
 									return (
@@ -197,7 +197,7 @@ const Navbar = () => {
 
 								{isOwner && (
 									<button
-										className="cursor-pointer hover:text-primary font-medium transition-colors text-lg text-left"
+										className="cursor-pointer hover:text-primary font-medium transition-colors text-lg"
 										onClick={() => {
 											navigate("/owner");
 											setOpen(false);

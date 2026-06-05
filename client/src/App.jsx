@@ -5,7 +5,7 @@ import { Routes, Route, useLocation } from "react-router-dom";
 import { useEffect, lazy, Suspense, useState } from "react";
 import { Loader } from "lucide-react";
 import { AnimatePresence } from "framer-motion";
-import { Navbar, Footer, ProtectRoute, HomeSkeleton, CarsPageSkeleton, DashboardSkeleton, TableSkeleton, FormSkeleton, CarDetailsPageSkeleton, UserTableSkeleton, LoginSkeleton } from "./index.js";
+import { Navbar, Footer, ProtectRoute, CarsPageSkeleton, DashboardSkeleton, TableSkeleton, FormSkeleton, CarDetailsPageSkeleton, UserTableSkeleton, LoginSkeleton, TestimonialFormSkeleton } from "./index.js";
 
 import ScrollToTop from "./components/UI/ScrollToTop.jsx";
 
@@ -72,7 +72,7 @@ const App = () => {
 						</Suspense>
 					)}
 					{showReview && (
-						<Suspense fallback={<div className="fixed inset-0 z-100 backdrop-blur-xs flex items-center justify-center bg-blue-700/5 p-4"><div className="bg-white rounded-3xl w-full max-w-2xl h-112.5 p-6 flex flex-col gap-4 shimmer" /></div>}>
+						<Suspense fallback={<TestimonialFormSkeleton key="testimonial-form-skeleton" />}>
 							<TestimonialForm key="review-modal" />
 						</Suspense>
 					)}
@@ -85,9 +85,7 @@ const App = () => {
 
 				<Routes>
 					<Route path="/" element={
-						<Suspense fallback={<HomeSkeleton />}>
-							<Home />
-						</Suspense>
+						<Home />
 					} />
 					<Route path="/cars" element={
 						<Suspense fallback={<CarsPageSkeleton />}>

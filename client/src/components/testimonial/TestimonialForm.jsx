@@ -67,7 +67,7 @@ const TestimonialForm = () => {
 						ease: "easeOut"
 					}}
 					key="testimonial-form"
-					className="bg-white rounded-3xl w-full h-full md:h-fit max-w-2xl md:max-h-[90vh] overflow-y-auto shadow-sm relative p-4 md:p-6"
+					className="bg-white rounded-3xl w-full h-fit max-w-2xl md:max-h-[90vh] overflow-y-auto shadow-sm relative p-4 md:p-6"
 				>
 					<div className="flex items-center justify-between mb-4">
 						<h2 className="text-xl font-semibold"

@@ -17,7 +17,6 @@ import {
   CarCardSkeleton,
   BookingCardSkeleton,
   CarsPageSkeleton,
-  HomeSkeleton,
   DashboardSkeleton,
   FormSkeleton,
   TableSkeleton,
@@ -27,7 +26,8 @@ import {
   FeaturedSectionSkeleton,
   TestimonialSectionSkeleton,
   NewsletterSkeleton,
-  LoginSkeleton
+  LoginSkeleton,
+  TestimonialFormSkeleton
 } from "./components/skeletons";
 import ResponsiveImage from "./components/UI/ResponsiveImage.jsx";
 import IconButton from "./components/UI/IconButton.jsx";
@@ -50,7 +50,6 @@ export {
     BookingCardSkeleton,
     OwnerTitle,
     CarsPageSkeleton,
-    HomeSkeleton,
     DashboardSkeleton,
     FormSkeleton,
     TableSkeleton,
@@ -61,6 +60,7 @@ export {
     TestimonialSectionSkeleton,
     NewsletterSkeleton,
     LoginSkeleton,
+    TestimonialFormSkeleton,
     OptimizedImage,
     ResponsiveImage,
     IconButton,
