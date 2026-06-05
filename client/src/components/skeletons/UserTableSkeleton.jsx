@@ -37,16 +37,16 @@ const UserTableSkeleton = () => {
         <table className="hidden md:table w-full border-collapse border-spacing-0 bg-white rounded-xl overflow-hidden border border-gray-200">
           <thead className="bg-gray-50 text-gray-500 border-b border-gray-200">
             <tr className="text-left">
-              <th className="py-3 px-4 w-[80px]">
+              <th className="py-3 px-4 w-20">
                 <div className="h-4 shimmer rounded-md w-12" />
               </th>
               <th className="py-3 px-4 font-semibold">
                 <div className="h-4 shimmer rounded-md w-24" />
               </th>
-              <th className="py-3 px-4 font-semibold w-[150px]">
+              <th className="py-3 px-4 font-semibold w-37.5">
                 <div className="h-4 shimmer rounded-md w-16" />
               </th>
-              <th className="py-3 px-4 font-semibold w-[150px]">
+              <th className="py-3 px-4 font-semibold w-37.5">
                 <div className="h-4 shimmer rounded-md w-20" />
               </th>
             </tr>
@@ -54,7 +54,7 @@ const UserTableSkeleton = () => {
           <tbody className="text-sm text-gray-600">
             {[1, 2, 3, 4, 5].map((item) => (
               <tr key={item} className="border-b last:border-b-0 border-gray-100">
-                <td className="px-4 py-2 w-[80px]">
+                <td className="px-4 py-2 w-20">
                   <div className="w-11 h-11 shimmer rounded-full shrink-0" />
                 </td>
                 <td className="px-4 py-2">
@@ -63,13 +63,13 @@ const UserTableSkeleton = () => {
                     <div className="h-4.5 shimmer rounded-md w-36 opacity-60" />
                   </div>
                 </td>
-                <td className="px-4 py-2 w-[150px]">
+                <td className="px-4 py-2 w-37.5">
                   <div className="flex items-center gap-2">
                     <div className="h-2.5 w-2.5 rounded-full shimmer shrink-0" />
                     <div className="h-4 w-16 shimmer rounded-md opacity-60" />
                   </div>
                 </td>
-                <td className="px-4 py-2 w-[150px]">
+                <td className="px-4 py-2 w-37.5">
                   <div className="h-8.5 w-24 shimmer rounded-xl" />
                 </td>
               </tr>

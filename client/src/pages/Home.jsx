@@ -1,7 +1,7 @@
 import { lazy, Suspense } from "react";
 import Hero from "../components/Home/Hero.jsx";
 import FeaturedSection from "../components/Home/FeaturedSection.jsx";
-import { BannerSkeleton } from "../components/skeletons";
+import { BannerSkeleton, TestimonialSectionSkeleton, NewsletterSkeleton } from "../components/skeletons";
 
 const Banner = lazy(() => import("../components/Home/Banner.jsx"));
 const Testmonial = lazy(() => import("../components/testimonial/Testmonial.jsx"));
@@ -15,10 +15,10 @@ const Home = () => {
 			<Suspense fallback={<BannerSkeleton />}>
 				<Banner />
 			</Suspense>
-			<Suspense fallback={<div className="h-64 w-full shimmer my-10" />}>
+			<Suspense fallback={<TestimonialSectionSkeleton />}>
 				<Testmonial />
 			</Suspense>
-			<Suspense fallback={<div className="h-48 w-full shimmer my-10" />}>
+			<Suspense fallback={<NewsletterSkeleton />}>
 				<Newsletter />
 			</Suspense>
 		</>

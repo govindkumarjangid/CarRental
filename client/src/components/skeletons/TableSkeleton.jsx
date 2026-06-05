@@ -87,9 +87,9 @@ const TableSkeleton = ({ showAddButton = true }) => {
                       </td>
                       <td className="py-3 px-2">
                         <div className="flex items-center gap-4">
-                          <div className="w-[18px] h-[18px] shimmer rounded-full" />
-                          <div className="w-[18px] h-[18px] shimmer rounded-full" />
-                          <div className="w-[18px] h-[18px] shimmer rounded-full" />
+                          <div className="w-4.5 h-4.5 shimmer rounded-full" />
+                          <div className="w-4.5 h-4.5 shimmer rounded-full" />
+                          <div className="w-4.5 h-4.5 shimmer rounded-full" />
                         </div>
                       </td>
                     </>
@@ -122,7 +122,7 @@ const TableSkeleton = ({ showAddButton = true }) => {
                         <div className="h-7 w-24 shimmer rounded-xl" />
                       </td>
                       <td className="p-3">
-                        <div className="w-[18px] h-[18px] shimmer rounded-full" />
+                        <div className="w-4.5 h-4.5 shimmer rounded-full" />
                       </td>
                     </>
                   )}

@@ -22,7 +22,7 @@ const DashboardSkeleton = () => {
       {/* Fleet Overview Section */}
       <section className="mt-8">
         <h2 className="text-lg font-bold mb-4 flex items-center gap-2 border-b border-gray-100 pb-2">
-          <div className="w-[22px] h-[22px] rounded-full shimmer shrink-0 opacity-70" />
+          <div className="w-5.5 h-5.5 rounded-full shimmer shrink-0 opacity-70" />
           <div className="h-5 w-32 shimmer rounded-md" />
         </h2>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-4 w-full mb-6">
@@ -41,7 +41,7 @@ const DashboardSkeleton = () => {
       {/* Booking Analytics Section */}
       <section className="mt-12">
         <h2 className="text-lg font-bold mb-4 flex items-center gap-2 border-b border-gray-100 pb-2">
-          <div className="w-[22px] h-[22px] rounded-full shimmer shrink-0 opacity-70" />
+          <div className="w-5.5 h-5.5 rounded-full shimmer shrink-0 opacity-70" />
           <div className="h-5 w-36 shimmer rounded-md" />
         </h2>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-4 w-full mb-6">
@@ -63,7 +63,7 @@ const DashboardSkeleton = () => {
       {/* Financial Performance Section */}
       <section className="mt-12">
         <h2 className="text-lg font-bold mb-4 flex items-center gap-2 border-b border-gray-100 pb-2">
-          <div className="w-[22px] h-[22px] rounded-full shimmer shrink-0 opacity-70" />
+          <div className="w-5.5 h-5.5 rounded-full shimmer shrink-0 opacity-70" />
           <div className="h-5 w-40 shimmer rounded-md" />
         </h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 w-full mb-6">
@@ -71,7 +71,7 @@ const DashboardSkeleton = () => {
             <StatCardSkeleton key={i} />
           ))}
         </div>
-        
+
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Payment Chart */}
           <div className="p-6 border border-gray-200 rounded-3xl bg-white w-full">
@@ -86,7 +86,7 @@ const DashboardSkeleton = () => {
           {/* Revenue Chart */}
           <div className="p-6 border border-gray-200 rounded-3xl lg:col-span-2 bg-white w-full">
             <div className="h-4 w-48 bg-gray-50 shimmer rounded-md mb-4" />
-            <div className="h-[256px] w-full bg-gray-50/50 shimmer rounded-2xl mt-4" />
+            <div className="h-64 w-full bg-gray-50/50 shimmer rounded-2xl mt-4" />
           </div>
         </div>
       </section>

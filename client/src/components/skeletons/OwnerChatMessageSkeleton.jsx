@@ -25,9 +25,9 @@ const OwnerChatMessageSkeleton = () => {
             <div className="flex-1" />
             <div className="p-4 md:p-6 space-y-4 flex flex-col">
               <div className="h-12 shimmer rounded-xl rounded-tl-sm w-[85%] md:w-[40%] self-start" />
-              <div className="h-16 shimmer !bg-[#d9fdd3] rounded-xl rounded-br-sm w-[70%] md:w-[50%] self-end" />
+              <div className="h-16 shimmer bg-[#d9fdd3]! rounded-xl rounded-br-sm w-[70%] md:w-[50%] self-end" />
               <div className="h-12 shimmer rounded-xl rounded-tl-sm w-[50%] md:w-[35%] self-start" />
-              <div className="h-20 shimmer !bg-[#d9fdd3] rounded-xl rounded-br-sm w-[85%] md:w-[60%] self-end" />
+              <div className="h-20 shimmer bg-[#d9fdd3]! rounded-xl rounded-br-sm w-[85%] md:w-[60%] self-end" />
               <div className="h-12 shimmer rounded-xl rounded-tl-sm w-[60%] md:w-[45%] self-start" />
             </div>
           </div>

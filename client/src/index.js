@@ -22,7 +22,12 @@ import {
   FormSkeleton,
   TableSkeleton,
   UserTableSkeleton,
-  CarDetailsPageSkeleton
+  CarDetailsPageSkeleton,
+  HeroSkeleton,
+  FeaturedSectionSkeleton,
+  TestimonialSectionSkeleton,
+  NewsletterSkeleton,
+  LoginSkeleton
 } from "./components/skeletons";
 import ResponsiveImage from "./components/UI/ResponsiveImage.jsx";
 import IconButton from "./components/UI/IconButton.jsx";
@@ -51,6 +56,11 @@ export {
     TableSkeleton,
     UserTableSkeleton,
     CarDetailsPageSkeleton,
+    HeroSkeleton,
+    FeaturedSectionSkeleton,
+    TestimonialSectionSkeleton,
+    NewsletterSkeleton,
+    LoginSkeleton,
     OptimizedImage,
     ResponsiveImage,
     IconButton,

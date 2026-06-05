@@ -5,7 +5,7 @@ import { Routes, Route, useLocation } from "react-router-dom";
 import { useEffect, lazy, Suspense, useState } from "react";
 import { Loader } from "lucide-react";
 import { AnimatePresence } from "framer-motion";
-import { Navbar, Footer, ProtectRoute, HomeSkeleton, CarsPageSkeleton, DashboardSkeleton, TableSkeleton, FormSkeleton, CarDetailsPageSkeleton, UserTableSkeleton } from "./index.js";
+import { Navbar, Footer, ProtectRoute, HomeSkeleton, CarsPageSkeleton, DashboardSkeleton, TableSkeleton, FormSkeleton, CarDetailsPageSkeleton, UserTableSkeleton, LoginSkeleton } from "./index.js";
 
 import ScrollToTop from "./components/UI/ScrollToTop.jsx";
 
@@ -54,7 +54,7 @@ const App = () => {
 				position="right-bottom"
 				reverseOrder={true}
 				toastOptions={{
-					duration: 3000,
+					duration: 2000,
 					style: {
 						borderRadius: "12px",
 						fontSize: "14px",
@@ -65,13 +65,23 @@ const App = () => {
 			{!isOwnerPath && <Navbar />}
 
 			<main className={`flex-1 min-h-0 overflow-x-hidden ${!isChatPath && !isOwnerPath ? "overflow-y-auto custom-scrollbar" : "overflow-hidden"}`}>
-				<Suspense fallback={<div className="h-screen w-full shimmer" />}>
-					<AnimatePresence>
-						{showLogin && <Login key="login-modal" />}
-						{showReview && <TestimonialForm key="review-modal" />}
-						{showEditCar && <EditCarForm key="edit-car-modal" />}
-					</AnimatePresence>
-				</Suspense>
+				<AnimatePresence>
+					{showLogin && (
+						<Suspense fallback={<LoginSkeleton key="login-skeleton" />}>
+							<Login key="login-modal" />
+						</Suspense>
+					)}
+					{showReview && (
+						<Suspense fallback={<div className="fixed inset-0 z-100 backdrop-blur-xs flex items-center justify-center bg-blue-700/5 p-4"><div className="bg-white rounded-3xl w-full max-w-2xl h-112.5 p-6 flex flex-col gap-4 shimmer" /></div>}>
+							<TestimonialForm key="review-modal" />
+						</Suspense>
+					)}
+					{showEditCar && (
+						<Suspense fallback={<FormSkeleton isFullPage={false} />}>
+							<EditCarForm key="edit-car-modal" />
+						</Suspense>
+					)}
+				</AnimatePresence>
 
 				<Routes>
 					<Route path="/" element={

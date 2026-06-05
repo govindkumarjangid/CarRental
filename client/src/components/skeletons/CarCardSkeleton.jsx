@@ -29,7 +29,7 @@ const CarCardSkeleton = () => {
         <div className="mt-4 grid grid-cols-2 gap-y-2">
           {[1, 2, 3, 4].map((i) => (
             <div key={i} className="flex items-center">
-              <div className="w-[15px] h-[15px] rounded-full shimmer mr-1.5 shrink-0 opacity-70" />
+              <div className="w-3.75 h-3.75 rounded-full shimmer mr-1.5 shrink-0 opacity-70" />
               <div className="w-16 h-4 shimmer rounded-md opacity-60" />
             </div>
           ))}

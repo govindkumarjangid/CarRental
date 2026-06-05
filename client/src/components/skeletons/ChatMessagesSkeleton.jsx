@@ -31,9 +31,9 @@ const ChatMessagesSkeleton = () => {
             <div className="flex-1" />
             <div className="space-y-3 flex flex-col p-1">
               <div className="h-14 shimmer rounded-2xl rounded-bl-sm w-[80%] md:w-[40%] self-start" />
-              <div className="h-16 shimmer !bg-[#d9fdd3] rounded-2xl rounded-br-sm w-[70%] md:w-[50%] self-end" />
+              <div className="h-16 shimmer bg-[#d9fdd3]! rounded-2xl rounded-br-sm w-[70%] md:w-[50%] self-end" />
               <div className="h-14 shimmer rounded-2xl rounded-bl-sm w-[50%] md:w-[35%] self-start" />
-              <div className="h-20 shimmer !bg-[#d9fdd3] rounded-2xl rounded-br-sm w-[85%] md:w-[60%] self-end" />
+              <div className="h-20 shimmer bg-[#d9fdd3]! rounded-2xl rounded-br-sm w-[85%] md:w-[60%] self-end" />
               <div className="h-14 shimmer rounded-2xl rounded-bl-sm w-[45%] md:w-[30%] self-start" />
             </div>
           </div>

@@ -19,7 +19,7 @@ const TestimonialSkeleton = () => {
       {/* Stars Skeleton */}
       <div className="flex items-center gap-1 mt-2">
         {Array.from({ length: 5 }).map((_, i) => (
-          <div key={i} className="w-[18px] h-[18px] shimmer rounded-sm opacity-50" />
+          <div key={i} className="w-4.5 h-4.5 shimmer rounded-sm opacity-50" />
         ))}
       </div>
 

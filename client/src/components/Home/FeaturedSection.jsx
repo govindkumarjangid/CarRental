@@ -17,7 +17,7 @@ const FeaturedSection = () => {
 
 	return (
 		<>
-			<div className="max-w-8xl m-auto flex flex-col items-center py-24 px-6 md:px-16 lg:px-24 xl:px-32  ">
+			<div className="max-w-7xl m-auto flex flex-col items-center py-24 px-6 md:px-16 lg:px-24 xl:px-32  ">
 				<div>
 					<Title
 						title="Featured Vehicles"
