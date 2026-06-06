@@ -5,7 +5,7 @@ import { Routes, Route, useLocation } from "react-router-dom";
 import { useEffect, lazy, Suspense, useState } from "react";
 import { Loader } from "lucide-react";
 import { AnimatePresence } from "framer-motion";
-import { Navbar, Footer, ProtectRoute, CarsPageSkeleton, DashboardSkeleton, TableSkeleton, FormSkeleton, CarDetailsPageSkeleton, UserTableSkeleton, LoginSkeleton, TestimonialFormSkeleton } from "./index.js";
+import { Navbar, Footer, ProtectRoute, CarsPageSkeleton, DashboardSkeleton, TableSkeleton, FormSkeleton, CarDetailsPageSkeleton, UserTableSkeleton, LoginSkeleton, TestimonialFormSkeleton, BookingCard } from "./index.js";
 
 import ScrollToTop from "./components/UI/ScrollToTop.jsx";
 
@@ -48,7 +48,7 @@ const App = () => {
 	}, [token]);
 
 	return (
-		<div className="h-screen flex flex-col overflow-hidden">
+		<div className="h-screen-dynamic flex flex-col overflow-hidden">
 			<ScrollToTop />
 			<Toaster
 				position="right-bottom"
@@ -103,7 +103,7 @@ const App = () => {
 						</Suspense>
 					} />
 					<Route path="/my-bookings" element={
-						<Suspense fallback={<div className="p-10 max-w-7xl mx-auto"><TableSkeleton /></div>}>
+						<Suspense fallback={null}>
 							<Mybookings />
 						</Suspense>
 					} />

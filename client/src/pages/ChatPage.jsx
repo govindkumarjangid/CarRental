@@ -249,6 +249,40 @@ const ChatPage = () => {
   // console.log(ownerDetails._id)
 
 
+  const handleInputFocus = () => {
+    setTimeout(() => {
+      if (scrollContainerRef.current) {
+        scrollContainerRef.current.scrollTo({
+          top: scrollContainerRef.current.scrollHeight,
+          behavior: "smooth"
+        });
+      }
+    }, 150);
+  };
+
+  useEffect(() => {
+    if (!window.visualViewport) return;
+
+    const handleViewportResize = () => {
+      if (scrollContainerRef.current) {
+        scrollContainerRef.current.scrollTop = scrollContainerRef.current.scrollHeight;
+        setTimeout(() => {
+          if (scrollContainerRef.current) {
+            scrollContainerRef.current.scrollTop = scrollContainerRef.current.scrollHeight;
+          }
+        }, 100);
+      }
+    };
+
+    window.visualViewport.addEventListener("resize", handleViewportResize);
+    window.visualViewport.addEventListener("scroll", handleViewportResize);
+
+    return () => {
+      window.visualViewport.removeEventListener("resize", handleViewportResize);
+      window.visualViewport.removeEventListener("scroll", handleViewportResize);
+    };
+  }, []);
+
   const handleDownload = async (url, filename) => {
     try {
       const response = await fetch(url);
@@ -332,7 +366,7 @@ const ChatPage = () => {
               </div>
             </div>
           ) : (
-            <div className="w-full flex-1 flex flex-col min-w-0 overflow-hidden bg-[#efe7de]">
+            <div className="w-full flex-1 flex flex-col min-w-0 overflow-hidden bg-slate-50">
               {/* HEADER */}
               <div className="shrink-0 bg-white/95 backdrop-blur-md border-b border-gray-200 p-2 md:p-3 flex flex-row items-center justify-between shadow-sm z-10">
 
@@ -387,7 +421,7 @@ const ChatPage = () => {
 
               {/* CHAT BODY AREA */}
               <div className="flex-1 min-h-0 relative">
-                <div ref={scrollContainerRef} className="absolute inset-0 overflow-y-auto p-4 md:p-6 custom-scrollbar bg-[url('https://i.pinimg.com/736x/8c/98/99/8c98994518b575bfd8c949e91d20548b.jpg')] bg-repeat bg-bg-size-[400px]">
+                <div ref={scrollContainerRef} className="absolute inset-0 overflow-y-auto p-4 md:p-6 custom-scrollbar bg-[#f8fafc] bg-[radial-gradient(#e2e8f0_1px,transparent_1px)] [background-size:16px_16px]">
                   <div className="flex flex-col min-h-full">
                     <div className="flex-1" />
                     <div className="space-y-3 flex flex-col p-1">
@@ -398,9 +432,9 @@ const ChatPage = () => {
                             animate={{ opacity: 1, y: 0, scale: 1 }}
                             transition={{ duration: 0.2 }}
                             key={m._id}
-                            className={`relative max-w-[85%] md:max-w-[65%] w-fit px-3.5 py-2 text-[14.5px] rounded-2xl shadow-sm wrap-break-words ${m.senderRole === user.role
-                              ? "ml-auto bg-[#d9fdd3]  text-[#111b21] rounded-br-sm"
-                              : "bg-white  text-[#111b21] rounded-bl-sm border border-transparent shadow-sm"
+                            className={`relative max-w-[85%] md:max-w-[65%] w-fit px-5 py-3 text-[14.5px] rounded-3xl shadow-sm wrap-break-words transition-all hover:shadow-md ${m.senderRole === user.role
+                              ? "ml-auto bg-gradient-to-r from-primary to-indigo-600 text-white rounded-tr-none"
+                              : "bg-white text-gray-800 rounded-tl-none border border-slate-100"
                               }`}
                           >
                             {m.attachments && m.attachments.length > 0 && (
@@ -455,18 +489,18 @@ const ChatPage = () => {
                               </div>
                             )}
                             {m.message && <p className="whitespace-pre-wrap">{m.message}</p>}
-                            <div className={`flex items-center justify-end gap-1.5 mt-1 text-[10px] font-medium ${m.senderRole === user.role ? "text-[#667781]" : "text-[#667781]"}`}>
+                            <div className={`flex items-center justify-end gap-1.5 mt-1 text-[10px] font-medium ${m.senderRole === user.role ? "text-blue-100/90" : "text-gray-400"}`}>
                               <span>{formatMessageTime(m.createdAt).split('•').pop().trim()}</span>
                               {m.senderRole === user.role && (
-                                <span className="ml-0.5">
+                                <span className="ml-0.5 opacity-90">
                                   {m.status === 'sending' ? (
-                                    <iconList.Clock size={11} className="text-[#667781]" />
+                                    <iconList.Clock size={11} className="text-blue-200 animate-pulse" />
                                   ) : m.seenByReceiver ? (
-                                    <CheckCheck size={15} className="text-[#53bdeb]" />
+                                    <CheckCheck size={14} className="text-white" />
                                   ) : m.delivered ? (
-                                    <CheckCheck size={15} className="text-[#8696a0]" />
+                                    <CheckCheck size={14} className="text-blue-200" />
                                   ) : (
-                                    <Check size={15} className="text-[#8696a0]" />
+                                    <Check size={14} className="text-blue-200" />
                                   )}
                                 </span>
                               )}
@@ -481,7 +515,7 @@ const ChatPage = () => {
 
 
               {/* INPUT BOX */}
-              <div className="shrink-0 p-3 md:p-4 bg-[#f0f2f5] border-t border-gray-200 flex flex-col gap-2 z-10">
+              <div className="shrink-0 p-3 md:p-4 bg-white/80 backdrop-blur-lg border-t border-slate-100 flex flex-col gap-2 z-10 shadow-lg">
                 {/* ATTACHMENT PREVIEW */}
                 {attachments.length > 0 && (
                   <div className="flex gap-3 mb-3 max-w-4xl overflow-x-auto pb-2 scrollbar-hide">
@@ -514,7 +548,7 @@ const ChatPage = () => {
                   </div>
                 )}
 
-                <div className="flex gap-2 items-end">
+                <div className="flex gap-2 items-center max-w-7xl mx-auto w-full">
                   <input
                     type="file"
                     ref={fileInputRef}
@@ -525,15 +559,16 @@ const ChatPage = () => {
                   />
                   <button
                     onClick={() => fileInputRef.current.click()}
-                    className="h-12 w-12 shrink-0 rounded-full flex items-center justify-center text-gray-500 hover:bg-gray-200 transition-colors cursor-pointer"
+                    className="h-12 w-12 shrink-0 rounded-2xl flex items-center justify-center text-slate-500 hover:text-slate-700 bg-slate-100 hover:bg-slate-200/80 transition-all active:scale-95 cursor-pointer border border-slate-200/50 shadow-sm"
                   >
-                    <iconList.Paperclip size={22} />
+                    <iconList.Paperclip size={20} />
                   </button>
 
-                  <div className="flex-1 bg-white rounded-3xl flex items-center px-5 py-0.5 border-2 border-transparent focus-within:border-primary/20 transition-all shadow-sm">
+                  <div className="flex-1 h-12 bg-slate-50 hover:bg-slate-100/60 focus-within:bg-white rounded-2xl flex items-center px-4 border border-slate-200 focus-within:border-primary/40 focus-within:ring-4 focus-within:ring-primary/10 transition-all duration-200 shadow-inner">
                     <input
                       type="text"
                       value={input}
+                      onFocus={handleInputFocus}
                       onChange={(e) => {
                         setInput(e.target.value);
                         if (chatId) {
@@ -548,19 +583,19 @@ const ChatPage = () => {
                         e.key === "Enter" && handleSendMessage();
                       }}
                       placeholder="Type a message..."
-                      className="w-full bg-transparent border-none outline-none py-3 text-[15px] text-gray-800 placeholder-gray-500 "
+                      className="w-full bg-transparent border-none outline-none h-full text-[15px] text-gray-800 placeholder-gray-500"
                     />
                   </div>
 
                   <button
                     onClick={handleSendMessage}
                     disabled={!input.trim() && attachments.length === 0}
-                    className={`h-12 w-12 md:h-12.5 md:w-12.5 shrink-0 rounded-full flex items-center justify-center transition-all duration-200 ${input.trim() || attachments.length > 0
-                      ? "bg-primary text-white shadow-md hover:shadow-lg hover:-translate-y-0.5 active:scale-95 active:translate-y-0 cursor-pointer"
-                      : "bg-gray-200 text-gray-400 cursor-not-allowed"
+                    className={`h-12 w-12 shrink-0 rounded-2xl flex items-center justify-center transition-all duration-200 ${input.trim() || attachments.length > 0
+                      ? "bg-gradient-to-r from-primary to-indigo-600 text-white shadow-md shadow-primary/20 hover:shadow-lg hover:shadow-primary/30 hover:-translate-y-0.5 active:scale-95 active:translate-y-0 cursor-pointer"
+                      : "bg-slate-100 text-slate-400 cursor-not-allowed border border-slate-200/50"
                       }`}
                   >
-                    <iconList.Send size={20} className="ml-1" />
+                    <iconList.Send size={18} className="ml-0.5" />
                   </button>
                 </div>
               </div>

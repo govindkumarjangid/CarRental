@@ -18,7 +18,7 @@ const Layout = () => {
 	}, [pathname]);
 
 	return (
-		<div className="h-screen flex flex-col overflow-hidden">
+		<div className="h-screen-dynamic flex flex-col overflow-hidden">
 			{/* Navbar */}
 			<NavbarOwner toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} isSidebarOpen={isSidebarOpen} />
 

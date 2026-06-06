@@ -12,6 +12,12 @@ html, body {
     width: 100%;
 }
 
+.h-screen-dynamic {
+    height: 100vh;
+    height: 100dvh;
+    height: var(--vh, 100vh);
+}
+
 body::selection {
       background-color: #0051ff89;
       color: #ffffff;

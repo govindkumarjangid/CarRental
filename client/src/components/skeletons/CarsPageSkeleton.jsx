@@ -20,7 +20,6 @@ const CarsPageSkeleton = () => {
       {/* Filter bar skeleton */}
       <div className="flex flex-col md:flex-row items-center justify-between gap-4 mt-4 w-full px-5 md:px-19 max-w-7xl">
         <div className="h-5.5 w-28 shimmer rounded-md" />
-        
         {/* Companies row placeholder */}
         <div className="flex items-center gap-2 overflow-hidden w-full md:flex-1 px-2 py-2">
           {[1, 2, 3, 4, 5].map((i) => (

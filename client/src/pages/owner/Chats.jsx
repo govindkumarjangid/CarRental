@@ -258,6 +258,40 @@ const Chats = () => {
     return other?.name?.toLowerCase().includes(searchQuery.toLowerCase());
   });
 
+  const handleInputFocus = () => {
+    setTimeout(() => {
+      if (scrollContainerRef.current) {
+        scrollContainerRef.current.scrollTo({
+          top: scrollContainerRef.current.scrollHeight,
+          behavior: "smooth"
+        });
+      }
+    }, 150);
+  };
+
+  useEffect(() => {
+    if (!window.visualViewport) return;
+
+    const handleViewportResize = () => {
+      if (scrollContainerRef.current) {
+        scrollContainerRef.current.scrollTop = scrollContainerRef.current.scrollHeight;
+        setTimeout(() => {
+          if (scrollContainerRef.current) {
+            scrollContainerRef.current.scrollTop = scrollContainerRef.current.scrollHeight;
+          }
+        }, 100);
+      }
+    };
+
+    window.visualViewport.addEventListener("resize", handleViewportResize);
+    window.visualViewport.addEventListener("scroll", handleViewportResize);
+
+    return () => {
+      window.visualViewport.removeEventListener("resize", handleViewportResize);
+      window.visualViewport.removeEventListener("scroll", handleViewportResize);
+    };
+  }, []);
+
   const handleDownload = async (url, filename) => {
     try {
       const response = await fetch(url);
@@ -398,7 +432,7 @@ const Chats = () => {
             <OwnerChatMessageSkeleton />
           </div>
         ) : (
-          <div className={`flex flex-col flex-1 bg-[#efe7de] ${activeChat ? "flex" : "hidden md:flex"}`}>
+          <div className={`flex flex-col flex-1 bg-slate-50 ${activeChat ? "flex" : "hidden md:flex"}`}>
 
             {/* HEADER */}
             {activeChat ? (
@@ -448,7 +482,7 @@ const Chats = () => {
             {/* MESSAGES */}
             <div className="flex-1 min-h-0 relative">
               {activeChat ? (
-                <div ref={scrollContainerRef} className="h-full w-full overflow-y-auto custom-scrollbar bg-[url('https://i.pinimg.com/736x/8c/98/99/8c98994518b575bfd8c949e91d20548b.jpg')] bg-repeat bg-bg-size-[400px]">
+                <div ref={scrollContainerRef} className="h-full w-full overflow-y-auto custom-scrollbar bg-[#f8fafc] bg-[radial-gradient(#e2e8f0_1px,transparent_1px)] [background-size:16px_16px]">
                   {/* Spacer to push messages to bottom when there are few of them */}
                   <div className="flex flex-col min-h-full">
                     <div className="flex-1" />
@@ -460,9 +494,9 @@ const Chats = () => {
                             animate={{ opacity: 1, y: 0, scale: 1 }}
                             transition={{ duration: 0.2 }}
                             key={m._id}
-                            className={`relative max-w-[85%] md:max-w-[70%] w-fit px-3 py-1.5 text-[14px] rounded-xl leading-snug wrap-break-words shadow-sm ${m.senderRole === user.role
-                              ? "ml-auto bg-[#d9fdd3] text-[#111b21] rounded-br-sm"
-                              : "bg-white text-[#111b21] rounded-bl-sm border border-transparent shadow-sm"
+                            className={`relative max-w-[85%] md:max-w-[70%] w-fit px-5 py-3 text-[14px] rounded-3xl leading-snug wrap-break-words shadow-sm transition-all hover:shadow-md ${m.senderRole === user.role
+                              ? "ml-auto bg-gradient-to-r from-primary to-indigo-600 text-white rounded-tr-none"
+                              : "bg-white text-gray-800 rounded-tl-none border border-slate-100"
                               }`}
                           >
                             {m.attachments && m.attachments.length > 0 && (
@@ -517,18 +551,18 @@ const Chats = () => {
                               </div>
                             )}
                             {m.message && <p className="whitespace-pre-wrap">{m.message}</p>}
-                            <div className={`flex items-center justify-end gap-1 mt-1 text-[10px] font-medium ${m.senderRole === user.role ? "text-[#667781]" : "text-[#667781]"}`}>
+                            <div className={`flex items-center justify-end gap-1.5 mt-1 text-[10px] font-medium ${m.senderRole === user.role ? "text-blue-100/90" : "text-gray-400"}`}>
                               <span>{formatMessageTime(m.createdAt).split('•').pop().trim()}</span>
                               {m.senderRole === user.role && (
-                                <span className="ml-0.5">
+                                <span className="ml-0.5 opacity-90">
                                   {m.status === 'sending' ? (
-                                    <iconList.Clock size={11} className="text-[#667781]" />
+                                    <iconList.Clock size={11} className="text-blue-200 animate-pulse" />
                                   ) : m.seenByReceiver ? (
-                                    <CheckCheck size={15} className="text-[#53bdeb]" />
+                                    <CheckCheck size={14} className="text-white" />
                                   ) : m.delivered ? (
-                                    <CheckCheck size={15} className="text-[#8696a0]" />
+                                    <CheckCheck size={14} className="text-blue-200" />
                                   ) : (
-                                    <Check size={15} className="text-[#8696a0]" />
+                                    <Check size={14} className="text-blue-200" />
                                   )}
                                 </span>
                               )}
@@ -556,7 +590,7 @@ const Chats = () => {
 
             {/* INPUT */}
             {activeChat && (
-              <div className="p-3 md:p-4 bg-[#f0f2f5] border-t border-gray-200 shrink-0">
+              <div className="p-3 md:p-4 bg-white/80 backdrop-blur-lg border-t border-slate-100 shrink-0 shadow-lg">
                 {/* ATTACHMENT PREVIEW */}
                 {attachments.length > 0 && (
                   <div className="flex gap-3 mb-3 max-w-4xl mx-auto overflow-x-auto pb-2 scrollbar-hide">
@@ -581,7 +615,6 @@ const Chats = () => {
                             onClick={() => removeAttachment(index)}
                             className="absolute top-1 right-1 h-6 w-6 bg-black/60 hover:bg-red-500 text-white rounded-full flex items-center justify-center transition-all duration-200 shadow-sm opacity-0 group-hover:opacity-100 cursor-pointer scale-90 hover:scale-100"
                           >
-
                             <iconList.X size={14} />
                           </button>
                         </motion.div>
@@ -590,7 +623,7 @@ const Chats = () => {
                   </div>
                 )}
 
-                <div className="flex items-end gap-2 max-w-4xl mx-auto">
+                <div className="flex items-center gap-2 max-w-4xl mx-auto w-full">
                   <input
                     type="file"
                     ref={fileInputRef}
@@ -601,15 +634,16 @@ const Chats = () => {
                   />
                   <button
                     onClick={() => fileInputRef.current.click()}
-                    className="h-12 w-12 shrink-0 rounded-full flex items-center justify-center text-gray-500 hover:bg-gray-200 transition-colors cursor-pointer"
+                    className="h-12 w-12 shrink-0 rounded-2xl flex items-center justify-center text-slate-500 hover:text-slate-700 bg-slate-100 hover:bg-slate-200/80 transition-all active:scale-95 cursor-pointer border border-slate-200/50 shadow-sm"
                   >
-                    <iconList.Paperclip size={22} />
+                    <iconList.Paperclip size={20} />
                   </button>
 
-                  <div className="flex-1 bg-white rounded-3xl flex items-center px-5 py-0.5 border-2 border-transparent focus-within:border-primary/20 transition-all shadow-sm">
+                  <div className="flex-1 h-12 bg-slate-50 hover:bg-slate-100/60 focus-within:bg-white rounded-2xl flex items-center px-4 border border-slate-200 focus-within:border-primary/40 focus-within:ring-4 focus-within:ring-primary/10 transition-all duration-200 shadow-inner">
                     <input
                       type="text"
                       value={input}
+                      onFocus={handleInputFocus}
                       onChange={(e) => {
                         setInput(e.target.value);
                         if (!activeChat?._id) return;
@@ -624,19 +658,19 @@ const Chats = () => {
                         if (e.key === "Enter") handleSend();
                       }}
                       placeholder="Type your message..."
-                      className="w-full bg-transparent border-none outline-none py-3 text-[15px] text-gray-800 placeholder-gray-500 "
+                      className="w-full bg-transparent border-none outline-none h-full text-[15px] text-gray-800 placeholder-gray-500"
                     />
                   </div>
 
                   <button
                     onClick={handleSend}
                     disabled={!input.trim() && attachments.length === 0}
-                    className={`h-12 w-12 md:h-12.5 md:w-12.5 shrink-0 rounded-full flex items-center justify-center transition-all duration-200 ${input.trim() || attachments.length > 0
-                      ? "bg-primary text-white shadow-md hover:shadow-lg hover:-translate-y-0.5 active:scale-95 active:translate-y-0 cursor-pointer"
-                      : "bg-gray-200 text-gray-400 cursor-not-allowed"
+                    className={`h-12 w-12 shrink-0 rounded-2xl flex items-center justify-center transition-all duration-200 ${input.trim() || attachments.length > 0
+                      ? "bg-gradient-to-r from-primary to-indigo-600 text-white shadow-md shadow-primary/20 hover:shadow-lg hover:shadow-primary/30 hover:-translate-y-0.5 active:scale-95 active:translate-y-0 cursor-pointer"
+                      : "bg-slate-100 text-slate-400 cursor-not-allowed border border-slate-200/50"
                       }`}
                   >
-                    <iconList.Send size={20} className="ml-1" />
+                    <iconList.Send size={18} className="ml-0.5" />
                   </button>
                 </div>
               </div>
