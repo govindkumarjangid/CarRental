@@ -140,7 +140,7 @@ const ManageCars = () => {
 				</div>
 			</div>
 
-			<div className="w-full bg-white shadow-sm transition-all duration-300 rounded-3xl border border-gray-200 flex flex-col">
+			<div className="w-full bg-white shadow-sm transition-all duration-300 rounded-3xl border border-gray-200 flex flex-col overflow-hidden">
 				<div className="relative overflow-x-auto">
 					<motion.table
 						initial={{ opacity: 0 }}

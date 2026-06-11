@@ -102,12 +102,7 @@ const AllUsers = () => {
           {/* All Users Table */}
           <thead className="bg-gray-50 text-gray-500 border-b border-gray-200">
             <tr className="text-left">
-              <th className="py-3 px-4">Image</th>
-              <th className="py-3 px-4 font-semibold">
-                <div className="flex items-center justify-between">
-                  <span>User</span>
-                </div>
-              </th>
+              <th className="py-3 px-4 font-semibold">User</th>
               <th className="py-3 px-4 font-semibold">Status</th>
               <th className="py-3 px-4 font-semibold">Actions</th>
             </tr>
@@ -137,14 +132,10 @@ const AllUsers = () => {
                         user?.name?.charAt(0)?.toUpperCase() || "U"
                       )}
                     </div>
-                  </div>
-                </td>
-
-                {/* USER COLUMN */}
-                <td className="px-4 py-2">
-                  <div className="flex flex-col">
-                    <span className="text-base md:text-xl font-semibold">{user.name}</span>
-                    <span className="text-base">{user.email}</span>
+                    <div className="flex flex-col">
+                      <span className="text-base md:text-xl font-semibold">{user.name}</span>
+                      <span className="text-base">{user.email}</span>
+                    </div>
                   </div>
                 </td>
 

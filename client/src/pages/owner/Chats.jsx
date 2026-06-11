@@ -373,7 +373,7 @@ const Chats = () => {
 
           {/* chats list  */}
           <div className="flex-1 overflow-y-auto">
-            {true ?
+            {chatLoading ?
               [1, 2, 3, 4].map((chat, index) => (
                 <ChatSkeletonList key={index} />
               ))
@@ -427,7 +427,7 @@ const Chats = () => {
         </div>
 
         {/* CHAT AREA */}
-        {true ? (
+        {messageLoading ? (
           <div className={`flex-1 ${activeChat ? "flex" : "hidden md:block"}`}>
             <OwnerChatMessageSkeleton />
           </div>

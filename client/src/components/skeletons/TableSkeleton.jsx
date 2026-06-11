@@ -6,7 +6,7 @@ const TableSkeleton = ({ showAddButton = true }) => {
       {/* Title Area Skeleton */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div className="space-y-3">
-          <div className="w-48 h-8.5 shimmer rounded-lg" />
+          <div className="w-70 h-8.5 shimmer rounded-lg" />
           <div className="w-full max-w-md h-4 shimmer rounded-md opacity-70" />
         </div>
         {showAddButton && (
@@ -37,8 +37,8 @@ const TableSkeleton = ({ showAddButton = true }) => {
       </div>
 
       {/* Table Container Skeleton */}
-      <div className="w-full bg-white transition-all duration-300 rounded-3xl border border-gray-200 flex flex-col">
-        <div className="overflow-x-auto relative">
+      <div className="w-full bg-white transition-all duration-300 rounded-3xl border border-gray-200 flex flex-col overflow-hidden">
+        <div className="overflow-hidden relative">
           <table className="w-full border-collapse text-left text-sm text-gray-600">
             <thead className="bg-gray-50 text-gray-500 border-b border-gray-200">
               {showAddButton ? (

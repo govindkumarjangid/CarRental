@@ -134,7 +134,7 @@ const ManageBookings = () => {
 				</div>
 			</div>
 
-			<div className="w-full bg-white shadow-sm transition-all duration-300 rounded-3xl border border-gray-200 flex flex-col">
+			<div className="w-full bg-white shadow-sm transition-all duration-300 rounded-3xl border border-gray-200 flex flex-col overflow-hidden">
 				<div className="overflow-x-auto overflow-y-hidden relative">
 					<motion.table
 						initial={{ opacity: 0 }}
@@ -162,7 +162,7 @@ const ManageBookings = () => {
 								currentItems.map((booking, index) => (
 									<motion.tr
 										key={booking._id || index}
-										i initial={{ opacity: 0, y: 10 }}
+										initial={{ opacity: 0, y: 10 }}
 										animate={{ opacity: 1, y: 0 }}
 										transition={{ type: "spring", stiffness: 300, damping: 30, delay: index * 0.05 }}
 										onClick={() => navigate(`/owner/manage-bookings/${booking._id}`)}

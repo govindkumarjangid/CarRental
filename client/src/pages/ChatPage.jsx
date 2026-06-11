@@ -433,7 +433,7 @@ const ChatPage = () => {
                             transition={{ duration: 0.2 }}
                             key={m._id}
                             className={`relative max-w-[85%] md:max-w-[65%] w-fit px-5 py-3 text-[14.5px] rounded-3xl shadow-sm wrap-break-words transition-all hover:shadow-md ${m.senderRole === user.role
-                              ? "ml-auto bg-gradient-to-r from-primary to-indigo-600 text-white rounded-tr-none"
+                              ? "ml-auto bg-linear-to-r from-primary to-indigo-600 text-white rounded-tr-none"
                               : "bg-white text-gray-800 rounded-tl-none border border-slate-100"
                               }`}
                           >
@@ -591,7 +591,7 @@ const ChatPage = () => {
                     onClick={handleSendMessage}
                     disabled={!input.trim() && attachments.length === 0}
                     className={`h-12 w-12 shrink-0 rounded-2xl flex items-center justify-center transition-all duration-200 ${input.trim() || attachments.length > 0
-                      ? "bg-gradient-to-r from-primary to-indigo-600 text-white shadow-md shadow-primary/20 hover:shadow-lg hover:shadow-primary/30 hover:-translate-y-0.5 active:scale-95 active:translate-y-0 cursor-pointer"
+                      ? "bg-linear-to-r from-primary to-indigo-600 text-white shadow-md shadow-primary/20 hover:shadow-lg hover:shadow-primary/30 hover:-translate-y-0.5 active:scale-95 active:translate-y-0 cursor-pointer"
                       : "bg-slate-100 text-slate-400 cursor-not-allowed border border-slate-200/50"
                       }`}
                   >
