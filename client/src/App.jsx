@@ -5,7 +5,7 @@ import { Routes, Route, useLocation } from "react-router-dom";
 import { useEffect, lazy, Suspense, useState } from "react";
 import { Loader } from "lucide-react";
 import { AnimatePresence } from "framer-motion";
-import { Navbar, Footer, ProtectRoute, CarsPageSkeleton, DashboardSkeleton, TableSkeleton, FormSkeleton, CarDetailsPageSkeleton, UserTableSkeleton, LoginSkeleton, TestimonialFormSkeleton, BookingCard, Breadcrumbs } from "./index.js";
+import { Navbar, Footer, ProtectRoute, CarsPageSkeleton, DashboardSkeleton, TableSkeleton, FormSkeleton, CarDetailsPageSkeleton, UserTableSkeleton, LoginSkeleton, TestimonialFormSkeleton, BookingCard } from "./index.js";
 
 import ScrollToTop from "./components/UI/ScrollToTop.jsx";
 
@@ -65,7 +65,6 @@ const App = () => {
 			{!isOwnerPath && <Navbar />}
 
 			<main className={`flex-1 min-h-0 overflow-x-hidden ${!isChatPath && !isOwnerPath ? "overflow-y-auto custom-scrollbar" : "overflow-hidden"}`}>
-				{!isOwnerPath && <Breadcrumbs />}
 				<AnimatePresence>
 					{showLogin && (
 						<Suspense fallback={<LoginSkeleton key="login-skeleton" />}>

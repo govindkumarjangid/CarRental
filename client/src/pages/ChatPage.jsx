@@ -564,7 +564,7 @@ const ChatPage = () => {
                     <iconList.Paperclip size={20} />
                   </button>
 
-                  <div className="flex-1 h-12 bg-slate-50 hover:bg-slate-100/60 focus-within:bg-white rounded-2xl flex items-center px-4 border border-slate-200 focus-within:border-primary/40 focus-within:ring-4 focus-within:ring-primary/10 transition-all duration-200 shadow-inner">
+                  <div className="flex-1 h-12 bg-slate-50 hover:bg-slate-100/60 focus-within:bg-white rounded-2xl flex items-center px-4 border-2 border-slate-200 focus-within:border-primary/70 focus-within:ring-3 focus-within:ring-primary/50 transition-all duration-200 shadow-inner">
                     <input
                       type="text"
                       value={input}

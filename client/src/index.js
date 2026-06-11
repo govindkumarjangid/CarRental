@@ -32,7 +32,6 @@ import {
 import ResponsiveImage from "./components/UI/ResponsiveImage.jsx";
 import IconButton from "./components/UI/IconButton.jsx";
 import UserAvatar from "./components/UI/UserAvatar.jsx";
-import Breadcrumbs from "./components/UI/Breadcrumbs.jsx";
 
 export {
     Navbar,
@@ -66,6 +65,5 @@ export {
     ResponsiveImage,
     IconButton,
     UserAvatar,
-    Breadcrumbs,
     iconList
 }

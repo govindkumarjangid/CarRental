@@ -2,7 +2,6 @@ import NavbarOwner from "../components/owner/NavbarOwner";
 import Sidebar from "../components/owner/Sidebar";
 import { Outlet, useLocation } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
-import Breadcrumbs from "../components/UI/Breadcrumbs";
 
 const Layout = () => {
 	const [isSidebarOpen, setIsSidebarOpen] = useState(false);

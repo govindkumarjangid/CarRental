@@ -111,9 +111,9 @@ const Cars = () => {
 						initial={{ opacity: 0, y: 20 }}
 						animate={{ opacity: 1, y: 0 }}
 						transition={{ duration: 0.6, ease: "easeOut", delay: 0.3 }}
-						className="mt-8 flex items-center justify-between gap-4 border-2 border-gray-300 px-4 py-1 rounded-2xl shadow-sm max-w-96 md:max-w-3xl bg-white w-full focus-within:border-primary transition-all duration-300"
+						className="mt-8 flex items-center justify-between gap-2 border-2 border-gray-300 md:px-4 px-3  py-1 rounded-2xl shadow-sm max-w-96 md:max-w-3xl bg-white w-full focus-within:border-primary transition-all duration-300"
 					>
-						<label htmlFor="car-search" className="sr-only">Search cars by brand, model, or features</label>
+						<label htmlFor="car-search" className="sr-only md:text-base text-xs">Search cars by brand, model, or features</label>
 						<iconList.Search size={18} className="text-gray-600" />
 						<input
 							id="car-search"

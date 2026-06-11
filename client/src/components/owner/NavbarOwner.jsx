@@ -4,8 +4,6 @@ import { useRef } from "react";
 import { Link } from "react-router-dom";
 import { motion, useInView } from "framer-motion";
 import { iconList } from "../../assets/assets.jsx";
-import { Breadcrumbs } from "../../index.js";
-
 const NavbarOwner = ({ toggleSidebar, isSidebarOpen }) => {
 	const { user } = useAuthStore();
 	const ref = useRef(null);
@@ -28,8 +26,6 @@ const NavbarOwner = ({ toggleSidebar, isSidebarOpen }) => {
 				/>
 			</Link>
 
-			{/* Centered Breadcrumbs on Desktop */}
-			<Breadcrumbs isHeader={true} />
 
 			<div className="flex items-center gap-4">
 				<p className="hidden md:block text-base font-medium text-gray-700  capitalize">
