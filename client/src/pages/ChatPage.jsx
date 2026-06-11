@@ -421,7 +421,7 @@ const ChatPage = () => {
 
               {/* CHAT BODY AREA */}
               <div className="flex-1 min-h-0 relative">
-                <div ref={scrollContainerRef} className="absolute inset-0 overflow-y-auto p-4 md:p-6 custom-scrollbar bg-[#f8fafc] bg-[radial-gradient(#e2e8f0_1px,transparent_1px)] [background-size:16px_16px]">
+                <div ref={scrollContainerRef} className="absolute inset-0 overflow-y-auto p-4 md:p-6 custom-scrollbar bg-[#f8fafc] bg-[radial-gradient(#e2e8f0_1px,transparent_1px)] background-size:[16px_16px]">
                   <div className="flex flex-col min-h-full">
                     <div className="flex-1" />
                     <div className="space-y-3 flex flex-col p-1">

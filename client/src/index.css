@@ -37,7 +37,7 @@ body::selection {
 }
 
 ::-webkit-scrollbar-track {
-      background: #f1f1f1;
+      background: #ffffff;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -128,4 +128,46 @@ body::selection {
       );
       animation: shimmer-gpu 1.6s infinite ease-in-out;
       will-change: transform;
+}
+
+/* Custom scrollbar matching user's request (white track, color-primary thumb, hidden by default, visible on hover) */
+.custom-theme-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+  transition: scrollbar-color 0.3s ease;
+}
+
+.custom-theme-scrollbar:hover {
+  scrollbar-color: #2563EB #ffffff;
+}
+
+.custom-theme-scrollbar::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.custom-theme-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+  transition: background-color 0.3s ease;
+}
+
+.custom-theme-scrollbar:hover::-webkit-scrollbar-track {
+  background: #ffffff;
+}
+
+.custom-theme-scrollbar::-webkit-scrollbar-thumb {
+  background: transparent;
+  border-radius: 9999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  transition: background-color 0.3s ease;
+}
+
+.custom-theme-scrollbar:hover::-webkit-scrollbar-thumb {
+  background-color: #2563EB;
+  border: 2px solid #ffffff;
+}
+
+.custom-theme-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: #1D4ED8;
 }

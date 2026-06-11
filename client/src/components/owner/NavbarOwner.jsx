@@ -4,6 +4,7 @@ import { useRef } from "react";
 import { Link } from "react-router-dom";
 import { motion, useInView } from "framer-motion";
 import { iconList } from "../../assets/assets.jsx";
+import { Breadcrumbs } from "../../index.js";
 
 const NavbarOwner = ({ toggleSidebar, isSidebarOpen }) => {
 	const { user } = useAuthStore();
@@ -16,7 +17,7 @@ const NavbarOwner = ({ toggleSidebar, isSidebarOpen }) => {
 			initial={{ opacity: 0, y: -10 }}
 			animate={isInView ? { opacity: 1, y: 0 } : {}}
 			transition={{ duration: 0.3, ease: "easeOut" }}
-			className="flex items-center justify-between px-4 md:px-8 py-3 md:py-4 bg-white md:bg-white/80 md:backdrop-blur-md border-b border-gray-200 sticky top-0 z-60 transition-all"
+			className="flex items-center justify-between px-4 md:px-8 py-3 md:py-4 bg-white md:bg-white/80 md:backdrop-blur-md border-b border-gray-200 sticky top-0 z-60 transition-all relative"
 		>
 			<Link to="/">
 				<img
@@ -26,6 +27,10 @@ const NavbarOwner = ({ toggleSidebar, isSidebarOpen }) => {
 					loading="lazy"
 				/>
 			</Link>
+
+			{/* Centered Breadcrumbs on Desktop */}
+			<Breadcrumbs isHeader={true} />
+
 			<div className="flex items-center gap-4">
 				<p className="hidden md:block text-base font-medium text-gray-700  capitalize">
 					Welcome, {user?.name || "Owner"}

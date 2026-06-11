@@ -2,10 +2,10 @@ import React from 'react';
 
 const ChatSkeletonList = () => {
   return (
-    <div className="flex items-center gap-3 px-4 py-3 border-b border-gray-50 bg-white rounded-xl relative w-full">
+    <div className="flex items-center justify-start gap-3 px-4 py-3 border-b border-gray-50 bg-white rounded-xl relative w-full">
       {/* Avatar Skeleton */}
       <div className="relative shrink-0">
-        <div className="h-11 w-11 border-2 border-gray-200 rounded-full aspect-square bg-gray-100 shimmer" />
+        <div className="h-11 w-11 border border-gray-200 rounded-full aspect-square bg-gray-100 shimmer" />
         <span className="absolute bottom-0 right-0 h-3.5 w-3.5 rounded-full border-2 border-white bg-gray-300 shimmer" />
       </div>
 

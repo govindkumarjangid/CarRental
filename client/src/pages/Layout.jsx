@@ -31,9 +31,8 @@ const Layout = () => {
 				{/* Outlet */}
 				<div
 					ref={scrollRef}
-					className="flex-1 overflow-y-auto overflow-x-hidden blue-thumb-scrollbar relative h-full flex flex-col"
+					className="flex-1 overflow-y-auto overflow-x-hidden custom-theme-scrollbar relative h-full flex flex-col"
 				>
-					<Breadcrumbs />
 					<Outlet />
 				</div>
 			</div>

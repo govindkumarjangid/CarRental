@@ -135,7 +135,7 @@ const ManageBookings = () => {
 			</div>
 
 			<div className="w-full bg-white shadow-sm transition-all duration-300 rounded-3xl border border-gray-200 flex flex-col">
-				<div className="overflow-x-auto relative">
+				<div className="overflow-x-auto overflow-y-hidden relative">
 					<motion.table
 						initial={{ opacity: 0 }}
 						animate={{ opacity: 1 }}

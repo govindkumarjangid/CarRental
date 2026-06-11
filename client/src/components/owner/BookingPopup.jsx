@@ -58,12 +58,12 @@ const BookingPopup = ({ setSelectedBooking, selectedBooking, isFullPage = false 
                     className="object-cover md:object-contain z-10 rounded-3xl shadow-sm max-w-130 w-full h-full md:h-auto"
                 />
 
-                <div className="absolute bottom-4 right-4 md:bottom-6 md:left-6 z-30 p-3 sm:p-0">
+                <div className="absolute bottom-4 right-4 md:bottom-28 md:right-9 z-30 p-3 sm:p-0">
                     <motion.div
                         initial={{ y: 20, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
                         transition={{ delay: 0.4 }}
-                        className="backdrop-blur-md bg-white/50 border border-white/40 p-2 md:p-3 rounded-2xl shadow-sm pr-6 md:pr-10"
+                        className="backdrop-blur-md bg-white/50 border border-white/40 p-2 md:p-3 rounded-2xl shadow-sm pr-6"
                     >
                         <p className="text-gray-800 text-[9px] md:text-[10px] uppercase tracking-widest font-bold mb-0.5">Elite Collection</p>
                         <h3 className="text-gray-900 text-base md:text-xl font-bold tracking-tight">{car?.brand} <span className="text-primary">{car?.model}</span></h3>
@@ -72,7 +72,7 @@ const BookingPopup = ({ setSelectedBooking, selectedBooking, isFullPage = false 
             </div>
 
             {/* Right Side: Detailed Info */}
-            <div className="flex-1 overflow-y-auto overflow-x-hidden px-5 md:px-10 lg:px-12 py-6 md:py-10 space-y-6 md:space-y-8 bg-white custom-scrollbar relative pb-28 md:pb-10">
+            <div className="flex-1 overflow-y-auto overflow-x-hidden px-5 md:px-10 lg:px-12 py-6 md:py-10 space-y-6 md:space-y-8 bg-white custom-scrollbar relative pb-15">
                 {/* Header Section */}
                 <div className="flex flex-col gap-1.5 md:gap-2">
                     <div className="flex items-center gap-2">

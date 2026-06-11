@@ -373,7 +373,7 @@ const Chats = () => {
 
           {/* chats list  */}
           <div className="flex-1 overflow-y-auto">
-            {chatLoading ?
+            {true ?
               [1, 2, 3, 4].map((chat, index) => (
                 <ChatSkeletonList key={index} />
               ))
@@ -427,7 +427,7 @@ const Chats = () => {
         </div>
 
         {/* CHAT AREA */}
-        {messageLoading ? (
+        {true ? (
           <div className={`flex-1 ${activeChat ? "flex" : "hidden md:block"}`}>
             <OwnerChatMessageSkeleton />
           </div>
@@ -482,7 +482,7 @@ const Chats = () => {
             {/* MESSAGES */}
             <div className="flex-1 min-h-0 relative">
               {activeChat ? (
-                <div ref={scrollContainerRef} className="h-full w-full overflow-y-auto custom-scrollbar bg-[#f8fafc] bg-[radial-gradient(#e2e8f0_1px,transparent_1px)] [background-size:16px_16px]">
+                <div ref={scrollContainerRef} className="h-full w-full overflow-y-auto custom-scrollbar bg-[#f8fafc] bg-[radial-gradient(#e2e8f0_1px,transparent_1px)] background-size:[16px_16px]">
                   {/* Spacer to push messages to bottom when there are few of them */}
                   <div className="flex flex-col min-h-full">
                     <div className="flex-1" />
@@ -495,7 +495,7 @@ const Chats = () => {
                             transition={{ duration: 0.2 }}
                             key={m._id}
                             className={`relative max-w-[85%] md:max-w-[70%] w-fit px-5 py-3 text-[14px] rounded-3xl leading-snug wrap-break-words shadow-sm transition-all hover:shadow-md ${m.senderRole === user.role
-                              ? "ml-auto bg-gradient-to-r from-primary to-indigo-600 text-white rounded-tr-none"
+                              ? "ml-auto bg-linear-to-r from-primary to-indigo-600 text-white rounded-tr-none"
                               : "bg-white text-gray-800 rounded-tl-none border border-slate-100"
                               }`}
                           >
@@ -666,7 +666,7 @@ const Chats = () => {
                     onClick={handleSend}
                     disabled={!input.trim() && attachments.length === 0}
                     className={`h-12 w-12 shrink-0 rounded-2xl flex items-center justify-center transition-all duration-200 ${input.trim() || attachments.length > 0
-                      ? "bg-gradient-to-r from-primary to-indigo-600 text-white shadow-md shadow-primary/20 hover:shadow-lg hover:shadow-primary/30 hover:-translate-y-0.5 active:scale-95 active:translate-y-0 cursor-pointer"
+                      ? "bg-linear-to-r from-primary to-indigo-600 text-white shadow-md shadow-primary/20 hover:shadow-lg hover:shadow-primary/30 hover:-translate-y-0.5 active:scale-95 active:translate-y-0 cursor-pointer"
                       : "bg-slate-100 text-slate-400 cursor-not-allowed border border-slate-200/50"
                       }`}
                   >
