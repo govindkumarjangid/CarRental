@@ -36,12 +36,47 @@ app.use('/api/chat', chatRouter);
 
 //* Global Error Handler
 app.use((err, req, res, next) => {
-  const statusCode = err.statusCode || 500;
-  const message = err.message || "Internal Server Error";
-  console.error(`[Error] ${message}`);
-  res.status(statusCode).json({
+  err.statusCode = err.statusCode || 500;
+  err.status = err.status || 'error';
+
+  // Handle specific database and JWT errors
+  if (err.name === 'CastError') {
+    err.statusCode = 400;
+    err.message = `Resource not found. Invalid field: ${err.path}`;
+  }
+
+  if (err.code === 11000) {
+    const value = err.errmsg ? err.errmsg.match(/(["'])(\\?.)*?\1/)[0] : 'duplicate value';
+    err.statusCode = 400;
+    err.message = `Duplicate field value: ${value}. Please use another value!`;
+  }
+
+  if (err.name === 'ValidationError') {
+    const errors = Object.values(err.errors).map(el => el.message);
+    err.statusCode = 400;
+    err.message = `Invalid input data: ${errors.join('. ')}`;
+  }
+
+  if (err.name === 'JsonWebTokenError') {
+    err.statusCode = 401;
+    err.message = 'Invalid token. Please log in again!';
+  }
+
+  if (err.name === 'TokenExpiredError') {
+    err.statusCode = 401;
+    err.message = 'Your session has expired. Please log in again!';
+  }
+
+  console.error(`[Error] ${err.statusCode} - ${err.message}`);
+  if (process.env.NODE_ENV === 'development' || !process.env.NODE_ENV) {
+    console.error(err.stack);
+  }
+
+  res.status(err.statusCode).json({
     success: false,
-    message
+    status: err.status,
+    message: err.message,
+    ...( (process.env.NODE_ENV === 'development' || !process.env.NODE_ENV) && { stack: err.stack } )
   });
 });
 

@@ -11,7 +11,7 @@ export const getOrCreateChat = wrapAsync(async (req, res) => {
     chat = await Chat.create({
       user: userId,
       owner: ownerId,
-      car: carId, 
+      car: carId,
     });
   }
   res.status(200).json({ success: true, chatId: chat._id });
@@ -23,11 +23,10 @@ export const sendMessage = wrapAsync(async (req, res) => {
   const files = req.files || [];
 
   const chat = await Chat.findById(chatId);
-  if (!chat) {
+  if (!chat) 
     return res.status(404).json({ success: false, message: "Chat not found" });
-  }
 
-  // Upload files to ImageKit if any
+
   const attachments = [];
   for (const file of files) {
     const response = await imagekit.files.upload({
@@ -35,7 +34,7 @@ export const sendMessage = wrapAsync(async (req, res) => {
       fileName: file.originalname,
       folder: "/chat_attachments",
     });
-    
+
     attachments.push({
       url: response.url,
       name: file.originalname,

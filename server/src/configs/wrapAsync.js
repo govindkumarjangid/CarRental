@@ -1,11 +1,7 @@
-const wrapAsync = (controller) => {
-    return async (req, res, next) => {
-        try {
-            await controller(req, res, next);
-        } catch (error) {
-            next(error);
-        }
-    };
+const wrapAsync = (fn) => {
+  return (req, res, next) => {
+    Promise.resolve(fn(req, res, next)).catch(next);
+  };
 };
 
 export default wrapAsync;
