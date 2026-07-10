@@ -290,10 +290,7 @@ const ManageBookings = () => {
 												<button
 													onClick={(e) => {
 														e.stopPropagation();
-														if (setTrackingCarId && setIsLiveTrackerOpen) {
-															setTrackingCarId(booking.car._id);
-															setIsLiveTrackerOpen(true);
-														}
+														navigate(`/owner/manage-bookings/location/${booking.car._id}`);
 													}}
 													className="cursor-pointer active:scale-90 transition-transform duration-300 ml-3"
 													title="Live Track"

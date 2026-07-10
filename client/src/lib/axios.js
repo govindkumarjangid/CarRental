@@ -1,4 +1,5 @@
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
 export const axiosInstance = axios.create({
     baseURL: import.meta.env.VITE_BASE_URL,
@@ -9,7 +10,7 @@ axiosInstance.interceptors.request.use(
     (config) => {
         let token = null;
         try {
-            const authData = JSON.parse(localStorage.getItem("auth-data"));
+            const authData = JSON.parse(Cookies.get("auth-data"));
             token = authData?.token;
         } catch {
             // ignore parse errors

@@ -265,12 +265,7 @@ const ManageCars = () => {
 												</button>
 
 												<button
-													onClick={() => {
-														if (setTrackingCarId && setIsLiveTrackerOpen) {
-															setTrackingCarId(car._id);
-															setIsLiveTrackerOpen(true);
-														}
-													}}
+													onClick={() => navigate(`/owner/manage-cars/location/${car._id}`)}
 													className="cursor-pointer active:scale-90 transition-transform duration-300"
 													title="Live Track"
 												>

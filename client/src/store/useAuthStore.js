@@ -1,10 +1,11 @@
 import { create } from 'zustand';
 import { axiosInstance } from '../lib/axios.js';
 import toast from 'react-hot-toast';
+import Cookies from 'js-cookie';
 
 const getStoredAuth = () => {
     try {
-        const stored = localStorage.getItem('auth-data');
+        const stored = Cookies.get('auth-data');
         return stored ? JSON.parse(stored) : null;
     } catch {
         return null;
@@ -13,14 +14,18 @@ const getStoredAuth = () => {
 
 const saveAuth = (data) => {
     try {
-        localStorage.setItem('auth-data', JSON.stringify(data));
+        Cookies.set('auth-data', JSON.stringify(data), {
+            expires: 7,
+            secure: true,
+            sameSite: 'strict'
+        });
     } catch (e) {
         console.error('Failed to save auth data:', e);
     }
 };
 
 const clearAuth = () => {
-    localStorage.removeItem('auth-data');
+    Cookies.remove('auth-data');
 };
 
 const storedAuth = getStoredAuth();
@@ -237,7 +242,7 @@ export const useAuthStore = create((set, get) => ({
 
     loadRazorpay: async () => {
         if (window.Razorpay) return true;
-        
+
         return new Promise(resolve => {
             const script = document.createElement("script");
             script.src = "https://checkout.razorpay.com/v1/checkout.js";

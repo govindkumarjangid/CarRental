@@ -23,6 +23,7 @@ const Dashboard = lazy(() => import("./pages/owner/Dashboard.jsx"));
 const AddCar = lazy(() => import("./pages/owner/AddCar.jsx"));
 const ManageCars = lazy(() => import("./pages/owner/ManageCars.jsx"));
 const ManageBookings = lazy(() => import("./pages/owner/ManageBookings.jsx"));
+const LiveTrackerPage = lazy(() => import("./pages/owner/LiveTrackerPage.jsx"));
 const AllUsers = lazy(() => import("./pages/owner/AllUsers.jsx"));
 const Chats = lazy(() => import("./pages/owner/Chats.jsx"));
 
@@ -146,10 +147,24 @@ const App = () => {
 								</Suspense>
 							</ProtectRoute>
 						} />
+						<Route path="manage-cars/location/:carId" element={
+							<ProtectRoute>
+								<Suspense fallback={<TableSkeleton />}>
+									<LiveTrackerPage />
+								</Suspense>
+							</ProtectRoute>
+						} />
 						<Route path="manage-bookings/:bookingId?" element={
 							<ProtectRoute>
 								<Suspense fallback={<TableSkeleton />}>
 									<ManageBookings />
+								</Suspense>
+							</ProtectRoute>
+						} />
+						<Route path="manage-bookings/location/:carId" element={
+							<ProtectRoute>
+								<Suspense fallback={<TableSkeleton />}>
+									<LiveTrackerPage />
 								</Suspense>
 							</ProtectRoute>
 						} />

@@ -35,13 +35,17 @@ const Layout = () => {
 				<Sidebar isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
 
 				{/* Outlet / Content Area */}
-				<div
-					ref={scrollRef}
-					className="flex-1 overflow-y-auto overflow-x-hidden custom-theme-scrollbar relative h-full flex flex-col bg-gray-50/10"
-				>
-					<Outlet context={{ setTrackingCarId, setIsLiveTrackerOpen }} />
+				{/* Outlet / Content Area */}
+				<div className="flex-1 relative h-full flex flex-col bg-gray-50/10 overflow-hidden">
+					{/* Scrolling Container */}
+					<div
+						ref={scrollRef}
+						className="flex-1 overflow-y-auto overflow-x-hidden custom-theme-scrollbar w-full h-full"
+					>
+						<Outlet context={{ setTrackingCarId, setIsLiveTrackerOpen }} />
+					</div>
 
-					{/* Live Tracker Overlay (Full content area, not popup) */}
+					{/* Live Tracker Overlay (Full content area, absolute to outer div) */}
 					<AnimatePresence>
 						{isLiveTrackerOpen && (
 							<motion.div
@@ -49,7 +53,7 @@ const Layout = () => {
 								animate={{ opacity: 1, y: 0 }}
 								exit={{ opacity: 0, y: 30 }}
 								transition={{ duration: 0.3, ease: "easeOut" }}
-								className="absolute inset-0 bg-white z-50 flex flex-col overflow-y-auto custom-theme-scrollbar"
+								className="absolute inset-0 bg-white z-[100] flex flex-col"
 							>
 								<div className="p-4 md:p-8 flex-1 flex flex-col min-h-full">
 									<LiveTracker carId={trackingCarId} onClose={() => setIsLiveTrackerOpen(false)} />
