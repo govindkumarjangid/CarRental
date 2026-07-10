@@ -99,10 +99,22 @@ export const getUserData = wrapAsync(async (req, res) => {
   res.json({ success: true, user });
 });
 
-//* get all user cars
-export const getCars = wrapAsync(async (_, res) => {
-  const cars = await Car.find();
-  res.json({ success: true, cars });
+//* get all user cars with pagination
+export const getCars = wrapAsync(async (req, res) => {
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 0; // 0 means no limit if not specified
+  
+  let query = {};
+  
+  if (limit > 0) {
+    const skip = (page - 1) * limit;
+    const cars = await Car.find(query).skip(skip).limit(limit);
+    const total = await Car.countDocuments(query);
+    res.json({ success: true, cars, total, page, totalPages: Math.ceil(total / limit) });
+  } else {
+    const cars = await Car.find(query);
+    res.json({ success: true, cars });
+  }
 });
 
 //* Add Review

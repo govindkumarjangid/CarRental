@@ -1,6 +1,6 @@
 import { useCarStore } from "../../store/useCarStore.js";
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useOutletContext } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 
 import { iconList } from "../../assets/assets.jsx";
@@ -24,6 +24,7 @@ const ManageCars = () => {
 
 	const { carId } = useParams();
 	const navigate = useNavigate();
+	const { setTrackingCarId, setIsLiveTrackerOpen } = useOutletContext() || {};
 
 	const [openConfirm, setOpenConfirm] = useState(false);
 	const [deleteId, setDeleteId] = useState(null);
@@ -260,6 +261,22 @@ const ManageCars = () => {
 													<iconList.EditIcon
 														size={18}
 														className="text-yellow-500"
+													/>
+												</button>
+
+												<button
+													onClick={() => {
+														if (setTrackingCarId && setIsLiveTrackerOpen) {
+															setTrackingCarId(car._id);
+															setIsLiveTrackerOpen(true);
+														}
+													}}
+													className="cursor-pointer active:scale-90 transition-transform duration-300"
+													title="Live Track"
+												>
+													<iconList.MapPin
+														size={18}
+														className="text-blue-500"
 													/>
 												</button>
 											</div>

@@ -8,16 +8,8 @@ const BookingCard = ({ booking, index }) => {
 	const inView = useInView(ref, { once: true });
 
 	return (
-		<motion.div
-			ref={ref}
-			initial={{ y: 10, scale: 0.95, opacity: 0 }}
-			animate={inView ? { y: 0, scale: 1, opacity: 1 } : {}}
-			transition={{
-				duration: 0.4,
-				ease: "easeInOut",
-				delay: index * 0.05,
-			}}
-			className="grid grid-cols-1 md:grid-cols-4 gap-6 p-6 rounded-3xl mt-5 first:mt-12 backdrop-blur-sm border border-gray-200 shadow-sm"
+		<div
+			className="grid grid-cols-1 md:grid-cols-4 gap-6 p-6 rounded-3xl mt-5 first:mt-12 backdrop-blur-sm border border-gray-200 shadow-sm transition-all duration-300"
 		>
 			<div className="md:col-span-1 ">
 				<img
@@ -116,7 +108,7 @@ const BookingCard = ({ booking, index }) => {
 					</p>
 				</div>
 			</div>
-		</motion.div>
+		</div>
 	);
 };
 

@@ -46,6 +46,12 @@ export const initSocket = (server) => {
       socket.to(chatId).emit("receiveMessage", { message, chatId });
     });
 
+    // car location update from simulator
+    socket.on("car_location_update", (data) => {
+      // console.log('Location received from simulator:', data);
+      io.emit("broadcast_car_location", data);
+    });
+
     // mark messages as read
     socket.on("markAsRead", async ({ chatId, role }) => {
       try {

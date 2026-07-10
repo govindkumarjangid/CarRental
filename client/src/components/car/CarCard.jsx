@@ -15,18 +15,8 @@ const CarCard = ({ car, index }) => {
 	};
 
 	return (
-		<motion.div
-			ref={ref}
-			initial={{ opacity: 0, filter: "blur(4px)", y: 18, scale: 0.98 }}
-			animate={inView ? { opacity: 1, filter: "blur(0px)", y: 0, scale: 1 } : {}}
-			transition={{
-				type: "spring",
-				stiffness: 140,
-				damping: 18,
-				mass: 0.6,
-				delay: index * 0.1,
-			}}
-			className="h-full w-full group rounded-3xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-500 cursor-pointer active:scale-99 bg-white border border-gray-100"
+		<div
+			className="h-full w-full group rounded-3xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300 cursor-pointer active:scale-99 bg-white border border-gray-100"
 			onClick={handleClick}
 			aria-label={`View details for ${car.brand} ${car.model}`}
 		>
@@ -96,7 +86,7 @@ const CarCard = ({ car, index }) => {
 				</div>
 			</div>
 
-		</motion.div>
+		</div>
 	);
 };
 

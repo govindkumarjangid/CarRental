@@ -144,3 +144,107 @@ VITE_CURRENCY=₹
 - `GET /get-messages` - Fetch chat history
 
 ---
+
+## ☁️ Media Storage & Upload Architecture (ImageKit & Cloudinary)
+
+This project handles file uploads (car images, user profiles, and review images) using **Multer** on the Express backend and **Axios FormData** on the React frontend.
+
+### 1. Current System: ImageKit (Memory Buffer Storage)
+Currently, the project uses memory storage to buffer files in RAM, uploading them as base64 strings to **ImageKit**.
+* **Middleware ([multer.js](file:///c:/Users/a/Desktop/Car-Rental/CarRental/server/src/configs/multer.js))**:
+  ```javascript
+  const upload = multer({
+    storage: multer.memoryStorage(),
+    limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit
+  });
+  ```
+* **Controller Upload ([owner.controller.js](file:///c:/Users/a/Desktop/Car-Rental/CarRental/server/src/controllers/owner.controller.js))**:
+  ```javascript
+  const response = await imagekit.files.upload({
+    file: imageFile.buffer.toString("base64"),
+    fileName: imageFile.originalname,
+    folder: "/cars",
+  });
+  const optimizedUrl = response.url + "?tr=w-1280,q-auto,f-avif";
+  ```
+
+---
+
+### 2. Transition Blueprint to Cloudinary & PDF Uploads
+To scale your uploads, support PDF documents, and free up server RAM, follow this production migration path:
+
+#### Step A: Backend Setup
+1. **Install dependencies**: `npm install cloudinary`
+2. **Environment Variables**: Add your details to `server/.env`:
+   ```env
+   CLOUDINARY_CLOUD_NAME=your_cloud_name
+   CLOUDINARY_API_KEY=your_api_key
+   CLOUDINARY_API_SECRET=your_api_secret
+   ```
+3. **Cloudinary Configuration (`server/src/configs/cloudinary.js`)**:
+   ```javascript
+   import { v2 as cloudinary } from 'cloudinary';
+   cloudinary.config({
+     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+     api_key: process.env.CLOUDINARY_API_KEY,
+     api_secret: process.env.CLOUDINARY_API_SECRET,
+     secure: true
+   });
+   export default cloudinary;
+   ```
+4. **Multer Disk Middleware (`server/src/middleware/multer.js`)**:
+   *Disk storage prevents RAM overflow on large files/PDFs.*
+   ```javascript
+   import multer from 'multer';
+   import path from 'path';
+   
+   const storage = multer.diskStorage({
+     destination: './tmp/uploads',
+     filename: (req, file, cb) => {
+       cb(null, `${Date.now()}-${file.originalname}`);
+     }
+   });
+   export const upload = multer({ storage, limits: { fileSize: 5 * 1024 * 1024 } });
+   ```
+5. **Secure Controller & Cleanup (`server/src/controllers/upload.controller.js`)**:
+   ```javascript
+   import cloudinary from '../configs/cloudinary.js';
+   import fs from 'fs/promises';
+
+   export const uploadSingleFile = async (req, res) => {
+     if (!req.file) return res.status(400).json({ error: 'No file provided' });
+     try {
+       const result = await cloudinary.uploader.upload(req.file.path, {
+         folder: req.file.mimetype === 'application/pdf' ? 'documents' : 'images',
+         resource_type: 'auto'
+       });
+       return res.status(200).json({ success: true, url: result.secure_url });
+     } catch (err) {
+       return res.status(500).json({ error: err.message });
+     } finally {
+       // CRITICAL: Clean up disk storage immediately to avoid memory leaks
+       await fs.unlink(req.file.path);
+     }
+   };
+   ```
+
+#### Step B: Frontend Signed Axios Request (`client/src/utils/fileUpload.js`)
+```javascript
+import axios from 'axios';
+
+export const uploadFile = async (file, onProgress) => {
+  const formData = new FormData();
+  formData.append('file', file);
+
+  const response = await axios.post('/api/upload/file', formData, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+    onUploadProgress: (e) => {
+      if (onProgress && e.total) {
+        const percent = Math.round((e.loaded * 100) / e.total);
+        onProgress(percent);
+      }
+    }
+  });
+  return response.data;
+};
+```

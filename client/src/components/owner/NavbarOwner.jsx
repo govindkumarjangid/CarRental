@@ -28,7 +28,7 @@ const NavbarOwner = ({ toggleSidebar, isSidebarOpen }) => {
 
 
 			<div className="flex items-center gap-4">
-				<p className="hidden md:block text-base font-medium text-gray-700  capitalize">
+				<p className="hidden md:block text-base font-medium text-gray-700  capitalize ml-2">
 					Welcome, {user?.name || "Owner"}
 				</p>
 				<button

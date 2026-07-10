@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useOutletContext } from "react-router-dom";
 
 import { Title as OwnerTitle } from "../../components/owner/Title.jsx";
 import { useBookingStore } from "../../store/useBookingStore.js";
@@ -22,6 +22,7 @@ const ManageBookings = () => {
 	const currency = import.meta.env.VITE_CURRENCY;
 	const { bookingId } = useParams();
 	const navigate = useNavigate();
+	const { setTrackingCarId, setIsLiveTrackerOpen } = useOutletContext() || {};
 
 	const [openConfirm, setOpenConfirm] = useState(false);
 	const [deleteId, setDeleteId] = useState(null);
@@ -284,6 +285,22 @@ const ManageBookings = () => {
 											>
 												<iconList.Trash2 size={18} className="text-red-600" />
 											</button>
+											
+											{booking.car && (
+												<button
+													onClick={(e) => {
+														e.stopPropagation();
+														if (setTrackingCarId && setIsLiveTrackerOpen) {
+															setTrackingCarId(booking.car._id);
+															setIsLiveTrackerOpen(true);
+														}
+													}}
+													className="cursor-pointer active:scale-90 transition-transform duration-300 ml-3"
+													title="Live Track"
+												>
+													<iconList.MapPin size={18} className="text-blue-500" />
+												</button>
+											)}
 										</td>
 									</motion.tr>
 								))

@@ -1,10 +1,14 @@
 import NavbarOwner from "../components/owner/NavbarOwner";
 import Sidebar from "../components/owner/Sidebar";
+import LiveTracker from "../components/LiveTracker";
 import { Outlet, useLocation } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 const Layout = () => {
 	const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+	const [isLiveTrackerOpen, setIsLiveTrackerOpen] = useState(false);
+	const [trackingCarId, setTrackingCarId] = useState(null);
 	const { pathname } = useLocation();
 	const scrollRef = useRef(null);
 
@@ -20,19 +24,39 @@ const Layout = () => {
 	return (
 		<div className="h-screen-dynamic flex flex-col overflow-hidden">
 			{/* Navbar */}
-			<NavbarOwner toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} isSidebarOpen={isSidebarOpen} />
+			<NavbarOwner 
+				toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} 
+				isSidebarOpen={isSidebarOpen} 
+			/>
 
 			{/* Body */}
 			<div className="flex flex-1 overflow-hidden relative">
 				{/* Sidebar */}
 				<Sidebar isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
 
-				{/* Outlet */}
+				{/* Outlet / Content Area */}
 				<div
 					ref={scrollRef}
-					className="flex-1 overflow-y-auto overflow-x-hidden custom-theme-scrollbar relative h-full flex flex-col"
+					className="flex-1 overflow-y-auto overflow-x-hidden custom-theme-scrollbar relative h-full flex flex-col bg-gray-50/10"
 				>
-					<Outlet />
+					<Outlet context={{ setTrackingCarId, setIsLiveTrackerOpen }} />
+
+					{/* Live Tracker Overlay (Full content area, not popup) */}
+					<AnimatePresence>
+						{isLiveTrackerOpen && (
+							<motion.div
+								initial={{ opacity: 0, y: 30 }}
+								animate={{ opacity: 1, y: 0 }}
+								exit={{ opacity: 0, y: 30 }}
+								transition={{ duration: 0.3, ease: "easeOut" }}
+								className="absolute inset-0 bg-white z-50 flex flex-col overflow-y-auto custom-theme-scrollbar"
+							>
+								<div className="p-4 md:p-8 flex-1 flex flex-col min-h-full">
+									<LiveTracker carId={trackingCarId} onClose={() => setIsLiveTrackerOpen(false)} />
+								</div>
+							</motion.div>
+						)}
+					</AnimatePresence>
 				</div>
 			</div>
 		</div>

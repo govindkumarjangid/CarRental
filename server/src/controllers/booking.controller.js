@@ -183,8 +183,18 @@ export const createOnlineBooking = wrapAsync(async (req, res) => {
 //* list user bookings
 export const getUserBookings = wrapAsync(async (req, res) => {
   const { _id } = req.user;
-  const bookings = await Booking.find({ user: _id }).populate('car').sort({ createdAt: -1 });
-  res.json({ success: true, bookings });
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 0;
+  
+  if (limit > 0) {
+    const skip = (page - 1) * limit;
+    const bookings = await Booking.find({ user: _id }).populate('car').sort({ createdAt: -1 }).skip(skip).limit(limit);
+    const total = await Booking.countDocuments({ user: _id });
+    res.json({ success: true, bookings, total, page, totalPages: Math.ceil(total / limit) });
+  } else {
+    const bookings = await Booking.find({ user: _id }).populate('car').sort({ createdAt: -1 });
+    res.json({ success: true, bookings });
+  }
 });
 
 //* list owner bookings
@@ -192,8 +202,18 @@ export const getOwnerBookings = wrapAsync(async (req, res) => {
   if (req.user.role !== 'owner')
     return res.json({ success: false, message: 'Access denied' });
   const { _id } = req.user;
-  const bookings = await Booking.find({ owner: _id }).populate('car user').select("-user.password").sort({ createdAt: -1 });
-  res.json({ success: true, bookings });
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 0;
+  
+  if (limit > 0) {
+    const skip = (page - 1) * limit;
+    const bookings = await Booking.find({ owner: _id }).populate('car user').select("-user.password").sort({ createdAt: -1 }).skip(skip).limit(limit);
+    const total = await Booking.countDocuments({ owner: _id });
+    res.json({ success: true, bookings, total, page, totalPages: Math.ceil(total / limit) });
+  } else {
+    const bookings = await Booking.find({ owner: _id }).populate('car user').select("-user.password").sort({ createdAt: -1 });
+    res.json({ success: true, bookings });
+  }
 });
 
 //* change booking status
@@ -225,6 +245,20 @@ export const changeBookingStatus = wrapAsync(async (req, res) => {
     const originalDurationMs = new Date(booking.returnDate) - new Date(booking.pickupDate);
     booking.pickupDate = new Date();
     booking.returnDate = new Date(booking.pickupDate.getTime() + originalDurationMs);
+    
+    const car = await Car.findById(booking.car._id);
+    if (car) {
+      car.status = "unavailable";
+      await car.save();
+    }
+  }
+
+  if ((status === 'completed' || status === 'cancelled') && (booking.status !== 'completed' && booking.status !== 'cancelled')) {
+    const car = await Car.findById(booking.car._id);
+    if (car) {
+      car.status = "available";
+      await car.save();
+    }
   }
 
   booking.status = status;
@@ -346,6 +380,14 @@ export const verifyPayment = wrapAsync(async (req, res) => {
     pickupDate: newPickupDate,
     returnDate: newReturnDate
   }, { new: true }).populate('car user');
+
+  if (booking && booking.car) {
+    const car = await Car.findById(booking.car._id);
+    if (car) {
+      car.status = "unavailable";
+      await car.save();
+    }
+  }
 
   // Send booking confirmation email after successful payment
   if (booking?.user?.email) {

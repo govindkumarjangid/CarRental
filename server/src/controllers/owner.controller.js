@@ -80,8 +80,18 @@ export const addCar = wrapAsync(async (req, res) => {
 //* get owner cars
 export const getOwnerCars = wrapAsync(async (req, res) => {
   const { _id } = req.user;
-  const cars = await Car.find({ owner: _id });
-  res.json({ success: true, cars });
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 0;
+  
+  if (limit > 0) {
+    const skip = (page - 1) * limit;
+    const cars = await Car.find({ owner: _id }).skip(skip).limit(limit);
+    const total = await Car.countDocuments({ owner: _id });
+    res.json({ success: true, cars, total, page, totalPages: Math.ceil(total / limit) });
+  } else {
+    const cars = await Car.find({ owner: _id });
+    res.json({ success: true, cars });
+  }
 });
 
 //* update car status
@@ -271,9 +281,19 @@ export const updateUserImage = wrapAsync(async (req, res) => {
 });
 
 //* get all users (for admin)
-export const getAllUsers = wrapAsync(async (_, res) => {
-  const users = await User.find().select('-password');
-  res.json({ success: true, users });
+export const getAllUsers = wrapAsync(async (req, res) => {
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 0;
+  
+  if (limit > 0) {
+    const skip = (page - 1) * limit;
+    const users = await User.find().select('-password').skip(skip).limit(limit);
+    const total = await User.countDocuments();
+    res.json({ success: true, users, total, page, totalPages: Math.ceil(total / limit) });
+  } else {
+    const users = await User.find().select('-password');
+    res.json({ success: true, users });
+  }
 });
 
 //* block unblock user (for admin)
