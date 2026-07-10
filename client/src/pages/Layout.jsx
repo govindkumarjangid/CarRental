@@ -24,9 +24,9 @@ const Layout = () => {
 	return (
 		<div className="h-screen-dynamic flex flex-col overflow-hidden">
 			{/* Navbar */}
-			<NavbarOwner 
-				toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} 
-				isSidebarOpen={isSidebarOpen} 
+			<NavbarOwner
+				toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
+				isSidebarOpen={isSidebarOpen}
 			/>
 
 			{/* Body */}
@@ -53,7 +53,7 @@ const Layout = () => {
 								animate={{ opacity: 1, y: 0 }}
 								exit={{ opacity: 0, y: 30 }}
 								transition={{ duration: 0.3, ease: "easeOut" }}
-								className="absolute inset-0 bg-white z-[100] flex flex-col"
+								className="absolute inset-0 bg-white z-100 flex flex-col"
 							>
 								<div className="p-4 md:p-8 flex-1 flex flex-col min-h-full">
 									<LiveTracker carId={trackingCarId} onClose={() => setIsLiveTrackerOpen(false)} />

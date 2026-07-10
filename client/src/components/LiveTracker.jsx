@@ -25,7 +25,7 @@ const carIcon = new L.DivIcon({
 
 const LiveTracker = ({ carId, onClose }) => {
     const [carData, setCarData] = useState({
-        lat: null, 
+        lat: null,
         lng: null,
         speed: 0,
         carId: null
@@ -53,7 +53,7 @@ const LiveTracker = ({ carId, onClose }) => {
 
         socket.on('connect', handleConnect);
         socket.on('broadcast_car_location', handleLocationUpdate);
-        
+
         // Start simulation for this car
         if (carId) {
             socket.emit('start_tracking_simulation', carId);
@@ -94,7 +94,7 @@ const LiveTracker = ({ carId, onClose }) => {
 
     useEffect(() => {
         latestCoords.current = { lat: carData.lat, lng: carData.lng };
-        
+
         // Fetch immediately the first time we get valid coordinates
         if (carData.lat && carData.lng && !hasFetchedFirst.current) {
             hasFetchedFirst.current = true;
@@ -123,14 +123,14 @@ const LiveTracker = ({ carId, onClose }) => {
                     </button>
                 )}
             </div>
-            
+
             <div className="flex-1 flex flex-col relative rounded-3xl overflow-hidden border border-gray-200 shadow-sm">
                 {position ? (
                     <>
 
-                        <MapContainer 
-                            center={position} 
-                            zoom={16} 
+                        <MapContainer
+                            center={position}
+                            zoom={16}
                             style={{ height: "100%", width: "100%" }}
                             zoomControl={false}
                         >
@@ -148,13 +148,13 @@ const LiveTracker = ({ carId, onClose }) => {
                             </Marker>
                             <MapRecenter lat={carData.lat} lng={carData.lng} />
                         </MapContainer>
-                        
-                        <div className="absolute top-4 left-4 z-[1000] bg-white/95 backdrop-blur-md p-5 rounded-2xl shadow-xl border border-gray-100 flex flex-col gap-4 min-w-72 pointer-events-auto">
+
+                        <div className="absolute top-4 left-4 z-1000 bg-white/95 backdrop-blur-md p-5 rounded-2xl shadow-xl border border-gray-100 flex flex-col gap-4 min-w-72 pointer-events-auto">
                             <div>
                                 <p className="text-[11px] text-gray-500 font-bold uppercase tracking-wider mb-1">Car Details</p>
                                 <p className="text-sm font-bold text-gray-800 line-clamp-1">ID: {carId || carData.carId}</p>
                             </div>
-                            
+
                             <div className="h-px w-full bg-gray-100"></div>
 
                             <div className="flex flex-col gap-2">
@@ -177,7 +177,7 @@ const LiveTracker = ({ carId, onClose }) => {
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div className="h-px w-full bg-gray-100"></div>
 
                             <div className="flex items-center gap-3">

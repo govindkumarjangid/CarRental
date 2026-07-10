@@ -1,5 +1,7 @@
 import { Server } from "socket.io";
 import Message from "../models/message.model.js";
+import Car from "../models/car.model.js";
+import CarLocation from "../models/carLocation.model.js";
 
 let io;
 
@@ -58,6 +60,56 @@ export const initSocket = (server) => {
       socket.to(chatId).emit("receiveMessage", { message, chatId });
     });
 
+    // Throttler for DB saves
+    const locationSaveThrottler = new Map();
+    const SAVE_INTERVAL_MS = 60 * 60 * 1000; // 1 hour
+
+    const saveLocationToDB = async (payload) => {
+        try {
+            const { carId, latitude, longitude, speed } = payload;
+            const now = Date.now();
+            const lastSaved = locationSaveThrottler.get(carId) || 0;
+            
+            // Save if it's been 1 hour since last save
+            if (now - lastSaved >= SAVE_INTERVAL_MS) {
+                const car = await Car.findById(carId);
+                if (!car) return;
+
+                let locationName = "Unknown Location";
+                try {
+                    const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`, {
+                        headers: { 'User-Agent': 'CarRentalApp/1.0' }
+                    });
+                    const data = await response.json();
+                    if (data && data.display_name) {
+                        const addressParts = data.display_name.split(', ');
+                        locationName = addressParts.slice(0, 3).join(', ');
+                    }
+                } catch (err) {
+                    console.error("Error fetching location name in backend:", err);
+                }
+
+                await CarLocation.findOneAndUpdate(
+                    { car: carId },
+                    {
+                        owner: car.owner,
+                        latitude,
+                        longitude,
+                        speed,
+                        locationName,
+                        lastUpdated: new Date()
+                    },
+                    { upsert: true, new: true }
+                );
+
+                locationSaveThrottler.set(carId, now);
+                console.log(`[DB] Saved live location for car: ${carId}`);
+            }
+        } catch (error) {
+            console.error("Error saving car location to DB:", error);
+        }
+    };
+
     // INTERNAL CAR SIMULATOR LOGIC
     socket.on("start_tracking_simulation", (carId) => {
       if (!carId) return;
@@ -80,6 +132,7 @@ export const initSocket = (server) => {
             };
             
             io.emit("broadcast_car_location", payload);
+            saveLocationToDB(payload); // Trigger save check
             currentIndex = (currentIndex + 1) % routeCoordinates.length;
         }, 3000);
         
@@ -102,6 +155,7 @@ export const initSocket = (server) => {
     // car location update from external simulator (fallback)
     socket.on("car_location_update", (data) => {
       io.emit("broadcast_car_location", data);
+      saveLocationToDB(data); // Trigger save check
     });
 
     // mark messages as read
