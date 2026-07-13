@@ -40,8 +40,20 @@ const Layout = () => {
 					{/* Scrolling Container */}
 					<div
 						ref={scrollRef}
+						data-lenis-prevent
 						className="flex-1 overflow-y-auto overflow-x-hidden custom-theme-scrollbar w-full h-full">
-						<Outlet context={{ setTrackingCarId, setIsLiveTrackerOpen }} />
+						<AnimatePresence mode="wait">
+							<motion.div
+								key={pathname}
+								initial={{ opacity: 0, y: 5 }}
+								animate={{ opacity: 1, y: 0 }}
+								exit={{ opacity: 0, y: -5 }}
+								transition={{ duration: 0.3 }}
+								className="min-h-full flex flex-col"
+							>
+								<Outlet context={{ setTrackingCarId, setIsLiveTrackerOpen }} />
+							</motion.div>
+						</AnimatePresence>
 					</div>
 
 					{/* Live Tracker Overlay (Full content area, absolute to outer div) */}

@@ -7,11 +7,11 @@ import { assets } from "../../assets/assets.jsx";
 const Footer = () => {
 	return (
 		<motion.div
-			initial={{ opacity: 0 }}
-			whileInView="show"
+			initial="hidden"
+			animate="show"
 			viewport={{ amount: 0.1 }}
 			variants={{
-				hidden: {},
+				hidden: { opacity: 1 },
 				show: {
 					transition: {
 						staggerChildren: 0.15,
@@ -79,8 +79,8 @@ const Footer = () => {
 						<ul className="flex flex-col gap-3 text-sm">
 							<li><Link to="/" className="hover:text-primary  transition-colors">Home</Link></li>
 							<li><Link to="/cars" className="hover:text-primary  transition-colors">Browse Cars</Link></li>
-							<li><Link to="/" className="hover:text-primary  transition-colors">List Your Car</Link></li>
-							<li><Link to="/" className="hover:text-primary  transition-colors">About Us</Link></li>
+							<li><Link to="/owner" className="hover:text-primary  transition-colors">List Your Car</Link></li>
+							<li><Link to="/about" className="hover:text-primary  transition-colors">About Us</Link></li>
 						</ul>
 					</motion.div>
 
@@ -97,10 +97,10 @@ const Footer = () => {
 							Resources
 						</h3>
 						<ul className="flex flex-col gap-3 text-sm">
-							<li><Link className="hover:text-primary  transition-colors">Help Center</Link></li>
-							<li><Link className="hover:text-primary  transition-colors">Terms of Service</Link></li>
-							<li><Link className="hover:text-primary  transition-colors">Privacy Policy</Link></li>
-							<li><Link className="hover:text-primary  transition-colors">Insurance</Link></li>
+							<li><Link to="/help" className="hover:text-primary  transition-colors">Help Center</Link></li>
+							<li><Link to="/terms" className="hover:text-primary  transition-colors">Terms of Service</Link></li>
+							<li><Link to="/privacy" className="hover:text-primary  transition-colors">Privacy Policy</Link></li>
+							<li><Link to="/insurance" className="hover:text-primary  transition-colors">Insurance</Link></li>
 						</ul>
 					</motion.div>
 
@@ -159,11 +159,11 @@ const Footer = () => {
 					</p>
 
 					<ul className="flex items-center gap-6 order-1 md:order-2">
-						<li><a href="#" className="hover:text-primary  transition-colors">Terms</a></li>
+						<li><Link to="/terms" className="hover:text-primary  transition-colors">Terms</Link></li>
 						<li className="text-gray-300 ">|</li>
-						<li><a href="#" className="hover:text-primary  transition-colors">Privacy</a></li>
+						<li><Link to="/privacy" className="hover:text-primary  transition-colors">Privacy</Link></li>
 						<li className="text-gray-300 ">|</li>
-						<li><a href="#" className="hover:text-primary  transition-colors">Cookies</a></li>
+						<li><Link to="/help" className="hover:text-primary  transition-colors">Help</Link></li>
 					</ul>
 				</motion.div>
 			</div>

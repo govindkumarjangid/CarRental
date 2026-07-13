@@ -32,6 +32,7 @@ import {
 import ResponsiveImage from "./components/UI/ResponsiveImage.jsx";
 import IconButton from "./components/UI/IconButton.jsx";
 import UserAvatar from "./components/UI/UserAvatar.jsx";
+import AccordionItem from "./components/UI/AccordionItem.jsx";
 
 export {
     Navbar,
@@ -65,5 +66,6 @@ export {
     ResponsiveImage,
     IconButton,
     UserAvatar,
-    iconList
+    iconList,
+    AccordionItem
 }
