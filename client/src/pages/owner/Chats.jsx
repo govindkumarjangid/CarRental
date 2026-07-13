@@ -3,7 +3,8 @@ import { useChatStore } from "../../store/useChatStore.js";
 import socket from "../../socket.js";
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Check, CheckCheck } from "lucide-react";
+import { Check, CheckCheck, X, ChevronLeft, ChevronRight } from "lucide-react";
+import Lenis from "lenis";
 import { iconList } from "../../assets/assets.jsx";
 import { Title as OwnerTitle } from "../../components/owner/Title.jsx";
 import { ChatSkeletonList, OwnerChatMessageSkeleton } from "../../components/skeletons";
@@ -58,13 +59,51 @@ const Chats = () => {
   const scrollContainerRef = useRef(null);
   const prevMessagesLength = useRef(0);
 
+  // Local Lenis instance for smooth chat list scrolling in owner panel
+  useEffect(() => {
+    if (!scrollContainerRef.current) return;
+    const container = scrollContainerRef.current;
+    const content = container.firstElementChild;
+    if (!content) return;
+
+    const lenisInstance = new Lenis({
+      wrapper: container,
+      content: content,
+      smoothWheel: true,
+      lerp: 0.08,
+      duration: 1.2,
+    });
+
+    let rafId;
+    function raf(time) {
+      lenisInstance.raf(time);
+      rafId = requestAnimationFrame(raf);
+    }
+    rafId = requestAnimationFrame(raf);
+    container.__lenis = lenisInstance;
+
+    return () => {
+      cancelAnimationFrame(rafId);
+      lenisInstance.destroy();
+      container.__lenis = null;
+    };
+  }, [activeChat?._id]); // Re-initialize when active chat changes to hook onto the new DOM wrapper
+
   useEffect(() => {
     if (scrollContainerRef.current) {
       const container = scrollContainerRef.current;
-      const isInitialLoad = prevMessagesLength.current === 0 && messages.length> 0;
+      const isInitialLoad = prevMessagesLength.current === 0 && messages.length > 0;
       const isNearBottom = container.scrollHeight - container.scrollTop - container.clientHeight < 200;
-      if (isInitialLoad || isNearBottom)
-        container.scrollTo({ top: container.scrollHeight, behavior: isInitialLoad ? "auto" : "smooth" });
+      if (isInitialLoad || isNearBottom) {
+        if (container.__lenis) {
+          container.__lenis.scrollTo("bottom", {
+            immediate: isInitialLoad,
+            force: true
+          });
+        } else {
+          container.scrollTo({ top: container.scrollHeight, behavior: isInitialLoad ? "auto" : "smooth" });
+        }
+      }
       prevMessagesLength.current = messages.length;
     }
   }, [messages]);
@@ -105,6 +144,43 @@ const Chats = () => {
       year: "numeric",
     });
     return `${dateStr} • ${time}`;
+  };
+
+  const formatDateDivider = (date) => {
+    const msgDate = new Date(date);
+    const now = new Date();
+    const isToday = msgDate.toDateString() === now.toDateString();
+
+    const yesterday = new Date();
+    yesterday.setDate(now.getDate() - 1);
+    const isYesterday = msgDate.toDateString() === yesterday.toDateString();
+
+    if (isToday) return "Today";
+    if (isYesterday) return "Yesterday";
+
+    return msgDate.toLocaleDateString("en-IN", {
+      day: "2-digit",
+      month: "long",
+      year: "numeric",
+    });
+  };
+
+  const groupMessagesByDay = (list) => {
+    const groups = [];
+    (list || []).forEach((m, idx) => {
+      const dateStr = new Date(m.createdAt).toDateString();
+      let group = groups.find(g => g.dateStr === dateStr);
+      if (!group) {
+        group = {
+          dateStr,
+          createdAt: m.createdAt,
+          messages: []
+        };
+        groups.push(group);
+      }
+      group.messages.push({ ...m, globalIndex: idx });
+    });
+    return groups;
   };
 
   const formatShortTime = (date) => {
@@ -229,7 +305,7 @@ const Chats = () => {
   useEffect(() => {
     const handleMessagesRead = ({ chatId }) => {
       if (chatId === activeChat?._id)
-        setMessages(prev => prev.map(m => m.senderRole === user.role ? { ...m, seenByReceiver: true } : m));
+        setMessages(prev => (prev || []).map(m => m.senderRole === user.role ? { ...m, seenByReceiver: true } : m));
     };
     socket.on("messagesRead", handleMessagesRead);
     return () => socket.off("messagesRead", handleMessagesRead);
@@ -468,88 +544,117 @@ const Chats = () => {
             {/* MESSAGES */}
             <div className="flex-1 min-h-0 relative">
               {activeChat ? (
-                <div ref={scrollContainerRef} className="h-full w-full overflow-y-auto custom-scrollbar bg-[#f8fafc] bg-[radial-gradient(#e2e8f0_1px,transparent_1px)] background-size:[16px_16px]">
+                <div ref={scrollContainerRef} className="h-full w-full overflow-y-auto custom-scrollbar chat-pattern-bg">
                   {/* Spacer to push messages to bottom when there are few of them */}
                   <div className="flex flex-col min-h-full">
                     <div className="flex-1" />
-                    <div className="p-4 md:p-6 space-y-4 flex flex-col">
+                    <div className="p-3 md:p-4 flex flex-col">
                       <AnimatePresence initial={false}>
-                        {messages.map((m) => (
-                          <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            transition={{ duration: 0.3 }}
-                            key={m._id}
-                            className={`relative max-w-[85%] md:max-w-[70%] w-fit px-5 py-3 text-[14px] rounded-3xl leading-snug wrap-break-words shadow-sm transition-all hover:shadow-md ${m.senderRole === user.role
-                              ? "ml-auto bg-linear-to-r from-primary to-indigo-600 text-white rounded-tr-none"
-                              : "bg-white text-gray-800 rounded-tl-none border border-slate-100"
-                              }`}>
-                            {m.attachments && m.attachments.length> 0 && (
-                              <div className={`flex flex-col gap-2 mb-2 ${m.attachments.length> 1 ? "grid grid-cols-2" : ""}`}>
-                                {m.attachments.map((att, idx) => (
-                                  <div key={idx} className="group relative rounded-lg overflow-hidden border border-black/5 shadow-sm bg-black/5">
-                                    {att.type === 'image' ? (
-                                      <>
-                                        <img
-                                          src={att.url}
-                                          alt="attachment"
-                                          className="md:max-h-48 max-w-45 w-full object-cover cursor-pointer hover:opacity-90 transition-opacity"
-                                          onClick={() => window.open(att.url, '_blank')}
-                                        />
-                                        <button
-                                          onClick={(e) => {
-                                            e.stopPropagation();
-                                            handleDownload(att.url, att.name || `image_${idx}.jpg`);
-                                          }}
-                                          className="absolute top-0 right-0 h-8 w-8 bg-black/50 hover:bg-black/70 text-white rounded-full flex items-center justify-center opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all duration-200 shadow-lg backdrop-blur-sm cursor-pointer">
-                                          <iconList.Download size={16} />
-                                        </button>
-                                      </>
-                                    ) : (
-                                      <div className="flex items-center justify-between p-1.5 hover:bg-black/5 transition-colors">
-                                        <a
-                                          href={att.url}
-                                          target="_blank"
-                                          rel="noreferrer"
-                                          className="flex items-center gap-2 text-[13px] text-inherit no-underline min-w-0">
-                                          <div className="h-9 w-9 shrink-0 flex items-center justify-center bg-white rounded-lg shadow-sm">
-                                            <iconList.FileText className="text-red-500" size={20} />
-                                          </div>
-                                          <div className="flex flex-col min-w-0">
-                                            <span className="font-semibold truncate text-[11px]">{att.name || "Document.pdf"}</span>
-                                            <span className="text-[9px] opacity-60 uppercase">{att.type}</span>
-                                          </div>
-                                        </a>
-                                        <button
-                                          onClick={() => handleDownload(att.url, att.name || "document.pdf")}
-                                          className="h-7 w-7 flex items-center justify-center text-gray-500 hover:text-primary transition-colors cursor-pointer"
-                                          title="Download">
-                                          <iconList.Download size={16} />
-                                        </button>
-                                      </div>
+                        {groupMessagesByDay(messages).map((group) => (
+                          <div key={group.dateStr} className="flex flex-col relative w-full pt-2 pb-1">
+                            {/* Sticky Date Divider */}
+                            <div className="sticky top-2 z-20 mx-auto w-fit px-3 py-1 bg-white text-slate-600 text-[11.5px] font-medium rounded-lg border border-slate-200 shadow-xs select-none">
+                              {formatDateDivider(group.createdAt)}
+                            </div>
+
+                            {/* Messages of the day */}
+                            {group.messages.map((m) => {
+                              const isMe = m.senderRole === user.role;
+                              const showTail = m.globalIndex === 0 || messages[m.globalIndex - 1]?.senderRole !== m.senderRole;
+                              return (
+                                <motion.div
+                                  initial={{ opacity: 0 }}
+                                  animate={{ opacity: 1 }}
+                                  transition={{ duration: 0.3 }}
+                                  key={m._id}
+                                  className={`relative max-w-[85%] md:max-w-[70%] w-fit px-3 py-1.5 text-[13px] font-normal leading-snug wrap-break-words transition-all hover:shadow-md ${isMe
+                                    ? `ml-auto bg-[#dbeafe] text-slate-900 ${showTail ? "rounded-lg rounded-tr-none mt-2.5" : "rounded-lg mt-[3px]"}`
+                                    : `bg-white text-slate-900 border border-slate-100/60 ${showTail ? "rounded-lg rounded-tl-none mt-2.5" : "rounded-lg mt-[3px]"}`
+                                    }`}
+                                  style={{ minWidth: isMe ? "75px" : "60px" }}>
+                                  {showTail && isMe && (
+                                    <div className="absolute top-0 -right-1.5 w-[8px] h-[10px] text-[#dbeafe] fill-current">
+                                      <svg viewBox="0 0 19 15" className="w-full h-full">
+                                        <path d="M19 0H0v12.2c0 2.2 2.6 3.3 4.2 1.8L19 0z" />
+                                      </svg>
+                                    </div>
+                                  )}
+                                  {showTail && !isMe && (
+                                    <div className="absolute top-0 -left-1.5 w-[8px] h-[10px] text-white fill-current drop-shadow-[0_1px_1px_rgba(0,0,0,0.05)]">
+                                      <svg viewBox="0 0 19 15" className="w-full h-full">
+                                        <path d="M0 0h19L4.2 14C2.6 15.5 0 14.4 0 12.2V0z" />
+                                      </svg>
+                                    </div>
+                                  )}
+                                  {m.attachments && m.attachments.length > 0 && (
+                                    <div className={`flex flex-col gap-2 mb-2 ${m.attachments.length > 1 ? "grid grid-cols-2" : ""}`}>
+                                      {m.attachments.map((att, idx) => (
+                                        <div key={idx} className="group relative rounded-lg overflow-hidden border border-black/5 shadow-sm bg-black/5">
+                                          {att.type === 'image' ? (
+                                            <>
+                                              <img
+                                                src={att.url}
+                                                alt="attachment"
+                                                className="md:max-h-48 max-w-45 w-full object-cover cursor-pointer hover:opacity-90 transition-opacity"
+                                                onClick={() => window.open(att.url, '_blank')}
+                                              />
+                                              <button
+                                                onClick={(e) => {
+                                                  e.stopPropagation();
+                                                  handleDownload(att.url, att.name || `image_${idx}.jpg`);
+                                                }}
+                                                className="absolute top-0 right-0 h-8 w-8 bg-black/50 hover:bg-black/70 text-white rounded-full flex items-center justify-center opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all duration-200 shadow-lg backdrop-blur-sm cursor-pointer">
+                                                <iconList.Download size={16} />
+                                              </button>
+                                            </>
+                                          ) : (
+                                            <div className="flex items-center justify-between p-1.5 hover:bg-black/5 transition-colors">
+                                              <a
+                                                href={att.url}
+                                                target="_blank"
+                                                rel="noreferrer"
+                                                className="flex items-center gap-2 text-[13px] text-inherit no-underline min-w-0">
+                                                <div className="h-9 w-9 shrink-0 flex items-center justify-center bg-white rounded-lg shadow-sm">
+                                                  <iconList.FileText className="text-red-500" size={20} />
+                                                </div>
+                                                <div className="flex flex-col min-w-0">
+                                                  <span className="font-semibold truncate text-[11px]">{att.name || "Document.pdf"}</span>
+                                                  <span className="text-[9px] opacity-60 uppercase">{att.type}</span>
+                                                </div>
+                                              </a>
+                                              <button
+                                                onClick={() => handleDownload(att.url, att.name || "document.pdf")}
+                                                className="h-7 w-7 flex items-center justify-center text-gray-500 hover:text-primary transition-colors cursor-pointer"
+                                                title="Download">
+                                                <iconList.Download size={16} />
+                                              </button>
+                                            </div>
+                                          )}
+                                        </div>
+                                      ))}
+                                    </div>
+                                  )}
+                                  {m.message && <p className={`whitespace-pre-wrap leading-tight ${isMe ? "pr-[46px]" : "pr-[32px]"}`}>{m.message}</p>}
+                                  <div className={`absolute bottom-0.5 right-1.5 flex items-center gap-0.5 text-[9px] font-medium ${isMe ? "text-blue-900/50" : "text-gray-400"}`}>
+                                    <span>{formatMessageTime(m.createdAt).split('•').pop().trim()}</span>
+                                    {isMe && (
+                                      <span className="opacity-80">
+                                        {m.status === 'sending' ? (
+                                          <iconList.Clock size={9} className="text-blue-400 animate-pulse" />
+                                        ) : m.seenByReceiver ? (
+                                          <CheckCheck size={11} className="text-blue-600" />
+                                        ) : m.delivered ? (
+                                          <CheckCheck size={11} className="text-gray-400" />
+                                        ) : (
+                                          <Check size={11} className="text-gray-400" />
+                                        )}
+                                      </span>
                                     )}
                                   </div>
-                                ))}
-                              </div>
-                            )}
-                            {m.message && <p className="whitespace-pre-wrap">{m.message}</p>}
-                            <div className={`flex items-center justify-end gap-1.5 mt-1 text-[10px] font-medium ${m.senderRole === user.role ? "text-blue-100/90" : "text-gray-400"}`}>
-                              <span>{formatMessageTime(m.createdAt).split('•').pop().trim()}</span>
-                              {m.senderRole === user.role && (
-                                <span className="ml-0.5 opacity-90">
-                                  {m.status === 'sending' ? (
-                                    <iconList.Clock size={11} className="text-blue-200 animate-pulse" />
-                                  ) : m.seenByReceiver ? (
-                                    <CheckCheck size={14} className="text-white" />
-                                  ) : m.delivered ? (
-                                    <CheckCheck size={14} className="text-blue-200" />
-                                  ) : (
-                                    <Check size={14} className="text-blue-200" />
-                                  )}
-                                </span>
-                              )}
-                            </div>
-                          </motion.div>
+                                </motion.div>
+                              );
+                            })}
+                          </div>
                         ))}
                       </AnimatePresence>
                     </div>

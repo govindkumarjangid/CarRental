@@ -38,7 +38,7 @@ export const useChatStore = create((set, get) => ({
 
     setMessages: (updater) => {
         set((state) => ({
-            messages: typeof updater === "function" ? updater(state.messages) : updater,
+            messages: typeof updater === "function" ? updater(state.messages || []) : updater,
         }));
     },
 
@@ -50,7 +50,7 @@ export const useChatStore = create((set, get) => ({
             _id: tempId,
             senderRole: userRole,
             message: text,
-            attachments: attachments.map(a => ({
+            attachments: (attachments || []).map(a => ({
                 type: a.type,
                 url: a.preview || "",
                 name: a.name
@@ -59,7 +59,7 @@ export const useChatStore = create((set, get) => ({
             status: 'sending'
         };
 
-        set((state) => ({ messages: [...state.messages, temp] }));
+        set((state) => ({ messages: [...(state.messages || []), temp] }));
 
         try {
             let response;
@@ -87,7 +87,7 @@ export const useChatStore = create((set, get) => ({
 
             if (data.success) {
                 set((state) => ({
-                    messages: state.messages.map(m => m._id === tempId ? data.data : m)
+                    messages: (state.messages || []).map(m => m._id === tempId ? data.data : m)
                 }));
 
                 socket.emit("sendMessage", {
@@ -97,7 +97,7 @@ export const useChatStore = create((set, get) => ({
             }
         } catch (err) {
             set((state) => ({
-                messages: state.messages.filter(m => m._id !== tempId)
+                messages: (state.messages || []).filter(m => m._id !== tempId)
             }));
             toast.error(err.response?.data?.message || err.message || "Failed to send message");
         }
@@ -131,7 +131,7 @@ export const useChatStore = create((set, get) => ({
             _id: tempId,
             senderRole: userRole,
             message: text,
-            attachments: attachments.map(a => ({
+            attachments: (attachments || []).map(a => ({
                 type: a.type,
                 url: a.preview || "",
                 name: a.name
@@ -140,7 +140,7 @@ export const useChatStore = create((set, get) => ({
             status: 'sending'
         };
 
-        set((state) => ({ messages: [...state.messages, temp] }));
+        set((state) => ({ messages: [...(state.messages || []), temp] }));
 
         try {
             let response;
@@ -166,7 +166,7 @@ export const useChatStore = create((set, get) => ({
 
             const { data } = response;
             if (data.success) {
-                set((state) => ({ messages: state.messages.map(m => m._id === tempId ? data.data : m) }));
+                set((state) => ({ messages: (state.messages || []).map(m => m._id === tempId ? data.data : m) }));
                 socketInstance.emit("sendMessage", {
                     chatId,
                     message: data.data,
@@ -174,7 +174,7 @@ export const useChatStore = create((set, get) => ({
             }
         } catch (error) {
             set((state) => ({
-                messages: state.messages.filter(m => m._id !== tempId)
+                messages: (state.messages || []).filter(m => m._id !== tempId)
             }));
             toast.error(error.response?.data?.message || error.message || "Failed to send message");
         }

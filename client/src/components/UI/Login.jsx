@@ -10,7 +10,7 @@ import InputBox from '../owner/InputBox.jsx';
 const Login = () => {
 	const { signup, login, isLoading, setShowLogin } = useAuthStore();
 
-	const [state, setState] = useState("login");
+	const [state, setState] = useState("register");
 	const [name, setName] = useState("");
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");

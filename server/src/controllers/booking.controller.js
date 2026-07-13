@@ -29,7 +29,7 @@ export const checkAvaliablityofCar = wrapAsync(async (req, res) => {
   const returnDate = new Date(endTime);
   const car = await Car.find({ location, status: "available" });
 
-  const avaliableCarsPromises = car.map(async (car) => {
+  const avaliableCarsPromises = (car || []).map(async (car) => {
     const isAvaliable = await checkAvailability(car._id, pickupDate, returnDate);
     return { ...car._doc, isAvaliable: isAvaliable }
   })

@@ -59,7 +59,7 @@ app.use((err, req, res, next) => {
   }
 
   if (err.name === 'ValidationError') {
-    const errors = Object.values(err.errors).map(el => el.message);
+    const errors = Object.values(err.errors || {}).map(el => el.message);
     err.statusCode = 400;
     err.message = `Invalid input data: ${errors.join('. ')}`;
   }

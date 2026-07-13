@@ -11,6 +11,7 @@ export const accessChatSchema = z.object({
 export const sendMessageSchema = z.object({
   body: z.object({
     chatId: z.string().min(1, "Chat ID is required"),
-    message: z.string().min(1, "Message content is required"),
+    text: z.string().optional().nullable(),
+    from: z.string().optional().nullable(),
   }),
 });

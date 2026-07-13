@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Check, CheckCheck } from "lucide-react";
+import { Check, CheckCheck, X, ChevronLeft, ChevronRight } from "lucide-react";
+import Lenis from "lenis";
 
 import { useAuthStore } from "../store/useAuthStore.js";
 import { useCarStore } from "../store/useCarStore.js";
@@ -33,20 +34,89 @@ const ChatPage = () => {
   const scrollContainerRef = useRef(null);
   const prevMessagesLength = useRef(0);
 
+  const [lightboxIndex, setLightboxIndex] = useState(null);
+
+  // Collect all image attachments from current chat messages
+  const chatImages = messages
+    .flatMap(m => m.attachments || [])
+    .filter(att => att.type === 'image');
+
+  const handleImageClick = (url) => {
+    const index = chatImages.findIndex(img => img.url === url);
+    if (index !== -1) {
+      setLightboxIndex(index);
+    }
+  };
+
+  // Keyboard navigation for image lightbox
+  useEffect(() => {
+    if (lightboxIndex === null || chatImages.length === 0) return;
+
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape") {
+        setLightboxIndex(null);
+      } else if (e.key === "ArrowLeft" && chatImages.length > 1) {
+        setLightboxIndex((prev) => (prev === 0 ? chatImages.length - 1 : prev - 1));
+      } else if (e.key === "ArrowRight" && chatImages.length > 1) {
+        setLightboxIndex((prev) => (prev === chatImages.length - 1 ? 0 : prev + 1));
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [lightboxIndex, chatImages.length]);
+
+  // Local Lenis instance for smooth chat list scrolling
+  useEffect(() => {
+    if (!scrollContainerRef.current) return;
+    const container = scrollContainerRef.current;
+    const content = container.firstElementChild;
+    if (!content) return;
+
+    const lenisInstance = new Lenis({
+      wrapper: container,
+      content: content,
+      smoothWheel: true,
+      lerp: 0.08,
+      duration: 1.2,
+    });
+
+    let rafId;
+    function raf(time) {
+      lenisInstance.raf(time);
+      rafId = requestAnimationFrame(raf);
+    }
+    rafId = requestAnimationFrame(raf);
+    container.__lenis = lenisInstance;
+
+    return () => {
+      cancelAnimationFrame(rafId);
+      lenisInstance.destroy();
+      container.__lenis = null;
+    };
+  }, []);
+
   // Instant scroll on load, smooth scroll for new messages if near bottom
   useEffect(() => {
     if (scrollContainerRef.current) {
       const container = scrollContainerRef.current;
-      const isInitialLoad = prevMessagesLength.current === 0 && messages.length> 0;
+      const isInitialLoad = prevMessagesLength.current === 0 && messages.length > 0;
 
       // Check if user is near bottom (within 200px)
       const isNearBottom = container.scrollHeight - container.scrollTop - container.clientHeight < 200;
 
       if (isInitialLoad || isNearBottom) {
-        container.scrollTo({
-          top: container.scrollHeight,
-          behavior: isInitialLoad ? "auto" : "smooth"
-        });
+        if (container.__lenis) {
+          container.__lenis.scrollTo("bottom", {
+            immediate: isInitialLoad,
+            force: true
+          });
+        } else {
+          container.scrollTo({
+            top: container.scrollHeight,
+            behavior: isInitialLoad ? "auto" : "smooth"
+          });
+        }
       }
 
       prevMessagesLength.current = messages.length;
@@ -84,6 +154,43 @@ const ChatPage = () => {
       year: "numeric",
     });
     return `${dateStr} • ${time}`;
+  };
+
+  const formatDateDivider = (date) => {
+    const msgDate = new Date(date);
+    const now = new Date();
+    const isToday = msgDate.toDateString() === now.toDateString();
+
+    const yesterday = new Date();
+    yesterday.setDate(now.getDate() - 1);
+    const isYesterday = msgDate.toDateString() === yesterday.toDateString();
+
+    if (isToday) return "Today";
+    if (isYesterday) return "Yesterday";
+
+    return msgDate.toLocaleDateString("en-IN", {
+      day: "2-digit",
+      month: "long",
+      year: "numeric",
+    });
+  };
+
+  const groupMessagesByDay = (list) => {
+    const groups = [];
+    (list || []).forEach((m, idx) => {
+      const dateStr = new Date(m.createdAt).toDateString();
+      let group = groups.find(g => g.dateStr === dateStr);
+      if (!group) {
+        group = {
+          dateStr,
+          createdAt: m.createdAt,
+          messages: []
+        };
+        groups.push(group);
+      }
+      group.messages.push({ ...m, globalIndex: idx });
+    });
+    return groups;
   };
 
 
@@ -198,7 +305,7 @@ const ChatPage = () => {
   useEffect(() => {
     const handleMessagesRead = ({ chatId: readChatId }) => {
       if (readChatId === chatId) {
-        setMessages(prev => prev.map(m => m.senderRole === user.role ? { ...m, seenByReceiver: true } : m));
+        setMessages(prev => (prev || []).map(m => m.senderRole === user.role ? { ...m, seenByReceiver: true } : m));
       }
     };
     socket.on("messagesRead", handleMessagesRead);
@@ -302,8 +409,7 @@ const ChatPage = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto md:px-8 lg:px-16
-    bg-gray-50/50 h-full overflow-hidden flex flex-col">
+    <div className="max-w-7xl mx-auto px-4 md:px-8 w-full bg-gray-50/50 h-full overflow-hidden flex flex-col">
 
       <div className="w-full h-full bg-white flex flex-col md:flex-row overflow-hidden">
 
@@ -419,89 +525,117 @@ const ChatPage = () => {
 
               </div>
 
-              {/* CHAT BODY AREA */}
               <div className="flex-1 min-h-0 relative">
-                <div ref={scrollContainerRef} className="absolute inset-0 overflow-y-auto p-4 md:p-6 custom-scrollbar bg-[#f8fafc] bg-[radial-gradient(#e2e8f0_1px,transparent_1px)] background-size:[16px_16px]">
+                <div ref={scrollContainerRef} data-lenis-prevent className="absolute inset-0 overflow-y-auto p-4 md:p-6 custom-scrollbar chat-pattern-bg">
                   <div className="flex flex-col min-h-full">
                     <div className="flex-1" />
-                    <div className="space-y-3 flex flex-col p-1">
+                    <div className="flex flex-col p-1">
                       <AnimatePresence initial={false}>
-                        {messages.map((m) => (
-                          <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            transition={{ duration: 0.3 }}
-                            key={m._id}
-                            className={`relative max-w-[85%] md:max-w-[65%] w-fit px-5 py-3 text-[14.5px] rounded-3xl shadow-sm wrap-break-words transition-all hover:shadow-md ${m.senderRole === user.role
-                              ? "ml-auto bg-linear-to-r from-primary to-indigo-600 text-white rounded-tr-none"
-                              : "bg-white text-gray-800 rounded-tl-none border border-slate-100"
-                              }`}>
-                            {m.attachments && m.attachments.length> 0 && (
-                              <div className={`flex flex-col gap-2 mb-2 ${m.attachments.length> 1 ? "grid grid-cols-2" : ""}`}>
-                                {m.attachments.map((att, idx) => (
-                                  <div key={idx} className="group relative rounded-lg overflow-hidden border border-black/5 shadow-sm bg-black/5">
-                                    {att.type === 'image' ? (
-                                      <>
-                                        <img
-                                          src={att.url}
-                                          alt="attachment"
-                                          className="md:max-w-55 max-w-45 h-full object-cover cursor-pointer hover:opacity-90 transition-opacity"
-                                          onClick={() => window.open(att.url, '_blank')}
-                                        />
-                                        <button
-                                          onClick={(e) => {
-                                            e.stopPropagation();
-                                            handleDownload(att.url, att.name || `image_${idx}.jpg`);
-                                          }}
-                                          className="absolute top-0 right-0 h-7 w-7 bg-black/50 hover:bg-black/70 text-white rounded-full flex items-center justify-center opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all duration-200 shadow-lg backdrop-blur-sm cursor-pointer">
-                                          <iconList.Download size={16} />
-                                        </button>
-                                      </>
-                                    ) : (
-                                      <div className="flex items-center justify-between p-1.5 hover:bg-black/5 transition-colors">
-                                        <a
-                                          href={att.url}
-                                          target="_blank"
-                                          rel="noreferrer"
-                                          className="flex items-center gap-2 text-[13px] text-inherit no-underline min-w-0">
-                                          <div className="h-9 w-9 shrink-0 flex items-center justify-center bg-white rounded-lg shadow-sm">
-                                            <iconList.FileText className="text-red-500" size={20} />
-                                          </div>
-                                          <div className="flex flex-col min-w-0">
-                                            <span className="font-semibold truncate text-[11px]">{att.name || "Document.pdf"}</span>
-                                            <span className="text-[9px] opacity-60 uppercase">{att.type}</span>
-                                          </div>
-                                        </a>
-                                        <button
-                                          onClick={() => handleDownload(att.url, att.name || "document.pdf")}
-                                          className="h-7 w-7 flex items-center justify-center text-gray-500 hover:text-primary transition-colors cursor-pointer"
-                                          title="Download">
-                                          <iconList.Download size={16} />
-                                        </button>
-                                      </div>
+                        {groupMessagesByDay(messages).map((group) => (
+                          <div key={group.dateStr} className="flex flex-col relative w-full pt-2 pb-1">
+                            {/* Sticky Date Divider */}
+                            <div className="sticky top-2 z-20 mx-auto w-fit px-3 py-1 bg-white text-slate-600 text-[11.5px] font-medium rounded-lg border border-slate-200 shadow-xs select-none">
+                              {formatDateDivider(group.createdAt)}
+                            </div>
+
+                            {/* Messages of the day */}
+                            {group.messages.map((m) => {
+                              const isMe = m.senderRole === user.role;
+                              const showTail = m.globalIndex === 0 || messages[m.globalIndex - 1]?.senderRole !== m.senderRole;
+                              return (
+                                <motion.div
+                                  initial={{ opacity: 0 }}
+                                  animate={{ opacity: 1 }}
+                                  transition={{ duration: 0.3 }}
+                                  key={m._id}
+                                  className={`relative max-w-[85%] md:max-w-[65%] w-fit px-3 py-1.5 text-[13px] font-normal wrap-break-words ${isMe
+                                    ? `ml-auto bg-[#dbeafe] text-slate-900 ${showTail ? "rounded-lg rounded-tr-none mt-2.5" : "rounded-lg mt-[3px]"}`
+                                    : `bg-white text-slate-900 border border-slate-100/60 ${showTail ? "rounded-lg rounded-tl-none mt-2.5" : "rounded-lg mt-[3px]"}`
+                                    }`}
+                                  style={{ minWidth: isMe ? "75px" : "60px" }}>
+                                  {showTail && isMe && (
+                                    <div className="absolute top-0 -right-1.5 w-[8px] h-[10px] text-[#dbeafe] fill-current">
+                                      <svg viewBox="0 0 19 15" className="w-full h-full">
+                                        <path d="M19 0H0v12.2c0 2.2 2.6 3.3 4.2 1.8L19 0z" />
+                                      </svg>
+                                    </div>
+                                  )}
+                                  {showTail && !isMe && (
+                                    <div className="absolute top-0 -left-1.5 w-[8px] h-[10px] text-white fill-current drop-shadow-[0_1px_1px_rgba(0,0,0,0.05)]">
+                                      <svg viewBox="0 0 19 15" className="w-full h-full">
+                                        <path d="M0 0h19L4.2 14C2.6 15.5 0 14.4 0 12.2V0z" />
+                                      </svg>
+                                    </div>
+                                  )}
+                                  {m.attachments && m.attachments.length > 0 && (
+                                    <div className={`flex flex-col gap-2 mb-2 ${m.attachments.length > 1 ? "grid grid-cols-2" : ""}`}>
+                                      {m.attachments.map((att, idx) => (
+                                        <div key={idx} className="group relative rounded-lg overflow-hidden border border-black/5 shadow-sm bg-black/5">
+                                          {att.type === 'image' ? (
+                                            <>
+                                              <img
+                                                src={att.url}
+                                                alt="attachment"
+                                                className="md:max-w-55 max-w-45 h-full object-cover cursor-pointer hover:opacity-90 transition-opacity"
+                                                onClick={() => handleImageClick(att.url)}
+                                              />
+                                              <button
+                                                onClick={(e) => {
+                                                  e.stopPropagation();
+                                                  handleDownload(att.url, att.name || `image_${idx}.jpg`);
+                                                }}
+                                                className="absolute top-0 right-0 h-7 w-7 bg-black/50 hover:bg-black/70 text-white rounded-full flex items-center justify-center opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all duration-200 shadow-lg backdrop-blur-sm cursor-pointer">
+                                                <iconList.Download size={16} />
+                                              </button>
+                                            </>
+                                          ) : (
+                                            <div className="flex items-center justify-between p-1.5 hover:bg-black/5 transition-colors">
+                                              <a
+                                                href={att.url}
+                                                target="_blank"
+                                                rel="noreferrer"
+                                                className="flex items-center gap-2 text-[13px] text-inherit no-underline min-w-0">
+                                                <div className="h-9 w-9 shrink-0 flex items-center justify-center bg-white rounded-lg shadow-sm">
+                                                  <iconList.FileText className="text-red-500" size={20} />
+                                                </div>
+                                                <div className="flex flex-col min-w-0">
+                                                  <span className="font-semibold truncate text-[11px]">{att.name || "Document.pdf"}</span>
+                                                  <span className="text-[9px] opacity-60 uppercase">{att.type}</span>
+                                                </div>
+                                              </a>
+                                              <button
+                                                onClick={() => handleDownload(att.url, att.name || "document.pdf")}
+                                                className="h-7 w-7 flex items-center justify-center text-gray-500 hover:text-primary transition-colors cursor-pointer"
+                                                title="Download">
+                                                <iconList.Download size={16} />
+                                              </button>
+                                            </div>
+                                          )}
+                                        </div>
+                                      ))}
+                                    </div>
+                                  )}
+                                  {m.message && <p className={`whitespace-pre-wrap leading-tight ${isMe ? "pr-[46px]" : "pr-[32px]"}`}>{m.message}</p>}
+                                  <div className={`absolute bottom-0.5 right-1.5 flex items-center gap-0.5 text-[9px] font-medium ${isMe ? "text-blue-900/50" : "text-gray-400"}`}>
+                                    <span>{formatMessageTime(m.createdAt).split('•').pop().trim()}</span>
+                                    {isMe && (
+                                      <span className="opacity-80">
+                                        {m.status === 'sending' ? (
+                                          <iconList.Clock size={9} className="text-blue-400 animate-pulse" />
+                                        ) : m.seenByReceiver ? (
+                                          <CheckCheck size={11} className="text-blue-600" />
+                                        ) : m.delivered ? (
+                                          <CheckCheck size={11} className="text-gray-400" />
+                                        ) : (
+                                          <Check size={11} className="text-gray-400" />
+                                        )}
+                                      </span>
                                     )}
                                   </div>
-                                ))}
-                              </div>
-                            )}
-                            {m.message && <p className="whitespace-pre-wrap">{m.message}</p>}
-                            <div className={`flex items-center justify-end gap-1.5 mt-1 text-[10px] font-medium ${m.senderRole === user.role ? "text-blue-100/90" : "text-gray-400"}`}>
-                              <span>{formatMessageTime(m.createdAt).split('•').pop().trim()}</span>
-                              {m.senderRole === user.role && (
-                                <span className="ml-0.5 opacity-90">
-                                  {m.status === 'sending' ? (
-                                    <iconList.Clock size={11} className="text-blue-200 animate-pulse" />
-                                  ) : m.seenByReceiver ? (
-                                    <CheckCheck size={14} className="text-white" />
-                                  ) : m.delivered ? (
-                                    <CheckCheck size={14} className="text-blue-200" />
-                                  ) : (
-                                    <Check size={14} className="text-blue-200" />
-                                  )}
-                                </span>
-                              )}
-                            </div>
-                          </motion.div>
+                                </motion.div>
+                              );
+                            })}
+                          </div>
                         ))}
                       </AnimatePresence>
                     </div>
@@ -597,6 +731,71 @@ const ChatPage = () => {
         }
 
       </div>
+      {/* Image Lightbox Modal with Slider controls */}
+      {lightboxIndex !== null && chatImages.length > 0 && (
+        <div 
+          className="fixed inset-0 z-[999] bg-black/95 backdrop-blur-md flex items-center justify-center select-none"
+          onClick={() => setLightboxIndex(null)}
+        >
+          {/* Close Button */}
+          <button 
+            onClick={() => setLightboxIndex(null)}
+            className="absolute top-4 right-4 text-white/80 hover:text-white bg-white/10 hover:bg-white/20 p-2.5 rounded-full transition-all duration-200 cursor-pointer z-[1000] flex items-center justify-center"
+          >
+            <X size={24} />
+          </button>
+
+          {/* Left Arrow */}
+          {chatImages.length > 1 && (
+            <button 
+              onClick={(e) => {
+                e.stopPropagation();
+                setLightboxIndex((prev) => (prev === 0 ? chatImages.length - 1 : prev - 1));
+              }}
+              className="absolute left-4 md:left-8 text-white/80 hover:text-white bg-white/10 hover:bg-white/20 p-3 rounded-full transition-all duration-200 cursor-pointer z-[1000] flex items-center justify-center"
+            >
+              <ChevronLeft size={28} />
+            </button>
+          )}
+
+          {/* Main Image Container */}
+          <div 
+            className="relative max-w-full max-h-[85vh] px-4 flex flex-col items-center justify-center"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <img 
+              src={chatImages[lightboxIndex].url} 
+              alt={chatImages[lightboxIndex].name || "Chat image"} 
+              className="max-w-[90vw] max-h-[75vh] object-contain rounded-lg shadow-2xl transition-all duration-300"
+            />
+            
+            {/* Caption / Details */}
+            <div className="mt-4 text-center">
+              <span className="text-white/60 text-xs">
+                Image {lightboxIndex + 1} of {chatImages.length}
+              </span>
+              {chatImages[lightboxIndex].name && (
+                <p className="text-white/90 text-sm font-medium mt-1 truncate max-w-md">
+                  {chatImages[lightboxIndex].name}
+                </p>
+              )}
+            </div>
+          </div>
+
+          {/* Right Arrow */}
+          {chatImages.length > 1 && (
+            <button 
+              onClick={(e) => {
+                e.stopPropagation();
+                setLightboxIndex((prev) => (prev === chatImages.length - 1 ? 0 : prev + 1));
+              }}
+              className="absolute right-4 md:right-8 text-white/80 hover:text-white bg-white/10 hover:bg-white/20 p-3 rounded-full transition-all duration-200 cursor-pointer z-[1000] flex items-center justify-center"
+            >
+              <ChevronRight size={28} />
+            </button>
+          )}
+        </div>
+      )}
     </div>
   );
 };

@@ -115,7 +115,7 @@ const App = () => {
 					)}
 				</AnimatePresence>
 
-				<div id="scroll-content" className="flex flex-col min-h-full">
+				<div id="scroll-content" className={`flex flex-col ${isChatPath ? "h-full" : "min-h-full"}`}>
 					<AnimatePresence mode="wait">
 						<motion.div
 							key={transitionKey}
@@ -123,7 +123,7 @@ const App = () => {
 							animate={{ opacity: 1, y: 0 }}
 							exit={{ opacity: 0, y: -5 }}
 							transition={{ duration: 0.3 }}
-							className="flex-1 shrink-0"
+							className={`flex-1 shrink-0 ${isChatPath ? "h-full flex flex-col" : ""}`}
 						>
 							<Routes location={location}>
 								<Route path="/" element={
