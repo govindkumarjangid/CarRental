@@ -8,10 +8,9 @@ const EmptyCarState = () => {
 
 	return (
 		<motion.div
-			initial={{ opacity: 0, scale: 0.95 }}
-			animate={{ opacity: 1, scale: 1 }}
-			className="flex flex-col items-center justify-center p-12 text-center bg-white rounded-xl border border-dashed border-gray-300 m-6 md:m-10"
-		>
+			initial={{ opacity: 0 }}
+			animate={{ opacity: 1 }}
+			className="flex flex-col items-center justify-center p-12 text-center bg-white rounded-xl border border-dashed border-gray-300 m-6 md:m-10">
 			<div className="w-24 h-24 bg-primary/10 rounded-full flex items-center justify-center text-primary mb-8 animate-bounce-slow">
 				<iconList.CarFront size={48} />
 			</div>
@@ -26,8 +25,7 @@ const EmptyCarState = () => {
 
 			<button
 				onClick={() => navigate('/owner/add-car')}
-				className="px-5 py-3 text-md  bg-primary text-white rounded-xl font-semibold md:text-lg hover:bg-primary-dull transition-all active:scale-95 flex items-center md:gap-3 gap-2 cursor-pointer shadow-xl hover:shadow-primary/20"
-			>
+				className="px-5 py-3 text-md  bg-primary text-white rounded-xl font-semibold md:text-lg hover:bg-primary-dull transition-all active:scale-95 flex items-center md:gap-3 gap-2 cursor-pointer shadow-xl hover:shadow-primary/20">
 				<iconList.Plus size={24} />
 				Add Your First Car
 			</button>

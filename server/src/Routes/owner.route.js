@@ -2,15 +2,16 @@ import express from 'express';
 import { addCar, blockUnblockUser, changeRoleToOwner, deleteCar, editCar, getAllUsers, getDashboardData, getMyChats, getOwnerCars, getOwnerDetails, updateCarStatus, updateUserImage } from '../controllers/owner.controller.js';
 import { protect } from '../middleware/auth.middleware.js'
 import upload from '../configs/multer.js';
+import { validate } from '../middleware/validate.middleware.js';
+import { addCarSchema, editCarSchema, updateCarStatusSchema } from '../validators/car.validator.js';
+
 const ownerRouter = express.Router();
-
-
 ownerRouter.post('/change-role', protect, changeRoleToOwner);
-ownerRouter.post('/add-car', protect, upload.single('image'), addCar);
+ownerRouter.post('/add-car', protect, upload.single('image'), validate(addCarSchema), addCar);
 ownerRouter.get('/cars', protect, getOwnerCars);
-ownerRouter.post('/update-status', protect, updateCarStatus);
+ownerRouter.post('/update-status', protect, validate(updateCarStatusSchema), updateCarStatus);
 ownerRouter.post('/delete-car', protect, deleteCar);
-ownerRouter.post('/edit-car', upload.single("image"), protect, editCar);
+ownerRouter.post('/edit-car', upload.single("image"), protect, validate(editCarSchema), editCar);
 ownerRouter.get('/dashboard', protect, getDashboardData)
 ownerRouter.post('/update-image', upload.single('image'), protect, updateUserImage)
 ownerRouter.get('/allusers', protect, getAllUsers);

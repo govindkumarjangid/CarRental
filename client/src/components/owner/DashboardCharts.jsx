@@ -6,10 +6,9 @@ ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, T
 
 export const FleetChart = ({ data }) => (
   <motion.div
-    initial={{ opacity: 0, y: 10 }}
-    animate={{ opacity: 1, y: 0 }}
-    className="p-6 border border-gray-200 rounded-3xl shadow-sm max-w-xl"
-  >
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    className="p-6 border border-gray-200 rounded-3xl shadow-sm max-w-xl">
     <h3 className="text-sm font-semibold mb-4  opacity-70 uppercase tracking-widest">Live Availability Breakdown</h3>
     <div className="h-48 flex justify-center">
       <Doughnut
@@ -44,10 +43,9 @@ export const FleetChart = ({ data }) => (
 
 export const BookingChart = ({ data }) => (
   <motion.div
-    initial={{ opacity: 0, y: 10 }}
-    animate={{ opacity: 1, y: 0 }}
-    className="p-6 border border-gray-200 rounded-3xl shadow-sm"
-  >
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    className="p-6 border border-gray-200 rounded-3xl shadow-sm">
     <h3 className="text-sm font-semibold mb-4 opacity-70 uppercase tracking-widest">Booking Status Breakdown</h3>
     <div className="h-64">
       <Bar
@@ -90,10 +88,9 @@ export const BookingChart = ({ data }) => (
 
 export const PaymentChart = ({ data }) => (
   <motion.div
-    initial={{ opacity: 0, y: 10 }}
-    animate={{ opacity: 1, y: 0 }}
-    className="p-6 border border-gray-200  rounded-3xl shadow-sm"
-  >
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    className="p-6 border border-gray-200  rounded-3xl shadow-sm">
     <h3 className="text-sm font-semibold mb-4  opacity-70 uppercase tracking-widest">Payment Integrity Analysis</h3>
     <div className="h-64">
       <Bar
@@ -133,10 +130,9 @@ export const PaymentChart = ({ data }) => (
 
 export const RevenueHistoryChart = ({ history, currency }) => (
   <motion.div
-    initial={{ opacity: 0, y: 10 }}
-    animate={{ opacity: 1, y: 0 }}
-    className="p-6 border border-gray-200   rounded-3xl shadow-sm lg:col-span-2"
-  >
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    className="p-6 border border-gray-200   rounded-3xl shadow-sm lg:col-span-2">
     <h3 className="text-sm font-semibold mb-4  opacity-70 uppercase tracking-widest">Revenue Performance History</h3>
     <div className="h-72">
       <Line

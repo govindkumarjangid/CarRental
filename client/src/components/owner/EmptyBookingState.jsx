@@ -8,10 +8,9 @@ const EmptyBookingState = () => {
 
 	return (
 		<motion.div
-			initial={{ opacity: 0, y: 20 }}
-			animate={{ opacity: 1, y: 0 }}
-			className="flex flex-col items-center justify-center p-12 text-center bg-white rounded-xl border border-dashed border-gray-300 m-6 md:m-10"
-		>
+			initial={{ opacity: 0 }}
+			animate={{ opacity: 1 }}
+			className="flex flex-col items-center justify-center p-12 text-center bg-white rounded-xl border border-dashed border-gray-300 m-6 md:m-10">
 			<div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center text-primary mb-6 shadow-inner">
 				<iconList.CalendarX size={40} />
 			</div>
@@ -28,16 +27,14 @@ const EmptyBookingState = () => {
 			<div className="flex flex-col sm:flex-row gap-4">
 				<button
 					onClick={() => navigate('/owner/add-car')}
-					className="px-6 py-2.5 bg-primary text-white rounded-lg font-semibold hover:bg-primary-dull transition-all active:scale-95 flex items-center gap-2 cursor-pointer shadow-md"
-				>
+					className="px-6 py-2.5 bg-primary text-white rounded-lg font-semibold hover:bg-primary-dull transition-all active:scale-95 flex items-center gap-2 cursor-pointer shadow-md">
 					<iconList.Plus size={18} />
 					List a New Car
 				</button>
 				
 				<button
 					onClick={() => navigate('/owner/manage-cars')}
-					className="px-6 py-2.5 bg-white border border-gray-300 text-gray-700 rounded-lg font-semibold hover:bg-gray-50 transition-all active:scale-95 cursor-pointer shadow-sm"
-				>
+					className="px-6 py-2.5 bg-white border border-gray-300 text-gray-700 rounded-lg font-semibold hover:bg-gray-50 transition-all active:scale-95 cursor-pointer shadow-sm">
 					Manage Your Fleet
 				</button>
 			</div>

@@ -34,9 +34,6 @@ const carLocationSchema = new mongoose.Schema({
     }
 }, { timestamps: true });
 
-// We can add an index to automatically expire old location data if history is kept
-// For this plan, we will primarily upsert the same document per car.
-
 const CarLocation = mongoose.model('CarLocation', carLocationSchema);
 
 export default CarLocation;

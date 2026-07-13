@@ -16,8 +16,7 @@ const IconButton = ({
       aria-label={label}
       title={label}
       className={`p-2 rounded-full hover:bg-gray-100 transition-colors active:scale-98 flex items-center justify-center ${className}`}
-      {...props}
-    >
+      {...props}>
       <Icon size={size} />
     </button>
   );

@@ -7,7 +7,7 @@ import { assets } from "../../assets/assets.jsx";
 const Footer = () => {
 	return (
 		<motion.div
-			initial="hidden"
+			initial={{ opacity: 0 }}
 			whileInView="show"
 			viewport={{ amount: 0.1 }}
 			variants={{
@@ -18,8 +18,7 @@ const Footer = () => {
 					},
 				},
 			}}
-			className="w-full bg-light text-gray-500/80 pt-16 max-w-full px-4 md:px-15 border-t border-gray-200 "
-		>
+			className="w-full bg-light text-gray-500/80 pt-16 max-w-full px-4 md:px-15 border-t border-gray-200 ">
 			<div className="max-w-7xl mx-auto">
 				<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8 pb-10">
 					{/* Brand & Social */}
@@ -56,10 +55,9 @@ const Footer = () => {
 									href="#"
 									aria-label={label}
 									title={label}
-									whileHover={{ scale: 1.15, y: -4 }}
-									whileTap={{ scale: 0.95 }}
-									className="cursor-pointer text-gray-500/80 hover:text-primary transition-colors"
-								>
+									
+									
+									className="cursor-pointer text-gray-500/80 hover:text-primary transition-colors">
 									<Icon className="w-5 h-5" />
 								</motion.a>
 							))}
@@ -155,8 +153,7 @@ const Footer = () => {
 							transition: { duration: 0.6, ease: "easeOut" },
 						},
 					}}
-					className="flex flex-col md:flex-row gap-6 items-center justify-between py-8 text-[13px]"
-				>
+					className="flex flex-col md:flex-row gap-6 items-center justify-between py-8 text-[13px]">
 					<p className="order-2 md:order-1 text-gray-400">
 						© {new Date().getFullYear()} CarRental. All rights reserved.
 					</p>

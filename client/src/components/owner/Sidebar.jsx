@@ -39,8 +39,7 @@ const SidebarContent = ({ user, image, setImage, handleUpdateImage, location, Mo
 		{image && (
 			<button
 				onClick={handleUpdateImage}
-				className="absolute top-0 right-0 flex items-center gap-1 px-3 py-1.5 bg-primary/10 text-primary rounded-2xl text-xs disabled:opacity-50 cursor-pointer hover:bg-primary/20 transition-colors"
-			>
+				className="absolute top-0 right-0 flex items-center gap-1 px-3 py-1.5 bg-primary/10 text-primary rounded-2xl text-xs disabled:opacity-50 cursor-pointer hover:bg-primary/20 transition-colors">
 				Save
 				<iconList.CircleCheckBig className="h-3 w-3 ml-1" />
 			</button>
@@ -60,13 +59,12 @@ const SidebarContent = ({ user, image, setImage, handleUpdateImage, location, Mo
 					<MotionNavLink
 						key={link.path}
 						to={{ pathname: link.path, scrollTo: (0, 0) }}
-						whileTap={{ scale: 0.97 }}
+						
 						onClick={() => setIsSidebarOpen(false)}
 						className={`relative flex items-center gap-3 rounded-xl w-full py-3 pl-6 md:pl-6 first:mt-3 transition-colors cursor-pointer ${isActive
 							? "bg-primary/20 text-primary font-semibold  "
 							: "text-gray-500 hover:bg-gray-100  "
-							}`}
-					>
+							}`}>
 						<div className="shrink-0 cursor-pointer">{link.icon}</div>
 						<span className="text-[15px] cursor-pointer">{link.name}</span>
 
@@ -128,9 +126,9 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
 								className="fixed inset-0 backdrop-blur-xs bg-blue-700/5 pointer-events-auto"
 							/>
 							<motion.div
-								initial={{ scaleY: 0, opacity: 0, y: -600 }}
-								animate={{ scaleY: 1, opacity: 1, y: 0 }}
-								exit={{ scaleY: 0, opacity: 0, y: -600 }}
+								initial={{ opacity: 0 }}
+								animate={{ opacity: 1 }}
+								exit={{ opacity: 0 }}
 								transition={{
 									type: "spring",
 									stiffness: 350,
@@ -138,8 +136,7 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
 									mass: 0.8,
 									exit: { type: "tween", duration: 0.4, ease: "easeInOut" }
 								}}
-								className="absolute top-14 right-0 left-0 z-50 bg-white/95 backdrop-blur-xl pt-6 pb-2 border-b border-gray-200 max-h-[calc(100vh-60px)] flex flex-col pointer-events-auto shadow-2xl"
-							>
+								className="absolute top-14 right-0 left-0 z-50 bg-white/95 backdrop-blur-xl pt-6 pb-2 border-b border-gray-200 max-h-[calc(100vh-60px)] flex flex-col pointer-events-auto shadow-2xl">
 								<SidebarContent {...sidebarProps} />
 							</motion.div>
 						</>

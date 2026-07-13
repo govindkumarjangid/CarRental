@@ -28,8 +28,7 @@ const OwnerChatMessageSkeleton = () => {
       <div className="min-h-0 flex-1">
         <div
           className="h-full w-full overflow-y-auto custom-scrollbar bg-[#f8fafc] bg-[radial-gradient(#e2e8f0_1px,transparent_1px)]"
-          style={{ backgroundSize: "16px 16px" }}
-        >
+          style={{ backgroundSize: "16px 16px" }}>
           <div className="flex min-h-full flex-col">
             <div className="flex-1" />
 

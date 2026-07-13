@@ -27,7 +27,7 @@ export const initSocket = (server) => {
   io.on("connection", (socket) => {
     console.log("Socket connected:", socket.id);
 
-    // users online and offline status 
+    // users online and offline status
     socket.on("addUser", (userId) => {
       if (!userId) return;
       onlineUsers.set(userId.toString(), socket.id);
@@ -69,7 +69,7 @@ export const initSocket = (server) => {
             const { carId, latitude, longitude, speed } = payload;
             const now = Date.now();
             const lastSaved = locationSaveThrottler.get(carId) || 0;
-            
+
             // Save if it's been 1 hour since last save
             if (now - lastSaved >= SAVE_INTERVAL_MS) {
                 const car = await Car.findById(carId);
@@ -114,7 +114,7 @@ export const initSocket = (server) => {
     socket.on("start_tracking_simulation", (carId) => {
       if (!carId) return;
       socket.join(`tracking_${carId}`);
-      
+
       if (!activeSimulations.has(carId)) {
         console.log(`Starting internal simulation for car: ${carId}`);
         let currentIndex = 0;
@@ -122,7 +122,7 @@ export const initSocket = (server) => {
             const location = routeCoordinates[currentIndex];
             const dynamicLat = location.lat + (Math.random() - 0.5) * 0.0001;
             const dynamicLng = location.lng + (Math.random() - 0.5) * 0.0001;
-            
+
             const payload = {
                 carId: carId,
                 latitude: dynamicLat,
@@ -130,12 +130,12 @@ export const initSocket = (server) => {
                 speed: Math.floor(Math.random() * (60 - 40 + 1)) + 40,
                 timestamp: new Date().toISOString()
             };
-            
+
             io.emit("broadcast_car_location", payload);
             saveLocationToDB(payload); // Trigger save check
             currentIndex = (currentIndex + 1) % routeCoordinates.length;
         }, 3000);
-        
+
         activeSimulations.set(carId, interval);
       }
     });
@@ -143,7 +143,7 @@ export const initSocket = (server) => {
     socket.on("stop_tracking_simulation", (carId) => {
       if (!carId) return;
       socket.leave(`tracking_${carId}`);
-      
+
       const room = io.sockets.adapter.rooms.get(`tracking_${carId}`);
       if (!room || room.size === 0) {
           console.log(`Stopping internal simulation for car: ${carId}`);
@@ -183,7 +183,7 @@ export const initSocket = (server) => {
         }
       }
       io.emit("onlineUsers", Array.from(onlineUsers.keys()));
-      
+
       // Clean up simulations if no one is listening
       for (const carId of activeSimulations.keys()) {
         const room = io.sockets.adapter.rooms.get(`tracking_${carId}`);
@@ -201,7 +201,7 @@ export const initSocket = (server) => {
     });
   });
 
-  console.log("Socket.io initialized");
+  console.log("✅ Socket.io initialized succesfully");
 };
 
 export const getIO = () => io;

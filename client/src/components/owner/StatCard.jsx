@@ -5,11 +5,10 @@ const StatCard = ({ card, index, colorMap }) => {
   const Icon = card.icon;
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.95 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ type: "spring", stiffness: 300, damping: 30, delay: index * 0.05 }}
-      className="flex gap-4 items-center justify-between p-4 rounded-3xl border border-gray-200 shadow-sm transition-all duration-300 group"
-    >
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.3 }}
+      className="flex gap-4 items-center justify-between p-4 rounded-3xl border border-gray-200 shadow-sm transition-all duration-300 group">
       <div className="flex flex-col gap-1">
         <h2 className="text-gray-500 text-[10px] md:text-xs font-medium uppercase tracking-wider ">
           {card.title}

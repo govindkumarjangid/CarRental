@@ -9,12 +9,11 @@ export const Title = ({ title, subTitle, align }) => {
 	return (
 		<motion.div
 			ref={ref}
-			initial={{ opacity: 0, y: 50 }}
+			initial={{ opacity: 0 }}
 			animate={isInView ? { opacity: 1, y: 0 } : {}}
-			transition={{ duration: 0.7, ease: "easeOut" }}
+			transition={{ duration: 0.3 }}
 			className={`flex flex-col justify-center items-center  text-center ${align === "left" && "md:items-start md:text-left"
-				}`}
-		>
+				}`}>
 			<h2 className="font-semibold text-4xl md:text-[40px] text-gray-800 ">
 				{title}
 			</h2>

@@ -127,7 +127,7 @@ const Cardetails = () => {
 	}, []);
 
 	useEffect(() => {
-		if (cars.length > 0) {
+		if (cars.length> 0) {
 			const found = cars.find(c => c._id === id);
 			setCar(found);
 		}
@@ -139,21 +139,19 @@ const Cardetails = () => {
 		car && (
 			<>
 				<motion.div
-					initial={{ opacity: 0, y: 18 }}
-					animate={{ opacity: 1, y: 0 }}
-					transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-					className="h-auto max-w-7xl m-auto px-6 md:px-16 lg:px-24 xl:px-32 pt-16 pb-16"
-				>
+					initial={{ opacity: 0 }}
+					animate={{ opacity: 1 }}
+					transition={{ duration: 0.3 }}
+					className="h-auto max-w-7xl m-auto px-6 md:px-16 lg:px-24 xl:px-32 pt-16 pb-16">
 					<motion.button
-						initial={{ opacity: 0, y: 16 }}
-						animate={{ opacity: 1, y: 0 }}
-						transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1], delay: 0.05 }}
+						initial={{ opacity: 0 }}
+						animate={{ opacity: 1 }}
+						transition={{ duration: 0.3 }}
 						onClick={() => {
 							navigate("/cars");
 							window.scrollTo(0, 0);
 						}}
-						className="flex items-center gap-2 mb-6 text-gray-500 cursor-pointer"
-					>
+						className="flex items-center gap-2 mb-6 text-gray-500 cursor-pointer">
 						<iconList.ArrowLeft size={20} />
 						<span>Back to Cars</span>
 					</motion.button>
@@ -165,9 +163,9 @@ const Cardetails = () => {
 							<div>
 								<motion.img
 									src={optimizeImage(car.image, { width: 1000 })}
-									initial={{ opacity: 0, y: 24, scale: 1.02 }}
-									animate={{ opacity: 1, y: 0, scale: 1 }}
-									transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1], delay: 0.08 }}
+									initial={{ opacity: 0 }}
+									animate={{ opacity: 1 }}
+									transition={{ duration: 0.3 }}
 									alt="main-car-image"
 									loading="lazy"
 									className="w-full h-auto md:max-h-100 object-cover rounded-3xl shadow-sm"
@@ -177,17 +175,15 @@ const Cardetails = () => {
 							{/* Car details wrapper */}
 							<motion.div
 								className="space-y-6"
-								initial={{ opacity: 0, y: 16 }}
-								animate={{ opacity: 1, y: 0 }}
-								transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1], delay: 0.12 }}
-							>
+								initial={{ opacity: 0 }}
+								animate={{ opacity: 1 }}
+								transition={{ duration: 0.3 }}>
 								{/* Title */}
 								<motion.div
 									className="mt-3"
-									initial={{ opacity: 0, y: 14 }}
-									animate={{ opacity: 1, y: 0 }}
-									transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1], delay: 0.16 }}
-								>
+									initial={{ opacity: 0 }}
+									animate={{ opacity: 1 }}
+									transition={{ duration: 0.3 }}>
 									<div className="flex items-center gap-3">
 										<h1 className="text-3xl font-bold">
 											{car.brand} {car.model}
@@ -246,16 +242,11 @@ const Cardetails = () => {
 									].map(({ icon, text, index }) => (
 										<motion.div
 											key={text}
-											initial={{ opacity: 0, y: 20 }}
-											animate={{ opacity: 1, y: 0 }}
-											whileHover={{ scale: 1.05 }}
-											transition={{
-												type: "spring",
-												stiffness: 200,
-												delay: 0.2 * index,
-											}}
-											className="flex flex-col items-center bg-light p-4 rounded-3xl shadow-sm"
-										>
+											initial={{ opacity: 0 }}
+											animate={{ opacity: 1 }}
+											
+											transition={{ duration: 0.3 }}
+											className="flex flex-col items-center bg-light p-4 rounded-3xl shadow-sm">
 											{icon}
 											<p className="">
 												{text}
@@ -266,10 +257,9 @@ const Cardetails = () => {
 
 								{/* Description */}
 								<motion.div
-									initial={{ opacity: 0, y: 14 }}
-									animate={{ opacity: 1, y: 0 }}
-									transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1], delay: 0.18 }}
-								>
+									initial={{ opacity: 0 }}
+									animate={{ opacity: 1 }}
+									transition={{ duration: 0.3 }}>
 									<h1 className="text-xl font-medium mb-3">
 										Description
 									</h1>
@@ -280,10 +270,9 @@ const Cardetails = () => {
 
 								{/* Features list */}
 								<motion.div
-									initial={{ opacity: 0, y: 14 }}
-									animate={{ opacity: 1, y: 0 }}
-									transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1], delay: 0.22 }}
-								>
+									initial={{ opacity: 0 }}
+									animate={{ opacity: 1 }}
+									transition={{ duration: 0.3 }}>
 									<h1 className="text-xl font-medium mb-3">
 										Features
 									</h1>
@@ -297,8 +286,7 @@ const Cardetails = () => {
 										].map((item) => (
 											<li
 												key={item}
-												className="flex items-center text-gray-500"
-											>
+												className="flex items-center text-gray-500">
 												<iconList.CircleCheckBig
 													size={16}
 													className="mr-2 text-primary"
@@ -316,11 +304,10 @@ const Cardetails = () => {
 						{/* RIGHT / BOOKING FORM */}
 						<motion.form
 							onSubmit={(e) => e.preventDefault()}
-							initial={{ opacity: 0, x: 18 }}
-							animate={{ opacity: 1, x: 0 }}
-							transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1], delay: 0.14 }}
-							className="shadow-sm h-max sticky top-10 rounded-3xl p-6 space-y-6 text-gray-500"
-						>
+							initial={{ opacity: 0 }}
+							animate={{ opacity: 1 }}
+							transition={{ duration: 0.3 }}
+							className="shadow-sm h-max sticky top-10 rounded-3xl p-6 space-y-6 text-gray-500">
 							{/* price per day  */}
 							<p className="flex items-center justify-between text-2xl text-gray-800 font-semibold">
 								{currency}
@@ -359,8 +346,7 @@ const Cardetails = () => {
 										onClick={() => setPaymentMode("offline")}
 										className={`cursor-pointer active:scale-98 px-3 py-2 rounded-xl border text-sm font-semibold transition-all shadow-sm ${paymentMode === "offline"
 											? "bg-primary text-white border-primary"
-											: "bg-white text-gray-600 border-gray-200 hover:border-gray-300"}`}
-									>
+											: "bg-white text-gray-600 border-gray-200 hover:border-gray-300"}`}>
 										Pay Offline
 									</button>
 									<button
@@ -368,8 +354,7 @@ const Cardetails = () => {
 										onClick={() => setPaymentMode("online")}
 										className={`cursor-pointer active:scale-98 px-3 py-2 rounded-xl border text-sm font-semibold transition-all shadow-sm ${paymentMode === "online"
 											? "bg-primary text-white border-primary"
-											: "bg-white text-gray-600 border-gray-200 hover:border-gray-300"}`}
-									>
+											: "bg-white text-gray-600 border-gray-200 hover:border-gray-300"}`}>
 										Pay Online
 									</button>
 								</div>
@@ -385,8 +370,7 @@ const Cardetails = () => {
 									: isBookDisabled
 										? "bg-gray-400 cursor-not-allowed opacity-70"
 										: "bg-primary hover:bg-primary-dull cursor-pointer hover:scale-102 active:scale-95"
-									}`}
-							>
+									}`}>
 								{isSubmitting ? (
 									<span className="inline-flex items-center gap-2">
 										<iconList.Loader size={16} className="animate-spin" />

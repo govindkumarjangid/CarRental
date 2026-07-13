@@ -36,6 +36,11 @@ app.use('/api/owner', ownerRouter);
 app.use('/api/bookings', bookingRouter);
 app.use('/api/chat', chatRouter);
 
+//* 404 Route Not Found Handler
+app.use((req, res, next) => {
+  res.status(404).json({ success: false, message: `Route ${req.originalUrl} not found` });
+});
+
 //* Global Error Handler
 app.use((err, req, res, next) => {
   err.statusCode = err.statusCode || 500;

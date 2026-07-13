@@ -50,11 +50,10 @@ const AllUsers = () => {
             <motion.div
               layout
               key={user._id || index}
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ type: "spring", stiffness: 300, damping: 30, delay: index * 0.05 }}
-              className="rounded-xl border border-gray-200 bg-white shadow-sm p-4"
-            >
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.3 }}
+              className="rounded-xl border border-gray-200 bg-white shadow-sm p-4">
               <div className="flex items-start gap-3">
                 <div className="w-12 h-12 rounded-full bg-primary flex items-center justify-center text-white font-semibold text-xl shrink-0 overflow-hidden">
                   {user?.image ? (
@@ -83,8 +82,7 @@ const AllUsers = () => {
                       name="userStatus"
                       value={user.isBlocked ? "block" : "unblock"}
                       onChange={(e) => handleBlockToggle(user._id, e.target.value === "block")}
-                      className={`outline-none px-3 py-1.5 rounded-md cursor-pointer text-sm border ${user.isBlocked ? "bg-red-300/30 text-red-500 border-red-200" : "bg-green-300/30 text-green-500 border-green-200"}`}
-                    >
+                      className={`outline-none px-3 py-1.5 rounded-md cursor-pointer text-sm border ${user.isBlocked ? "bg-red-300/30 text-red-500 border-red-200" : "bg-green-300/30 text-green-500 border-green-200"}`}>
                       <option value="block">Block</option>
                       <option value="unblock">Unblock</option>
                     </select>
@@ -96,8 +94,7 @@ const AllUsers = () => {
         </div>
 
         <table
-          className="hidden md:table w-full border-collapse border-spacing-0 bg-white shadow-md transition-all duration-300 rounded-xl overflow-hidden border border-gray-200"
-        >
+          className="hidden md:table w-full border-collapse border-spacing-0 bg-white shadow-md transition-all duration-300 rounded-xl overflow-hidden border border-gray-200">
 
           {/* All Users Table */}
           <thead className="bg-gray-50 text-gray-500 border-b border-gray-200">
@@ -114,11 +111,10 @@ const AllUsers = () => {
               <motion.tr
                 layout
                 key={user._id || index}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ type: "spring", stiffness: 300, damping: 30, delay: index * 0.05 }}
-                className="hover:bg-gray-50/80 transition-colors duration-200 text-left border-b last:border-b-0 border-gray-100"
-              >
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.3 }}
+                className="hover:bg-gray-50/80 transition-colors duration-200 text-left border-b last:border-b-0 border-gray-100">
                 <td className="px-4 py-2">
                   <div className="flex items-center gap-4">
                     <div className="w-11 h-11 rounded-full bg-primary flex items-center justify-center text-white font-semibold text-xl overflow-hidden shrink-0">
@@ -150,8 +146,7 @@ const AllUsers = () => {
                     name="userStatus"
                     value={user.isBlocked ? "block" : "unblock"}
                     onChange={(e) => handleBlockToggle(user._id, e.target.value === "block")}
-                    className={`outline-none px-2 py-1 rounded-xl cursor-pointer ${user.isBlocked ? "bg-red-300/30 text-red-500" : "bg-green-300/30 text-green-500"}`}
-                  >
+                    className={`outline-none px-2 py-1 rounded-xl cursor-pointer ${user.isBlocked ? "bg-red-300/30 text-red-500" : "bg-green-300/30 text-green-500"}`}>
                     <option value="block">Block</option>
                     <option value="unblock">Unblock</option>
                   </select>
@@ -161,7 +156,7 @@ const AllUsers = () => {
           </tbody>
         </table>
       </div>
-    </div >
+    </div>
   )
 }
 

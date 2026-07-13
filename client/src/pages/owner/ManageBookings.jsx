@@ -76,12 +76,11 @@ const ManageBookings = () => {
 		return (
 			<AnimatePresence>
 				<motion.div
-					initial={{ opacity: 0, filter: "blur(5px)" }}
-					animate={{ opacity: 1, filter: "blur(0px)" }}
-					exit={{ opacity: 0, filter: "blur(5px)" }}
-					transition={{ duration: 0.4, ease: "easeInOut" }}
-					className="flex-1 h-full overflow-hidden"
-				>
+					initial={{ opacity: 0 }}
+					animate={{ opacity: 1 }}
+					exit={{ opacity: 0 }}
+					transition={{ duration: 0.3 }}
+					className="flex-1 h-full overflow-hidden">
 					<BookingPopup
 						selectedBooking={selectedBooking}
 						setSelectedBooking={() => navigate("/owner/manage-bookings")}
@@ -140,9 +139,8 @@ const ManageBookings = () => {
 					<motion.table
 						initial={{ opacity: 0 }}
 						animate={{ opacity: 1 }}
-						transition={{ duration: 0.4 }}
-						className="w-full border-collapse text-left text-sm text-gray-600"
-					>
+						transition={{ duration: 0.3 }}
+						className="w-full border-collapse text-left text-sm text-gray-600">
 						<thead className="bg-gray-50 text-gray-500 border-b border-gray-200">
 							<tr>
 								<th className="p-3 font-medium">Car</th>
@@ -159,16 +157,15 @@ const ManageBookings = () => {
 							</tr>
 						</thead>
 						<tbody>
-							{currentItems.length > 0 ? (
+							{currentItems.length> 0 ? (
 								currentItems.map((booking, index) => (
 									<motion.tr
 										key={booking._id || index}
-										initial={{ opacity: 0, y: 10 }}
-										animate={{ opacity: 1, y: 0 }}
-										transition={{ type: "spring", stiffness: 300, damping: 30, delay: index * 0.05 }}
+										initial={{ opacity: 0 }}
+										animate={{ opacity: 1 }}
+										transition={{ duration: 0.3 }}
 										onClick={() => navigate(`/owner/manage-bookings/${booking._id}`)}
-										className="border-b last:border-b-0 border-gray-100 hover:bg-gray-50/80 transition-colors duration-200 cursor-pointer"
-									>
+										className="border-b last:border-b-0 border-gray-100 hover:bg-gray-50/80 transition-colors duration-200 cursor-pointer">
 										<td className="p-3 flex md:flex-row flex-col items-start gap-3 justify-start">
 											{booking.car ? (
 												<>
@@ -205,7 +202,7 @@ const ManageBookings = () => {
 														const totalHours = Math.floor(diff / (1000 * 60 * 60));
 														const days = Math.floor(totalHours / 24);
 														const hours = totalHours % 24;
-														return `${days > 0 ? `${days}d ` : ""}${hours > 0 ? `${hours}h` : days === 0 ? "0h" : ""}`;
+														return `${days> 0 ? `${days}d ` : ""}${hours> 0 ? `${hours}h` : days === 0 ? "0h" : ""}`;
 													})()}
 												</p>
 												<p className="text-[10px] text-gray-400 font-medium whitespace-nowrap">
@@ -234,8 +231,7 @@ const ManageBookings = () => {
 													value={booking.paymentStatus}
 													onClick={(e) => e.stopPropagation()}
 													onChange={(e) => changePaymentStatus(booking._id, e.target.value)}
-													className={`text-[12px] font-medium px-2 py-1 rounded-xl outline-none border cursor-pointer transition-all bg-yellow-500/10 text-yellow-600 border-yellow-500/20`}
-												>
+													className={`text-[12px] font-medium px-2 py-1 rounded-xl outline-none border cursor-pointer transition-all bg-yellow-500/10 text-yellow-600 border-yellow-500/20`}>
 													<option value="pending">Pending</option>
 													<option value="confirmed">Confirmed</option>
 													<option value="failed">Failed</option>
@@ -260,8 +256,7 @@ const ManageBookings = () => {
 														className={`text-[12px] font-medium px-2 py-1 rounded-xl outline-none border cursor-pointer transition-all ${booking.status === "confirmed"
 															? "bg-green-500/10 text-green-600 border-green-500/20"
 															: "bg-yellow-500/10 text-yellow-600 border-yellow-500/20"
-															}`}
-													>
+															}`}>
 														<option value="pending">Pending</option>
 														<option value="confirmed">Confirmed</option>
 														<option value="completed">Completed</option>
@@ -281,8 +276,7 @@ const ManageBookings = () => {
 											<button
 												onClick={(e) => handleDelete(e, booking._id)}
 												className="cursor-pointer active:scale-90 transition-transform duration-300"
-												title="Delete Booking"
-											>
+												title="Delete Booking">
 												<iconList.Trash2 size={18} className="text-red-600" />
 											</button>
 
@@ -293,8 +287,7 @@ const ManageBookings = () => {
 														navigate(`/owner/manage-bookings/location/${booking.car._id}`);
 													}}
 													className="cursor-pointer active:scale-90 transition-transform duration-300 ml-3"
-													title="Live Track"
-												>
+													title="Live Track">
 													<iconList.MapPin size={18} className="text-blue-500" />
 												</button>
 											)}
@@ -314,13 +307,12 @@ const ManageBookings = () => {
 				</div>
 
 				{/* Pagination */}
-				{totalPages > 0 && (
+				{totalPages> 0 && (
 					<div className="p-4 border-t border-gray-100 flex items-center justify-center gap-6 bg-gray-50/50">
 						<button
 							disabled={currentPage === 1}
 							onClick={() => setCurrentPage(prev => prev - 1)}
-							className="p-2 rounded-2xl bg-primary hover:bg-primary-dull border border-gray-200 shadow-sm disabled:opacity-90 disabled:cursor-not-allowed transition-all active:scale-95 cursor-pointer text-white"
-						>
+							className="p-2 rounded-2xl bg-primary hover:bg-primary-dull border border-gray-200 shadow-sm disabled:opacity-90 disabled:cursor-not-allowed transition-all active:scale-95 cursor-pointer text-white">
 							<iconList.ChevronLeft size={20} />
 						</button>
 						<span className="text-sm font-semibold text-gray-600">
@@ -329,8 +321,7 @@ const ManageBookings = () => {
 									<button
 										key={index}
 										onClick={() => setCurrentPage(index + 1)}
-										className={`px-3 py-1 rounded-full transition-colors m-1 ${currentPage === index + 1 ? "bg-primary text-white" : "bg-gray-200 text-gray-600 hover:bg-gray-300"}`}
-									>
+										className={`px-3 py-1 rounded-full transition-colors m-1 ${currentPage === index + 1 ? "bg-primary text-white" : "bg-gray-200 text-gray-600 hover:bg-gray-300"}`}>
 										{index + 1}
 									</button>
 								))
@@ -339,8 +330,7 @@ const ManageBookings = () => {
 						<button
 							disabled={currentPage === totalPages}
 							onClick={() => setCurrentPage(prev => prev + 1)}
-							className="p-2 rounded-2xl bg-primary hover:bg-primary-dull border border-gray-200 shadow-sm disabled:opacity-90 disabled:cursor-not-allowed transition-all active:scale-95 cursor-pointer text-white"
-						>
+							className="p-2 rounded-2xl bg-primary hover:bg-primary-dull border border-gray-200 shadow-sm disabled:opacity-90 disabled:cursor-not-allowed transition-all active:scale-95 cursor-pointer text-white">
 							<iconList.ChevronRight size={20} />
 						</button>
 					</div>
@@ -367,9 +357,8 @@ const ManageBookings = () => {
 							initial={{ opacity: 0 }}
 							animate={{ opacity: 1 }}
 							exit={{ opacity: 0 }}
-							transition={{ duration: 0.2 }}
-							className="relative bg-white rounded-3xl shadow-sm w-full max-w-md p-6 overflow-hidden"
-						>
+							transition={{ duration: 0.3 }}
+							className="relative bg-white rounded-3xl shadow-sm w-full max-w-md p-6 overflow-hidden">
 							<h2 className="text-xl font-semibold text-center">
 								Delete booking?
 							</h2>
@@ -382,8 +371,7 @@ const ManageBookings = () => {
 							<div className="flex justify-between gap-6 mt-6 md:px-10 px-4">
 								<button
 									className="w-1/2 py-2 rounded-2xl border bg-primary hover:bg-primary-dull text-white cursor-pointer active:scale-98 transition-all duration-300 flex justify-center items-center gap-4 mx-2"
-									onClick={() => setOpenConfirm(false)}
-								>
+									onClick={() => setOpenConfirm(false)}>
 									Cancel
 								</button>
 
@@ -392,8 +380,7 @@ const ManageBookings = () => {
 									onClick={() => {
 										deleteBooking(deleteId);
 										setOpenConfirm(false);
-									}}
-								>
+									}}>
 									Delete
 								</button>
 							</div>

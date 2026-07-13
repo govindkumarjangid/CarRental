@@ -30,7 +30,7 @@ const Cars = () => {
 	const checkScroll = () => {
 		if (scrollRef.current) {
 			const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
-			setShowLeftArrow(scrollLeft > 5);
+			setShowLeftArrow(scrollLeft> 5);
 			setShowRightArrow(scrollLeft < scrollWidth - clientWidth - 5);
 		}
 	};
@@ -95,11 +95,10 @@ const Cars = () => {
 			<div className="max-w-8xl m-auto flex flex-col items-center pb-20 relative">
 				{/* search bar and title  */}
 				<motion.div
-					initial={{ opacity: 0, y: 50 }}
-					animate={{ opacity: 1, y: 0 }}
-					transition={{ duration: 0.6, ease: "easeOut" }}
-					className=" bg-light w-full py-20 px-4 flex flex-col justify-center items-center"
-				>
+					initial={{ opacity: 0 }}
+					animate={{ opacity: 1 }}
+					transition={{ duration: 0.3 }}
+					className=" bg-light w-full py-20 px-4 flex flex-col justify-center items-center">
 					{/* title  */}
 					<Title
 						title="Avaiable Cars"
@@ -108,11 +107,10 @@ const Cars = () => {
 
 					{/* search  */}
 					<motion.div
-						initial={{ opacity: 0, y: 20 }}
-						animate={{ opacity: 1, y: 0 }}
-						transition={{ duration: 0.6, ease: "easeOut", delay: 0.3 }}
-						className="mt-8 flex items-center justify-between gap-2 border-2 border-gray-300 md:px-4 px-3  py-1 rounded-2xl shadow-sm max-w-96 md:max-w-3xl bg-white w-full focus-within:border-primary transition-all duration-300"
-					>
+						initial={{ opacity: 0 }}
+						animate={{ opacity: 1 }}
+						transition={{ duration: 0.3 }}
+						className="mt-8 flex items-center justify-between gap-2 border-2 border-gray-300 md:px-4 px-3  py-1 rounded-2xl shadow-sm max-w-96 md:max-w-3xl bg-white w-full focus-within:border-primary transition-all duration-300">
 						<label htmlFor="car-search" className="sr-only md:text-base text-xs">Search cars by brand, model, or features</label>
 						<iconList.Search size={18} className="text-gray-600" />
 						<input
@@ -129,11 +127,10 @@ const Cars = () => {
 
 				{/* sort and filter  */}
 				<motion.div
-					initial={{ opacity: 0, y: 30 }}
-					animate={{ opacity: 1, y: 0 }}
-					transition={{ duration: 0.6, ease: "easeOut", delay: 0.5 }}
-					className="flex flex-col md:flex-row items-center justify-between gap-4 mt-4 w-full px-6 md:px-16 max-w-7xl"
-				>
+					initial={{ opacity: 0 }}
+					animate={{ opacity: 1 }}
+					transition={{ duration: 0.3 }}
+					className="flex flex-col md:flex-row items-center justify-between gap-4 mt-4 w-full px-6 md:px-16 max-w-7xl">
 					<p className="text-gray-700 font-medium w-full md:w-auto text-center md:text-left">
 						Showing <span className="text-primary font-bold">{filteredCars.length}</span> results
 					</p>
@@ -150,8 +147,7 @@ const Cars = () => {
 							<button
 								onClick={() => scroll("left")}
 								aria-label="Scroll filter brands left"
-								className="absolute left-0 z-20 bg-white/90 p-1.5 rounded-full  cursor-pointer hover:bg-primary hover:text-white transition-all duration-300 border border-gray-200 text-primary active:scale-90"
-							>
+								className="absolute left-0 z-20 bg-white/90 p-1.5 rounded-full  cursor-pointer hover:bg-primary hover:text-white transition-all duration-300 border border-gray-200 text-primary active:scale-90">
 								<iconList.ChevronLeft size={18} />
 							</button>
 						)}
@@ -159,8 +155,7 @@ const Cars = () => {
 							ref={scrollRef}
 							onScroll={checkScroll}
 							aria-label="Car brand filters"
-							className="flex items-center mt-2 gap-2 overflow-x-auto no-scrollbar pb-2 w-full scroll-smooth"
-						>
+							className="flex items-center mt-2 gap-2 overflow-x-auto no-scrollbar pb-2 w-full scroll-smooth">
 							{companies.map((company) => (
 								<button
 									key={company}
@@ -169,8 +164,7 @@ const Cars = () => {
 									className={`px-3 py-1.5 rounded-full text-sm font-semibold transition-all duration-300 whitespace-nowrap border-2 cursor-pointer active:scale-90 ${selectedCompany === company
 										? "bg-primary text-white border-primary"
 										: "bg-white text-gray-700 border-gray-200 hover:border-primary/50"
-										}`}
-								>
+										}`}>
 									{company}
 								</button>
 							))}
@@ -179,8 +173,7 @@ const Cars = () => {
 							<button
 								onClick={() => scroll("right")}
 								aria-label="Scroll filter brands right"
-								className="absolute right-0 z-20 bg-white/90 p-1.5 rounded-full  cursor-pointer hover:bg-primary hover:text-white transition-all duration-300 border border-gray-200 text-primary active:scale-90"
-							>
+								className="absolute right-0 z-20 bg-white/90 p-1.5 rounded-full  cursor-pointer hover:bg-primary hover:text-white transition-all duration-300 border border-gray-200 text-primary active:scale-90">
 								<iconList.ChevronRight size={18} />
 							</button>
 						)}
@@ -200,8 +193,7 @@ const Cars = () => {
 									setOpenTransmission(false);
 								}}
 								className={`flex items-center gap-2 px-3 py-1.5 border rounded-xl text-sm font-semibold transition-all duration-300 cursor-pointer ${modelFilter ? "bg-primary text-white border-primary" : "bg-white text-gray-700 border-gray-300"
-									}`}
-							>
+									}`}>
 								{modelFilter || "Category"}
 								<iconList.ChevronRight size={16} className={`transition-transform duration-300 ${openModel ? "rotate-90" : ""}`} />
 							</button>
@@ -209,10 +201,9 @@ const Cars = () => {
 							{openModel && (
 								<motion.div
 									role="listbox"
-									initial={{ opacity: 0, scale: 0.95, y: -10 }}
-									animate={{ opacity: 1, scale: 1, y: 0 }}
-									className="absolute z-50 left-0 w-40 bg-white border border-gray-200 rounded-2xl mt-2 shadow-2xl p-1"
-								>
+									initial={{ opacity: 0 }}
+									animate={{ opacity: 1 }}
+									className="absolute z-50 left-0 w-40 bg-white border border-gray-200 rounded-2xl mt-2 shadow-2xl p-1">
 									{["All", "SUV", "MUV", "EV", "Wagon", "Sedan", "Van", "Jeep", "Hatchback"].map((opt) => (
 										<div
 											key={opt}
@@ -222,8 +213,7 @@ const Cars = () => {
 												setModelFilter(opt === "All" ? "" : opt);
 												setOpenModel(false);
 											}}
-											className={`cursor-pointer mb-1 px-3 py-1.5 rounded-xl text-sm transition-colors font-medium ${modelFilter === (opt === "All" ? "" : opt) ? "bg-primary text-white" : "hover:bg-gray-100 text-gray-700"}`}
-										>
+											className={`cursor-pointer mb-1 px-3 py-1.5 rounded-xl text-sm transition-colors font-medium ${modelFilter === (opt === "All" ? "" : opt) ? "bg-primary text-white" : "hover:bg-gray-100 text-gray-700"}`}>
 											{opt}
 										</div>
 									))}
@@ -243,8 +233,7 @@ const Cars = () => {
 									setOpenTransmission(false);
 								}}
 								className={`flex items-center gap-2 px-3 py-1.5 border rounded-xl text-sm font-semibold transition-all duration-300 cursor-pointer ${fuelFilter ? "bg-primary text-white border-primary" : "bg-white text-gray-700 border-gray-300"
-									}`}
-							>
+									}`}>
 								{fuelFilter || "Fuel Type"}
 								<iconList.ChevronRight size={16} className={`transition-transform duration-300 ${openFuel ? "rotate-90" : ""}`} />
 							</button>
@@ -252,10 +241,9 @@ const Cars = () => {
 							{openFuel && (
 								<motion.div
 									role="listbox"
-									initial={{ opacity: 0, scale: 0.95, y: -10 }}
-									animate={{ opacity: 1, scale: 1, y: 0 }}
-									className="absolute z-50 left-0 w-40 bg-white border border-gray-200 rounded-2xl mt-2 shadow-2xl p-1"
-								>
+									initial={{ opacity: 0 }}
+									animate={{ opacity: 1 }}
+									className="absolute z-50 left-0 w-40 bg-white border border-gray-200 rounded-2xl mt-2 shadow-2xl p-1">
 									{["All", "Petrol", "Diesel", "Hybrid", "Electric", "Gas"].map((opt) => (
 										<div
 											key={opt}
@@ -265,8 +253,7 @@ const Cars = () => {
 												setFuelFilter(opt === "All" ? "" : opt);
 												setOpenFuel(false);
 											}}
-											className={`cursor-pointer px-3 py-1.5 rounded-xl text-sm transition-colors font-medium mb-1 ${fuelFilter === (opt === "All" ? "" : opt) ? "bg-primary text-white" : "hover:bg-gray-100 text-gray-700"}`}
-										>
+											className={`cursor-pointer px-3 py-1.5 rounded-xl text-sm transition-colors font-medium mb-1 ${fuelFilter === (opt === "All" ? "" : opt) ? "bg-primary text-white" : "hover:bg-gray-100 text-gray-700"}`}>
 											{opt}
 										</div>
 									))}
@@ -286,8 +273,7 @@ const Cars = () => {
 									setOpenFuel(false);
 								}}
 								className={`flex items-center gap-2 px-3 py-1.5 border rounded-xl text-sm font-semibold transition-all duration-300 cursor-pointer ${transmissionFilter ? "bg-primary text-white border-primary" : "bg-white text-gray-700 border-gray-300"
-									}`}
-							>
+									}`}>
 								{transmissionFilter || "Transmission"}
 								<iconList.ChevronRight size={16} className={`transition-transform duration-300 ${openTransmission ? "rotate-90" : ""}`} />
 							</button>
@@ -295,10 +281,9 @@ const Cars = () => {
 							{openTransmission && (
 								<motion.div
 									role="listbox"
-									initial={{ opacity: 0, scale: 0.95, y: -10 }}
-									animate={{ opacity: 1, scale: 1, y: 0 }}
-									className="absolute z-50 right-0 w-40 bg-white border border-gray-200 rounded-2xl mt-2 shadow-2xl p-1"
-								>
+									initial={{ opacity: 0 }}
+									animate={{ opacity: 1 }}
+									className="absolute z-50 right-0 w-40 bg-white border border-gray-200 rounded-2xl mt-2 shadow-2xl p-1">
 									{["All", "Manual", "Automatic", "Semi-Automatic", ].map((opt) => (
 										<div
 											key={opt}
@@ -308,8 +293,7 @@ const Cars = () => {
 												setTransmissionFilter(opt === "All" ? "" : opt);
 												setOpenTransmission(false);
 											}}
-											className={`cursor-pointer px-3 py-1.5 rounded-xl text-sm transition-colors font-medium mb-1 ${transmissionFilter === (opt === "All" ? "" : opt) ? "bg-primary text-white" : "hover:bg-gray-100 text-gray-700"}`}
-										>
+											className={`cursor-pointer px-3 py-1.5 rounded-xl text-sm transition-colors font-medium mb-1 ${transmissionFilter === (opt === "All" ? "" : opt) ? "bg-primary text-white" : "hover:bg-gray-100 text-gray-700"}`}>
 											{opt}
 										</div>
 									))}
@@ -318,7 +302,7 @@ const Cars = () => {
 						</div>
 					</div>
 
-				</motion.div >
+				</motion.div>
 
 
 				{/* cards grid  */}
@@ -336,17 +320,16 @@ const Cars = () => {
 				{!loading && visibleCount < filteredCars.length && (
 					<div className="flex justify-center mt-10 mb-5">
 						<motion.button
-							initial={{ opacity: 0, y: 50 }}
-							animate={{ opacity: 1, y: 0 }}
-							transition={{ duration: 0.8, ease: "easeIn" }}
+							initial={{ opacity: 0 }}
+							animate={{ opacity: 1 }}
+							transition={{ duration: 0.3 }}
 							onClick={handleLoadMore}
 							disabled={isLoadingMore}
 							className={`flex group items-center justify-center gap-2 px-6 py-2 border-2  rounded-2xl mt-18 transition-all duration-300
 								${isLoadingMore
 									? 'border-gray-300 text-gray-400 cursor-wait'
 									: 'border-gray-500 text-gray-600 hover:bg-primary cursor-pointer hover:text-light hover:border-light active:scale-95'
-								}`}
-						>
+								}`}>
 							{isLoadingMore ? (
 								<>
 									Loading...
@@ -362,7 +345,7 @@ const Cars = () => {
 					</div>
 				)}
 
-			</div >
+			</div>
 		</>
 	);
 };

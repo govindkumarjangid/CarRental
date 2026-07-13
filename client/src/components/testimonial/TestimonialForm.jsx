@@ -48,30 +48,23 @@ const TestimonialForm = () => {
 		<>
 			<motion.div
 				key="backdrop"
-				initial={{ opacity: 0, }}
+				initial={{ opacity: 0 }}
 				animate={{ opacity: 1 }}
-				exit={{ opacity: 0, filter: "blur(5px)", scale: 0.95 }}
+				exit={{ opacity: 0 }}
 				transition={{ duration: 0.3 }}
 				onClick={() => setShowReview(false)}
-				className="fixed inset-0 z-100 backdrop-blur-xs flex items-center justify-center bg-blue-700/5 p-4"
-			>
+				className="fixed inset-0 z-100 backdrop-blur-xs flex items-center justify-center bg-blue-700/5 p-4">
 				<motion.form
 					onSubmit={handleSubmit}
 					onClick={(e) => e.stopPropagation()}
-					initial={{ opacity: 0, filter: "blur(5px)", scale: 0.95 }}
-					animate={{ opacity: 1, filter: "blur(0px)", scale: 1 }}
-					exit={{ opacity: 0, filter: "blur(5px)", scale: 0.95 }}
-					transition={{
-						delay: 0.1,
-						duration: 0.3,
-						ease: "easeOut"
-					}}
+					initial={{ opacity: 0 }}
+					animate={{ opacity: 1 }}
+					exit={{ opacity: 0 }}
+					transition={{ duration: 0.3 }}
 					key="testimonial-form"
-					className="bg-white rounded-3xl w-full h-fit max-w-2xl md:max-h-[90vh] overflow-y-auto shadow-sm relative p-4 md:p-6"
-				>
+					className="bg-white rounded-3xl w-full h-fit max-w-2xl md:max-h-[90vh] overflow-y-auto shadow-sm relative p-4 md:p-6">
 					<div className="flex items-center justify-between mb-4">
-						<h2 className="text-xl font-semibold"
-						>
+						<h2 className="text-xl font-semibold">
 							Add Your Review
 						</h2>
 
@@ -85,8 +78,7 @@ const TestimonialForm = () => {
 
 					{/* photo */}
 					<div
-						className="flex gap-4 items-center w-full mb-6"
-					>
+						className="flex gap-4 items-center w-full mb-6">
 						<label htmlFor="car-image">
 							{image ? (
 								<img
@@ -167,8 +159,7 @@ const TestimonialForm = () => {
 					<button
 						type="submit"
 						className="flex items-center justify-center gap-2 sm:px-6 sm:py-2.5 py-2 px-4 bg-primary text-white rounded-2xl w-max mt-4 mb-2 hover:bg-primary/90 active:scale-95 transition cursor-pointer md:text-base text-sm font-medium"
-						disabled={loading}
-					>
+						disabled={loading}>
 						{loading ? (
 							<>
 								<iconList.Loader

@@ -33,28 +33,26 @@ const Hero = () => {
 
 				{/* heading  */}
 				<motion.h1
-					initial={{ opacity: 0, y: 15 }}
-					animate={{ opacity: 1, y: 0 }}
-					transition={{ duration: 0.5, ease: "easeOut" }}
-					className="text-4xl md:text-5xl font-bold text-gray-900 mt-15"
-				>
+					initial={{ opacity: 0 }}
+					animate={{ opacity: 1 }}
+					transition={{ duration: 0.3 }}
+					className="text-4xl md:text-5xl font-bold text-gray-900 mt-15">
 					Luxury cars on Rent
 				</motion.h1>
 
 				<motion.p
-					initial={{ opacity: 0, y: 15 }}
-					animate={{ opacity: 1, y: 0 }}
-					transition={{ duration: 0.5, ease: "easeOut", delay: 0.05 }}
+					initial={{ opacity: 0 }}
+					animate={{ opacity: 1 }}
+					transition={{ duration: 0.3 }}
 					className='text-md text-gray-800 font-medium'>Experience the pinnacle of automotive excellence, curated for your journey.</motion.p>
 
 				{/* check car availability form  */}
 				<motion.form
 					onSubmit={handleSubmit}
-					initial={{ opacity: 0, y: 20 }}
-					animate={{ opacity: 1, y: 0 }}
-					transition={{ duration: 0.5, ease: "easeOut", delay: 0.1 }}
-					className="flex flex-col md:flex-row items-center md:items-center justify-between px-4 py-5 rounded-3xl w-full max-w-120 md:max-w-200 bg-white shadow-sm border border-gray-200"
-				>
+					initial={{ opacity: 0 }}
+					animate={{ opacity: 1 }}
+					transition={{ duration: 0.3 }}
+					className="flex flex-col md:flex-row items-center md:items-center justify-between px-4 py-5 rounded-3xl w-full max-w-120 md:max-w-200 bg-white shadow-sm border border-gray-200">
 					<div className="flex flex-col md:flex-row items-center md:items-center md:justify-center gap-10 md:ml-8">
 						<div className="flex flex-row items-center gap-2 md:flex-col">
 							<label htmlFor="pickup-location" className="sr-only">Pickup Location</label>
@@ -65,9 +63,8 @@ const Hero = () => {
 								id="pickup-location"
 								aria-labelledby="location-label"
 								onChange={(e) => setPickupLocation(e.target.value)}
-								className={inputClasses}
-							>
-								<option value="" >Pickup Location</option>
+								className={inputClasses}>
+								<option value="">Pickup Location</option>
 								{cityList.map((city, index) => (
 									<option key={index} value={city}>
 										{city}
@@ -78,8 +75,7 @@ const Hero = () => {
 						<div className="flex flex-row items-center gap-2  md:flex-col">
 							<label
 								htmlFor="pickup-date"
-								className="text-sm font-medium text-gray-800"
-							>
+								className="text-sm font-medium text-gray-800">
 								Pick-up Date
 							</label>
 							<input
@@ -94,8 +90,7 @@ const Hero = () => {
 						<div className="flex flex-row items-center gap-2  md:flex-col">
 							<label
 								htmlFor="return-date"
-								className="text-sm font-medium text-gray-800"
-							>
+								className="text-sm font-medium text-gray-800">
 								Return Date
 							</label>
 							<input
@@ -112,8 +107,7 @@ const Hero = () => {
 							className={`cursor-pointer flex items-center justify-center gap-1 px-4 py-2 transition-all text-white rounded-2xl shadow-lg active:scale-98 font-medium ${loading
 								? "bg-primary cursor-not-allowed opacity-90"
 								: "bg-primary hover:bg-primary-dull"
-								}`}
-						>
+								}`}>
 							{loading ? (
 								<div className="flex items-center gap-2 justify-center">
 									<Loader
@@ -170,22 +164,20 @@ const Hero = () => {
 
 				{/* available cars modal  */}
 				<AnimatePresence>
-					{availableCars.length > 0 && open && (
+					{availableCars.length> 0 && open && (
 						<motion.div
 							initial={{ opacity: 0 }}
 							animate={{ opacity: 1 }}
 							exit={{ opacity: 0 }}
 							className="fixed inset-0 z-50 flex items-center justify-center bg-primary/5 backdrop-blur-sm p-4"
-							onClick={() => setOpen(false)}
-						>
+							onClick={() => setOpen(false)}>
 							<motion.div
-								initial={{ opacity: 0, scale: 0.95 }}
-								animate={{ opacity: 1, scale: 1 }}
-								exit={{ opacity: 0, scale: 0.95 }}
-								transition={{ type: "spring", stiffness: 300, damping: 30 }}
+								initial={{ opacity: 0 }}
+								animate={{ opacity: 1 }}
+								exit={{ opacity: 0 }}
+								transition={{ duration: 0.3 }}
 								onClick={(e) => e.stopPropagation()}
-								className="bg-white shadow-sm rounded-3xl w-full max-w-lg max-h-[85vh] flex flex-col overflow-hidden"
-							>
+								className="bg-white shadow-sm rounded-3xl w-full max-w-lg max-h-[85vh] flex flex-col overflow-hidden">
 								<div className="sticky top-0 bg-white flex justify-between items-center px-4 py-3 border-b border-gray-200 z-10">
 									<h2 className="font-semibold text-lg text-gray-800">
 										Available Cars
@@ -210,16 +202,14 @@ const Hero = () => {
 										</thead>
 
 										<motion.tbody
-											initial="hidden"
-											animate="show"
-											transition={{ staggerChildren: 0.08 }}
-										>
+											initial={{ opacity: 0 }}
+											animate={{ opacity: 1 }}
+											transition={{ duration: 0.3 }}>
 											{availableCars.map((car) => (
 												<motion.tr
 													key={car._id}
 													className="cursor-pointer bg-white hover:bg-gray-50 transition-colors group shadow-sm rounded-xl"
-													onClick={() => navigate(`/car-details/${car._id}`)}
-												>
+													onClick={() => navigate(`/car-details/${car._id}`)}>
 													<td className="p-3 rounded-l-xl border-y border-l border-gray-100 border-x-0 border-r-0!">
 														<img
 															src={car.image}

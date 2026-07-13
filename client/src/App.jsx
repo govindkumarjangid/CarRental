@@ -4,10 +4,11 @@ import { Toaster } from "react-hot-toast";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { useEffect, lazy, Suspense, useState } from "react";
 import { Loader } from "lucide-react";
-import { AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Navbar, Footer, ProtectRoute, CarsPageSkeleton, DashboardSkeleton, TableSkeleton, FormSkeleton, CarDetailsPageSkeleton, UserTableSkeleton, LoginSkeleton, TestimonialFormSkeleton, BookingCard } from "./index.js";
 
 import ScrollToTop from "./components/UI/ScrollToTop.jsx";
+import Lenis from "lenis";
 
 // Lazy loading all pages/modals
 const Home = lazy(() => import("./pages/Home.jsx"));
@@ -48,6 +49,25 @@ const App = () => {
 		if (token) fetchUser();
 	}, [token]);
 
+	useEffect(() => {
+		const mainWrapper = document.querySelector('main');
+		const lenis = new Lenis({
+			wrapper: mainWrapper || window,
+			smoothWheel: true,
+			lerp: 0.05, // Lower lerp for smoother scrolling
+            duration: 1.2, // Increase duration for smoother feel
+		});
+
+		function raf(time) {
+			lenis.raf(time);
+			requestAnimationFrame(raf);
+		}
+		requestAnimationFrame(raf);
+		return () => {
+			lenis.destroy();
+		};
+	}, []);
+
 	return (
 		<div className="h-screen-dynamic flex flex-col overflow-hidden">
 			<ScrollToTop />
@@ -85,112 +105,123 @@ const App = () => {
 					)}
 				</AnimatePresence>
 
-				<Routes>
-					<Route path="/" element={
-						<Home />
-					} />
-					<Route path="/cars" element={
-						<Suspense fallback={<CarsPageSkeleton />}>
-							<Cars />
-						</Suspense>
-					} />
-					<Route path="/car-details/:id" element={
-						<Suspense fallback={<CarDetailsPageSkeleton />}>
-							<Cardetails />
-						</Suspense>
-					} />
-					<Route path="/chatpage/:id?" element={
-						<Suspense fallback={<div className="h-screen w-full shimmer" />}>
-							<ChatPage />
-						</Suspense>
-					} />
-					<Route path="/my-bookings" element={
-						<Suspense fallback={null}>
-							<Mybookings />
-						</Suspense>
-					} />
-					<Route path="/chats/:userId?" element={
-						<ProtectRoute>
-							<Suspense fallback={<div className="h-screen w-full shimmer" />}>
-								<Chats />
-							</Suspense>
-						</ProtectRoute>
-					} />
-
-					<Route path="/owner" element={
-						<ProtectRoute>
-							<Suspense fallback={<div className="h-screen w-full flex flex-col gap-4 items-center justify-center text-gray-500">
-								<Loader className="animate-spin" size={40} />
-								<span>Loading Dashboard...</span>
-							</div>}>
-								<Layout />
-							</Suspense>
-						</ProtectRoute>
-					}>
-						<Route index element={
-							<ProtectRoute>
-								<Suspense fallback={<DashboardSkeleton />}>
-									<Dashboard />
+				<AnimatePresence mode="wait">
+					<motion.div
+						key={location.pathname}
+						initial={{ opacity: 0, y: 5 }}
+						animate={{ opacity: 1, y: 0 }}
+						exit={{ opacity: 0, y: -5 }}
+						transition={{ duration: 0.3 }}
+						className="flex-1 min-h-0"
+					>
+						<Routes location={location} key={location.pathname}>
+							<Route path="/" element={
+								<Home />
+							} />
+							<Route path="/cars" element={
+								<Suspense fallback={<CarsPageSkeleton />}>
+									<Cars />
 								</Suspense>
-							</ProtectRoute>
-						} />
-						<Route path="add-car" element={
-							<ProtectRoute>
-								<Suspense fallback={<FormSkeleton />}>
-									<AddCar />
+							} />
+							<Route path="/car-details/:id" element={
+								<Suspense fallback={<CarDetailsPageSkeleton />}>
+									<Cardetails />
 								</Suspense>
-							</ProtectRoute>
-						} />
-						<Route path="manage-cars/:carId?" element={
-							<ProtectRoute>
-								<Suspense fallback={<TableSkeleton />}>
-									<ManageCars />
-								</Suspense>
-							</ProtectRoute>
-						} />
-						<Route path="manage-cars/location/:carId" element={
-							<ProtectRoute>
-								<Suspense fallback={<TableSkeleton />}>
-									<LiveTrackerPage />
-								</Suspense>
-							</ProtectRoute>
-						} />
-						<Route path="manage-bookings/:bookingId?" element={
-							<ProtectRoute>
-								<Suspense fallback={<TableSkeleton />}>
-									<ManageBookings />
-								</Suspense>
-							</ProtectRoute>
-						} />
-						<Route path="manage-bookings/location/:carId" element={
-							<ProtectRoute>
-								<Suspense fallback={<TableSkeleton />}>
-									<LiveTrackerPage />
-								</Suspense>
-							</ProtectRoute>
-						} />
-						<Route path="users" element={
-							<ProtectRoute>
-								<Suspense fallback={<UserTableSkeleton />}>
-									<AllUsers />
-								</Suspense>
-							</ProtectRoute>
-						} />
-						<Route path="chats/:userId?" element={
-							<ProtectRoute>
+							} />
+							<Route path="/chatpage/:id?" element={
 								<Suspense fallback={<div className="h-screen w-full shimmer" />}>
-									<Chats />
+									<ChatPage />
 								</Suspense>
-							</ProtectRoute>
-						} />
-					</Route>
+							} />
+							<Route path="/my-bookings" element={
+								<Suspense fallback={null}>
+									<Mybookings />
+								</Suspense>
+							} />
+							<Route path="/chats/:userId?" element={
+								<ProtectRoute>
+									<Suspense fallback={<div className="h-screen w-full shimmer" />}>
+										<Chats />
+									</Suspense>
+								</ProtectRoute>
+							} />
 
-					<Route path="*" element={
-						<Suspense fallback={null}>
-							<NotFound404 />
-						</Suspense>
-					} />
-				</Routes>
+							<Route path="/owner" element={
+								<ProtectRoute>
+									<Suspense fallback={<div className="h-screen w-full flex flex-col gap-4 items-center justify-center text-gray-500">
+										<Loader className="animate-spin" size={40} />
+										<span>Loading Dashboard...</span>
+									</div>}>
+										<Layout />
+									</Suspense>
+								</ProtectRoute>
+							}>
+								<Route index element={
+									<ProtectRoute>
+										<Suspense fallback={<DashboardSkeleton />}>
+											<Dashboard />
+										</Suspense>
+									</ProtectRoute>
+								} />
+								<Route path="add-car" element={
+									<ProtectRoute>
+										<Suspense fallback={<FormSkeleton />}>
+											<AddCar />
+										</Suspense>
+									</ProtectRoute>
+								} />
+								<Route path="manage-cars/:carId?" element={
+									<ProtectRoute>
+										<Suspense fallback={<TableSkeleton />}>
+											<ManageCars />
+										</Suspense>
+									</ProtectRoute>
+								} />
+								<Route path="manage-cars/location/:carId" element={
+									<ProtectRoute>
+										<Suspense fallback={<TableSkeleton />}>
+											<LiveTrackerPage />
+										</Suspense>
+									</ProtectRoute>
+								} />
+								<Route path="manage-bookings/:bookingId?" element={
+									<ProtectRoute>
+										<Suspense fallback={<TableSkeleton />}>
+											<ManageBookings />
+										</Suspense>
+									</ProtectRoute>
+								} />
+								<Route path="manage-bookings/location/:carId" element={
+									<ProtectRoute>
+										<Suspense fallback={<TableSkeleton />}>
+											<LiveTrackerPage />
+										</Suspense>
+									</ProtectRoute>
+								} />
+								<Route path="users" element={
+									<ProtectRoute>
+										<Suspense fallback={<UserTableSkeleton />}>
+											<AllUsers />
+										</Suspense>
+									</ProtectRoute>
+								} />
+								<Route path="chats/:userId?" element={
+									<ProtectRoute>
+										<Suspense fallback={<div className="h-screen w-full shimmer" />}>
+											<Chats />
+										</Suspense>
+									</ProtectRoute>
+								} />
+							</Route>
+
+							<Route path="*" element={
+								<Suspense fallback={null}>
+									<NotFound404 />
+								</Suspense>
+							} />
+						</Routes>
+					</motion.div>
+				</AnimatePresence>
 				{!isOwnerPath && !isChatPath && <Footer />}
 			</main>
 		</div>

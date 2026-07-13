@@ -40,8 +40,7 @@ const Layout = () => {
 					{/* Scrolling Container */}
 					<div
 						ref={scrollRef}
-						className="flex-1 overflow-y-auto overflow-x-hidden custom-theme-scrollbar w-full h-full"
-					>
+						className="flex-1 overflow-y-auto overflow-x-hidden custom-theme-scrollbar w-full h-full">
 						<Outlet context={{ setTrackingCarId, setIsLiveTrackerOpen }} />
 					</div>
 
@@ -49,12 +48,11 @@ const Layout = () => {
 					<AnimatePresence>
 						{isLiveTrackerOpen && (
 							<motion.div
-								initial={{ opacity: 0, y: 30 }}
-								animate={{ opacity: 1, y: 0 }}
-								exit={{ opacity: 0, y: 30 }}
-								transition={{ duration: 0.3, ease: "easeOut" }}
-								className="absolute inset-0 bg-white z-100 flex flex-col"
-							>
+								initial={{ opacity: 0 }}
+								animate={{ opacity: 1 }}
+								exit={{ opacity: 0 }}
+								transition={{ duration: 0.3 }}
+								className="absolute inset-0 bg-white z-100 flex flex-col">
 								<div className="p-4 md:p-8 flex-1 flex flex-col min-h-full">
 									<LiveTracker carId={trackingCarId} onClose={() => setIsLiveTrackerOpen(false)} />
 								</div>

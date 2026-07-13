@@ -37,7 +37,7 @@ const ChatPage = () => {
   useEffect(() => {
     if (scrollContainerRef.current) {
       const container = scrollContainerRef.current;
-      const isInitialLoad = prevMessagesLength.current === 0 && messages.length > 0;
+      const isInitialLoad = prevMessagesLength.current === 0 && messages.length> 0;
 
       // Check if user is near bottom (within 200px)
       const isNearBottom = container.scrollHeight - container.scrollTop - container.clientHeight < 200;
@@ -187,7 +187,7 @@ const ChatPage = () => {
   }, [chatId]);
 
   useEffect(() => {
-    if (chatId && messages.length > 0) {
+    if (chatId && messages.length> 0) {
       const hasUnread = messages.some(m => m.senderRole !== user.role && !m.seenByReceiver);
       if (hasUnread) {
         socket.emit("markAsRead", { chatId, role: user.role });
@@ -428,17 +428,16 @@ const ChatPage = () => {
                       <AnimatePresence initial={false}>
                         {messages.map((m) => (
                           <motion.div
-                            initial={{ opacity: 0, y: 10, scale: 0.98 }}
-                            animate={{ opacity: 1, y: 0, scale: 1 }}
-                            transition={{ duration: 0.2 }}
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ duration: 0.3 }}
                             key={m._id}
                             className={`relative max-w-[85%] md:max-w-[65%] w-fit px-5 py-3 text-[14.5px] rounded-3xl shadow-sm wrap-break-words transition-all hover:shadow-md ${m.senderRole === user.role
                               ? "ml-auto bg-linear-to-r from-primary to-indigo-600 text-white rounded-tr-none"
                               : "bg-white text-gray-800 rounded-tl-none border border-slate-100"
-                              }`}
-                          >
-                            {m.attachments && m.attachments.length > 0 && (
-                              <div className={`flex flex-col gap-2 mb-2 ${m.attachments.length > 1 ? "grid grid-cols-2" : ""}`}>
+                              }`}>
+                            {m.attachments && m.attachments.length> 0 && (
+                              <div className={`flex flex-col gap-2 mb-2 ${m.attachments.length> 1 ? "grid grid-cols-2" : ""}`}>
                                 {m.attachments.map((att, idx) => (
                                   <div key={idx} className="group relative rounded-lg overflow-hidden border border-black/5 shadow-sm bg-black/5">
                                     {att.type === 'image' ? (
@@ -454,8 +453,7 @@ const ChatPage = () => {
                                             e.stopPropagation();
                                             handleDownload(att.url, att.name || `image_${idx}.jpg`);
                                           }}
-                                          className="absolute top-0 right-0 h-7 w-7 bg-black/50 hover:bg-black/70 text-white rounded-full flex items-center justify-center opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all duration-200 shadow-lg backdrop-blur-sm cursor-pointer"
-                                        >
+                                          className="absolute top-0 right-0 h-7 w-7 bg-black/50 hover:bg-black/70 text-white rounded-full flex items-center justify-center opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all duration-200 shadow-lg backdrop-blur-sm cursor-pointer">
                                           <iconList.Download size={16} />
                                         </button>
                                       </>
@@ -465,8 +463,7 @@ const ChatPage = () => {
                                           href={att.url}
                                           target="_blank"
                                           rel="noreferrer"
-                                          className="flex items-center gap-2 text-[13px] text-inherit no-underline min-w-0"
-                                        >
+                                          className="flex items-center gap-2 text-[13px] text-inherit no-underline min-w-0">
                                           <div className="h-9 w-9 shrink-0 flex items-center justify-center bg-white rounded-lg shadow-sm">
                                             <iconList.FileText className="text-red-500" size={20} />
                                           </div>
@@ -478,8 +475,7 @@ const ChatPage = () => {
                                         <button
                                           onClick={() => handleDownload(att.url, att.name || "document.pdf")}
                                           className="h-7 w-7 flex items-center justify-center text-gray-500 hover:text-primary transition-colors cursor-pointer"
-                                          title="Download"
-                                        >
+                                          title="Download">
                                           <iconList.Download size={16} />
                                         </button>
                                       </div>
@@ -517,17 +513,16 @@ const ChatPage = () => {
               {/* INPUT BOX */}
               <div className="shrink-0 p-3 md:p-4 bg-white/80 backdrop-blur-lg border-t border-slate-100 flex flex-col gap-2 z-10 shadow-lg">
                 {/* ATTACHMENT PREVIEW */}
-                {attachments.length > 0 && (
+                {attachments.length> 0 && (
                   <div className="flex gap-3 mb-3 max-w-4xl overflow-x-auto pb-2 scrollbar-hide">
                     <AnimatePresence>
                       {attachments.map((file, index) => (
                         <motion.div
                           key={index}
-                          initial={{ opacity: 0, scale: 0.8, y: 10 }}
-                          animate={{ opacity: 1, scale: 1, y: 0 }}
-                          exit={{ opacity: 0, scale: 0.8, y: 10 }}
-                          className="relative h-20 w-20 md:h-24 md:w-24 shrink-0 rounded-xl overflow-hidden border-2 border-white shadow-md bg-white group"
-                        >
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                          className="relative h-20 w-20 md:h-24 md:w-24 shrink-0 rounded-xl overflow-hidden border-2 border-white shadow-md bg-white group">
                           {file.type === 'image' ? (
                             <img src={file.preview} alt="" className="h-full w-full object-cover" />
                           ) : (
@@ -538,8 +533,7 @@ const ChatPage = () => {
                           )}
                           <button
                             onClick={() => removeAttachment(index)}
-                            className="absolute top-1 right-1 h-6 w-6 bg-black/60 hover:bg-red-500 text-white rounded-full flex items-center justify-center transition-all duration-200 shadow-sm opacity-0 group-hover:opacity-100 cursor-pointer scale-90 hover:scale-100"
-                          >
+                            className="absolute top-1 right-1 h-6 w-6 bg-black/60 hover:bg-red-500 text-white rounded-full flex items-center justify-center transition-all duration-200 shadow-sm opacity-0 group-hover:opacity-100 cursor-pointer scale-90 hover:scale-100">
                             <iconList.X size={14} />
                           </button>
                         </motion.div>
@@ -559,8 +553,7 @@ const ChatPage = () => {
                   />
                   <button
                     onClick={() => fileInputRef.current.click()}
-                    className="h-12 w-12 shrink-0 rounded-2xl flex items-center justify-center text-slate-500 hover:text-slate-700 bg-slate-100 hover:bg-slate-200/80 transition-all active:scale-95 cursor-pointer border border-slate-200/50 shadow-sm"
-                  >
+                    className="h-12 w-12 shrink-0 rounded-2xl flex items-center justify-center text-slate-500 hover:text-slate-700 bg-slate-100 hover:bg-slate-200/80 transition-all active:scale-95 cursor-pointer border border-slate-200/50 shadow-sm">
                     <iconList.Paperclip size={20} />
                   </button>
 
@@ -590,11 +583,10 @@ const ChatPage = () => {
                   <button
                     onClick={handleSendMessage}
                     disabled={!input.trim() && attachments.length === 0}
-                    className={`h-12 w-12 shrink-0 rounded-2xl flex items-center justify-center transition-all duration-200 ${input.trim() || attachments.length > 0
+                    className={`h-12 w-12 shrink-0 rounded-2xl flex items-center justify-center transition-all duration-200 ${input.trim() || attachments.length> 0
                       ? "bg-linear-to-r from-primary to-indigo-600 text-white shadow-md shadow-primary/20 hover:shadow-lg hover:shadow-primary/30 hover:-translate-y-0.5 active:scale-95 active:translate-y-0 cursor-pointer"
                       : "bg-slate-100 text-slate-400 cursor-not-allowed border border-slate-200/50"
-                      }`}
-                  >
+                      }`}>
                     <iconList.Send size={18} className="ml-0.5" />
                   </button>
                 </div>

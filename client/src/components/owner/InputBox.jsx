@@ -28,8 +28,7 @@ const InputBox = ({ value, onChange, label, type = 'text', placeholder, title, a
                     name={label}
                     className={`${baseClass} ${Icon ? 'pr-10' : ''}`}
                     value={value}
-                    onChange={onChange}
-                >
+                    onChange={onChange}>
                     <option value="" disabled hidden>
                         {placeholder || ""}
                     </option>
@@ -52,8 +51,7 @@ const InputBox = ({ value, onChange, label, type = 'text', placeholder, title, a
             )}
             <label
                 htmlFor={label}
-                className={`${labelClass} ${as === 'select' && value ? 'top-0 -translate-y-1/2 text-xs' : ''}`}
-            >
+                className={`${labelClass} ${as === 'select' && value ? 'top-0 -translate-y-1/2 text-xs' : ''}`}>
                 {title}
             </label>
         </div>

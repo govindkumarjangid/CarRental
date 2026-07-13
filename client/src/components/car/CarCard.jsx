@@ -18,8 +18,7 @@ const CarCard = ({ car, index }) => {
 		<div
 			className="h-full w-full group rounded-3xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300 cursor-pointer active:scale-99 bg-white border border-gray-100"
 			onClick={handleClick}
-			aria-label={`View details for ${car.brand} ${car.model}`}
-		>
+			aria-label={`View details for ${car.brand} ${car.model}`}>
 			{/* image & availability & price  */}
 			<div className="relative h-60 overflow-hidden">
 				<OptimizedImage

@@ -69,12 +69,11 @@ const ManageCars = () => {
 		return (
 			<AnimatePresence>
 				<motion.div
-					initial={{ opacity: 0, filter: "blur(5px)" }}
-					animate={{ opacity: 1, filter: "blur(0px)" }}
-					exit={{ opacity: 0, filter: "blur(5px)" }}
-					transition={{ duration: 0.4, ease: "easeInOut" }}
-					className="flex-1 h-full overflow-hidden"
-				>
+					initial={{ opacity: 0 }}
+					animate={{ opacity: 1 }}
+					exit={{ opacity: 0 }}
+					transition={{ duration: 0.3 }}
+					className="flex-1 h-full overflow-hidden">
 					<EditCarForm
 						car={selectedCar}
 						onClose={() => navigate("/owner/manage-cars")}
@@ -100,8 +99,7 @@ const ManageCars = () => {
 					initial={{ opacity: 0 }}
 					animate={{ opacity: 1 }}
 					onClick={() => navigate("/owner/add-car")}
-					className="flex items-center gap-2 bg-primary hover:bg-primary-dull text-white px-3 py-2 rounded-2xl font-medium transition-all shadow-lg active:scale-95 w-fit h-fit cursor-pointer"
-				>
+					className="flex items-center gap-2 bg-primary hover:bg-primary-dull text-white px-3 py-2 rounded-2xl font-medium transition-all shadow-lg active:scale-95 w-fit h-fit cursor-pointer">
 					<iconList.Plus size={20} />
 					Add New Car
 				</motion.button>
@@ -147,8 +145,7 @@ const ManageCars = () => {
 						initial={{ opacity: 0 }}
 						animate={{ opacity: 1 }}
 						transition={{ duration: 0.3 }}
-						className="w-full border-collapse text-left text-sm text-gray-600"
-					>
+						className="w-full border-collapse text-left text-sm text-gray-600">
 						<thead className="bg-gray-50 text-gray-500 border-b border-gray-200">
 							<tr>
 								<th className="p-3 font-medium">Car</th>
@@ -163,15 +160,14 @@ const ManageCars = () => {
 							</tr>
 						</thead>
 						<tbody>
-							{currentItems.length > 0 ? (
+							{currentItems.length> 0 ? (
 								currentItems.map((car, index) => (
 									<motion.tr
 										key={car._id || index}
-										initial={{ opacity: 0, y: 10 }}
-										animate={{ opacity: 1, y: 0 }}
-										transition={{ type: "spring", stiffness: 300, damping: 30, delay: index * 0.05 }}
-										className="border-b last:border-b-0 border-gray-100 hover:bg-gray-50/80 transition-colors duration-200 pb-10"
-									>
+										initial={{ opacity: 0 }}
+										animate={{ opacity: 1 }}
+										transition={{ duration: 0.3 }}
+										className="border-b last:border-b-0 border-gray-100 hover:bg-gray-50/80 transition-colors duration-200 pb-10">
 										<td className="p-3 flex  md:flex-row flex-col items-start gap-3 justify-start">
 											<img
 												src={car.image}
@@ -209,8 +205,7 @@ const ManageCars = () => {
 														: car.status === "maintenance"
 															? "bg-red-500/10 text-red-600 border-red-500/20"
 															: "bg-gray-500/10 text-gray-600 border-gray-500/20"
-													}`}
-											>
+													}`}>
 												<option value="available">Available</option>
 												<option value="cleaning">Cleaning</option>
 												<option value="maintenance">Maintenance</option>
@@ -225,8 +220,7 @@ const ManageCars = () => {
 														updateCarStatus(car._id, car.status === "available" ? "unavailable" : "available")
 													}
 													title="Quick Toggle Availability"
-													className="cursor-pointer active:scale-90 transition-transform duration-300"
-												>
+													className="cursor-pointer active:scale-90 transition-transform duration-300">
 													{car.status === "available" ? (
 														<iconList.Eye
 															size={18}
@@ -245,8 +239,7 @@ const ManageCars = () => {
 														setOpenConfirm(true);
 														setDeleteId(car._id);
 													}}
-													className="cursor-pointer active:scale-90 transition-transform duration-300"
-												>
+													className="cursor-pointer active:scale-90 transition-transform duration-300">
 													<iconList.Trash2
 														size={18}
 														className="text-red-600"
@@ -256,8 +249,7 @@ const ManageCars = () => {
 												<button
 													onClick={() => navigate(`/owner/manage-cars/${car._id}`)}
 													className="cursor-pointer active:scale-90 transition-transform duration-300"
-													title="Edit Car"
-												>
+													title="Edit Car">
 													<iconList.EditIcon
 														size={18}
 														className="text-yellow-500"
@@ -267,8 +259,7 @@ const ManageCars = () => {
 												<button
 													onClick={() => navigate(`/owner/manage-cars/location/${car._id}`)}
 													className="cursor-pointer active:scale-90 transition-transform duration-300"
-													title="Live Track"
-												>
+													title="Live Track">
 													<iconList.MapPin
 														size={18}
 														className="text-blue-500"
@@ -290,13 +281,12 @@ const ManageCars = () => {
 
 
 					{/* Pagination */}
-					{totalPages > 0 && (
+					{totalPages> 0 && (
 						<div className="p-4 border-t border-gray-100 flex items-center justify-center gap-6 bg-gray-50/50">
 							<button
 								disabled={currentPage === 1}
 								onClick={() => setCurrentPage(prev => prev - 1)}
-								className="p-2 rounded-2xl bg-primary hover:bg-primary-dull border border-gray-200 shadow-sm disabled:opacity-905 disabled:cursor-not-allowed transition-all active:scale-95 cursor-pointer text-white"
-							>
+								className="p-2 rounded-2xl bg-primary hover:bg-primary-dull border border-gray-200 shadow-sm disabled:opacity-905 disabled:cursor-not-allowed transition-all active:scale-95 cursor-pointer text-white">
 								<iconList.ChevronLeft size={20} />
 							</button>
 							<span className="text-sm font-semibold text-gray-600">
@@ -305,8 +295,7 @@ const ManageCars = () => {
 										<button
 											key={index}
 											onClick={() => setCurrentPage(index + 1)}
-											className={`px-3 py-1 rounded-full transition-colors m-1 cursor-pointer ${currentPage === index + 1 ? "bg-primary text-white" : "bg-gray-200 text-gray-600 hover:bg-gray-300"}`}
-										>
+											className={`px-3 py-1 rounded-full transition-colors m-1 cursor-pointer ${currentPage === index + 1 ? "bg-primary text-white" : "bg-gray-200 text-gray-600 hover:bg-gray-300"}`}>
 											{index + 1}
 										</button>
 									))
@@ -315,8 +304,7 @@ const ManageCars = () => {
 							<button
 								disabled={currentPage === totalPages}
 								onClick={() => setCurrentPage(prev => prev + 1)}
-								className="p-2 rounded-2xl bg-primary hover:bg-primary-dull border border-gray-200 shadow-sm disabled:opacity-95 disabled:cursor-not-allowed transition-all active:scale-95 cursor-pointer text-white"
-							>
+								className="p-2 rounded-2xl bg-primary hover:bg-primary-dull border border-gray-200 shadow-sm disabled:opacity-95 disabled:cursor-not-allowed transition-all active:scale-95 cursor-pointer text-white">
 								<iconList.ChevronRight size={20} />
 							</button>
 						</div>
@@ -331,20 +319,19 @@ const ManageCars = () => {
 							<motion.div
 								initial={{ opacity: 0 }}
 								animate={{ opacity: 1 }}
-								exit={{ opacity: 0, filter: "blur(5px)", scale: 0.95 }}
-								transition={{ duration: 0.1 }}
+								exit={{ opacity: 0 }}
+								transition={{ duration: 0.3 }}
 								onClick={() => setOpenConfirm(false)}
 								className="absolute inset-0 backdrop-blur-xs bg-blue-700/5"
 							/>
 
 							{/* Modal Content */}
 							<motion.div
-								initial={{ opacity: 0, filter: "blur(5px)", scale: 0.95 }}
-								animate={{ opacity: 1, filter: "blur(0px)", scale: 1 }}
-								exit={{ opacity: 0, filter: "blur(5px)", scale: 0.95 }}
-								transition={{ delay: 0.2, duration: 0.5 }}
-								className="relative bg-white rounded-3xl shadow-sm w-full max-w-md p-6 overflow-hidden border border-gray-100"
-							>
+								initial={{ opacity: 0 }}
+								animate={{ opacity: 1 }}
+								exit={{ opacity: 0 }}
+								transition={{ duration: 0.3 }}
+								className="relative bg-white rounded-3xl shadow-sm w-full max-w-md p-6 overflow-hidden border border-gray-100">
 								<h2 className="text-xl font-semibold text-center">
 									Delete car?
 								</h2>
@@ -357,8 +344,7 @@ const ManageCars = () => {
 								<div className="flex justify-between gap-6 mt-6 md:px-10 px-4">
 									<button
 										className="w-1/2 py-2 rounded-2xl border bg-primary hover:bg-primary-dull text-white cursor-pointer active:scale-98 transition-transform duration-300 flex justify-center items-center gap-4 mx-2"
-										onClick={() => setOpenConfirm(false)}
-									>
+										onClick={() => setOpenConfirm(false)}>
 										Cancel
 									</button>
 
@@ -367,8 +353,7 @@ const ManageCars = () => {
 										onClick={() => {
 											deleteCar(deleteId);
 											setOpenConfirm(false);
-										}}
-									>
+										}}>
 										Delete
 									</button>
 								</div>

@@ -64,11 +64,10 @@ const EditCarForm = ({ car: propCar, onClose, isFullPage = false }) => {
             initial={isFullPage ? { opacity: 0, filter: "blur(10px)" } : { opacity: 0 }}
             animate={isFullPage ? { opacity: 1, filter: "blur(0px)" } : { opacity: 1 }}
             exit={isFullPage ? { opacity: 0, filter: "blur(10px)" } : { opacity: 0 }}
-            transition={{ type: "spring", stiffness: 300, damping: 25 }}
+            transition={{ duration: 0.3 }}
             onSubmit={handleSubmit}
             onClick={(e) => e.stopPropagation()}
-            className={`${isFullPage ? "w-full h-full" : "relative max-w-2xl mx-auto bg-white md:max-h-[90vh]"} px-5 md:px-10 py-8 overflow-y-auto blue-thumb-scrollbar w-full bg-white cursor-default`}
-        >
+            className={`${isFullPage ? "w-full h-full" : "relative max-w-2xl mx-auto bg-white md:max-h-[90vh]"} px-5 md:px-10 py-8 overflow-y-auto blue-thumb-scrollbar w-full bg-white cursor-default`}>
             {/* title and close button  */}
             <div className="flex items-center justify-between mb-8">
                 <div className="flex items-center gap-4">
@@ -76,8 +75,7 @@ const EditCarForm = ({ car: propCar, onClose, isFullPage = false }) => {
                         <button
                             type="button"
                             onClick={handleClose}
-                            className="p-2 rounded-full hover:bg-gray-100 transition-all active:scale-90 text-gray-500 border border-gray-100 cursor-pointer"
-                        >
+                            className="p-2 rounded-full hover:bg-gray-100 transition-all active:scale-90 text-gray-500 border border-gray-100 cursor-pointer">
                             <iconList.ArrowLeft size={20} />
                         </button>
                     )}
@@ -87,8 +85,7 @@ const EditCarForm = ({ car: propCar, onClose, isFullPage = false }) => {
                     <button
                         type="button"
                         onClick={handleClose}
-                        className="p-2 rounded-md hover:bg-gray-100 transition-all active:scale-95 text-gray-500"
-                    >
+                        className="p-2 rounded-md hover:bg-gray-100 transition-all active:scale-95 text-gray-500">
                         <iconList.X size={22} className="cursor-pointer" />
                     </button>
                 )}
@@ -224,8 +221,7 @@ const EditCarForm = ({ car: propCar, onClose, isFullPage = false }) => {
                     <button
                         type="submit"
                         disabled={loading}
-                        className={`px-5 py-2.5 rounded-2xl text-white transition-all active:scale-95 flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer ${loading ? "bg-primary" : "bg-primary hover:bg-primary-dull"}`}
-                    >
+                        className={`px-5 py-2.5 rounded-2xl text-white transition-all active:scale-95 flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer ${loading ? "bg-primary" : "bg-primary hover:bg-primary-dull"}`}>
                         {loading ? <iconList.Loader className="animate-spin" size={18} /> : <iconList.Check size={18} />}
                         {loading ? "Updating..." : "Update Car"}
                     </button>
@@ -246,8 +242,7 @@ const EditCarForm = ({ car: propCar, onClose, isFullPage = false }) => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={handleClose}
-            className="fixed inset-0 z-100 flex items-center justify-center p-0 md:p-6 backdrop-blur-md bg-black/40 cursor-pointer overflow-hidden"
-        >
+            className="fixed inset-0 z-100 flex items-center justify-center p-0 md:p-6 backdrop-blur-md bg-black/40 cursor-pointer overflow-hidden">
             {formContent}
         </motion.div>
     );

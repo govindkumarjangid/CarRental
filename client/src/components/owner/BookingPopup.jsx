@@ -32,17 +32,15 @@ const BookingPopup = ({ setSelectedBooking, selectedBooking, isFullPage = false 
         <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            exit={{ opacity: 1 }}
-            transition={{ type: "spring", stiffness: 300, damping: 30, duration: 0.5 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
             onClick={(e) => e.stopPropagation()}
-            className={`${isFullPage ? "w-full h-full" : "w-full md:max-w-6xl h-screen md:h-[85vh] rounded-none md:rounded-[3rem] shadow-2xl border border-gray-100 "} bg-white overflow-hidden flex flex-col md:flex-row relative`}
-        >
+            className={`${isFullPage ? "w-full h-full" : "w-full md:max-w-6xl h-screen md:h-[85vh] rounded-none md:rounded-[3rem] shadow-2xl border border-gray-100 "} bg-white overflow-hidden flex flex-col md:flex-row relative`}>
             {/* Close/Back Button */}
             <button
                 onClick={() => setSelectedBooking(null)}
                 className="absolute z-50 top-6 left-6 md:top-5 md:left-5 text-gray-500 hover:text-gray-800 bg-white rounded-full w-8 h-8 md:w-10 md:h-10 flex items-center justify-center hover:bg-gray-100 transition-all active:scale-90 border border-gray-100 cursor-pointer"
-                title={isFullPage ? "Go Back" : "Close"}
-            >
+                title={isFullPage ? "Go Back" : "Close"}>
                 {isFullPage ? <iconList.ArrowLeft size={18} className="md:w-6 md:h-6" strokeWidth={2.5} /> : <iconList.X size={18} className="md:w-5.5 md:h-5.5" strokeWidth={2.5} />}
             </button>
 
@@ -50,9 +48,9 @@ const BookingPopup = ({ setSelectedBooking, selectedBooking, isFullPage = false 
             <div className={`w-full md:w-5/12 lg:w-1/2 ${isFullPage ? "h-[35vh] md:h-full" : "h-[35vh] md:h-full"} bg-white flex items-center justify-center relative overflow-hidden shrink-0 p-4 md:p-0`}>
                 <div className="absolute top-0 left-0 w-full h-full" />
                 <motion.img
-                    initial={{ scale: 1.1, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    transition={{ delay: 0.2 }}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.3 }}
                     src={car?.image}
                     alt={car?.model}
                     className="object-cover md:object-contain z-10 rounded-3xl shadow-sm max-w-130 w-full h-full md:h-auto"
@@ -60,11 +58,10 @@ const BookingPopup = ({ setSelectedBooking, selectedBooking, isFullPage = false 
 
                 <div className="absolute bottom-4 right-4 md:bottom-28 md:right-9 z-30 p-3 sm:p-0">
                     <motion.div
-                        initial={{ y: 20, opacity: 0 }}
-                        animate={{ y: 0, opacity: 1 }}
-                        transition={{ delay: 0.4 }}
-                        className="backdrop-blur-md bg-white/50 border border-white/40 p-2 md:p-3 rounded-2xl shadow-sm pr-6"
-                    >
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.3 }}
+                        className="backdrop-blur-md bg-white/50 border border-white/40 p-2 md:p-3 rounded-2xl shadow-sm pr-6">
                         <p className="text-gray-800 text-[9px] md:text-[10px] uppercase tracking-widest font-bold mb-0.5">Elite Collection</p>
                         <h3 className="text-gray-900 text-base md:text-xl font-bold tracking-tight">{car?.brand} <span className="text-primary">{car?.model}</span></h3>
                     </motion.div>
@@ -113,8 +110,7 @@ const BookingPopup = ({ setSelectedBooking, selectedBooking, isFullPage = false 
                     </div>
                     <button
                         onClick={handleChat}
-                        className="bg-white w-9 h-9 md:w-12 md:h-12 rounded-full flex items-center justify-center shadow-sm border border-gray-100 text-primary hover:bg-primary hover:text-white transition-all shrink-0 cursor-pointer"
-                    >
+                        className="bg-white w-9 h-9 md:w-12 md:h-12 rounded-full flex items-center justify-center shadow-sm border border-gray-100 text-primary hover:bg-primary hover:text-white transition-all shrink-0 cursor-pointer">
                         <iconList.MessageCircle size={16} className="md:w-5 md:h-5" />
                     </button>
                 </div>
@@ -147,7 +143,7 @@ const BookingPopup = ({ setSelectedBooking, selectedBooking, isFullPage = false 
                                 const totalHours = Math.floor(diff / (1000 * 60 * 60));
                                 const days = Math.floor(totalHours / 24);
                                 const hours = totalHours % 24;
-                                return `${days > 0 ? `${days}d ` : ""}${hours > 0 ? `${hours}h` : days === 0 ? "0h" : ""}`;
+                                return `${days> 0 ? `${days}d ` : ""}${hours> 0 ? `${hours}h` : days === 0 ? "0h" : ""}`;
                             })()}
                         </p>
                     </div>
@@ -209,8 +205,7 @@ const BookingPopup = ({ setSelectedBooking, selectedBooking, isFullPage = false 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            onClick={() => setSelectedBooking(null)}
-        >
+            onClick={() => setSelectedBooking(null)}>
             {content}
         </motion.div>
     );

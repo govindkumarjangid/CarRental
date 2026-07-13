@@ -40,12 +40,11 @@ const Navbar = () => {
 
 	return (
 		<motion.div
-			initial={{ opacity: 0, y: -100 }}
-			animate={{ opacity: 1, y: 0 }}
-			transition={{ duration: 0.5, ease: "easeIn" }}
+			initial={{ opacity: 0 }}
+			animate={{ opacity: 1 }}
+			transition={{ duration: 0.3 }}
 			className={`max-w-full px-4 md:px-8 py-3 md:py-4 text-gray-600  border-b border-gray-200  sticky top-0 z-50 transition-all duration-300 ${location.pathname === "/" ? "bg-light" : "bg-white"
-				}`}
-		>
+				}`}>
 			<div className="max-w-7xl m-auto flex items-center justify-between h-auto ">
 				{/* logo  */}
 				<Link to="/">
@@ -67,24 +66,22 @@ const Navbar = () => {
 							return (
 								<motion.div
 									key={index}
-									className="relative"
-								>
+									className="relative">
 									<Link
 										to={menuLink.path}
 										className={`font-medium transition-colors duration-200 ${isActive
 											? "text-primary "
 											: "text-gray-600  hover:text-primary "
-											}`}
-									>
+											}`}>
 										{menuLink.name}
 									</Link>
 									{isActive && (
 										<motion.div
 											layoutId="activeTabDesktop"
 											className="absolute bottom-0.2 left-0 right-0 h-0.5 bg-primary  rounded-full"
-											initial={{ width: "0px" }}
-											animate={{ width: "auto" }}
-											transition={{ type: "spring", stiffness: 300, damping: 20 }}
+											initial={{ opacity: 0 }}
+											animate={{ opacity: 1 }}
+											transition={{ duration: 0.3 }}
 										/>
 									)}
 								</motion.div>
@@ -95,8 +92,7 @@ const Navbar = () => {
 							<div className="flex items-center gap-6">
 								<button
 									className="cursor-pointer  hover:text-primary  font-medium transition-colors"
-									onClick={() => navigate("/owner")}
-								>
+									onClick={() => navigate("/owner")}>
 									Dashboard
 								</button>
 							</div>
@@ -108,8 +104,7 @@ const Navbar = () => {
 						{!user ? (
 							<button
 								className="cursor-pointer px-4 sm:px-8 py-1.5 sm:py-2 bg-primary hover:bg-primary-dull transition-all text-white rounded-2xl active:scale-98 font-medium shadow-sm text-sm sm:text-base"
-								onClick={() => setShowLogin(true)}
-							>
+								onClick={() => setShowLogin(true)}>
 								Login
 							</button>
 						) : (
@@ -119,8 +114,7 @@ const Navbar = () => {
 									onClick={() => {
 										setOpenPopup(!openPopup);
 										setOpen(false);
-									}}
-								>
+									}}>
 									<UserAvatar
 										src={user.image}
 										name={user.name}
@@ -160,9 +154,9 @@ const Navbar = () => {
 				<AnimatePresence>
 					{open && (
 						<motion.div
-							initial={{ height: 0, opacity: 0 }}
-							animate={{ height: "100vh", opacity: 1 }}
-							exit={{ height: 0, opacity: 0 }}
+							initial={{ opacity: 0 }}
+							animate={{ opacity: 1 }}
+							exit={{ opacity: 0 }}
 							transition={{
 								type: "spring",
 								stiffness: 350,
@@ -170,24 +164,21 @@ const Navbar = () => {
 								mass: 0.8,
 								exit: { type: "tween", duration: 0.3, ease: "easeInOut" }
 							}}
-							className="w-full bg-light flex flex-col items-center pointer-events-auto shadow-2xl overflow-hidden"
-						>
+							className="w-full bg-light flex flex-col items-center pointer-events-auto shadow-2xl overflow-hidden">
 							<div className="w-full flex flex-col items-start gap-8 pt-10 pb-6 px-6 border-t border-gray-300">
 								{menuLinks.filter(link => !(link.name === "Chat with owner" && isOwner)).map((menuLink, index) => {
 									const isActive = location.pathname === menuLink.path;
 									return (
 										<motion.div
 											key={index}
-											className="relative w-full text-left"
-										>
+											className="relative w-full text-left">
 											<Link
 												to={menuLink.path}
 												onClick={() => setOpen(false)}
 												className={`block font-medium w-full transition-colors duration-200 text-base ${isActive
 													? "text-primary "
 													: "text-gray-600 hover:text-primary "
-													}`}
-											>
+													}`}>
 												{menuLink.name}
 											</Link>
 										</motion.div>
@@ -200,8 +191,7 @@ const Navbar = () => {
 										onClick={() => {
 											navigate("/owner");
 											setOpen(false);
-										}}
-									>
+										}}>
 										Dashboard
 									</button>
 								)}
@@ -219,19 +209,17 @@ const Navbar = () => {
 						initial={{ opacity: 0 }}
 						animate={{ opacity: 1 }}
 						exit={{ opacity: 0 }}
-						transition={{ duration: 0.2 }}
+						transition={{ duration: 0.3 }}
 						className="fixed inset-0 z-100 flex items-center justify-center bg-primary/5 backdrop-blur-sm p-4"
-						onClick={() => setOpenPopup(false)}
-					>
+						onClick={() => setOpenPopup(false)}>
 						<motion.div
 							key="popup"
-							initial={{ opacity: 0, scale: 0.95 }}
-							animate={{ opacity: 1, scale: 1 }}
-							exit={{ opacity: 0, scale: 0.95 }}
-							transition={{ type: "spring", stiffness: 300, damping: 30 }}
+							initial={{ opacity: 0 }}
+							animate={{ opacity: 1 }}
+							exit={{ opacity: 0 }}
+							transition={{ duration: 0.3 }}
 							className="relative flex flex-col gap-4 p-6 sm:p-8 bg-white border border-gray-200 shadow-sm cursor-default w-full max-w-105 rounded-3xl"
-							onClick={(e) => e.stopPropagation()}
-						>
+							onClick={(e) => e.stopPropagation()}>
 							<IconButton
 								label="Close"
 								icon={X}
@@ -287,8 +275,7 @@ const Navbar = () => {
 							{image && (
 								<button
 									onClick={handleImageUpload}
-									className="flex items-center justify-center gap-1 text-xs font-bold shadow-lg transition-all bg-green-500 text-white hover:bg-green-600 px-4 py-2 absolute -top-3 right-0 rounded-full cursor-pointer active:scale-95"
-								>
+									className="flex items-center justify-center gap-1 text-xs font-bold shadow-lg transition-all bg-green-500 text-white hover:bg-green-600 px-4 py-2 absolute -top-3 right-0 rounded-full cursor-pointer active:scale-95">
 									<iconList.CircleCheckBig size={14} />
 									Save Avatar
 								</button>
@@ -298,7 +285,7 @@ const Navbar = () => {
 				)}
 			</AnimatePresence>
 
-		</motion.div >
+		</motion.div>
 	);
 };
 

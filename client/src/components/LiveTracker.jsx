@@ -122,8 +122,7 @@ const LiveTracker = ({ carId, onClose }) => {
                             center={position}
                             zoom={16}
                             style={{ height: "100%", width: "100%" }}
-                            zoomControl={false}
-                        >
+                            zoomControl={false}>
                             <TileLayer
                                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

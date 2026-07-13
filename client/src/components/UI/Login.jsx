@@ -38,17 +38,15 @@ const Login = () => {
 			animate={{ opacity: 1 }}
 			exit={{ opacity: 0 }}
 			transition={{ duration: 0.3 }}
-			className="fixed inset-0 z-100 text-gray-600 flex items-center backdrop-blur-xs justify-center bg-blue-700/5"
-		>
+			className="fixed inset-0 z-100 text-gray-600 flex items-center backdrop-blur-xs justify-center bg-blue-700/5">
 			<motion.form
-				initial={{ opacity: 0, filter: "blur(5px)", scale: 0.95 }}
-				animate={{ opacity: 1, filter: "blur(0px)", scale: 1 }}
-				exit={{ opacity: 0, filter: "blur(10px)", scale: 0.95 }}
-				transition={{ duration: 0.4, delay: 0.2 }}
+				initial={{ opacity: 0 }}
+				animate={{ opacity: 1 }}
+				exit={{ opacity: 0 }}
+				transition={{ duration: 0.3 }}
 				onSubmit={handleSubmit}
 				onClick={(e) => e.stopPropagation()}
-				className="flex flex-col gap-4 m-auto items-start p-8 py-12 w-80 sm:w-88 text-gray-500 rounded-3xl shadow-sm border border-gray-200 bg-white z-200"
-			>
+				className="flex flex-col gap-4 m-auto items-start p-8 py-12 w-80 sm:w-88 text-gray-500 rounded-3xl shadow-sm border border-gray-200 bg-white z-200">
 				<div className="flex justify-between items-center w-full">
 					<p className="text-3xl font-medium mx-auto pl-8">
 						<span className="text-primary ">
@@ -69,8 +67,7 @@ const Login = () => {
 								className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-2xl border-2 text-sm font-semibold cursor-pointer transition-all duration-200 ${role === "user"
 									? "border-primary bg-primary/10 text-primary"
 									: "border-gray-200 text-gray-400 hover:border-gray-300"
-									}`}
-							>
+									}`}>
 								<User size={16} />
 								User
 							</button>
@@ -80,8 +77,7 @@ const Login = () => {
 								className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-2xl border-2 text-sm font-semibold cursor-pointer transition-all duration-200 ${role === "owner"
 									? "border-primary bg-primary/10 text-primary"
 									: "border-gray-200 text-gray-400 hover:border-gray-300"
-									}`}
-							>
+									}`}>
 								<CarFront size={16} />
 								Owner
 							</button>
@@ -127,8 +123,7 @@ const Login = () => {
 							Already have account ?{" "}
 							<span
 								onClick={() => setState("login")}
-								className="text-primary cursor-pointer  "
-							>
+								className="text-primary cursor-pointer  ">
 								click here
 							</span>
 						</p>
@@ -137,8 +132,7 @@ const Login = () => {
 							Create an account ?{" "}
 							<span
 								onClick={() => setState("register")}
-								className="text-primary cursor-pointer  "
-							>
+								className="text-primary cursor-pointer  ">
 								click here
 							</span>
 						</p>
@@ -155,8 +149,7 @@ const Login = () => {
 						: "bg-primary hover:bg-primary-dull"
 						} transition-all text-white w-full py-2 rounded-2xl mt-2
             cursor-pointer active:scale-95
-            `}
-				>
+            `}>
 					{isLoading ? (
 						<div className="flex items-center gap-2 justify-center">
 							<Loader

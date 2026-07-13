@@ -70,15 +70,13 @@ const AddCar = () => {
 
 			<form
 				onSubmit={onSubmithandler}
-				className="flex flex-col gap-5 text-gray-500 text-sm mt-6 w-full"
-			>
+				className="flex flex-col gap-5 text-gray-500 text-sm mt-6 w-full">
 				{/* car image  */}
 				<motion.div
-					initial={{ opacity: 0, y: 10 }}
-					animate={{ opacity: 1, y: 0 }}
-					transition={{ type: "spring", stiffness: 300, damping: 30 }}
-					className="flex gap-4 items-center w-full"
-				>
+					initial={{ opacity: 0 }}
+					animate={{ opacity: 1 }}
+					transition={{ duration: 0.3 }}
+					className="flex gap-4 items-center w-full">
 					<label htmlFor="car-image">
 						{image ? (
 							<img
@@ -107,11 +105,10 @@ const AddCar = () => {
 
 				{/* car brand and model  */}
 				<motion.div
-					initial={{ opacity: 0, y: 10 }}
-					animate={{ opacity: 1, y: 0 }}
-					transition={{ type: "spring", stiffness: 300, damping: 30, delay: 0.05 }}
-					className="grid grid-cols-1 md:grid-cols-2 gap-6"
-				>
+					initial={{ opacity: 0 }}
+					animate={{ opacity: 1 }}
+					transition={{ duration: 0.3 }}
+					className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
 					<InputBox
 						value={car.brand}
@@ -133,11 +130,10 @@ const AddCar = () => {
 
 				{/* year , price and category  */}
 				<motion.div
-					initial={{ opacity: 0, y: 10 }}
-					animate={{ opacity: 1, y: 0 }}
-					transition={{ type: "spring", stiffness: 300, damping: 30, delay: 0.1 }}
-					className="grid grid-cols-1 md:grid-cols-4 gap-6"
-				>
+					initial={{ opacity: 0 }}
+					animate={{ opacity: 1 }}
+					transition={{ duration: 0.3 }}
+					className="grid grid-cols-1 md:grid-cols-4 gap-6">
 					<InputBox
 						value={car.year}
 						label="year"
@@ -186,11 +182,10 @@ const AddCar = () => {
 
 				{/* transmission , fuel type and seating capacity  */}
 				<motion.div
-					initial={{ opacity: 0, y: 10 }}
-					animate={{ opacity: 1, y: 0 }}
-					transition={{ type: "spring", stiffness: 300, damping: 30, delay: 0.15 }}
-					className="grid grid-cols-1 md:grid-cols-3 gap-6"
-				>
+					initial={{ opacity: 0 }}
+					animate={{ opacity: 1 }}
+					transition={{ duration: 0.3 }}
+					className="grid grid-cols-1 md:grid-cols-3 gap-6">
 					<InputBox
 						value={car.transmission}
 						label="transmission"
@@ -222,11 +217,10 @@ const AddCar = () => {
 
 				{/* location and description  */}
 				<motion.div
-					initial={{ opacity: 0, y: 10 }}
-					animate={{ opacity: 1, y: 0 }}
-					transition={{ type: "spring", stiffness: 300, damping: 30, delay: 0.2 }}
-					className="grid grid-cols-1 gap-6"
-				>
+					initial={{ opacity: 0 }}
+					animate={{ opacity: 1 }}
+					transition={{ duration: 0.3 }}
+					className="grid grid-cols-1 gap-6">
 					<InputBox
 						value={car.location}
 						label="location"
@@ -266,11 +260,10 @@ const AddCar = () => {
 
 				{/* description  */}
 				<motion.div
-					initial={{ opacity: 0, y: 10 }}
-					animate={{ opacity: 1, y: 0 }}
-					transition={{ type: "spring", stiffness: 300, damping: 30, delay: 0.25 }}
-					className="grid grid-cols-1 gap-6"
-				>
+					initial={{ opacity: 0 }}
+					animate={{ opacity: 1 }}
+					transition={{ duration: 0.3 }}
+					className="grid grid-cols-1 gap-6">
 					<InputBox
 						value={car.description}
 						label="description"
@@ -284,13 +277,12 @@ const AddCar = () => {
 
 				{/* submit button  */}
 				<motion.button
-					initial={{ opacity: 0, y: 10 }}
-					animate={{ opacity: 1, y: 0 }}
-					transition={{ type: "spring", stiffness: 300, damping: 30, delay: 0.3 }}
+					initial={{ opacity: 0 }}
+					animate={{ opacity: 1 }}
+					transition={{ duration: 0.3 }}
 					type="submit"
 					disabled={loading}
-					className={` px-5 py-2.5 mt-4 rounded-2xl text-white font-medium text-base transition-all active:scale-95 mb-10 w-fit ${loading ? "cursor-not-allowed bg-primary" : "bg-primary hover:bg-primary-dull cursor-pointer"}`}
-				>
+					className={` px-5 py-2.5 mt-4 rounded-2xl text-white font-medium text-base transition-all active:scale-95 mb-10 w-fit ${loading ? "cursor-not-allowed bg-primary" : "bg-primary hover:bg-primary-dull cursor-pointer"}`}>
 					{loading ? (
 						<span className="flex items-center gap-2">
 							<iconList.Loader size={18} className="animate-spin" />

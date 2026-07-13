@@ -5,10 +5,9 @@ import { iconList } from '../../assets/assets.jsx';
 const RecentBookings = ({ bookings, currency }) => {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="p-6 border border-gray-200  rounded-3xl w-full shadow-sm"
-    >
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      className="p-6 border border-gray-200  rounded-3xl w-full shadow-sm">
       <h2 className="text-lg font-bold mb-1">Recent Bookings</h2>
       <p className="text-gray-500 text-sm mb-6 ">Latest customer transactions</p>
 

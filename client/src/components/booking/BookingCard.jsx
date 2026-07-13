@@ -9,8 +9,7 @@ const BookingCard = ({ booking, index }) => {
 
 	return (
 		<div
-			className="grid grid-cols-1 md:grid-cols-4 gap-6 p-6 rounded-3xl mt-5 first:mt-12 backdrop-blur-sm border border-gray-200 shadow-sm transition-all duration-300"
-		>
+			className="grid grid-cols-1 md:grid-cols-4 gap-6 p-6 rounded-3xl mt-5 first:mt-12 backdrop-blur-sm border border-gray-200 shadow-sm transition-all duration-300">
 			<div className="md:col-span-1 ">
 				<img
 					src={booking?.car?.image}
@@ -38,8 +37,7 @@ const BookingCard = ({ booking, index }) => {
 							: booking?.status === "cancelled"
 								? " bg-red-400/15 text-red-900"
 								: booking?.status === "completed" ? "bg-blue-400/15 text-blue-600" : "bg-yellow-400/15  text-yellow-900"
-							}`}
-					>
+							}`}>
 						{booking?.status}
 					</p>
 				</div>
@@ -65,7 +63,7 @@ const BookingCard = ({ booking, index }) => {
 									const totalHours = Math.floor(diff / (1000 * 60 * 60));
 									const days = Math.floor(totalHours / 24);
 									const hours = totalHours % 24;
-									return `${days > 0 ? `${days}d ` : ""}${hours > 0 ? `${hours}h` : days === 0 ? "0h" : ""}`;
+									return `${days> 0 ? `${days}d ` : ""}${hours> 0 ? `${hours}h` : days === 0 ? "0h" : ""}`;
 								})()}
 							</p>
 						</div>

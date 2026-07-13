@@ -27,15 +27,13 @@ const MarqueeRow = ({ items, reverse }) => {
     <motion.div
       className="flex gap-4 sm:gap-6 md:gap-8 pointer-events-none"
       style={{ willChange: "transform" }}
-      animate={controls}
-    >
+      animate={controls}>
       {
         reviewLoading && items.length === 0 ? (
           [...Array(15)].map((_, i) => (
             <div
               key={i}
-              className="pointer-events-auto shrink-0 w-70 sm:w-80 md:w-90"
-            >
+              className="pointer-events-auto shrink-0 w-70 sm:w-80 md:w-90">
               <TestimonialSkeleton />
             </div>
           ))
@@ -43,8 +41,7 @@ const MarqueeRow = ({ items, reverse }) => {
           [...items, ...items, ...items].map((review, index) => (
             <div
               key={index}
-              className="pointer-events-auto shrink-0 w-70 sm:w-80 md:w-90"
-            >
+              className="pointer-events-auto shrink-0 w-70 sm:w-80 md:w-90">
               <Suspense fallback={<TestimonialSkeleton />}>
                 <TestimonialCard review={review} />
               </Suspense>
