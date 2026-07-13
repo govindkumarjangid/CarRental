@@ -3,12 +3,42 @@ import { useChatStore } from "../../store/useChatStore.js";
 import socket from "../../socket.js";
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Check, CheckCheck, X, ChevronLeft, ChevronRight } from "lucide-react";
+import { Check, CheckCheck, X, ChevronLeft, ChevronRight, FileText } from "lucide-react";
 import Lenis from "lenis";
 import { iconList } from "../../assets/assets.jsx";
 import { Title as OwnerTitle } from "../../components/owner/Title.jsx";
 import { ChatSkeletonList, OwnerChatMessageSkeleton } from "../../components/skeletons";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
+
+const SecureResource = ({ src, type, className, onClick, alt, title }) => {
+  const [blobUrl, setBlobUrl] = useState('');
+  useEffect(() => {
+    if (!src) return;
+    let active = true;
+    let url = '';
+    fetch(src)
+      .then(r => r.blob())
+      .then(blob => {
+        if (active) {
+          url = URL.createObjectURL(blob);
+          setBlobUrl(url);
+        }
+      })
+      .catch(e => {
+        console.error("Secure fetch failed:", e);
+        if (active) setBlobUrl(src);
+      });
+    return () => {
+      active = false;
+      if (url) URL.revokeObjectURL(url);
+    };
+  }, [src]);
+
+  if (type === 'iframe') {
+    return blobUrl ? <iframe src={blobUrl} title={title} className={className} /> : <div className={`${className} bg-slate-100 animate-pulse`} />;
+  }
+  return blobUrl ? <img src={blobUrl} alt={alt} className={className} onClick={onClick} /> : <div className={`${className} bg-slate-100 animate-pulse`} />;
+};
 
 const Chats = () => {
   const { userId } = useParams();
@@ -58,6 +88,69 @@ const Chats = () => {
   const typingTimeoutRef = useRef(null);
   const scrollContainerRef = useRef(null);
   const prevMessagesLength = useRef(0);
+
+  const [lightboxIndex, setLightboxIndex] = useState(null);
+  const [pdfLightboxIndex, setPdfLightboxIndex] = useState(null);
+
+  // Collect all image attachments from current chat messages
+  const chatImages = messages
+    .flatMap(m => m.attachments || [])
+    .filter(att => att.type === 'image');
+
+  const handleImageClick = (url) => {
+    const index = chatImages.findIndex(img => img.url === url);
+    if (index !== -1) {
+      setLightboxIndex(index);
+    }
+  };
+
+  // Collect all PDF attachments from current chat messages
+  const chatPDFs = messages
+    .flatMap(m => m.attachments || [])
+    .filter(att => att.type !== 'image');
+
+  const handlePdfClick = (url) => {
+    const index = chatPDFs.findIndex(pdf => pdf.url === url);
+    if (index !== -1) {
+      setPdfLightboxIndex(index);
+    }
+  };
+
+  // Keyboard navigation for image lightbox in owner panel
+  useEffect(() => {
+    if (lightboxIndex === null || chatImages.length === 0) return;
+
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape") {
+        setLightboxIndex(null);
+      } else if (e.key === "ArrowLeft" && chatImages.length > 1) {
+        setLightboxIndex((prev) => (prev === 0 ? chatImages.length - 1 : prev - 1));
+      } else if (e.key === "ArrowRight" && chatImages.length > 1) {
+        setLightboxIndex((prev) => (prev === chatImages.length - 1 ? 0 : prev + 1));
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [lightboxIndex, chatImages.length]);
+
+  // Keyboard navigation for PDF lightbox in owner panel
+  useEffect(() => {
+    if (pdfLightboxIndex === null || chatPDFs.length === 0) return;
+
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape") {
+        setPdfLightboxIndex(null);
+      } else if ((e.key === "ArrowLeft" || e.key === "ArrowUp") && chatPDFs.length > 1) {
+        setPdfLightboxIndex((prev) => (prev === 0 ? chatPDFs.length - 1 : prev - 1));
+      } else if ((e.key === "ArrowRight" || e.key === "ArrowDown") && chatPDFs.length > 1) {
+        setPdfLightboxIndex((prev) => (prev === chatPDFs.length - 1 ? 0 : prev + 1));
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [pdfLightboxIndex, chatPDFs.length]);
 
   // Local Lenis instance for smooth chat list scrolling in owner panel
   useEffect(() => {
@@ -589,14 +682,14 @@ const Chats = () => {
                                   {m.attachments && m.attachments.length > 0 && (
                                     <div className={`flex flex-col gap-2 mb-2 ${m.attachments.length > 1 ? "grid grid-cols-2" : ""}`}>
                                       {m.attachments.map((att, idx) => (
-                                        <div key={idx} className="group relative rounded-lg overflow-hidden border border-black/5 shadow-sm bg-black/5">
+                                        <div key={idx} className={`group relative overflow-hidden ${att.type === 'image' ? 'rounded-lg border border-black/5 shadow-sm bg-black/5' : 'rounded-xl mt-1'}`}>
                                           {att.type === 'image' ? (
                                             <>
-                                              <img
+                                              <SecureResource
                                                 src={att.url}
                                                 alt="attachment"
                                                 className="md:max-h-48 max-w-45 w-full object-cover cursor-pointer hover:opacity-90 transition-opacity"
-                                                onClick={() => window.open(att.url, '_blank')}
+                                                onClick={() => handleImageClick(att.url)}
                                               />
                                               <button
                                                 onClick={(e) => {
@@ -608,23 +701,25 @@ const Chats = () => {
                                               </button>
                                             </>
                                           ) : (
-                                            <div className="flex items-center justify-between p-1.5 hover:bg-black/5 transition-colors">
-                                              <a
-                                                href={att.url}
-                                                target="_blank"
-                                                rel="noreferrer"
-                                                className="flex items-center gap-2 text-[13px] text-inherit no-underline min-w-0">
-                                                <div className="h-9 w-9 shrink-0 flex items-center justify-center bg-white rounded-lg shadow-sm">
-                                                  <iconList.FileText className="text-red-500" size={20} />
+                                            <div 
+                                              onClick={() => handlePdfClick(att.url)}
+                                              className="w-[200px] md:w-[260px] flex items-center justify-between p-2 bg-black/5 hover:bg-black/10 transition-colors cursor-pointer border border-white/20 rounded-xl"
+                                            >
+                                              <div className="flex items-center gap-2.5 text-[13px] text-inherit no-underline min-w-0">
+                                                <div className="h-10 w-10 shrink-0 flex items-center justify-center bg-white/80 rounded-xl">
+                                                  <iconList.FileText className="text-red-500 drop-shadow-sm" size={22} />
                                                 </div>
                                                 <div className="flex flex-col min-w-0">
-                                                  <span className="font-semibold truncate text-[11px]">{att.name || "Document.pdf"}</span>
-                                                  <span className="text-[9px] opacity-60 uppercase">{att.type}</span>
+                                                  <span className="font-bold truncate text-[12px] text-slate-800">{att.name || "Document.pdf"}</span>
+                                                  <span className="text-[10px] text-slate-500 font-medium uppercase mt-0.5">{att.type}</span>
                                                 </div>
-                                              </a>
+                                              </div>
                                               <button
-                                                onClick={() => handleDownload(att.url, att.name || "document.pdf")}
-                                                className="h-7 w-7 flex items-center justify-center text-gray-500 hover:text-primary transition-colors cursor-pointer"
+                                                onClick={(e) => {
+                                                  e.stopPropagation();
+                                                  handleDownload(att.url, att.name || "document.pdf");
+                                                }}
+                                                className="h-8 w-8 shrink-0 flex items-center justify-center text-slate-500 hover:text-slate-800 bg-white/50 hover:bg-white/80 rounded-full transition-all cursor-pointer z-10"
                                                 title="Download">
                                                 <iconList.Download size={16} />
                                               </button>
@@ -762,6 +857,208 @@ const Chats = () => {
           </div>
         )}
       </div>
+      {/* Image-only Lightbox Modal with Slider controls */}
+      {lightboxIndex !== null && chatImages.length > 0 && (
+        <div 
+          className="fixed inset-0 z-[999] bg-slate-50/98 backdrop-blur-lg flex flex-col items-center justify-center select-none"
+          onClick={() => setLightboxIndex(null)}
+        >
+          {/* Close Button */}
+          <button 
+            onClick={() => setLightboxIndex(null)}
+            className="absolute top-4 right-4 text-slate-600 hover:text-slate-900 bg-white hover:bg-slate-100 p-2.5 rounded-full border border-slate-200 shadow-sm transition-all duration-200 cursor-pointer z-[1000] flex items-center justify-center active:scale-95"
+          >
+            <X size={20} />
+          </button>
+
+          {/* Left Arrow */}
+          {chatImages.length > 1 && (
+            <button 
+              onClick={(e) => {
+                e.stopPropagation();
+                setLightboxIndex((prev) => (prev === 0 ? chatImages.length - 1 : prev - 1));
+              }}
+              className="absolute left-2 md:left-8 text-slate-600 hover:text-slate-900 bg-white/80 hover:bg-white p-2 md:p-3 rounded-full border border-slate-200 shadow-sm transition-all duration-200 cursor-pointer z-[1000] flex items-center justify-center active:scale-95 scale-90 md:scale-100"
+            >
+              <ChevronLeft className="w-5 h-5 md:w-6 md:h-6" />
+            </button>
+          )}
+
+          {/* Main Image Container */}
+          <div 
+            className="relative max-w-full px-4 flex flex-col items-center justify-center"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <SecureResource 
+              src={chatImages[lightboxIndex].url} 
+              alt={chatImages[lightboxIndex].name || "Chat image"} 
+              className="max-w-[85vw] max-h-[48vh] md:max-h-[60vh] object-contain rounded-xl shadow-xl border-4 border-white transition-all duration-300"
+            />
+            
+            {/* Caption / Details */}
+            <div className="mt-4 text-center flex flex-col items-center gap-1.5">
+              <span className="text-slate-500 text-[10px] font-semibold bg-slate-200/60 px-2.5 py-0.5 rounded-full w-fit">
+                {lightboxIndex + 1} / {chatImages.length}
+              </span>
+              {chatImages[lightboxIndex].name && (
+                <p className="text-slate-800 text-[11px] md:text-sm font-semibold truncate max-w-[70vw] md:max-w-md">
+                  {chatImages[lightboxIndex].name}
+                </p>
+              )}
+            </div>
+
+            {/* Thumbnail Strip */}
+            {chatImages.length > 1 && (
+              <div className="mt-5 flex flex-row gap-2 overflow-x-auto max-w-[80vw] md:max-w-[50vw] px-2.5 py-1.5 bg-white/40 border border-slate-200/40 rounded-2xl shadow-inner scrollbar-none items-center justify-start md:justify-center">
+                {chatImages.map((img, idx) => {
+                  const isActive = idx === lightboxIndex;
+                  return (
+                    <SecureResource
+                      key={idx}
+                      src={img.url}
+                      alt={`Thumbnail ${idx + 1}`}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setLightboxIndex(idx);
+                      }}
+                      className={`w-10 h-10 md:w-14 md:h-14 shrink-0 rounded-xl object-cover cursor-pointer transition-all duration-300 ${
+                        isActive
+                          ? "border-2 border-primary scale-105 opacity-100 shadow-md ring-2 ring-primary/20"
+                          : "border border-slate-200/60 opacity-40 blur-[1px] hover:blur-none hover:opacity-90"
+                      }`}
+                    />
+                  );
+                })}
+              </div>
+            )}
+          </div>
+
+          {/* Right Arrow */}
+          {chatImages.length > 1 && (
+            <button 
+              onClick={(e) => {
+                e.stopPropagation();
+                setLightboxIndex((prev) => (prev === chatImages.length - 1 ? 0 : prev + 1));
+              }}
+              className="absolute right-2 md:right-8 text-slate-600 hover:text-slate-900 bg-white/80 hover:bg-white p-2 md:p-3 rounded-full border border-slate-200 shadow-sm transition-all duration-200 cursor-pointer z-[1000] flex items-center justify-center active:scale-95 scale-90 md:scale-100"
+            >
+              <ChevronRight className="w-5 h-5 md:w-6 md:h-6" />
+            </button>
+          )}
+        </div>
+      )}
+
+      {/* PDF-only Full-screen Lightbox Modal with Left Sidebar list */}
+      {pdfLightboxIndex !== null && chatPDFs.length > 0 && (
+        <div className="fixed inset-0 z-[999] bg-slate-100 flex flex-col md:flex-row select-none">
+          {/* Desktop Left Sidebar: full height, left side */}
+          <div className="hidden md:flex w-72 h-full bg-white border-r border-slate-200 flex-col shrink-0">
+            <div className="p-4 border-b border-slate-100 flex items-center justify-between">
+              <h3 className="font-bold text-slate-800 text-sm">All PDFs in Chat</h3>
+              <span className="text-[10px] font-semibold bg-slate-100 text-slate-500 px-2 py-0.5 rounded-full">
+                {chatPDFs.length} files
+              </span>
+            </div>
+            
+            <div className="flex-1 overflow-y-auto p-3 flex flex-col gap-2 custom-scrollbar">
+              {chatPDFs.map((pdf, idx) => {
+                const isActive = idx === pdfLightboxIndex;
+                return (
+                  <div
+                    key={idx}
+                    onClick={() => setPdfLightboxIndex(idx)}
+                    className={`flex items-center gap-3 p-2.5 rounded-xl border transition-all duration-200 cursor-pointer ${
+                      isActive
+                        ? "bg-red-50 border-red-200 text-red-700 shadow-xs"
+                        : "bg-slate-50/50 hover:bg-slate-100 border-slate-100 text-slate-600 hover:text-slate-800"
+                    }`}
+                  >
+                    <FileText className={`w-5 h-5 shrink-0 ${isActive ? "text-red-600" : "text-red-400"}`} />
+                    <span className="text-[11px] font-semibold truncate flex-1 leading-tight">
+                      {pdf.name || `Document_${idx + 1}.pdf`}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Mobile Top Strip: horizontally scrollable, full width */}
+          <div className="flex md:hidden w-full bg-white border-b border-slate-200 flex-col shrink-0 p-3">
+            <div className="flex items-center justify-between mb-2">
+              <h3 className="font-bold text-slate-800 text-xs">PDF Documents</h3>
+              <span className="text-[9px] font-semibold bg-slate-100 text-slate-500 px-2 py-0.5 rounded-full">
+                {pdfLightboxIndex + 1} / {chatPDFs.length}
+              </span>
+            </div>
+            
+            <div className="flex flex-row gap-2 overflow-x-auto scrollbar-none py-1">
+              {chatPDFs.map((pdf, idx) => {
+                const isActive = idx === pdfLightboxIndex;
+                return (
+                  <div
+                    key={idx}
+                    onClick={() => setPdfLightboxIndex(idx)}
+                    className={`flex items-center gap-2 px-3 py-1.5 rounded-lg border transition-all duration-200 cursor-pointer shrink-0 max-w-[160px] ${
+                      isActive
+                        ? "bg-red-50 border-red-200 text-red-700 shadow-xs"
+                        : "bg-slate-50/50 border-slate-100 text-slate-600"
+                    }`}
+                  >
+                    <FileText className={`w-3.5 h-3.5 shrink-0 ${isActive ? "text-red-600" : "text-red-400"}`} />
+                    <span className="text-[9px] font-semibold truncate max-w-[100px]">
+                      {pdf.name || `Doc ${idx + 1}`}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Right Preview Panel (main viewport) */}
+          <div className="flex-1 h-full flex flex-col min-w-0 bg-slate-100">
+            {/* Header bar */}
+            <div className="h-14 bg-white border-b border-slate-200 flex items-center justify-between px-4 shrink-0">
+              <div className="flex items-center gap-2 min-w-0 pr-4">
+                <FileText className="w-5 h-5 text-red-500 shrink-0" />
+                <h4 className="font-semibold text-slate-800 text-xs md:text-sm truncate">
+                  {chatPDFs[pdfLightboxIndex].name || "Document.pdf"}
+                </h4>
+              </div>
+              
+              <div className="flex items-center gap-2 shrink-0">
+                {/* Download Button */}
+                <button
+                  onClick={() => handleDownload(chatPDFs[pdfLightboxIndex].url, chatPDFs[pdfLightboxIndex].name || "document.pdf")}
+                  className="text-slate-600 hover:text-slate-800 bg-slate-100 hover:bg-slate-200 p-2 rounded-full transition-all duration-200 cursor-pointer flex items-center justify-center"
+                  title="Download PDF"
+                >
+                  <iconList.Download className="w-4 h-4 md:w-5 md:h-5" />
+                </button>
+                
+                {/* Close Button */}
+                <button
+                  onClick={() => setPdfLightboxIndex(null)}
+                  className="text-slate-600 hover:text-slate-800 bg-slate-100 hover:bg-slate-200 p-2 rounded-full transition-all duration-200 cursor-pointer flex items-center justify-center"
+                  title="Close Viewer"
+                >
+                  <X className="w-4 h-4 md:w-5 md:h-5" />
+                </button>
+              </div>
+            </div>
+            
+            {/* PDF Viewport */}
+            <div className="flex-1 p-2 md:p-4 min-h-0">
+              <SecureResource
+                type="iframe"
+                src={chatPDFs[pdfLightboxIndex].url}
+                title={chatPDFs[pdfLightboxIndex].name || "PDF Preview"}
+                className="w-full h-full rounded-xl shadow-md border border-slate-200 bg-white"
+              />
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
