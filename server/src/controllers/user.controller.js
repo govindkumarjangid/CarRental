@@ -12,18 +12,6 @@ import { welcomeEmailTemplate } from "../utils/emailTemplates.js";
 export const registerUser = wrapAsync(async (req, res) => {
   const { name, email, password, role } = req.body;
 
-  if (!name || !email || !password) {
-    return res.json({ success: false, message: 'All fields are required' })
-  }
-
-  if (/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email) === false) {
-    return res.json({ success: false, message: 'Invalid email format!' });
-  }
-
-  if (password.length < 8) {
-    return res.json({ success: false, message: 'Password must be greater than 8 characters!' });
-  }
-
   const userExists = await User.findOne({ email });
 
   if (userExists) {
@@ -33,7 +21,7 @@ export const registerUser = wrapAsync(async (req, res) => {
   const validRole = ['user', 'owner'].includes(role) ? role : 'user';
   const hashPassword = await bcrypt.hash(password, 10);
   const user = await User.create({ name, email, password: hashPassword, role: validRole });
-  const token = generateToken(user._id.toString());
+  const token = generateToken(res, user._id.toString(), validRole);
 
   await sendEmail({
     email: email,
@@ -59,10 +47,6 @@ export const registerUser = wrapAsync(async (req, res) => {
 export const loginUser = wrapAsync(async (req, res) => {
   const { email, password } = req.body;
 
-  if (!email || !password) {
-    return res.json({ success: false, message: "All fields are required" });
-  }
-
   const user = await User.findOne({ email });
 
   if (!user) {
@@ -78,7 +62,7 @@ export const loginUser = wrapAsync(async (req, res) => {
     return res.json({ success: false, message: "User is blocked" })
   }
 
-  const token = generateToken(user._id.toString());
+  const token = generateToken(res, user._id.toString(), user.role);
   res.json({
     success: true, token, user: {
       _id: user._id,

@@ -57,8 +57,9 @@ const App = () => {
 				toastOptions={{
 					duration: 2000,
 					style: {
-						borderRadius: "12px",
+						borderRadius: "10px",
 						fontSize: "14px",
+						padding: "4px 8px"
 					},
 				}}
 
@@ -197,5 +198,3 @@ const App = () => {
 };
 
 export default App;
-
-

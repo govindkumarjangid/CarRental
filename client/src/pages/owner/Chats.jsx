@@ -58,22 +58,13 @@ const Chats = () => {
   const scrollContainerRef = useRef(null);
   const prevMessagesLength = useRef(0);
 
-  // Instant scroll on load, smooth scroll for new messages if near bottom
   useEffect(() => {
     if (scrollContainerRef.current) {
       const container = scrollContainerRef.current;
       const isInitialLoad = prevMessagesLength.current === 0 && messages.length > 0;
-
-      // Check if user is near bottom (within 200px)
       const isNearBottom = container.scrollHeight - container.scrollTop - container.clientHeight < 200;
-
-      if (isInitialLoad || isNearBottom) {
-        container.scrollTo({
-          top: container.scrollHeight,
-          behavior: isInitialLoad ? "auto" : "smooth"
-        });
-      }
-
+      if (isInitialLoad || isNearBottom)
+        container.scrollTo({ top: container.scrollHeight, behavior: isInitialLoad ? "auto" : "smooth" });
       prevMessagesLength.current = messages.length;
     }
   }, [messages]);

@@ -285,7 +285,7 @@ const ManageBookings = () => {
 											>
 												<iconList.Trash2 size={18} className="text-red-600" />
 											</button>
-											
+
 											{booking.car && (
 												<button
 													onClick={(e) => {
@@ -407,6 +407,3 @@ const ManageBookings = () => {
 };
 
 export default ManageBookings;
-
-
-

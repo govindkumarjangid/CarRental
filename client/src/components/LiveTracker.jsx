@@ -9,9 +9,8 @@ import 'leaflet/dist/leaflet.css';
 const MapRecenter = ({ lat, lng }) => {
     const map = useMap();
     useEffect(() => {
-        if (lat && lng) {
+        if (lat && lng)
             map.flyTo([lat, lng], map.getZoom(), { duration: 1.5 });
-        }
     }, [lat, lng, map]);
     return null;
 };
@@ -32,9 +31,7 @@ const LiveTracker = ({ carId, onClose }) => {
     });
 
     useEffect(() => {
-        if (!socket.connected) {
-            socket.connect();
-        }
+        if (!socket.connected) socket.connect();
 
         const handleConnect = () => {
             console.log('Frontend connected to Socket server for Live Tracking');
@@ -54,17 +51,14 @@ const LiveTracker = ({ carId, onClose }) => {
         socket.on('connect', handleConnect);
         socket.on('broadcast_car_location', handleLocationUpdate);
 
-        // Start simulation for this car
-        if (carId) {
+        if (carId)
             socket.emit('start_tracking_simulation', carId);
-        }
 
         return () => {
             socket.off('connect', handleConnect);
             socket.off('broadcast_car_location', handleLocationUpdate);
-            if (carId) {
+            if (carId)
                 socket.emit('stop_tracking_simulation', carId);
-            }
         };
     }, [carId]);
 
@@ -80,7 +74,6 @@ const LiveTracker = ({ carId, onClose }) => {
             const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`);
             const data = await response.json();
             if (data && data.display_name) {
-                // Keep the first 3 parts of the address for a concise display
                 const addressParts = data.display_name.split(', ');
                 setLocationName(addressParts.slice(0, 3).join(', '));
             } else {
@@ -94,8 +87,6 @@ const LiveTracker = ({ carId, onClose }) => {
 
     useEffect(() => {
         latestCoords.current = { lat: carData.lat, lng: carData.lng };
-
-        // Fetch immediately the first time we get valid coordinates
         if (carData.lat && carData.lng && !hasFetchedFirst.current) {
             hasFetchedFirst.current = true;
             fetchLocationName();
@@ -103,7 +94,6 @@ const LiveTracker = ({ carId, onClose }) => {
     }, [carData.lat, carData.lng]);
 
     useEffect(() => {
-        // Fetch every 10 seconds to avoid hitting API rate limits
         const intervalId = setInterval(fetchLocationName, 10000);
         return () => clearInterval(intervalId);
     }, []);
@@ -182,8 +172,8 @@ const LiveTracker = ({ carId, onClose }) => {
 
                             <div className="flex items-center gap-3">
                                 <div className="relative flex h-3 w-3">
-                                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                                  <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                                    <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
                                 </div>
                                 <div>
                                     <p className="text-[11px] text-gray-500 font-bold uppercase tracking-wider">Current Speed</p>

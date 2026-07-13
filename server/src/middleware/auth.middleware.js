@@ -4,20 +4,23 @@ import AppError from '../utils/appError.js';
 import wrapAsync from '../configs/wrapAsync.js';
 
 export const protect = wrapAsync(async (req, res, next) => {
-  let token = req.headers.authorization;
+  let token;
 
-  if (token && token.startsWith("Bearer "))
-    token = token.split(" ")[1];
+  if (req.headers.authorization && req.headers.authorization.startsWith("Bearer ")) {
+    token = req.headers.authorization.split(" ")[1];
+  } else if (req.cookies && req.cookies.jwt) {
+    token = req.cookies.jwt;
+  }
 
-  if (!token)
-    return next(new AppError("Not Authorized", 401));
-
+  if (!token) {
+    return next(new AppError("Not authorized, token missing", 401));
+  }
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
     if (!decoded || !decoded.id)
-      return next(new AppError("Not Authorized", 401));
+      return next(new AppError("Not authorized, token invalid", 401));
 
     req.user = await User.findById(decoded.id).select('-password');
 
@@ -25,11 +28,18 @@ export const protect = wrapAsync(async (req, res, next) => {
       return next(new AppError("User not found", 404));
 
     if (req.user.isBlocked)
-      return next(new AppError("User is blocked", 403));
+      return next(new AppError("Your account has been blocked.", 403));
 
     next();
   } catch (error) {
-    return next(new AppError("Not Authorized", 401));
+    return next(new AppError("Not authorized, token validation failed", 401));
   }
 });
 
+export const owner = (req, res, next) => {
+  if (req.user && req.user.role === 'owner') {
+    next();
+  } else {
+    next(new AppError('Access denied: Owner role required', 403));
+  }
+};

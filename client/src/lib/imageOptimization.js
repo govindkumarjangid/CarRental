@@ -28,4 +28,3 @@ export const optimizeImage = (url, { width, height, quality = 'auto', format = '
 
   return urlObj.toString();
 };
-

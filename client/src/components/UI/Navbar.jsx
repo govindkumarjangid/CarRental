@@ -16,7 +16,6 @@ const Navbar = () => {
 
 	const { user, isOwner, logout, setShowLogin, updateProfileImage } = useAuthStore();
 	const navigate = useNavigate();
-	// console.log(user)
 
 	const location = useLocation();
 
@@ -83,8 +82,8 @@ const Navbar = () => {
 										<motion.div
 											layoutId="activeTabDesktop"
 											className="absolute bottom-0.2 left-0 right-0 h-0.5 bg-primary  rounded-full"
-											initial={{ opacity: 0 }}
-											animate={{ opacity: 1 }}
+											initial={{ width: "0px" }}
+											animate={{ width: "auto" }}
 											transition={{ type: "spring", stiffness: 300, damping: 20 }}
 										/>
 									)}
@@ -304,4 +303,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-
