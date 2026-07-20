@@ -1,14 +1,17 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 import { iconList } from '../../assets/assets.jsx';
 
 const RevenueCard = ({ revenue, currency }) => {
   return (
     <motion.div
       initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      className="p-6 border border-gray-200 rounded-3xl max-w-sm w-full shadow-sm flex flex-col justify-center items-center text-center">
-      <div className="bg-purple-100  p-4 rounded-full mb-4">
+      whileInView={{ opacity: 1 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.2, ease: "easeOut" }}
+      style={{ willChange: "opacity" }}
+      className="p-6 border border-gray-200 rounded-xl max-w-sm w-full shadow-sm flex flex-col justify-center items-center text-center">
+      <div className="bg-purple-100 p-4 rounded-xl mb-4">
         <iconList.IndianRupee className="text-purple-600" size={32} />
       </div>
       <h3 className="text-gray-500 text-sm font-medium  mb-1">Monthly Revenue</h3>

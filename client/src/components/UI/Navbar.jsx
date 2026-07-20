@@ -1,10 +1,9 @@
 import { menuLinks, assets } from "../../assets/assets.jsx";
 import { useAuthStore } from "../../store/useAuthStore.js";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { motion, useInView } from "framer-motion";
+import { motion, useInView, AnimatePresence } from "motion/react";
 import { useState, useEffect, useRef } from "react";
 import { iconList, ResponsiveImage } from "../../index.js"
-import { AnimatePresence } from 'framer-motion'
 import { LogOut, User, X, TextAlignEnd, CircleUser, EditIcon, CircleCheckBig } from "lucide-react";
 import { UserAvatar, IconButton } from "../../index.js";
 
@@ -42,8 +41,8 @@ const Navbar = () => {
 		<motion.div
 			initial={{ opacity: 0 }}
 			animate={{ opacity: 1 }}
-			transition={{ duration: 0.3 }}
-			className={`max-w-full px-4 md:px-8 py-3 md:py-4 text-gray-600  border-b border-gray-200  sticky top-0 z-50 transition-all duration-300 ${location.pathname === "/" ? "bg-light" : "bg-white"
+			transition={{ duration: 0.2 }}
+			className={`max-w-full px-4 md:px-8 py-3 md:py-4 text-gray-600  border-b border-gray-200  sticky top-0 z-50 transition-all ${location.pathname === "/" ? "bg-light" : "bg-white"
 				}`}>
 			<div className="max-w-7xl m-auto flex items-center justify-between h-auto ">
 				{/* logo  */}
@@ -69,7 +68,7 @@ const Navbar = () => {
 									className="relative">
 									<Link
 										to={menuLink.path}
-										className={`font-medium transition-colors duration-200 ${isActive
+										className={`font-medium transition-colors ${isActive
 											? "text-primary "
 											: "text-gray-600  hover:text-primary "
 											}`}>
@@ -81,7 +80,7 @@ const Navbar = () => {
 											className="absolute bottom-0.2 left-0 right-0 h-0.5 bg-primary  rounded-full"
 											initial={{ opacity: 0 }}
 											animate={{ opacity: 1 }}
-											transition={{ duration: 0.3 }}
+											transition={{ duration: 0.2 }}
 										/>
 									)}
 								</motion.div>
@@ -103,14 +102,14 @@ const Navbar = () => {
 					<div className="flex items-center gap-2 sm:gap-4">
 						{!user ? (
 							<button
-								className="cursor-pointer px-4 sm:px-8 py-1.5 sm:py-2 bg-primary hover:bg-primary-dull transition-all text-white rounded-2xl active:scale-98 font-medium shadow-sm text-sm sm:text-base"
+								className="cursor-pointer px-4 sm:px-8 py-1.5 sm:py-2 bg-primary hover:bg-primary-dull transition-all text-white rounded-xl active:scale-98 font-medium shadow-sm text-sm sm:text-base"
 								onClick={() => setShowLogin(true)}>
 								Login
 							</button>
 						) : (
 							user?.image ? (
 								<button
-									className="rounded-full border-2 border-primary/20 hover:border-primary/40 transition-all active:scale-95"
+									className="rounded-xl border-2 border-primary/20 hover:border-primary/40 transition-all active:scale-95 overflow-hidden"
 									onClick={() => {
 										setOpenPopup(!openPopup);
 										setOpen(false);
@@ -119,7 +118,7 @@ const Navbar = () => {
 										src={user.image}
 										name={user.name}
 										size={42}
-										className="cursor-pointer aspect-square size-10"
+										className="cursor-pointer aspect-square size-10 rounded-xl"
 									/>
 								</button>
 
@@ -128,7 +127,7 @@ const Navbar = () => {
 									label="User Profile"
 									icon={User}
 									size={26}
-									className="text-primary bg-primary/10 p-1.5 hover:bg-primary hover:text-white transition-all duration-300 cursor-pointer"
+									className="text-primary bg-primary/10 p-1.5 hover:bg-primary hover:text-white transition-all cursor-pointer rounded-xl"
 									onClick={() => {
 										setOpenPopup(!openPopup);
 										setOpen(false);
@@ -142,7 +141,7 @@ const Navbar = () => {
 							label={open ? "Close Menu" : "Open Menu"}
 							icon={open ? X : TextAlignEnd}
 							size={22}
-							className="sm:hidden text-white hover:bg-primary bg-primary cursor-pointer"
+							className="sm:hidden text-white hover:bg-primary bg-primary cursor-pointer rounded-xl"
 							onClick={() => setOpen(!open)}
 						/>
 					</div>
@@ -157,13 +156,7 @@ const Navbar = () => {
 							initial={{ opacity: 0 }}
 							animate={{ opacity: 1 }}
 							exit={{ opacity: 0 }}
-							transition={{
-								type: "spring",
-								stiffness: 350,
-								damping: 35,
-								mass: 0.8,
-								exit: { type: "tween", duration: 0.3, ease: "easeInOut" }
-							}}
+							transition={{ duration: 0.2 }}
 							className="w-full bg-light flex flex-col items-center pointer-events-auto shadow-2xl overflow-hidden">
 							<div className="w-full flex flex-col items-start gap-8 pt-10 pb-6 px-6 border-t border-gray-300">
 								{menuLinks.filter(link => !(link.name === "Chat with owner" && isOwner)).map((menuLink, index) => {
@@ -175,7 +168,7 @@ const Navbar = () => {
 											<Link
 												to={menuLink.path}
 												onClick={() => setOpen(false)}
-												className={`block font-medium w-full transition-colors duration-200 text-base ${isActive
+												className={`block font-medium w-full transition-colors text-base ${isActive
 													? "text-primary "
 													: "text-gray-600 hover:text-primary "
 													}`}>
@@ -209,16 +202,16 @@ const Navbar = () => {
 						initial={{ opacity: 0 }}
 						animate={{ opacity: 1 }}
 						exit={{ opacity: 0 }}
-						transition={{ duration: 0.3 }}
+						transition={{ duration: 0.2 }}
 						className="fixed inset-0 z-100 flex items-center justify-center bg-primary/5 backdrop-blur-sm p-4"
 						onClick={() => setOpenPopup(false)}>
 						<motion.div
 							key="popup"
-							initial={{ opacity: 0 }}
-							animate={{ opacity: 1 }}
-							exit={{ opacity: 0 }}
-							transition={{ duration: 0.3 }}
-							className="relative flex flex-col gap-4 p-6 sm:p-8 bg-white border border-gray-200 shadow-sm cursor-default w-full max-w-105 rounded-3xl"
+							initial={{ opacity: 0, scale: 0.98 }}
+							animate={{ opacity: 1, scale: 1 }}
+							exit={{ opacity: 0, scale: 0.98 }}
+							transition={{ duration: 0.2 }}
+							className="relative flex flex-col gap-4 p-6 sm:p-8 bg-white border border-gray-200 shadow-sm cursor-default w-full max-w-105 rounded-xl"
 							onClick={(e) => e.stopPropagation()}>
 							<IconButton
 								label="Close"
@@ -238,12 +231,12 @@ const Navbar = () => {
 											className="h-16 w-16 border-2 border-primary/20 group-hover:border-primary/40 transition-all"
 										/>
 									) : (
-										<div className="h-16 w-16 rounded-full bg-gray-100 flex items-center justify-center">
+										<div className="h-16 w-16 rounded-xl bg-gray-100 flex items-center justify-center">
 											<CircleUser size={40} className="text-gray-400" />
 										</div>
 									)}
 									<input type="file" id="image" name="image" accept="image/*" hidden onChange={(e) => setImage(e.target.files[0])} />
-									<div className="absolute inset-0 hidden bg-black/40 rounded-full group-hover:flex items-center justify-center transition-all">
+									<div className="absolute inset-0 hidden bg-black/40 rounded-xl group-hover:flex items-center justify-center transition-all">
 										<EditIcon size={20} className="text-white" />
 									</div>
 								</label>
@@ -256,7 +249,7 @@ const Navbar = () => {
 										<p className="text-[10px] text-gray-400 truncate">Last Login: {user?.updatedAt ? new Date(user.updatedAt).toLocaleDateString() : 'N/A'}</p>
 									</div>
 									<div className="mt-2.5">
-										<span className="text-[10px] px-2 py-0.5 bg-primary/10 text-primary   rounded-full font-bold uppercase tracking-wider">
+										<span className="text-[10px] px-2 py-0.5 bg-primary/10 text-primary rounded-xl font-bold uppercase tracking-wider">
 											{isOwner ? 'Owner' : 'Customer'}
 										</span>
 									</div>
@@ -267,7 +260,7 @@ const Navbar = () => {
 
 							<button
 								onClick={handleLogout}
-								className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-primary hover:bg-primary-dull rounded-2xl text-sm cursor-pointer text-white active:scale-[0.98] font-bold transition-all shadow-md group">
+								className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-primary hover:bg-primary-dull rounded-xl text-sm cursor-pointer text-white active:scale-[0.98] font-bold transition-all shadow-md group">
 								<LogOut size={18} className="group-hover:-translate-x-0.5 transition-transform" />
 								Logout Account
 							</button>
@@ -275,7 +268,7 @@ const Navbar = () => {
 							{image && (
 								<button
 									onClick={handleImageUpload}
-									className="flex items-center justify-center gap-1 text-xs font-bold shadow-lg transition-all bg-green-500 text-white hover:bg-green-600 px-4 py-2 absolute -top-3 right-0 rounded-full cursor-pointer active:scale-95">
+									className="flex items-center justify-center gap-1 text-xs font-bold shadow-lg transition-all bg-green-500 text-white hover:bg-green-600 px-4 py-2 absolute -top-3 right-0 rounded-xl cursor-pointer active:scale-95">
 									<iconList.CircleCheckBig size={14} />
 									Save Avatar
 								</button>

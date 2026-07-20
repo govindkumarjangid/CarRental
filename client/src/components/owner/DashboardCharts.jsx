@@ -1,14 +1,17 @@
 import { Doughnut, Bar, Line } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, ArcElement, BarElement } from 'chart.js';
-import {motion} from 'framer-motion';
+import { motion } from 'motion/react';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, ArcElement, BarElement);
 
 export const FleetChart = ({ data }) => (
   <motion.div
     initial={{ opacity: 0 }}
-    animate={{ opacity: 1 }}
-    className="p-6 border border-gray-200 rounded-3xl shadow-sm max-w-xl">
+    whileInView={{ opacity: 1 }}
+    viewport={{ once: true }}
+    transition={{ duration: 0.2, ease: "easeOut" }}
+    style={{ willChange: "opacity" }}
+    className="p-6 border border-gray-200 rounded-xl shadow-sm max-w-xl">
     <h3 className="text-sm font-semibold mb-4  opacity-70 uppercase tracking-widest">Live Availability Breakdown</h3>
     <div className="h-48 flex justify-center">
       <Doughnut
@@ -44,8 +47,11 @@ export const FleetChart = ({ data }) => (
 export const BookingChart = ({ data }) => (
   <motion.div
     initial={{ opacity: 0 }}
-    animate={{ opacity: 1 }}
-    className="p-6 border border-gray-200 rounded-3xl shadow-sm">
+    whileInView={{ opacity: 1 }}
+    viewport={{ once: true }}
+    transition={{ duration: 0.2, ease: "easeOut" }}
+    style={{ willChange: "opacity" }}
+    className="p-6 border border-gray-200 rounded-xl shadow-sm">
     <h3 className="text-sm font-semibold mb-4 opacity-70 uppercase tracking-widest">Booking Status Breakdown</h3>
     <div className="h-64">
       <Bar
@@ -72,7 +78,7 @@ export const BookingChart = ({ data }) => (
               'rgb(239, 68, 68)',
             ],
             borderWidth: 1,
-            borderRadius: 30,
+            borderRadius: 12,
           }]
         }}
         options={{
@@ -89,8 +95,11 @@ export const BookingChart = ({ data }) => (
 export const PaymentChart = ({ data }) => (
   <motion.div
     initial={{ opacity: 0 }}
-    animate={{ opacity: 1 }}
-    className="p-6 border border-gray-200  rounded-3xl shadow-sm">
+    whileInView={{ opacity: 1 }}
+    viewport={{ once: true }}
+    transition={{ duration: 0.2, ease: "easeOut" }}
+    style={{ willChange: "opacity" }}
+    className="p-6 border border-gray-200  rounded-xl shadow-sm">
     <h3 className="text-sm font-semibold mb-4  opacity-70 uppercase tracking-widest">Payment Integrity Analysis</h3>
     <div className="h-64">
       <Bar
@@ -114,7 +123,7 @@ export const PaymentChart = ({ data }) => (
               'rgb(239, 68, 68)',
             ],
             borderWidth: 1,
-            borderRadius: 20,
+            borderRadius: 12,
           }]
         }}
         options={{
@@ -131,8 +140,11 @@ export const PaymentChart = ({ data }) => (
 export const RevenueHistoryChart = ({ history, currency }) => (
   <motion.div
     initial={{ opacity: 0 }}
-    animate={{ opacity: 1 }}
-    className="p-6 border border-gray-200   rounded-3xl shadow-sm lg:col-span-2">
+    whileInView={{ opacity: 1 }}
+    viewport={{ once: true }}
+    transition={{ duration: 0.2, ease: "easeOut" }}
+    style={{ willChange: "opacity" }}
+    className="p-6 border border-gray-200   rounded-xl shadow-sm lg:col-span-2">
     <h3 className="text-sm font-semibold mb-4  opacity-70 uppercase tracking-widest">Revenue Performance History</h3>
     <div className="h-72">
       <Line

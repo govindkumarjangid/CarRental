@@ -1,13 +1,10 @@
-import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
+import { motion } from "motion/react";
 import { useNavigate } from "react-router-dom";
-import { iconList, OptimizedImage } from "../../index.js"
+import { iconList, OptimizedImage } from "../../index.js";
 
-const CarCard = ({ car, index }) => {
+const CarCard = ({ car, index = 0 }) => {
 	const navigate = useNavigate();
 	const currency = import.meta.env.VITE_CURRENCY;
-	const ref = useRef(null);
-	const inView = useInView(ref, { once: true });
 
 	const handleClick = () => {
 		navigate(`/car-details/${car._id}`);
@@ -15,8 +12,13 @@ const CarCard = ({ car, index }) => {
 	};
 
 	return (
-		<div
-			className="h-full w-full group rounded-3xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300 cursor-pointer active:scale-99 bg-white border border-gray-100"
+		<motion.div
+			initial={{ opacity: 0 }}
+			whileInView={{ opacity: 1 }}
+			viewport={{ once: true }}
+			transition={{ duration: 0.2, ease: "easeOut" }}
+			style={{ willChange: "opacity" }}
+			className="h-full w-full group rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all cursor-pointer bg-white border border-gray-100"
 			onClick={handleClick}
 			aria-label={`View details for ${car.brand} ${car.model}`}>
 			{/* image & availability & price  */}
@@ -26,11 +28,11 @@ const CarCard = ({ car, index }) => {
 					renderedWidth={450}
 					renderedHeight={240}
 					alt={`${car.brand} ${car.model} showcase`}
-					className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+					className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-103"
 				/>
 
 				<div className="absolute top-4 left-4 flex flex-col gap-2">
-					<p className={`text-white text-[10px] px-2 py-1 font-bold rounded-lg shadow-lg backdrop-blur-md uppercase tracking-wider ${
+					<p className={`text-white text-[10px] px-2.5 py-1 font-bold rounded-xl shadow-md backdrop-blur-md uppercase tracking-wider ${
 						car.status === "available"
 						? "bg-green-600/90"
 						: car.status === "cleaning"
@@ -43,11 +45,11 @@ const CarCard = ({ car, index }) => {
 					</p>
 				</div>
 
-				<div className="absolute bottom-4 right-4 border border-white/80 backdrop-blur-sm text-white px-3 py-2 rounded-2xl font-bold">
+				<div className="absolute bottom-4 right-4 border border-white/80 backdrop-blur-sm text-white px-3 py-1.5 rounded-xl font-bold text-sm">
 					<span>
 						{currency} {car.pricePerHour}
 					</span>
-					<span className="text-sm opacity-90"> / hr</span>
+					<span className="text-xs opacity-90"> / hr</span>
 				</div>
 			</div>
 
@@ -85,7 +87,7 @@ const CarCard = ({ car, index }) => {
 				</div>
 			</div>
 
-		</div>
+		</motion.div>
 	);
 };
 

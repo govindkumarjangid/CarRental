@@ -2,7 +2,7 @@ import { useAuthStore } from "../../store/useAuthStore.js";
 import { useChatStore } from "../../store/useChatStore.js";
 import socket from "../../socket.js";
 import { useEffect, useRef, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "motion/react";
 import { Check, CheckCheck, X, ChevronLeft, ChevronRight, FileText } from "lucide-react";
 import Lenis from "lenis";
 import { iconList } from "../../assets/assets.jsx";
@@ -152,50 +152,13 @@ const Chats = () => {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [pdfLightboxIndex, chatPDFs.length]);
 
-  // Local Lenis instance for smooth chat list scrolling in owner panel
-  useEffect(() => {
-    if (!scrollContainerRef.current) return;
-    const container = scrollContainerRef.current;
-    const content = container.firstElementChild;
-    if (!content) return;
-
-    const lenisInstance = new Lenis({
-      wrapper: container,
-      content: content,
-      smoothWheel: true,
-      lerp: 0.08,
-      duration: 1.2,
-    });
-
-    let rafId;
-    function raf(time) {
-      lenisInstance.raf(time);
-      rafId = requestAnimationFrame(raf);
-    }
-    rafId = requestAnimationFrame(raf);
-    container.__lenis = lenisInstance;
-
-    return () => {
-      cancelAnimationFrame(rafId);
-      lenisInstance.destroy();
-      container.__lenis = null;
-    };
-  }, [activeChat?._id]); // Re-initialize when active chat changes to hook onto the new DOM wrapper
-
   useEffect(() => {
     if (scrollContainerRef.current) {
       const container = scrollContainerRef.current;
       const isInitialLoad = prevMessagesLength.current === 0 && messages.length > 0;
       const isNearBottom = container.scrollHeight - container.scrollTop - container.clientHeight < 200;
       if (isInitialLoad || isNearBottom) {
-        if (container.__lenis) {
-          container.__lenis.scrollTo("bottom", {
-            immediate: isInitialLoad,
-            force: true
-          });
-        } else {
-          container.scrollTo({ top: container.scrollHeight, behavior: isInitialLoad ? "auto" : "smooth" });
-        }
+        container.scrollTo({ top: container.scrollHeight, behavior: isInitialLoad ? "auto" : "smooth" });
       }
       prevMessagesLength.current = messages.length;
     }
@@ -637,7 +600,7 @@ const Chats = () => {
             {/* MESSAGES */}
             <div className="flex-1 min-h-0 relative">
               {activeChat ? (
-                <div ref={scrollContainerRef} className="h-full w-full overflow-y-auto custom-scrollbar chat-pattern-bg">
+                <div ref={scrollContainerRef} data-lenis-prevent className="h-full w-full overflow-y-auto custom-scrollbar chat-pattern-bg">
                   {/* Spacer to push messages to bottom when there are few of them */}
                   <div className="flex flex-col min-h-full">
                     <div className="flex-1" />
@@ -814,11 +777,11 @@ const Chats = () => {
                   />
                   <button
                     onClick={() => fileInputRef.current.click()}
-                    className="h-12 w-12 shrink-0 rounded-2xl flex items-center justify-center text-slate-500 hover:text-slate-700 bg-slate-100 hover:bg-slate-200/80 transition-all active:scale-95 cursor-pointer border border-slate-200/50 shadow-sm">
+                    className="h-12 w-12 shrink-0 rounded-xl flex items-center justify-center text-slate-500 hover:text-slate-700 bg-slate-100 hover:bg-slate-200/80 transition-all active:scale-95 cursor-pointer border border-slate-200/50 shadow-sm">
                     <iconList.Paperclip size={20} />
                   </button>
 
-                  <div className="flex-1 h-12 bg-slate-50 hover:bg-slate-100/60 focus-within:bg-white rounded-2xl flex items-center px-4 border-2 border-slate-200 focus-within:border-primary/70 focus-within:ring-3 focus-within:ring-primary/50 transition-all duration-200 shadow-inner">
+                  <div className="flex-1 h-12 bg-slate-50 hover:bg-slate-100/60 focus-within:bg-white rounded-xl flex items-center px-4 border-2 border-slate-200 focus-within:border-primary/70 focus-within:ring-3 focus-within:ring-primary/50 transition-all duration-200 shadow-inner">
                     <input
                       type="text"
                       value={input}
@@ -844,7 +807,7 @@ const Chats = () => {
                   <button
                     onClick={handleSend}
                     disabled={!input.trim() && attachments.length === 0}
-                    className={`h-12 w-12 shrink-0 rounded-2xl flex items-center justify-center transition-all duration-200 ${input.trim() || attachments.length> 0
+                    className={`h-12 w-12 shrink-0 rounded-xl flex items-center justify-center transition-all duration-200 ${input.trim() || attachments.length > 0
                       ? "bg-linear-to-r from-primary to-indigo-600 text-white shadow-md shadow-primary/20 hover:shadow-lg hover:shadow-primary/30 hover:-translate-y-0.5 active:scale-95 active:translate-y-0 cursor-pointer"
                       : "bg-slate-100 text-slate-400 cursor-not-allowed border border-slate-200/50"
                       }`}>

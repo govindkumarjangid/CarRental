@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 
 import { useAuthStore } from "../../store/useAuthStore.js";
 import { User, CarFront, Loader, X } from "lucide-react";
@@ -37,16 +37,16 @@ const Login = () => {
 			initial={{ opacity: 0 }}
 			animate={{ opacity: 1 }}
 			exit={{ opacity: 0 }}
-			transition={{ duration: 0.3 }}
+			transition={{ duration: 0.2 }}
 			className="fixed inset-0 z-100 text-gray-600 flex items-center backdrop-blur-xs justify-center bg-blue-700/5">
 			<motion.form
-				initial={{ opacity: 0 }}
-				animate={{ opacity: 1 }}
-				exit={{ opacity: 0 }}
-				transition={{ duration: 0.3 }}
+				initial={{ opacity: 0, scale: 0.98 }}
+				animate={{ opacity: 1, scale: 1 }}
+				exit={{ opacity: 0, scale: 0.98 }}
+				transition={{ duration: 0.2 }}
 				onSubmit={handleSubmit}
 				onClick={(e) => e.stopPropagation()}
-				className="flex flex-col gap-4 m-auto items-start p-8 py-12 w-80 sm:w-88 text-gray-500 rounded-3xl shadow-sm border border-gray-200 bg-white z-200">
+				className="flex flex-col gap-4 m-auto items-start p-8 py-12 w-80 sm:w-88 text-gray-500 rounded-xl shadow-sm border border-gray-200 bg-white z-200">
 				<div className="flex justify-between items-center w-full">
 					<p className="text-3xl font-medium mx-auto pl-8">
 						<span className="text-primary ">
@@ -64,7 +64,7 @@ const Login = () => {
 							<button
 								type="button"
 								onClick={() => setRole("user")}
-								className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-2xl border-2 text-sm font-semibold cursor-pointer transition-all duration-200 ${role === "user"
+								className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl border-2 text-sm font-semibold cursor-pointer transition-all ${role === "user"
 									? "border-primary bg-primary/10 text-primary"
 									: "border-gray-200 text-gray-400 hover:border-gray-300"
 									}`}>
@@ -74,7 +74,7 @@ const Login = () => {
 							<button
 								type="button"
 								onClick={() => setRole("owner")}
-								className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-2xl border-2 text-sm font-semibold cursor-pointer transition-all duration-200 ${role === "owner"
+								className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl border-2 text-sm font-semibold cursor-pointer transition-all ${role === "owner"
 									? "border-primary bg-primary/10 text-primary"
 									: "border-gray-200 text-gray-400 hover:border-gray-300"
 									}`}>
@@ -147,7 +147,7 @@ const Login = () => {
 					className={`${isLoading
 						? "opacity-90 cursor-not-allowed bg-primary"
 						: "bg-primary hover:bg-primary-dull"
-						} transition-all text-white w-full py-2 rounded-2xl mt-2
+						} transition-all text-white w-full py-2 rounded-xl mt-2
             cursor-pointer active:scale-95
             `}>
 					{isLoading ? (

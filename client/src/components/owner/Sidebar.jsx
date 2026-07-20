@@ -2,7 +2,7 @@ import { ownerMenuLinks } from "../../assets/assets.jsx";
 import { useAuthStore } from "../../store/useAuthStore.js";
 import { useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "motion/react";
 import { iconList } from "../../assets/assets.jsx";
 
 const SidebarContent = ({ user, image, setImage, handleUpdateImage, location, MotionNavLink, setIsSidebarOpen }) => (
@@ -14,7 +14,7 @@ const SidebarContent = ({ user, image, setImage, handleUpdateImage, location, Mo
 					<img
 						src={image ? URL.createObjectURL(image) : user?.image}
 						alt="owner"
-						className="md:h-20 md:w-20 h-20 w-20 rounded-full p-1 mx-auto aspect-square object-cover"
+						className="md:h-20 md:w-20 h-20 w-20 rounded-xl p-1 mx-auto aspect-square object-cover"
 					/>
 				) : (
 					<iconList.CircleUser className="md:h-20 md:w-20 h-20 w-20 text-gray-400" />
@@ -29,7 +29,7 @@ const SidebarContent = ({ user, image, setImage, handleUpdateImage, location, Mo
 					onChange={(e) => setImage(e.target.files[0])}
 				/>
 
-				<div className="absolute md:h-20 md:w-20 h-20 w-20 top-0 hidden bg-black/20 rounded-full group-hover:flex items-center justify-center cursor-pointer">
+				<div className="absolute md:h-20 md:w-20 h-20 w-20 top-0 hidden bg-black/20 rounded-xl group-hover:flex items-center justify-center cursor-pointer">
 					<iconList.EditIcon size={20} className="text-white" />
 				</div>
 			</label>
@@ -39,7 +39,7 @@ const SidebarContent = ({ user, image, setImage, handleUpdateImage, location, Mo
 		{image && (
 			<button
 				onClick={handleUpdateImage}
-				className="absolute top-0 right-0 flex items-center gap-1 px-3 py-1.5 bg-primary/10 text-primary rounded-2xl text-xs disabled:opacity-50 cursor-pointer hover:bg-primary/20 transition-colors">
+				className="absolute top-0 right-0 flex items-center gap-1 px-3 py-1.5 bg-primary/10 text-primary rounded-xl text-xs disabled:opacity-50 cursor-pointer hover:bg-primary/20 transition-colors">
 				Save
 				<iconList.CircleCheckBig className="h-3 w-3 ml-1" />
 			</button>
@@ -71,7 +71,7 @@ const SidebarContent = ({ user, image, setImage, handleUpdateImage, location, Mo
 						{isActive && (
 							<div
 								layoutId="activeTabIndicator"
-								className="absolute right-0 top-2 h-8 w-1.5 bg-primary rounded-l-2xl"
+								className="absolute right-0 top-2 h-8 w-1.5 bg-primary rounded-l-xl"
 							/>
 						)}
 					</MotionNavLink>
@@ -81,7 +81,7 @@ const SidebarContent = ({ user, image, setImage, handleUpdateImage, location, Mo
 
 		{/* Redirect Button */}
 		<div className="w-full p-4 mt-auto border-t border-gray-100  md:hidden">
-			<NavLink to="/" className="flex items-center justify-center gap-2 w-full py-2.5 bg-primary hover:bg-primary-dull text-white rounded-2xl font-medium transition-colors shadow-sm">
+			<NavLink to="/" className="flex items-center justify-center gap-2 w-full py-2.5 bg-primary hover:bg-primary-dull text-white rounded-xl font-medium transition-colors shadow-sm">
 				<iconList.ArrowLeft size={18} />
 				<span>Back to Home</span>
 			</NavLink>
@@ -129,13 +129,7 @@ const Sidebar = ({ isSidebarOpen, setIsSidebarOpen }) => {
 								initial={{ opacity: 0 }}
 								animate={{ opacity: 1 }}
 								exit={{ opacity: 0 }}
-								transition={{
-									type: "spring",
-									stiffness: 350,
-									damping: 35,
-									mass: 0.8,
-									exit: { type: "tween", duration: 0.4, ease: "easeInOut" }
-								}}
+								transition={{ duration: 0.2 }}
 								className="absolute top-14 right-0 left-0 z-50 bg-white/95 backdrop-blur-xl pt-6 pb-2 border-b border-gray-200 max-h-[calc(100vh-60px)] flex flex-col pointer-events-auto shadow-2xl">
 								<SidebarContent {...sidebarProps} />
 							</motion.div>

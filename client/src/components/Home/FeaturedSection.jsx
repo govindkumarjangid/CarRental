@@ -1,5 +1,5 @@
 import { useCarStore } from "../../store/useCarStore.js";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { ArrowRight } from "lucide-react";
@@ -38,15 +38,17 @@ const FeaturedSection = () => {
 				</div>
 				<motion.button
 					initial={{ opacity: 0 }}
-					animate={{ opacity: 1 }}
-					transition={{ duration: 0.3 }}
+					whileInView={{ opacity: 1 }}
+					viewport={{ once: true }}
+					transition={{ duration: 0.2, ease: "easeOut" }}
+					style={{ willChange: "opacity" }}
 					onClick={() => {
 						navigate("/cars");
 						window.scrollTo({ top: 0, behavior: "smooth" });
 					}}
-					className="flex group items-center justify-center gap-2 px-6 py-2 border-2 border-gray-500 text-gray-600 hover:bg-primary rounded-2xl mt-18 cursor-pointer hover:text-light hover:border-light active:scale-98 transition-all duration-300">
+					className="flex group items-center justify-center gap-2 px-6 py-2 border-2 border-gray-500 text-gray-600 hover:bg-primary rounded-xl mt-18 cursor-pointer hover:text-light hover:border-light active:scale-98 transition-all">
 					Explore all cars{" "}
-					<ArrowRight className="w-4 h-4 stroke-2 group-hover:translate-x-2 transition-transform duration-400" />
+					<ArrowRight className="w-4 h-4 stroke-2 group-hover:translate-x-1 transition-transform" />
 				</motion.button>
 			</div>
 		</>

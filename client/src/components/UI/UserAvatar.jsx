@@ -11,7 +11,7 @@ const UserAvatar = ({ src, name, size = 40, className = '' }) => {
       width={size}
       height={size}
       loading="lazy"
-      className={`rounded-full object-cover object-center border border-gray-100 ${className}`}
+      className={`rounded-xl object-cover object-center border border-gray-100 ${className}`}
       onError={(e) => {
         e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(name || 'User')}&background=random`;
       }}

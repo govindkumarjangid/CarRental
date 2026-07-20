@@ -5,11 +5,11 @@ const TestimonialCard = ({ review, index }) => {
 	return (
 		<motion.div
 		    key={index}
-			initial={{ opacity: 0 }}
-			whileInView={{ opacity: 1 }}
+			initial={{ opacity: 0, y: 6 }}
+			whileInView={{ opacity: 1, y: 0 }}
 			viewport={{ once: true }}
-			transition={{ duration: 0.3 }}
-			className="bg-white p-4 rounded-3xl hover:-translate-y-2 hover:shadow-sm transition-all duration-300 border-2 border-light w-full h-full cursor-pointer">
+			transition={{ duration: 0.2 }}
+			className="bg-white p-4 rounded-xl hover:-translate-y-1 hover:shadow-sm transition-all border-2 border-light w-full h-full cursor-pointer">
 			<div className="flex items-center gap-3">
 				<UserAvatar
 					src={review?.imageUrl}

@@ -4,7 +4,7 @@ import { Toaster } from "react-hot-toast";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { useEffect, lazy, Suspense, useState } from "react";
 import { Loader } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "motion/react";
 import { Navbar, Footer, ProtectRoute, CarsPageSkeleton, DashboardSkeleton, TableSkeleton, FormSkeleton, CarDetailsPageSkeleton, UserTableSkeleton, LoginSkeleton, TestimonialFormSkeleton, BookingCard } from "./index.js";
 
 import ScrollToTop from "./components/UI/ScrollToTop.jsx";
@@ -64,8 +64,8 @@ const App = () => {
 			wrapper: mainWrapper || window,
 			content: scrollContent || document.documentElement,
 			smoothWheel: true,
-			lerp: 0.05,
-            duration: 1.2,
+			lerp: 0.08,
+            duration: 0.8,
 		});
 
 		function raf(time) {
@@ -87,7 +87,7 @@ const App = () => {
 				toastOptions={{
 					duration: 2000,
 					style: {
-						borderRadius: "10px",
+						borderRadius: "12px",
 						fontSize: "14px",
 						padding: "4px 8px"
 					},
@@ -119,10 +119,10 @@ const App = () => {
 					<AnimatePresence mode="wait">
 						<motion.div
 							key={transitionKey}
-							initial={{ opacity: 0, y: 5 }}
-							animate={{ opacity: 1, y: 0 }}
-							exit={{ opacity: 0, y: -5 }}
-							transition={{ duration: 0.3 }}
+							initial={{ opacity: 0 }}
+							animate={{ opacity: 1 }}
+							exit={{ opacity: 0 }}
+							transition={{ duration: 0.15 }}
 							className={`flex-1 shrink-0 ${isChatPath ? "h-full flex flex-col" : ""}`}
 						>
 							<Routes location={location}>

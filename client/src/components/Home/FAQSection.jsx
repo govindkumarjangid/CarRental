@@ -39,7 +39,7 @@ const FAQSection = () => {
                             key={index}
                             question={faq.question}
                             answer={faq.answer}
-                            className="rounded-3xl shadow-sm border border-gray-200/60"
+                            className="rounded-xl shadow-sm border border-gray-200/60"
                         />
                     ))}
                 </div>

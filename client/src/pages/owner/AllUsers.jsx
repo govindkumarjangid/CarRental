@@ -1,7 +1,7 @@
 import { UserTableSkeleton } from '../../components/skeletons';
 import { useAuthStore } from '../../store/useAuthStore';
 import { useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 import { Title as OwnerTitle } from '../../components/owner/Title.jsx';
 
 const AllUsers = () => {
@@ -17,16 +17,14 @@ const AllUsers = () => {
     isBlocked ? (
       <span className="inline-flex items-center gap-2 text-red-600 font-semibold">
         <span className="relative flex h-2.5 w-2.5">
-          <span className="absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75 animate-ping"></span>
-          <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-red-700"></span>
+          <span className="relative inline-flex h-2.5 w-2.5 rounded-xl bg-red-700"></span>
         </span>
         Blocked
       </span>
     ) : (
       <span className="inline-flex items-center gap-2 text-green-600 font-semibold">
         <span className="relative flex h-2.5 w-2.5">
-          <span className="absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75 animate-ping"></span>
-          <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-green-600"></span>
+          <span className="relative inline-flex h-2.5 w-2.5 rounded-xl bg-green-600"></span>
         </span>
         Active
       </span>
@@ -51,16 +49,18 @@ const AllUsers = () => {
               layout
               key={user._id || index}
               initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.3 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.2, ease: "easeOut" }}
+              style={{ willChange: "opacity" }}
               className="rounded-xl border border-gray-200 bg-white shadow-sm p-4">
               <div className="flex items-start gap-3">
-                <div className="w-12 h-12 rounded-full bg-primary flex items-center justify-center text-white font-semibold text-xl shrink-0 overflow-hidden">
+                <div className="w-12 h-12 rounded-xl bg-primary flex items-center justify-center text-white font-semibold text-xl shrink-0 overflow-hidden">
                   {user?.image ? (
                     <img
                       src={user?.image}
                       alt={user?.name}
-                      className="h-12 w-12 aspect-square rounded-full object-cover"
+                      className="h-12 w-12 aspect-square rounded-xl object-cover"
                     />
                   ) : (
                     user?.name?.charAt(0)?.toUpperCase() || "U"
@@ -82,7 +82,7 @@ const AllUsers = () => {
                       name="userStatus"
                       value={user.isBlocked ? "block" : "unblock"}
                       onChange={(e) => handleBlockToggle(user._id, e.target.value === "block")}
-                      className={`outline-none px-3 py-1.5 rounded-md cursor-pointer text-sm border ${user.isBlocked ? "bg-red-300/30 text-red-500 border-red-200" : "bg-green-300/30 text-green-500 border-green-200"}`}>
+                      className={`outline-none px-3 py-1.5 rounded-xl cursor-pointer text-sm border ${user.isBlocked ? "bg-red-300/30 text-red-500 border-red-200" : "bg-green-300/30 text-green-500 border-green-200"}`}>
                       <option value="block">Block</option>
                       <option value="unblock">Unblock</option>
                     </select>
@@ -94,7 +94,7 @@ const AllUsers = () => {
         </div>
 
         <table
-          className="hidden md:table w-full border-collapse border-spacing-0 bg-white shadow-md transition-all duration-300 rounded-xl overflow-hidden border border-gray-200">
+          className="hidden md:table w-full border-collapse border-spacing-0 bg-white shadow-md transition-all rounded-xl overflow-hidden border border-gray-200">
 
           {/* All Users Table */}
           <thead className="bg-gray-50 text-gray-500 border-b border-gray-200">
@@ -111,18 +111,18 @@ const AllUsers = () => {
               <motion.tr
                 layout
                 key={user._id || index}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.3 }}
-                className="hover:bg-gray-50/80 transition-colors duration-200 text-left border-b last:border-b-0 border-gray-100">
+                initial={{ opacity: 0, y: 6 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.2 }}
+                className="hover:bg-gray-50/80 transition-colors text-left border-b last:border-b-0 border-gray-100">
                 <td className="px-4 py-2">
                   <div className="flex items-center gap-4">
-                    <div className="w-11 h-11 rounded-full bg-primary flex items-center justify-center text-white font-semibold text-xl overflow-hidden shrink-0">
+                    <div className="w-11 h-11 rounded-xl bg-primary flex items-center justify-center text-white font-semibold text-xl overflow-hidden shrink-0">
                       {user?.image ? (
                         <img
                           src={user?.image}
                           alt={user?.name}
-                          className="h-11 w-11 aspect-square rounded-full object-cover"
+                          className="h-11 w-11 aspect-square rounded-xl object-cover"
                         />
                       ) : (
                         user?.name?.charAt(0)?.toUpperCase() || "U"
@@ -157,8 +157,8 @@ const AllUsers = () => {
         </table>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default AllUsers;
 

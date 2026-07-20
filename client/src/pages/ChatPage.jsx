@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "motion/react";
 import { Check, CheckCheck, X, ChevronLeft, ChevronRight, FileText } from "lucide-react";
 import Lenis from "lenis";
 
@@ -126,36 +126,6 @@ const ChatPage = () => {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [pdfLightboxIndex, chatPDFs.length]);
 
-  // Local Lenis instance for smooth chat list scrolling
-  useEffect(() => {
-    if (!scrollContainerRef.current) return;
-    const container = scrollContainerRef.current;
-    const content = container.firstElementChild;
-    if (!content) return;
-
-    const lenisInstance = new Lenis({
-      wrapper: container,
-      content: content,
-      smoothWheel: true,
-      lerp: 0.08,
-      duration: 1.2,
-    });
-
-    let rafId;
-    function raf(time) {
-      lenisInstance.raf(time);
-      rafId = requestAnimationFrame(raf);
-    }
-    rafId = requestAnimationFrame(raf);
-    container.__lenis = lenisInstance;
-
-    return () => {
-      cancelAnimationFrame(rafId);
-      lenisInstance.destroy();
-      container.__lenis = null;
-    };
-  }, []);
-
   // Instant scroll on load, smooth scroll for new messages if near bottom
   useEffect(() => {
     if (scrollContainerRef.current) {
@@ -166,17 +136,10 @@ const ChatPage = () => {
       const isNearBottom = container.scrollHeight - container.scrollTop - container.clientHeight < 200;
 
       if (isInitialLoad || isNearBottom) {
-        if (container.__lenis) {
-          container.__lenis.scrollTo("bottom", {
-            immediate: isInitialLoad,
-            force: true
-          });
-        } else {
-          container.scrollTo({
-            top: container.scrollHeight,
-            behavior: isInitialLoad ? "auto" : "smooth"
-          });
-        }
+        container.scrollTo({
+          top: container.scrollHeight,
+          behavior: isInitialLoad ? "auto" : "smooth"
+        });
       }
 
       prevMessagesLength.current = messages.length;
@@ -488,7 +451,7 @@ const ChatPage = () => {
               <h2 className="hidden md:block text-lg font-bold mb-2 tracking-tight">Booking Details</h2>
 
               <img
-                className="rounded-lg md:rounded-3xl w-20 h-16 md:w-full md:h-48 object-cover shadow-sm border border-gray-100"
+                className="rounded-xl w-20 h-16 md:w-full md:h-48 object-cover shadow-sm border border-gray-100"
                 src={carDetails?.image}
                 alt="car"
               />
@@ -748,11 +711,11 @@ const ChatPage = () => {
                   />
                   <button
                     onClick={() => fileInputRef.current.click()}
-                    className="h-12 w-12 shrink-0 rounded-2xl flex items-center justify-center text-slate-500 hover:text-slate-700 bg-slate-100 hover:bg-slate-200/80 transition-all active:scale-95 cursor-pointer border border-slate-200/50 shadow-sm">
+                    className="h-12 w-12 shrink-0 rounded-xl flex items-center justify-center text-slate-500 hover:text-slate-700 bg-slate-100 hover:bg-slate-200/80 transition-all active:scale-95 cursor-pointer border border-slate-200/50 shadow-sm">
                     <iconList.Paperclip size={20} />
                   </button>
 
-                  <div className="flex-1 h-12 bg-slate-50 hover:bg-slate-100/60 focus-within:bg-white rounded-2xl flex items-center px-4 border-2 border-slate-200 focus-within:border-primary/70 focus-within:ring-3 focus-within:ring-primary/50 transition-all duration-200 shadow-inner">
+                  <div className="flex-1 h-12 bg-slate-50 hover:bg-slate-100/60 focus-within:bg-white rounded-xl flex items-center px-4 border-2 border-slate-200 focus-within:border-primary/70 focus-within:ring-3 focus-within:ring-primary/50 transition-all duration-200 shadow-inner">
                     <input
                       type="text"
                       value={input}
@@ -778,7 +741,7 @@ const ChatPage = () => {
                   <button
                     onClick={handleSendMessage}
                     disabled={!input.trim() && attachments.length === 0}
-                    className={`h-12 w-12 shrink-0 rounded-2xl flex items-center justify-center transition-all duration-200 ${input.trim() || attachments.length> 0
+                    className={`h-12 w-12 shrink-0 rounded-xl flex items-center justify-center transition-all duration-200 ${input.trim() || attachments.length > 0
                       ? "bg-linear-to-r from-primary to-indigo-600 text-white shadow-md shadow-primary/20 hover:shadow-lg hover:shadow-primary/30 hover:-translate-y-0.5 active:scale-95 active:translate-y-0 cursor-pointer"
                       : "bg-slate-100 text-slate-400 cursor-not-allowed border border-slate-200/50"
                       }`}>

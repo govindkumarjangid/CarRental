@@ -1,6 +1,6 @@
 import { useBookingStore } from "../store/useBookingStore.js";
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import BookingCard from "../components/booking/BookingCard.jsx";
 import EmptyBookings from "../components/booking/EmptyBookings.jsx";
 import { BookingCardSkeleton } from "../components/skeletons";
@@ -61,11 +61,12 @@ const Mybookings = () => {
 				<div className="flex justify-center mt-5 mb-5">
 					<motion.button
 						initial={{ opacity: 0 }}
-						animate={{ opacity: 1 }}
-						transition={{ duration: 0.3 }}
+						whileInView={{ opacity: 1 }}
+						viewport={{ once: true, amount: 0.1 }}
+						transition={{ duration: 0.2 }}
 						onClick={handleLoadMore}
 						disabled={isLoadingMore}
-						className={`flex group items-center justify-center gap-2 px-5 py-2 border-2  rounded-2xl mb-5 transition-all duration-300
+						className={`flex group items-center justify-center gap-2 px-5 py-2 border-2 rounded-xl mb-5 transition-all
 								${isLoadingMore
 								? 'border-gray-300 text-gray-400 cursor-wait'
 								: 'border-gray-500 text-gray-600 hover:bg-primary cursor-pointer hover:text-light hover:border-light active:scale-95'
@@ -78,7 +79,7 @@ const Mybookings = () => {
 						) : (
 							<>
 								Load More
-								<iconList.ArrowDown size={25} className="animate-bounce pt-2" />
+								<iconList.ArrowDown size={25} className="pt-2" />
 							</>
 						)}
 					</motion.button>

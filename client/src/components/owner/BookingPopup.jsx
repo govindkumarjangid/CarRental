@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { iconList } from "../../assets/assets.jsx";
 import { useNavigate } from "react-router-dom";
 import { useChatStore } from "../../store/useChatStore.js";
@@ -33,13 +33,13 @@ const BookingPopup = ({ setSelectedBooking, selectedBooking, isFullPage = false 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
+            transition={{ duration: 0.2 }}
             onClick={(e) => e.stopPropagation()}
-            className={`${isFullPage ? "w-full h-full" : "w-full md:max-w-6xl h-screen md:h-[85vh] rounded-none md:rounded-[3rem] shadow-2xl border border-gray-100 "} bg-white overflow-hidden flex flex-col md:flex-row relative`}>
+            className={`${isFullPage ? "w-full h-full" : "w-full md:max-w-6xl h-screen md:h-[85vh] rounded-xl shadow-2xl border border-gray-100 "} bg-white overflow-hidden flex flex-col md:flex-row relative`}>
             {/* Close/Back Button */}
             <button
                 onClick={() => setSelectedBooking(null)}
-                className="absolute z-50 top-6 left-6 md:top-5 md:left-5 text-gray-500 hover:text-gray-800 bg-white rounded-full w-8 h-8 md:w-10 md:h-10 flex items-center justify-center hover:bg-gray-100 transition-all active:scale-90 border border-gray-100 cursor-pointer"
+                className="absolute z-50 top-6 left-6 md:top-5 md:left-5 text-gray-500 hover:text-gray-800 bg-white rounded-xl w-8 h-8 md:w-10 md:h-10 flex items-center justify-center hover:bg-gray-100 transition-all active:scale-90 border border-gray-100 cursor-pointer"
                 title={isFullPage ? "Go Back" : "Close"}>
                 {isFullPage ? <iconList.ArrowLeft size={18} className="md:w-6 md:h-6" strokeWidth={2.5} /> : <iconList.X size={18} className="md:w-5.5 md:h-5.5" strokeWidth={2.5} />}
             </button>
@@ -50,18 +50,18 @@ const BookingPopup = ({ setSelectedBooking, selectedBooking, isFullPage = false 
                 <motion.img
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    transition={{ duration: 0.3 }}
+                    transition={{ duration: 0.2 }}
                     src={car?.image}
                     alt={car?.model}
-                    className="object-cover md:object-contain z-10 rounded-3xl shadow-sm max-w-130 w-full h-full md:h-auto"
+                    className="object-cover md:object-contain z-10 rounded-xl shadow-sm max-w-130 w-full h-full md:h-auto"
                 />
 
                 <div className="absolute bottom-4 right-4 md:bottom-28 md:right-9 z-30 p-3 sm:p-0">
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
-                        transition={{ duration: 0.3 }}
-                        className="backdrop-blur-md bg-white/50 border border-white/40 p-2 md:p-3 rounded-2xl shadow-sm pr-6">
+                        transition={{ duration: 0.2 }}
+                        className="backdrop-blur-md bg-white/50 border border-white/40 p-2 md:p-3 rounded-xl shadow-sm pr-6">
                         <p className="text-gray-800 text-[9px] md:text-[10px] uppercase tracking-widest font-bold mb-0.5">Elite Collection</p>
                         <h3 className="text-gray-900 text-base md:text-xl font-bold tracking-tight">{car?.brand} <span className="text-primary">{car?.model}</span></h3>
                     </motion.div>
@@ -73,10 +73,10 @@ const BookingPopup = ({ setSelectedBooking, selectedBooking, isFullPage = false 
                 {/* Header Section */}
                 <div className="flex flex-col gap-1.5 md:gap-2">
                     <div className="flex items-center gap-2">
-                        <span className="px-2 py-0.5 md:px-3 md:py-1 bg-primary/10 text-primary text-[9px] md:text-[10px] font-bold uppercase tracking-wider rounded-full border border-primary/20">
+                        <span className="px-2 py-0.5 md:px-3 md:py-1 bg-primary/10 text-primary text-[9px] md:text-[10px] font-bold uppercase tracking-wider rounded-xl border border-primary/20">
                             {car?.category}
                         </span>
-                        <span className="px-2 py-0.5 md:px-3 md:py-1 bg-gray-100 text-gray-500 text-[9px] md:text-[10px] font-bold uppercase tracking-wider rounded-full border border-gray-200">
+                        <span className="px-2 py-0.5 md:px-3 md:py-1 bg-gray-100 text-gray-500 text-[9px] md:text-[10px] font-bold uppercase tracking-wider rounded-xl border border-gray-200">
                             {car?.transmission}
                         </span>
                     </div>
@@ -89,13 +89,13 @@ const BookingPopup = ({ setSelectedBooking, selectedBooking, isFullPage = false 
                 </div>
 
                 {/* Customer Profile Card */}
-                <div className="bg-white border border-gray-100 p-3 md:p-6 rounded-3xl flex flex-row items-center justify-between gap-3 shadow-sm group">
+                <div className="bg-white border border-gray-100 p-3 md:p-6 rounded-xl flex flex-row items-center justify-between gap-3 shadow-sm group">
                     <div className="flex items-center gap-3 w-full">
                         <div className="relative shrink-0">
                             {user?.image ? (
-                                <img src={user?.image} className="w-10 h-10 md:w-14 md:h-14 rounded-full object-cover ring-2 md:ring-4 ring-white shadow-sm" alt="image" />
+                                <img src={user?.image} className="w-10 h-10 md:w-14 md:h-14 rounded-xl object-cover ring-2 md:ring-4 ring-white shadow-sm" alt="image" />
                             ) : (
-                                <div className="w-10 h-10 md:w-14 md:h-14 rounded-full bg-primary/10 flex items-center justify-center text-primary ring-2 md:ring-4 ring-white shadow-sm">
+                                <div className="w-10 h-10 md:w-14 md:h-14 rounded-xl bg-primary/10 flex items-center justify-center text-primary ring-2 md:ring-4 ring-white shadow-sm">
                                     <iconList.User size={18} className="md:w-6 md:h-6" />
                                 </div>
                             )}
@@ -110,14 +110,14 @@ const BookingPopup = ({ setSelectedBooking, selectedBooking, isFullPage = false 
                     </div>
                     <button
                         onClick={handleChat}
-                        className="bg-white w-9 h-9 md:w-12 md:h-12 rounded-full flex items-center justify-center shadow-sm border border-gray-100 text-primary hover:bg-primary hover:text-white transition-all shrink-0 cursor-pointer">
+                        className="bg-white w-9 h-9 md:w-12 md:h-12 rounded-xl flex items-center justify-center shadow-sm border border-gray-100 text-primary hover:bg-primary hover:text-white transition-all shrink-0 cursor-pointer">
                         <iconList.MessageCircle size={16} className="md:w-5 md:h-5" />
                     </button>
                 </div>
 
                 {/* Rental Timeline */}
                 <div className="flex flex-col gap-3 md:gap-4">
-                    <div className="flex flex-row justify-between items-center bg-white p-3 md:p-5 rounded-3xl border border-gray-100 shadow-sm">
+                    <div className="flex flex-row justify-between items-center bg-white p-3 md:p-5 rounded-xl border border-gray-100 shadow-sm">
                         <p className="text-gray-400 text-[10px] md:text-sm font-medium">Pickup Date & Time</p>
                         <p className="text-gray-900 font-semibold text-right text-xs md:text-base">
                             {new Date(selectedBooking.pickupDate).toLocaleString('en-IN', {
@@ -126,7 +126,7 @@ const BookingPopup = ({ setSelectedBooking, selectedBooking, isFullPage = false 
                             })}
                         </p>
                     </div>
-                    <div className="flex flex-row justify-between items-center bg-white p-3 md:p-5 rounded-3xl border border-gray-100 shadow-sm">
+                    <div className="flex flex-row justify-between items-center bg-white p-3 md:p-5 rounded-xl border border-gray-100 shadow-sm">
                         <p className="text-gray-400 text-[10px] md:text-sm font-medium">Return Date & Time</p>
                         <p className="text-gray-900 font-semibold text-right text-xs md:text-base">
                             {new Date(selectedBooking.returnDate).toLocaleString('en-IN', {
@@ -135,7 +135,7 @@ const BookingPopup = ({ setSelectedBooking, selectedBooking, isFullPage = false 
                             })}
                         </p>
                     </div>
-                    <div className="flex flex-row justify-between items-center bg-primary/5 p-3 md:p-5 rounded-3xl border border-primary/20 shadow-sm">
+                    <div className="flex flex-row justify-between items-center bg-primary/5 p-3 md:p-5 rounded-xl border border-primary/20 shadow-sm">
                         <p className="text-primary/60 text-[10px] md:text-xs font-bold uppercase tracking-wider">Total Duration</p>
                         <p className="text-primary font-bold text-right text-sm md:text-xl">
                             {(() => {
@@ -143,7 +143,7 @@ const BookingPopup = ({ setSelectedBooking, selectedBooking, isFullPage = false 
                                 const totalHours = Math.floor(diff / (1000 * 60 * 60));
                                 const days = Math.floor(totalHours / 24);
                                 const hours = totalHours % 24;
-                                return `${days> 0 ? `${days}d ` : ""}${hours> 0 ? `${hours}h` : days === 0 ? "0h" : ""}`;
+                                return `${days > 0 ? `${days}d ` : ""}${hours > 0 ? `${hours}h` : days === 0 ? "0h" : ""}`;
                             })()}
                         </p>
                     </div>
@@ -165,8 +165,8 @@ const BookingPopup = ({ setSelectedBooking, selectedBooking, isFullPage = false 
                     <h3 className="text-xs md:text-sm font-bold text-gray-900 mb-3 md:mb-4">Booking Overview</h3>
                     <div className="grid grid-cols-2 gap-3 md:gap-4">
                         {detailItems.map((item, idx) => (
-                            <div key={idx} className="bg-white border border-gray-100 p-3 md:p-4 rounded-3xl shadow-sm overflow-hidden">
-                                <div className={`w-7 h-7 md:w-8 md:h-8 rounded-lg ${item.color} flex items-center justify-center mb-2 md:mb-3`}>
+                            <div key={idx} className="bg-white border border-gray-100 p-3 md:p-4 rounded-xl shadow-sm overflow-hidden">
+                                <div className={`w-7 h-7 md:w-8 md:h-8 rounded-xl ${item.color} flex items-center justify-center mb-2 md:mb-3`}>
                                     <item.icon size={14} className="md:w-4 md:h-4" strokeWidth={2.5} />
                                 </div>
                                 <p className="text-[10px] md:text-xs font-medium text-gray-400 mb-0.5 md:mb-1">{item.label}</p>
@@ -178,7 +178,7 @@ const BookingPopup = ({ setSelectedBooking, selectedBooking, isFullPage = false 
 
                 {/* Specifications Grid */}
                 <div className="pt-2">
-                    <div className="flex items-center justify-between gap-2 md:gap-4 py-3 px-4 md:py-4 md:px-6 bg-primary/5 rounded-3xl border border-primary/10 shadow-sm">
+                    <div className="flex items-center justify-between gap-2 md:gap-4 py-3 px-4 md:py-4 md:px-6 bg-primary/5 rounded-xl border border-primary/10 shadow-sm">
                         <div className="flex-1 flex flex-col items-center border-r border-primary/10 px-1 md:px-2 min-w-0">
                             <p className="text-[9px] md:text-xs text-primary/60 font-medium mb-0.5 md:mb-1 text-center truncate">Hourly Rate</p>
                             <p className="text-xs md:text-lg font-bold text-primary truncate">₹{car?.pricePerHour}</p>

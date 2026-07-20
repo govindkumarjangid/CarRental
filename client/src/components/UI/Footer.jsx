@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { Link } from "react-router-dom";
 import { Facebook, Instagram, Twitter, Mail, MapPin, Phone } from "lucide-react";
 import { ResponsiveImage } from "../../index.js"
@@ -7,29 +7,14 @@ import { assets } from "../../assets/assets.jsx";
 const Footer = () => {
 	return (
 		<motion.div
-			initial="hidden"
-			animate="show"
-			viewport={{ amount: 0.1 }}
-			variants={{
-				hidden: { opacity: 1 },
-				show: {
-					transition: {
-						staggerChildren: 0.15,
-					},
-				},
-			}}
+			initial={{ opacity: 0 }}
+			animate={{ opacity: 1 }}
+			transition={{ duration: 0.2 }}
 			className="w-full bg-light text-gray-500/80 pt-16 max-w-full px-4 md:px-15 border-t border-gray-200 ">
 			<div className="max-w-7xl mx-auto">
 				<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8 pb-10">
 					{/* Brand & Social */}
-					<motion.div variants={{
-						hidden: { opacity: 0, y: 20 },
-						show: {
-							opacity: 1,
-							y: 0,
-							transition: { duration: 0.6, ease: "easeOut" },
-						},
-					}} className="space-y-6">
+					<div className="space-y-6">
 						<ResponsiveImage
 							src={assets.logo}
 							alt="logo"
@@ -50,29 +35,20 @@ const Footer = () => {
 								{ Icon: Twitter, label: "Twitter" },
 								{ Icon: Mail, label: "Email" },
 							].map(({ Icon, label }, index) => (
-								<motion.a
+								<a
 									key={index}
 									href="#"
 									aria-label={label}
 									title={label}
-									
-									
 									className="cursor-pointer text-gray-500/80 hover:text-primary transition-colors">
 									<Icon className="w-5 h-5" />
-								</motion.a>
+								</a>
 							))}
 						</div>
-					</motion.div>
+					</div>
 
 					{/* Quick Links */}
-					<motion.div variants={{
-						hidden: { opacity: 0, y: 20 },
-						show: {
-							opacity: 1,
-							y: 0,
-							transition: { duration: 0.6, ease: "easeOut" },
-						},
-					}} className="space-y-4">
+					<div className="space-y-4">
 						<h3 className="text-sm font-bold tracking-wider text-gray-900  uppercase">
 							Quick Links
 						</h3>
@@ -82,17 +58,10 @@ const Footer = () => {
 							<li><Link to="/owner" className="hover:text-primary  transition-colors">List Your Car</Link></li>
 							<li><Link to="/about" className="hover:text-primary  transition-colors">About Us</Link></li>
 						</ul>
-					</motion.div>
+					</div>
 
 					{/* Resources */}
-					<motion.div variants={{
-						hidden: { opacity: 0, y: 20 },
-						show: {
-							opacity: 1,
-							y: 0,
-							transition: { duration: 0.6, ease: "easeOut" },
-						},
-					}} className="space-y-4">
+					<div className="space-y-4">
 						<h3 className="text-sm font-bold tracking-wider text-gray-900  uppercase">
 							Resources
 						</h3>
@@ -102,17 +71,10 @@ const Footer = () => {
 							<li><Link to="/privacy" className="hover:text-primary  transition-colors">Privacy Policy</Link></li>
 							<li><Link to="/insurance" className="hover:text-primary  transition-colors">Insurance</Link></li>
 						</ul>
-					</motion.div>
+					</div>
 
 					{/* Contact */}
-					<motion.div variants={{
-						hidden: { opacity: 0, y: 20 },
-						show: {
-							opacity: 1,
-							y: 0,
-							transition: { duration: 0.6, ease: "easeOut" },
-						},
-					}} className="space-y-4">
+					<div className="space-y-4">
 						<h3 className="text-sm font-bold tracking-wider text-gray-900  uppercase">
 							Contact
 						</h3>
@@ -130,30 +92,14 @@ const Footer = () => {
 								<span>+91-7342162313</span>
 							</li>
 						</ul>
-					</motion.div>
+					</div>
 				</div>
 
 				{/* Divider */}
-				<motion.hr variants={{
-					hidden: { opacity: 0, y: 20 },
-					show: {
-						opacity: 1,
-						y: 0,
-						transition: { duration: 0.6, ease: "easeOut" },
-					},
-				}} className="border-gray-200 " />
+				<hr className="border-gray-200 " />
 
 				{/* Bottom Row */}
-				<motion.div
-					variants={{
-						hidden: { opacity: 0, y: 20 },
-						show: {
-							opacity: 1,
-							y: 0,
-							transition: { duration: 0.6, ease: "easeOut" },
-						},
-					}}
-					className="flex flex-col md:flex-row gap-6 items-center justify-between py-8 text-[13px]">
+				<div className="flex flex-col md:flex-row gap-6 items-center justify-between py-8 text-[13px]">
 					<p className="order-2 md:order-1 text-gray-400">
 						© {new Date().getFullYear()} CarRental. All rights reserved.
 					</p>
@@ -165,11 +111,10 @@ const Footer = () => {
 						<li className="text-gray-300 ">|</li>
 						<li><Link to="/help" className="hover:text-primary  transition-colors">Help</Link></li>
 					</ul>
-				</motion.div>
+				</div>
 			</div>
 		</motion.div>
 	);
 };
 
 export default Footer;
-

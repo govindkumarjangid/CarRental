@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'motion/react';
 import { toast } from "react-hot-toast";
 
 import { X } from "lucide-react";
@@ -51,18 +51,18 @@ const TestimonialForm = () => {
 				initial={{ opacity: 0 }}
 				animate={{ opacity: 1 }}
 				exit={{ opacity: 0 }}
-				transition={{ duration: 0.3 }}
+				transition={{ duration: 0.2 }}
 				onClick={() => setShowReview(false)}
 				className="fixed inset-0 z-100 backdrop-blur-xs flex items-center justify-center bg-blue-700/5 p-4">
 				<motion.form
 					onSubmit={handleSubmit}
 					onClick={(e) => e.stopPropagation()}
-					initial={{ opacity: 0 }}
-					animate={{ opacity: 1 }}
-					exit={{ opacity: 0 }}
-					transition={{ duration: 0.3 }}
+					initial={{ opacity: 0, scale: 0.98 }}
+					animate={{ opacity: 1, scale: 1 }}
+					exit={{ opacity: 0, scale: 0.98 }}
+					transition={{ duration: 0.2 }}
 					key="testimonial-form"
-					className="bg-white rounded-3xl w-full h-fit max-w-2xl md:max-h-[90vh] overflow-y-auto shadow-sm relative p-4 md:p-6">
+					className="bg-white rounded-xl w-full h-fit max-w-2xl md:max-h-[90vh] overflow-y-auto shadow-sm relative p-4 md:p-6">
 					<div className="flex items-center justify-between mb-4">
 						<h2 className="text-xl font-semibold">
 							Add Your Review
@@ -84,10 +84,10 @@ const TestimonialForm = () => {
 								<img
 									src={URL.createObjectURL(image)}
 									alt="car preview"
-									className="h-12 w-20 object-cover rounded-2xl"
+									className="h-12 w-20 object-cover rounded-xl"
 								/>
 							) : (
-								<iconList.CloudUpload className="h-14 text-primary bg-gray-100 px-4 py-3 rounded-2xl cursor-pointer w-26 border border-gray-200" />
+								<iconList.CloudUpload className="h-14 text-primary bg-gray-100 px-4 py-3 rounded-xl cursor-pointer w-26 border border-gray-200" />
 							)}
 
 							<input
@@ -158,7 +158,7 @@ const TestimonialForm = () => {
 
 					<button
 						type="submit"
-						className="flex items-center justify-center gap-2 sm:px-6 sm:py-2.5 py-2 px-4 bg-primary text-white rounded-2xl w-max mt-4 mb-2 hover:bg-primary/90 active:scale-95 transition cursor-pointer md:text-base text-sm font-medium"
+						className="flex items-center justify-center gap-2 sm:px-6 sm:py-2.5 py-2 px-4 bg-primary text-white rounded-xl w-max mt-4 mb-2 hover:bg-primary/90 active:scale-95 transition cursor-pointer md:text-base text-sm font-medium"
 						disabled={loading}>
 						{loading ? (
 							<>

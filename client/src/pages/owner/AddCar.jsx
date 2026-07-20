@@ -1,6 +1,6 @@
 import { useCarStore } from "../../store/useCarStore.js";
 import { useState } from "react";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { iconList } from "../../assets/assets.jsx";
 import { Title as OwnerTitle } from "../../components/owner/Title.jsx";
 import InputBox from "../../components/owner/InputBox.jsx";
@@ -73,19 +73,19 @@ const AddCar = () => {
 				className="flex flex-col gap-5 text-gray-500 text-sm mt-6 w-full">
 				{/* car image  */}
 				<motion.div
-					initial={{ opacity: 0 }}
-					animate={{ opacity: 1 }}
-					transition={{ duration: 0.3 }}
+					initial={{ opacity: 0, y: 6 }}
+					animate={{ opacity: 1, y: 0 }}
+					transition={{ duration: 0.2 }}
 					className="flex gap-4 items-center w-full">
 					<label htmlFor="car-image">
 						{image ? (
 							<img
 								src={URL.createObjectURL(image)}
 								alt="car preview"
-								className="h-14 w-26 object-cover rounded-md"
+								className="h-14 w-26 object-cover rounded-xl"
 							/>
 						) : (
-							<iconList.CloudUpload className="h-14 text-primary bg-gray-100 px-4 py-3 rounded-2xl cursor-pointer w-26 border border-gray-300" />
+							<iconList.CloudUpload className="h-14 text-primary bg-gray-100 px-4 py-3 rounded-xl cursor-pointer w-26 border border-gray-300" />
 						)}
 
 						<input
@@ -107,7 +107,7 @@ const AddCar = () => {
 				<motion.div
 					initial={{ opacity: 0 }}
 					animate={{ opacity: 1 }}
-					transition={{ duration: 0.3 }}
+					transition={{ duration: 0.2 }}
 					className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
 					<InputBox
@@ -132,7 +132,7 @@ const AddCar = () => {
 				<motion.div
 					initial={{ opacity: 0 }}
 					animate={{ opacity: 1 }}
-					transition={{ duration: 0.3 }}
+					transition={{ duration: 0.2 }}
 					className="grid grid-cols-1 md:grid-cols-4 gap-6">
 					<InputBox
 						value={car.year}
@@ -184,7 +184,7 @@ const AddCar = () => {
 				<motion.div
 					initial={{ opacity: 0 }}
 					animate={{ opacity: 1 }}
-					transition={{ duration: 0.3 }}
+					transition={{ duration: 0.2 }}
 					className="grid grid-cols-1 md:grid-cols-3 gap-6">
 					<InputBox
 						value={car.transmission}
@@ -219,7 +219,7 @@ const AddCar = () => {
 				<motion.div
 					initial={{ opacity: 0 }}
 					animate={{ opacity: 1 }}
-					transition={{ duration: 0.3 }}
+					transition={{ duration: 0.2 }}
 					className="grid grid-cols-1 gap-6">
 					<InputBox
 						value={car.location}
@@ -262,7 +262,7 @@ const AddCar = () => {
 				<motion.div
 					initial={{ opacity: 0 }}
 					animate={{ opacity: 1 }}
-					transition={{ duration: 0.3 }}
+					transition={{ duration: 0.2 }}
 					className="grid grid-cols-1 gap-6">
 					<InputBox
 						value={car.description}
@@ -279,10 +279,10 @@ const AddCar = () => {
 				<motion.button
 					initial={{ opacity: 0 }}
 					animate={{ opacity: 1 }}
-					transition={{ duration: 0.3 }}
+					transition={{ duration: 0.2 }}
 					type="submit"
 					disabled={loading}
-					className={` px-5 py-2.5 mt-4 rounded-2xl text-white font-medium text-base transition-all active:scale-95 mb-10 w-fit ${loading ? "cursor-not-allowed bg-primary" : "bg-primary hover:bg-primary-dull cursor-pointer"}`}>
+					className={` px-5 py-2.5 mt-4 rounded-xl text-white font-medium text-base transition-all active:scale-95 mb-10 w-fit ${loading ? "cursor-not-allowed bg-primary" : "bg-primary hover:bg-primary-dull cursor-pointer"}`}>
 					{loading ? (
 						<span className="flex items-center gap-2">
 							<iconList.Loader size={18} className="animate-spin" />

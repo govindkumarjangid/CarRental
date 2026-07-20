@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 import { Search, CalendarCheck, MessageSquareText, Key } from 'lucide-react';
 import { AccordionItem } from '../index.js';
 
@@ -15,14 +15,14 @@ const HelpCenter = () => {
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
                     {/* Step 1 */}
                     <div className="flex flex-col items-center text-center">
-                        <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-4 text-primary relative">
+                        <div className="w-16 h-16 rounded-xl bg-primary/10 flex items-center justify-center mb-4 text-primary relative">
                             <Search size={32} />
                             <div className="hidden md:block absolute top-1/2 left-full w-full h-[2px] bg-gray-200 -z-10 -translate-y-1/2 overflow-hidden">
                                 <motion.div 
                                     initial={{ width: 0 }}
                                     whileInView={{ width: "100%" }}
                                     viewport={{ once: true }}
-                                    transition={{ duration: 0.6, delay: 0.2, ease: "easeInOut" }}
+                                    transition={{ duration: 0.2, ease: "easeInOut" }}
                                     className="h-full bg-primary"
                                 />
                             </div>
@@ -32,14 +32,14 @@ const HelpCenter = () => {
                     </div>
                     {/* Step 2 */}
                     <div className="flex flex-col items-center text-center">
-                        <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-4 text-primary relative">
+                        <div className="w-16 h-16 rounded-xl bg-primary/10 flex items-center justify-center mb-4 text-primary relative">
                             <CalendarCheck size={32} />
                             <div className="hidden md:block absolute top-1/2 left-full w-full h-[2px] bg-gray-200 -z-10 -translate-y-1/2 overflow-hidden">
                                 <motion.div 
                                     initial={{ width: 0 }}
                                     whileInView={{ width: "100%" }}
                                     viewport={{ once: true }}
-                                    transition={{ duration: 0.6, delay: 0.6, ease: "easeInOut" }}
+                                    transition={{ duration: 0.2, ease: "easeInOut" }}
                                     className="h-full bg-primary"
                                 />
                             </div>
@@ -49,14 +49,14 @@ const HelpCenter = () => {
                     </div>
                     {/* Step 3 */}
                     <div className="flex flex-col items-center text-center">
-                        <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-4 text-primary relative">
+                        <div className="w-16 h-16 rounded-xl bg-primary/10 flex items-center justify-center mb-4 text-primary relative">
                             <MessageSquareText size={32} />
                             <div className="hidden md:block absolute top-1/2 left-full w-full h-[2px] bg-gray-200 -z-10 -translate-y-1/2 overflow-hidden">
                                 <motion.div 
                                     initial={{ width: 0 }}
                                     whileInView={{ width: "100%" }}
                                     viewport={{ once: true }}
-                                    transition={{ duration: 0.6, delay: 1.0, ease: "easeInOut" }}
+                                    transition={{ duration: 0.2, ease: "easeInOut" }}
                                     className="h-full bg-primary"
                                 />
                             </div>
@@ -66,7 +66,7 @@ const HelpCenter = () => {
                     </div>
                     {/* Step 4 */}
                     <div className="flex flex-col items-center text-center">
-                        <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-4 text-primary">
+                        <div className="w-16 h-16 rounded-xl bg-primary/10 flex items-center justify-center mb-4 text-primary">
                             <Key size={32} />
                         </div>
                         <h3 className="font-bold text-lg mb-2">4. Pick Up & Drive</h3>
@@ -108,11 +108,11 @@ const HelpCenter = () => {
                     <h2 className="text-2xl font-semibold mb-4 text-gray-900">Still need help?</h2>
                     <p className="text-gray-600 mb-6">If you couldn't find the answer to your question, our support team is available 24/7 to assist you.</p>
                     <div className="flex flex-col sm:flex-row gap-6">
-                        <div className="flex-1 bg-gray-50 p-6 rounded-lg text-center">
+                        <div className="flex-1 bg-gray-50 p-6 rounded-xl text-center">
                             <h3 className="font-semibold text-lg text-gray-800 mb-2">Email Support</h3>
                             <p className="text-primary font-medium">support@carrental.com</p>
                         </div>
-                        <div className="flex-1 bg-gray-50 p-6 rounded-lg text-center">
+                        <div className="flex-1 bg-gray-50 p-6 rounded-xl text-center">
                             <h3 className="font-semibold text-lg text-gray-800 mb-2">Phone Support</h3>
                             <p className="text-primary font-medium">+91-7342162313</p>
                         </div>

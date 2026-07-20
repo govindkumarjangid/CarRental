@@ -1,7 +1,7 @@
 import { cityList, assets } from "../../assets/assets.jsx";
 import { useCarStore } from "../../store/useCarStore.js";
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "motion/react";
 import { useNavigate } from "react-router-dom";
 import { Search, Loader, X } from "lucide-react";
 import { ResponsiveImage, IconButton } from "../../index.js";
@@ -25,7 +25,7 @@ const Hero = () => {
 		setOpen(true);
 	};
 
-	const inputClasses = "text-sm text-gray-800 bg-gray-50 p-2 px-4 rounded-xl outline-none border-2 border-gray-200 focus:border-primary focus:ring-3 focus:ring-primary/50 font-medium transition-all duration-200 cursor-pointer";
+	const inputClasses = "text-sm text-gray-800 bg-gray-50 p-2 px-4 rounded-xl outline-none border-2 border-gray-200 focus:border-primary focus:ring-3 focus:ring-primary/50 font-medium transition-all cursor-pointer";
 
 	return (
 		<>
@@ -34,25 +34,31 @@ const Hero = () => {
 				{/* heading  */}
 				<motion.h1
 					initial={{ opacity: 0 }}
-					animate={{ opacity: 1 }}
-					transition={{ duration: 0.3 }}
+					whileInView={{ opacity: 1 }}
+					viewport={{ once: true }}
+					transition={{ duration: 0.2, ease: "easeOut" }}
+					style={{ willChange: "opacity" }}
 					className="text-4xl md:text-5xl font-bold text-gray-900 mt-15">
 					Luxury cars on Rent
 				</motion.h1>
 
 				<motion.p
 					initial={{ opacity: 0 }}
-					animate={{ opacity: 1 }}
-					transition={{ duration: 0.3 }}
+					whileInView={{ opacity: 1 }}
+					viewport={{ once: true }}
+					transition={{ duration: 0.2, ease: "easeOut" }}
+					style={{ willChange: "opacity" }}
 					className='text-md text-gray-800 font-medium'>Experience the pinnacle of automotive excellence, curated for your journey.</motion.p>
 
 				{/* check car availability form  */}
 				<motion.form
 					onSubmit={handleSubmit}
 					initial={{ opacity: 0 }}
-					animate={{ opacity: 1 }}
-					transition={{ duration: 0.3 }}
-					className="flex flex-col md:flex-row items-center md:items-center justify-between px-4 py-5 rounded-3xl w-full max-w-120 md:max-w-200 bg-white shadow-sm border border-gray-200">
+					whileInView={{ opacity: 1 }}
+					viewport={{ once: true }}
+					transition={{ duration: 0.2, ease: "easeOut" }}
+					style={{ willChange: "opacity" }}
+					className="flex flex-col md:flex-row items-center md:items-center justify-between px-4 py-5 rounded-xl w-full max-w-120 md:max-w-200 bg-white shadow-sm border border-gray-200">
 					<div className="flex flex-col md:flex-row items-center md:items-center md:justify-center gap-10 md:ml-8">
 						<div className="flex flex-row items-center gap-2 md:flex-col">
 							<label htmlFor="pickup-location" className="sr-only">Pickup Location</label>
@@ -104,7 +110,7 @@ const Hero = () => {
 						<button
 							type="submit"
 							aria-label="Search available cars"
-							className={`cursor-pointer flex items-center justify-center gap-1 px-4 py-2 transition-all text-white rounded-2xl shadow-lg active:scale-98 font-medium ${loading
+							className={`cursor-pointer flex items-center justify-center gap-1 px-4 py-2 transition-all text-white rounded-xl shadow-md active:scale-98 font-medium ${loading
 								? "bg-primary cursor-not-allowed opacity-90"
 								: "bg-primary hover:bg-primary-dull"
 								}`}>
@@ -164,7 +170,7 @@ const Hero = () => {
 
 				{/* available cars modal  */}
 				<AnimatePresence>
-					{availableCars.length> 0 && open && (
+					{availableCars.length > 0 && open && (
 						<motion.div
 							initial={{ opacity: 0 }}
 							animate={{ opacity: 1 }}
@@ -172,12 +178,12 @@ const Hero = () => {
 							className="fixed inset-0 z-50 flex items-center justify-center bg-primary/5 backdrop-blur-sm p-4"
 							onClick={() => setOpen(false)}>
 							<motion.div
-								initial={{ opacity: 0 }}
-								animate={{ opacity: 1 }}
-								exit={{ opacity: 0 }}
-								transition={{ duration: 0.3 }}
+								initial={{ opacity: 0, scale: 0.98 }}
+								animate={{ opacity: 1, scale: 1 }}
+								exit={{ opacity: 0, scale: 0.98 }}
+								transition={{ duration: 0.2 }}
 								onClick={(e) => e.stopPropagation()}
-								className="bg-white shadow-sm rounded-3xl w-full max-w-lg max-h-[85vh] flex flex-col overflow-hidden">
+								className="bg-white shadow-sm rounded-xl w-full max-w-lg max-h-[85vh] flex flex-col overflow-hidden">
 								<div className="sticky top-0 bg-white flex justify-between items-center px-4 py-3 border-b border-gray-200 z-10">
 									<h2 className="font-semibold text-lg text-gray-800">
 										Available Cars
@@ -204,7 +210,7 @@ const Hero = () => {
 										<motion.tbody
 											initial={{ opacity: 0 }}
 											animate={{ opacity: 1 }}
-											transition={{ duration: 0.3 }}>
+											transition={{ duration: 0.2 }}>
 											{availableCars.map((car) => (
 												<motion.tr
 													key={car._id}
@@ -213,7 +219,7 @@ const Hero = () => {
 													<td className="p-3 rounded-l-xl border-y border-l border-gray-100 border-x-0 border-r-0!">
 														<img
 															src={car.image}
-															className="w-16 h-10 rounded-lg object-cover"
+															className="w-16 h-10 rounded-xl object-cover"
 															alt={car.model}
 															width="64"
 															height="40"

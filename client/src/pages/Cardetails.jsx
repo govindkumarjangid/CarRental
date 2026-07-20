@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { toast } from "react-hot-toast";
 
 import { CarDetailsPageSkeleton } from "../components/skeletons";
@@ -127,7 +127,7 @@ const Cardetails = () => {
 	}, []);
 
 	useEffect(() => {
-		if (cars.length> 0) {
+		if (cars.length > 0) {
 			const found = cars.find(c => c._id === id);
 			setCar(found);
 		}
@@ -139,14 +139,15 @@ const Cardetails = () => {
 		car && (
 			<>
 				<motion.div
-					initial={{ opacity: 0 }}
-					animate={{ opacity: 1 }}
-					transition={{ duration: 0.3 }}
+					initial={{ opacity: 0, y: 6 }}
+					whileInView={{ opacity: 1, y: 0 }}
+					viewport={{ once: true, amount: 0.1 }}
+					transition={{ duration: 0.2 }}
 					className="h-auto max-w-7xl m-auto px-6 md:px-16 lg:px-24 xl:px-32 pt-16 pb-16">
 					<motion.button
 						initial={{ opacity: 0 }}
 						animate={{ opacity: 1 }}
-						transition={{ duration: 0.3 }}
+						transition={{ duration: 0.2 }}
 						onClick={() => {
 							navigate("/cars");
 							window.scrollTo(0, 0);
@@ -165,10 +166,10 @@ const Cardetails = () => {
 									src={optimizeImage(car.image, { width: 1000 })}
 									initial={{ opacity: 0 }}
 									animate={{ opacity: 1 }}
-									transition={{ duration: 0.3 }}
+									transition={{ duration: 0.2 }}
 									alt="main-car-image"
 									loading="lazy"
-									className="w-full h-auto md:max-h-100 object-cover rounded-3xl shadow-sm"
+									className="w-full h-auto md:max-h-100 object-cover rounded-xl shadow-sm"
 								/>
 							</div>
 
@@ -177,18 +178,18 @@ const Cardetails = () => {
 								className="space-y-6"
 								initial={{ opacity: 0 }}
 								animate={{ opacity: 1 }}
-								transition={{ duration: 0.3 }}>
+								transition={{ duration: 0.2 }}>
 								{/* Title */}
 								<motion.div
 									className="mt-3"
 									initial={{ opacity: 0 }}
 									animate={{ opacity: 1 }}
-									transition={{ duration: 0.3 }}>
+									transition={{ duration: 0.2 }}>
 									<div className="flex items-center gap-3">
 										<h1 className="text-3xl font-bold">
 											{car.brand} {car.model}
 										</h1>
-										<span className={`text-[10px] px-2 py-0.5 rounded-3xl font-bold uppercase tracking-widest ${car.status === "available"
+										<span className={`text-[10px] px-2.5 py-1 rounded-xl font-bold uppercase tracking-widest ${car.status === "available"
 											? "bg-green-500/20 text-green-500 border border-green-500/50"
 											: car.status === "cleaning"
 												? "bg-blue-500/20 text-blue-500 border border-blue-500/50"
@@ -204,13 +205,13 @@ const Cardetails = () => {
 									</p>
 									<div className="flex flex-wrap gap-3 mt-1">
 										{car.status === "cleaning" && (
-											<div className="flex items-center gap-1.5 text-blue-600 bg-blue-500/10 px-2 py-1 rounded-md border border-blue-500/20">
+											<div className="flex items-center gap-1.5 text-blue-600 bg-blue-500/10 px-2 py-1 rounded-xl border border-blue-500/20">
 												<iconList.Sparkles size={14} />
 												<span className="text-[11px] font-bold uppercase tracking-wider">Cleaning : {car.cleaningTime || 30} Mins</span>
 											</div>
 										)}
 										{car.status === "maintenance" && (
-											<div className="flex items-center gap-1.5 text-red-600 bg-red-500/10 px-2 py-1 rounded-md border border-red-500/20">
+											<div className="flex items-center gap-1.5 text-red-600 bg-red-500/10 px-2 py-1 rounded-xl border border-red-500/20">
 												<iconList.Wrench size={14} />
 												<span className="text-[11px] font-bold uppercase tracking-wider">Maintenance : {car.maintenanceTime || 60} Mins</span>
 											</div>
@@ -239,14 +240,13 @@ const Cardetails = () => {
 											icon: (<iconList.MapPin className="mb-1 text-primary " />),
 											text: `${car.location}`,
 										}
-									].map(({ icon, text, index }) => (
+									].map(({ icon, text }) => (
 										<motion.div
 											key={text}
 											initial={{ opacity: 0 }}
 											animate={{ opacity: 1 }}
-											
-											transition={{ duration: 0.3 }}
-											className="flex flex-col items-center bg-light p-4 rounded-3xl shadow-sm">
+											transition={{ duration: 0.2 }}
+											className="flex flex-col items-center bg-light p-4 rounded-xl shadow-sm">
 											{icon}
 											<p className="">
 												{text}
@@ -259,7 +259,7 @@ const Cardetails = () => {
 								<motion.div
 									initial={{ opacity: 0 }}
 									animate={{ opacity: 1 }}
-									transition={{ duration: 0.3 }}>
+									transition={{ duration: 0.2 }}>
 									<h1 className="text-xl font-medium mb-3">
 										Description
 									</h1>
@@ -272,7 +272,7 @@ const Cardetails = () => {
 								<motion.div
 									initial={{ opacity: 0 }}
 									animate={{ opacity: 1 }}
-									transition={{ duration: 0.3 }}>
+									transition={{ duration: 0.2 }}>
 									<h1 className="text-xl font-medium mb-3">
 										Features
 									</h1>
@@ -306,8 +306,8 @@ const Cardetails = () => {
 							onSubmit={(e) => e.preventDefault()}
 							initial={{ opacity: 0 }}
 							animate={{ opacity: 1 }}
-							transition={{ duration: 0.3 }}
-							className="shadow-sm h-max sticky top-10 rounded-3xl p-6 space-y-6 text-gray-500">
+							transition={{ duration: 0.2 }}
+							className="shadow-sm h-max sticky top-10 rounded-xl p-6 space-y-6 text-gray-500">
 							{/* price per day  */}
 							<p className="flex items-center justify-between text-2xl text-gray-800 font-semibold">
 								{currency}
@@ -365,11 +365,11 @@ const Cardetails = () => {
 								type="button"
 								disabled={isBookDisabled}
 								onClick={handleBookNow}
-								className={`w-full transition-all py-3 font-medium text-white rounded-2xl ${isSubmitting
+								className={`w-full transition-all py-3 font-medium text-white rounded-xl ${isSubmitting
 									? "bg-primary cursor-wait opacity-90"
 									: isBookDisabled
 										? "bg-gray-400 cursor-not-allowed opacity-70"
-										: "bg-primary hover:bg-primary-dull cursor-pointer hover:scale-102 active:scale-95"
+										: "bg-primary hover:bg-primary-dull cursor-pointer active:scale-95"
 									}`}>
 								{isSubmitting ? (
 									<span className="inline-flex items-center gap-2">

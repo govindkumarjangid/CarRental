@@ -1,21 +1,23 @@
-import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
-import { iconList } from "../../index.js"
+import { motion } from "motion/react";
+import { iconList } from "../../index.js";
 
-const BookingCard = ({ booking, index }) => {
+const BookingCard = ({ booking, index = 0 }) => {
 	const currency = import.meta.env.VITE_CURRENCY;
-	const ref = useRef(null);
-	const inView = useInView(ref, { once: true });
 
 	return (
-		<div
-			className="grid grid-cols-1 md:grid-cols-4 gap-6 p-6 rounded-3xl mt-5 first:mt-12 backdrop-blur-sm border border-gray-200 shadow-sm transition-all duration-300">
+		<motion.div
+			initial={{ opacity: 0 }}
+			whileInView={{ opacity: 1 }}
+			viewport={{ once: true }}
+			transition={{ duration: 0.2, ease: "easeOut" }}
+			style={{ willChange: "opacity" }}
+			className="grid grid-cols-1 md:grid-cols-4 gap-6 p-6 rounded-xl mt-5 first:mt-12 backdrop-blur-sm border border-gray-200 shadow-sm transition-all">
 			<div className="md:col-span-1 ">
 				<img
 					src={booking?.car?.image}
 					alt="car-image"
 					loading="lazy"
-					className="w-full h-auto aspect-video object-cover rounded-2xl"
+					className="w-full h-auto aspect-video object-cover rounded-xl"
 				/>
 				<p className="text-lg font-medium mt-2">
 					{booking?.car?.brand} {booking?.car?.model}
@@ -28,11 +30,11 @@ const BookingCard = ({ booking, index }) => {
 
 			<div className="md:col-span-2">
 				<div className="flex items-center gap-2">
-					<p className="px-3 py-1 bg-light rounded-lg">
+					<p className="px-3 py-1 bg-light rounded-xl">
 						Booking # {index + 1}
 					</p>
 					<p
-						className={`px-3 py-1 text-sm rounded-lg ${booking?.status === "confirmed"
+						className={`px-3 py-1 text-sm rounded-xl ${booking?.status === "confirmed"
 							? "bg-green-400/15 text-gray-600 "
 							: booking?.status === "cancelled"
 								? " bg-red-400/15 text-red-900"
@@ -106,7 +108,7 @@ const BookingCard = ({ booking, index }) => {
 					</p>
 				</div>
 			</div>
-		</div>
+		</motion.div>
 	);
 };
 
