@@ -3,6 +3,7 @@ import Car from "../models/car.model.js";
 import Booking from "../models/booking.model.js";
 import Chat from "../models/chat.model.js";
 import asyncHandler from "../utils/asyncHandler.js";
+import { uploadToCloudinary } from "../configs/cloudinary.js";
 
 //* change role to owner
 export const changeRoleToOwner = asyncHandler(async (req, res) => {
@@ -32,7 +33,7 @@ export const addCar = asyncHandler(async (req, res) => {
   if (!brand || !model || !year || !pricePerHour || !category || !transmission || !fuel_type || !seating_capacity || !location || !description)
     return res.json({ message: "All fields are required" });
 
-  const image = req.file.path;
+  const image = req.file ? await uploadToCloudinary(req.file.buffer, req.file.originalname, req.file.mimetype) : "";
 
   const { cleaningTime, maintenanceTime } = req.body;
   let finalStatus = "available";
@@ -132,7 +133,7 @@ export const editCar = asyncHandler(async (req, res) => {
     updateData.status = "unavailable";
 
   if (req.file) {
-    finalImage = req.file.path;
+    finalImage = await uploadToCloudinary(req.file.buffer, req.file.originalname, req.file.mimetype);
   }
   await Car.findByIdAndUpdate(carId, { ...updateData, image: finalImage });
   return res.json({ success: true, message: "Car updated successfully" });
@@ -247,7 +248,7 @@ export const updateUserImage = asyncHandler(async (req, res) => {
   if (!imageFile)
     return res.status(400).json({ message: "No image file provided" });
 
-  const image = imageFile.path;
+  const image = await uploadToCloudinary(imageFile.buffer, imageFile.originalname, imageFile.mimetype);
   await User.findByIdAndUpdate(_id, { image });
   res.json({ success: true, message: "Image updated", image });
 });

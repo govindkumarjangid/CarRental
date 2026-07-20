@@ -1,6 +1,7 @@
 import Chat from '../models/chat.model.js';
 import Message from '../models/message.model.js';
 import asyncHandler from '../utils/asyncHandler.js';
+import { uploadToCloudinary } from '../configs/cloudinary.js';
 
 // Create or get chat between user and owner
 export const getOrCreateChat = asyncHandler(async (req, res) => {
@@ -26,11 +27,15 @@ export const sendMessage = asyncHandler(async (req, res) => {
     return res.status(404).json({ success: false, message: "Chat not found" });
 
 
-  const attachments = files.map((file) => ({
-    url: file.path,
-    name: file.originalname,
-    type: file.mimetype.startsWith("image/") ? "image" : "file",
-  }));
+  const attachments = [];
+  for (const file of files) {
+    const url = await uploadToCloudinary(file.buffer, file.originalname, file.mimetype);
+    attachments.push({
+      url,
+      name: file.originalname,
+      type: file.mimetype.startsWith("image/") ? "image" : "file",
+    });
+  }
 
   const newMessage = await Message.create({
     chatId,

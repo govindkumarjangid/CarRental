@@ -37,11 +37,13 @@ const TestimonialForm = () => {
 			if (image) {
 				formData.append("image", image);
 			}
-			console.log("Form Data to be submitted:", Object.fromEntries(formData.entries()));
-
-			await addReview(formData);
+			const res = await addReview(formData);
+			if (res) {
+				setForm({ name: "", email: "", location: "", rating: "", review: "" });
+				setImage(null);
+			}
 		} catch (error) {
-			toast.error(error.message);
+			toast.error(error.message || "Failed to submit review");
 		} finally {
 			setLoading(false);
 		}

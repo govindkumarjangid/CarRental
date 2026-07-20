@@ -4,6 +4,7 @@ import Review from "../models/review.model.js";
 import asyncHandler from "../utils/asyncHandler.js";
 import ApiError from "../utils/ApiError.js";
 import ApiResponse from "../utils/ApiResponse.js";
+import { uploadToCloudinary } from "../configs/cloudinary.js";
 
 //* GET /api/v1/user/data - Get authenticated user profile data
 export const getUserData = asyncHandler(async (req, res) => {
@@ -56,7 +57,10 @@ export const addReview = asyncHandler(async (req, res) => {
   console.log("Received review data:", { name, email, location, rating, review });
   console.log("Received file data:", req.file);
 
-  const optimizedImageUrl = req.file ? req.file.path : "";
+  let optimizedImageUrl = "";
+  if (req.file) {
+    optimizedImageUrl = await uploadToCloudinary(req.file.buffer, req.file.originalname, req.file.mimetype);
+  }
 
   const newReview = await Review.create({
     userId: _id,

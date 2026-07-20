@@ -35,7 +35,7 @@ userRouter
 
 userRouter
   .route('/add-review')
-  .post(upload.single("image"), protect, validate(addReviewSchema), addReview);
+  .post(protect, upload.single("image"), validate(addReviewSchema), addReview);
 
 userRouter
   .route('/get-reviews')
