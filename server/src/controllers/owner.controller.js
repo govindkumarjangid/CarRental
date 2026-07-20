@@ -2,6 +2,7 @@ import User from "../models/user.model.js";
 import Car from "../models/car.model.js";
 import Booking from "../models/booking.model.js";
 import Chat from "../models/chat.model.js";
+import Message from "../models/message.model.js";
 import asyncHandler from "../utils/asyncHandler.js";
 import { uploadToCloudinary } from "../configs/cloudinary.js";
 
@@ -297,10 +298,19 @@ export const getMyChats = asyncHandler(async (req, res) => {
     .populate("car", "brand model image")
     .populate({
       path: "lastMessage",
-      select: "message createdAt",
+      select: "message createdAt messageType",
     })
     .sort({ updatedAt: -1 })
     .lean();
 
-  res.json({ success: true, chats });
+  const chatsWithUnreadCount = await Promise.all(chats.map(async (chat) => {
+    const unreadCount = await Message.countDocuments({
+      chatId: chat._id,
+      receiverId: userId,
+      seenByReceiver: false
+    });
+    return { ...chat, unreadCount };
+  }));
+
+  res.json({ success: true, chats: chatsWithUnreadCount });
 });

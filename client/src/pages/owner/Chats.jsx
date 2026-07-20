@@ -12,32 +12,44 @@ import { useParams, useNavigate, useLocation } from "react-router-dom";
 
 const SecureResource = ({ src, type, className, onClick, alt, title }) => {
   const [blobUrl, setBlobUrl] = useState('');
+
   useEffect(() => {
-    if (!src) return;
+    if (!src || type !== 'iframe') return;
+
     let active = true;
     let url = '';
+
     fetch(src)
-      .then(r => r.blob())
-      .then(blob => {
+      .then(r => r.arrayBuffer())
+      .then(buffer => {
         if (active) {
-          url = URL.createObjectURL(blob);
+          const pdfBlob = new Blob([buffer], { type: 'application/pdf' });
+          url = URL.createObjectURL(pdfBlob);
           setBlobUrl(url);
         }
       })
       .catch(e => {
-        console.error("Secure fetch failed:", e);
+        console.error("PDF fetch failed:", e);
         if (active) setBlobUrl(src);
       });
+
     return () => {
       active = false;
       if (url) URL.revokeObjectURL(url);
     };
-  }, [src]);
+  }, [src, type]);
 
   if (type === 'iframe') {
-    return blobUrl ? <iframe src={blobUrl} title={title} className={className} /> : <div className={`${className} bg-slate-100 animate-pulse`} />;
+    return blobUrl ? (
+      <iframe src={blobUrl} title={title || "PDF Preview"} className={className} />
+    ) : (
+      <div className={`${className} bg-slate-100 animate-pulse flex items-center justify-center text-sm text-gray-500 font-medium`}>
+        Loading PDF...
+      </div>
+    );
   }
-  return blobUrl ? <img src={blobUrl} alt={alt} className={className} onClick={onClick} /> : <div className={`${className} bg-slate-100 animate-pulse`} />;
+
+  return <img src={src} alt={alt || title || "Media resource"} className={className} onClick={onClick} />;
 };
 
 const Chats = () => {
@@ -535,8 +547,17 @@ const Chats = () => {
                           </span>
                         )}
                       </div>
-                      <div className="text-[13px] text-gray-500 overflow-hidden line-clamp-1 pr-2">
-                        {chat.lastMessage?.message || "No messages yet"}
+                      <div className="flex justify-between items-center mt-0.5">
+                        <div className="text-[13px] text-gray-500 overflow-hidden line-clamp-1 pr-2 flex-1">
+                          {chat.lastMessage
+                            ? chat.lastMessage.message || (chat.lastMessage.messageType === 'image' ? '📷 Image' : chat.lastMessage.messageType === 'file' ? '📎 File' : 'Attachment')
+                            : "No messages yet"}
+                        </div>
+                        {chat.unreadCount > 0 && (
+                          <div className="bg-red-500 text-white text-[10px] font-bold h-5 min-w-[20px] px-1.5 flex items-center justify-center rounded-full shrink-0 shadow-sm">
+                            {chat.unreadCount}
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -664,7 +685,7 @@ const Chats = () => {
                                               </button>
                                             </>
                                           ) : (
-                                            <div 
+                                            <div
                                               onClick={() => handlePdfClick(att.url)}
                                               className="w-[200px] md:w-[260px] flex items-center justify-between p-2 bg-black/5 hover:bg-black/10 transition-colors cursor-pointer border border-white/20 rounded-xl"
                                             >
@@ -735,10 +756,10 @@ const Chats = () => {
 
             {/* INPUT */}
             {activeChat && (
-              <div className="p-3 md:p-4 bg-white/80 backdrop-blur-lg border-t border-slate-100 shrink-0 shadow-lg">
+              <div className="p-3 md:p-4 bg-white/80 backdrop-blur-lg border-t border-slate-100 shrink-0 shadow-lg min-w-0">
                 {/* ATTACHMENT PREVIEW */}
                 {attachments.length> 0 && (
-                  <div className="flex gap-3 mb-3 max-w-4xl mx-auto overflow-x-auto pb-2 scrollbar-hide">
+                  <div className="flex gap-3 mb-3 max-w-4xl mx-auto w-full overflow-x-auto pb-2 no-scrollbar">
                     <AnimatePresence>
                       {attachments.map((file, index) => (
                         <motion.div
@@ -746,7 +767,7 @@ const Chats = () => {
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
                           exit={{ opacity: 0 }}
-                          className="relative h-20 w-20 md:h-24 md:w-24 shrink-0 rounded-xl overflow-hidden border-2 border-white shadow-md bg-white group">
+                          className={`relative h-20 w-20 md:h-24 md:w-24 shrink-0 rounded-xl overflow-hidden border-2 border-white shadow-md bg-white group ${index === attachments.length - 1 ? 'pr-8' : ''}`}>
                           {file.type === 'image' ? (
                             <img src={file.preview} alt="" className="h-full w-full object-cover" />
                           ) : (
@@ -822,12 +843,12 @@ const Chats = () => {
       </div>
       {/* Image-only Lightbox Modal with Slider controls */}
       {lightboxIndex !== null && chatImages.length > 0 && (
-        <div 
+        <div
           className="fixed inset-0 z-[999] bg-slate-50/98 backdrop-blur-lg flex flex-col items-center justify-center select-none"
           onClick={() => setLightboxIndex(null)}
         >
           {/* Close Button */}
-          <button 
+          <button
             onClick={() => setLightboxIndex(null)}
             className="absolute top-4 right-4 text-slate-600 hover:text-slate-900 bg-white hover:bg-slate-100 p-2.5 rounded-full border border-slate-200 shadow-sm transition-all duration-200 cursor-pointer z-[1000] flex items-center justify-center active:scale-95"
           >
@@ -836,7 +857,7 @@ const Chats = () => {
 
           {/* Left Arrow */}
           {chatImages.length > 1 && (
-            <button 
+            <button
               onClick={(e) => {
                 e.stopPropagation();
                 setLightboxIndex((prev) => (prev === 0 ? chatImages.length - 1 : prev - 1));
@@ -848,16 +869,16 @@ const Chats = () => {
           )}
 
           {/* Main Image Container */}
-          <div 
+          <div
             className="relative max-w-full px-4 flex flex-col items-center justify-center"
             onClick={(e) => e.stopPropagation()}
           >
-            <SecureResource 
-              src={chatImages[lightboxIndex].url} 
-              alt={chatImages[lightboxIndex].name || "Chat image"} 
+            <SecureResource
+              src={chatImages[lightboxIndex].url}
+              alt={chatImages[lightboxIndex].name || "Chat image"}
               className="max-w-[85vw] max-h-[48vh] md:max-h-[60vh] object-contain rounded-xl shadow-xl border-4 border-white transition-all duration-300"
             />
-            
+
             {/* Caption / Details */}
             <div className="mt-4 text-center flex flex-col items-center gap-1.5">
               <span className="text-slate-500 text-[10px] font-semibold bg-slate-200/60 px-2.5 py-0.5 rounded-full w-fit">
@@ -898,7 +919,7 @@ const Chats = () => {
 
           {/* Right Arrow */}
           {chatImages.length > 1 && (
-            <button 
+            <button
               onClick={(e) => {
                 e.stopPropagation();
                 setLightboxIndex((prev) => (prev === chatImages.length - 1 ? 0 : prev + 1));
@@ -922,7 +943,7 @@ const Chats = () => {
                 {chatPDFs.length} files
               </span>
             </div>
-            
+
             <div className="flex-1 overflow-y-auto p-3 flex flex-col gap-2 custom-scrollbar">
               {chatPDFs.map((pdf, idx) => {
                 const isActive = idx === pdfLightboxIndex;
@@ -954,7 +975,7 @@ const Chats = () => {
                 {pdfLightboxIndex + 1} / {chatPDFs.length}
               </span>
             </div>
-            
+
             <div className="flex flex-row gap-2 overflow-x-auto scrollbar-none py-1">
               {chatPDFs.map((pdf, idx) => {
                 const isActive = idx === pdfLightboxIndex;
@@ -988,7 +1009,7 @@ const Chats = () => {
                   {chatPDFs[pdfLightboxIndex].name || "Document.pdf"}
                 </h4>
               </div>
-              
+
               <div className="flex items-center gap-2 shrink-0">
                 {/* Download Button */}
                 <button
@@ -998,7 +1019,7 @@ const Chats = () => {
                 >
                   <iconList.Download className="w-4 h-4 md:w-5 md:h-5" />
                 </button>
-                
+
                 {/* Close Button */}
                 <button
                   onClick={() => setPdfLightboxIndex(null)}
@@ -1009,7 +1030,7 @@ const Chats = () => {
                 </button>
               </div>
             </div>
-            
+
             {/* PDF Viewport */}
             <div className="flex-1 p-2 md:p-4 min-h-0">
               <SecureResource

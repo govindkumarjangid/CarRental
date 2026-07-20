@@ -2,12 +2,23 @@ import { z } from 'zod';
 
 export const createBookingSchema = z.object({
   body: z.object({
-    carId: z.string().min(1, "Car ID is required"),
-    ownerId: z.string().min(1, "Owner ID is required"),
-    pickupDate: z.string().min(1, "Pickup date is required"),
-    returnDate: z.string().min(1, "Return date is required"),
-    price: z.string().or(z.number()),
-    paymentMethod: z.enum(["online", "offline"]),
+    car: z.string().min(1, "Car ID is required").optional(),
+    carId: z.string().min(1, "Car ID is required").optional(),
+    startTime: z.string().min(1, "Pickup date is required").optional(),
+    pickupDate: z.string().min(1, "Pickup date is required").optional(),
+    endTime: z.string().min(1, "Return date is required").optional(),
+    returnDate: z.string().min(1, "Return date is required").optional(),
+    price: z.union([z.string(), z.number()]).optional(),
+    paymentMethod: z.enum(["online", "offline"]).optional(),
+  }).refine((data) => Boolean(data.car || data.carId), {
+    message: "Car ID is required",
+    path: ["car"]
+  }).refine((data) => Boolean(data.startTime || data.pickupDate), {
+    message: "Pickup date & time is required",
+    path: ["startTime"]
+  }).refine((data) => Boolean(data.endTime || data.returnDate), {
+    message: "Return date & time is required",
+    path: ["endTime"]
   }),
 });
 

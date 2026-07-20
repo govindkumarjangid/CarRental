@@ -8,10 +8,11 @@ cloudinary.config({
   secure: true,
 });
 
+// Memory storage for Multer to safely accept files in memory without resetting TCP sockets
 const storage = multer.memoryStorage();
 export const upload = multer({
   storage: storage,
-  limits: { fileSize: 15 * 1024 * 1024 } // 15MB
+  limits: { fileSize: 15 * 1024 * 1024 } // 15MB file limit
 });
 
 /**
@@ -21,24 +22,16 @@ export const upload = multer({
  * @param {string} mimetype
  * @returns {Promise<string>} Cloudinary secure_url
  */
-
 export const uploadToCloudinary = (fileBuffer, originalname = 'file', mimetype = '') => {
   return new Promise((resolve, reject) => {
     if (!fileBuffer) return resolve("");
 
-    const isPdf = mimetype === 'application/pdf' || originalname.toLowerCase().endsWith('.pdf');
     const isImage = mimetype.startsWith('image/');
     const cleanName = originalname.replace(/\.[^/.]+$/, "").replace(/[^a-zA-Z0-9_-]/g, '-');
 
     let options = {};
 
-    if (isPdf || !isImage) {
-      const ext = originalname.split('.').pop() || 'pdf';
-      options = {
-        resource_type: 'raw',
-        public_id: `documents/${cleanName}-${Date.now()}.${ext}`,
-      };
-    } else {
+    if (isImage) {
       options = {
         resource_type: 'image',
         format: 'webp',
@@ -47,6 +40,17 @@ export const uploadToCloudinary = (fileBuffer, originalname = 'file', mimetype =
           { quality: 'auto' }
         ],
         public_id: `images/${cleanName}-${Date.now()}`
+      };
+    } else {
+      let ext = (originalname.split('.').pop() || 'pdf').toLowerCase();
+
+      if (ext === 'pdf') ext = 'rawpdf';
+
+      options = {
+        resource_type: 'raw',
+        type: 'upload',
+        access_mode: 'public',
+        public_id: `documents/${cleanName}-${Date.now()}.${ext}`
       };
     }
 

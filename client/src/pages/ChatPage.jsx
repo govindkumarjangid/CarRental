@@ -14,32 +14,44 @@ import { iconList } from "../assets/assets.jsx";
 
 const SecureResource = ({ src, type, className, onClick, alt, title }) => {
   const [blobUrl, setBlobUrl] = useState('');
+
   useEffect(() => {
-    if (!src) return;
+    if (!src || type !== 'iframe') return;
+    
     let active = true;
     let url = '';
+
     fetch(src)
-      .then(r => r.blob())
-      .then(blob => {
+      .then(r => r.arrayBuffer())
+      .then(buffer => {
         if (active) {
-          url = URL.createObjectURL(blob);
+          const pdfBlob = new Blob([buffer], { type: 'application/pdf' });
+          url = URL.createObjectURL(pdfBlob);
           setBlobUrl(url);
         }
       })
       .catch(e => {
-        console.error("Secure fetch failed:", e);
+        console.error("PDF fetch failed:", e);
         if (active) setBlobUrl(src);
       });
+
     return () => {
       active = false;
       if (url) URL.revokeObjectURL(url);
     };
-  }, [src]);
+  }, [src, type]);
 
   if (type === 'iframe') {
-    return blobUrl ? <iframe src={blobUrl} title={title} className={className} /> : <div className={`${className} bg-slate-100 animate-pulse`} />;
+    return blobUrl ? (
+      <iframe src={blobUrl} title={title || "PDF Preview"} className={className} />
+    ) : (
+      <div className={`${className} bg-slate-100 animate-pulse flex items-center justify-center text-sm text-gray-500 font-medium`}>
+        Loading PDF...
+      </div>
+    );
   }
-  return blobUrl ? <img src={blobUrl} alt={alt} className={className} onClick={onClick} /> : <div className={`${className} bg-slate-100 animate-pulse`} />;
+
+  return <img src={src} alt={alt || title || "Media resource"} className={className} onClick={onClick} />;
 };
 
 const ChatPage = () => {
@@ -89,6 +101,19 @@ const ChatPage = () => {
       setPdfLightboxIndex(index);
     }
   };
+
+  const activeThumbRef = useRef(null);
+
+  // Auto-scroll active thumbnail into view in Image Lightbox
+  useEffect(() => {
+    if (lightboxIndex !== null && activeThumbRef.current) {
+      activeThumbRef.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest',
+        inline: 'center'
+      });
+    }
+  }, [lightboxIndex]);
 
   // Keyboard navigation for image lightbox
   useEffect(() => {
@@ -571,19 +596,19 @@ const ChatPage = () => {
                                   transition={{ duration: 0.3 }}
                                   key={m._id}
                                   className={`relative max-w-[85%] md:max-w-[65%] w-fit px-3 py-1.5 text-[13px] font-normal wrap-break-words ${isMe
-                                    ? `ml-auto bg-[#dbeafe] text-slate-900 ${showTail ? "rounded-lg rounded-tr-none mt-2.5" : "rounded-lg mt-[3px]"}`
-                                    : `bg-white text-slate-900 border border-slate-100/60 ${showTail ? "rounded-lg rounded-tl-none mt-2.5" : "rounded-lg mt-[3px]"}`
+                                    ? `ml-auto bg-[#dbeafe] text-slate-900 ${showTail ? "rounded-lg rounded-tr-none mt-2.5" : "rounded-lg mt-0.75"}`
+                                    : `bg-white text-slate-900 border border-slate-100/60 ${showTail ? "rounded-lg rounded-tl-none mt-2.5" : "rounded-lg mt-0.75"}`
                                     }`}
                                   style={{ minWidth: isMe ? "75px" : "60px" }}>
                                   {showTail && isMe && (
-                                    <div className="absolute top-0 -right-1.5 w-[8px] h-[10px] text-[#dbeafe] fill-current">
+                                    <div className="absolute top-0 -right-1.5 w-2 h-2.5 text-[#dbeafe] fill-current">
                                       <svg viewBox="0 0 19 15" className="w-full h-full">
                                         <path d="M19 0H0v12.2c0 2.2 2.6 3.3 4.2 1.8L19 0z" />
                                       </svg>
                                     </div>
                                   )}
                                   {showTail && !isMe && (
-                                    <div className="absolute top-0 -left-1.5 w-[8px] h-[10px] text-white fill-current drop-shadow-[0_1px_1px_rgba(0,0,0,0.05)]">
+                                    <div className="absolute top-0 -left-1.5 w-2 h-2.5 text-white fill-current drop-shadow-[0_1px_1px_rgba(0,0,0,0.05)]">
                                       <svg viewBox="0 0 19 15" className="w-full h-full">
                                         <path d="M0 0h19L4.2 14C2.6 15.5 0 14.4 0 12.2V0z" />
                                       </svg>
@@ -613,7 +638,7 @@ const ChatPage = () => {
                                           ) : (
                                             <div
                                               onClick={() => handlePdfClick(att.url)}
-                                              className="w-[200px] md:w-[260px] flex items-center justify-between p-2 bg-black/5 hover:bg-black/10 transition-colors cursor-pointer border border-white/20 rounded-xl"
+                                              className="w-50 md:w-65 flex items-center justify-between p-2 bg-black/5 hover:bg-black/10 transition-colors cursor-pointer border border-white/20 rounded-xl"
                                             >
                                               <div className="flex items-center gap-2.5 text-[13px] text-inherit no-underline min-w-0">
                                                 <div className="h-10 w-10 shrink-0 flex items-center justify-center bg-white/80 rounded-xl">
@@ -639,7 +664,7 @@ const ChatPage = () => {
                                       ))}
                                     </div>
                                   )}
-                                  {m.message && <p className={`whitespace-pre-wrap leading-tight ${isMe ? "pr-[46px]" : "pr-[32px]"}`}>{m.message}</p>}
+                                  {m.message && <p className={`whitespace-pre-wrap leading-tight ${isMe ? "pr-11.5" : "pr-8"}`}>{m.message}</p>}
                                   <div className={`absolute bottom-0.5 right-1.5 flex items-center gap-0.5 text-[9px] font-medium ${isMe ? "text-blue-900/50" : "text-gray-400"}`}>
                                     <span>{formatMessageTime(m.createdAt).split('•').pop().trim()}</span>
                                     {isMe && (
@@ -669,10 +694,10 @@ const ChatPage = () => {
 
 
               {/* INPUT BOX */}
-              <div className="shrink-0 p-3 md:p-4 bg-white/80 backdrop-blur-lg border-t border-slate-100 flex flex-col gap-2 z-10 shadow-lg">
+              <div className="shrink-0 p-3 md:p-4 bg-white/80 backdrop-blur-lg border-t border-slate-100 flex flex-col gap-2 z-10 shadow-lg min-w-0">
                 {/* ATTACHMENT PREVIEW */}
-                {attachments.length> 0 && (
-                  <div className="flex gap-3 mb-3 max-w-4xl overflow-x-auto pb-2 scrollbar-hide">
+                {attachments.length > 0 && (
+                  <div className="flex gap-3 mb-3 max-w-4xl mx-auto w-full overflow-x-auto pb-2 no-scrollbar">
                     <AnimatePresence>
                       {attachments.map((file, index) => (
                         <motion.div
@@ -680,7 +705,7 @@ const ChatPage = () => {
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
                           exit={{ opacity: 0 }}
-                          className="relative h-20 w-20 md:h-24 md:w-24 shrink-0 rounded-xl overflow-hidden border-2 border-white shadow-md bg-white group">
+                          className={`relative h-20 w-20 md:h-24 md:w-24 shrink-0 rounded-xl overflow-hidden border-2 border-white shadow-md bg-white group ${index === attachments.length - 1 ? 'mr-2' : ''}`}>
                           {file.type === 'image' ? (
                             <img src={file.preview} alt="" className="h-full w-full object-cover" />
                           ) : (
@@ -757,42 +782,42 @@ const ChatPage = () => {
 
       {/* Image-only Lightbox Modal with Slider controls */}
       {lightboxIndex !== null && chatImages.length > 0 && (
-        <div 
-          className="fixed inset-0 z-[999] bg-slate-50/98 backdrop-blur-lg flex flex-col items-center justify-center select-none"
+        <div
+          className="fixed inset-0 z-999 bg-slate-50/98 backdrop-blur-lg flex flex-col items-center justify-center select-none"
           onClick={() => setLightboxIndex(null)}
         >
           {/* Close Button */}
-          <button 
+          <button
             onClick={() => setLightboxIndex(null)}
-            className="absolute top-4 right-4 text-slate-600 hover:text-slate-900 bg-white hover:bg-slate-100 p-2.5 rounded-full border border-slate-200 shadow-sm transition-all duration-200 cursor-pointer z-[1000] flex items-center justify-center active:scale-95"
+            className="absolute top-4 right-4 text-slate-600 hover:text-slate-900 bg-white hover:bg-slate-100 p-2.5 rounded-full border border-slate-200 shadow-sm transition-all duration-200 cursor-pointer z-1000 flex items-center justify-center active:scale-95"
           >
             <X size={20} />
           </button>
 
           {/* Left Arrow */}
           {chatImages.length > 1 && (
-            <button 
+            <button
               onClick={(e) => {
                 e.stopPropagation();
                 setLightboxIndex((prev) => (prev === 0 ? chatImages.length - 1 : prev - 1));
               }}
-              className="absolute left-2 md:left-8 text-slate-600 hover:text-slate-900 bg-white/80 hover:bg-white p-2 md:p-3 rounded-full border border-slate-200 shadow-sm transition-all duration-200 cursor-pointer z-[1000] flex items-center justify-center active:scale-95 scale-90 md:scale-100"
+              className="absolute left-2 md:left-8 text-slate-600 hover:text-slate-900 bg-white/80 hover:bg-white p-2 md:p-3 rounded-full border border-slate-200 shadow-sm transition-all duration-200 cursor-pointer z-1000 flex items-center justify-center active:scale-95 scale-90 md:scale-100"
             >
               <ChevronLeft className="w-5 h-5 md:w-6 md:h-6" />
             </button>
           )}
 
           {/* Main Image Container */}
-          <div 
+          <div
             className="relative max-w-full px-4 flex flex-col items-center justify-center"
             onClick={(e) => e.stopPropagation()}
           >
-            <SecureResource 
-              src={chatImages[lightboxIndex].url} 
-              alt={chatImages[lightboxIndex].name || "Chat image"} 
+            <SecureResource
+              src={chatImages[lightboxIndex].url}
+              alt={chatImages[lightboxIndex].name || "Chat image"}
               className="max-w-[85vw] max-h-[48vh] md:max-h-[60vh] object-contain rounded-xl shadow-xl border-4 border-white transition-all duration-300"
             />
-            
+
             {/* Caption / Details */}
             <div className="mt-4 text-center flex flex-col items-center gap-1.5">
               <span className="text-slate-500 text-[10px] font-semibold bg-slate-200/60 px-2.5 py-0.5 rounded-full w-fit">
@@ -807,24 +832,28 @@ const ChatPage = () => {
 
             {/* Thumbnail Strip */}
             {chatImages.length > 1 && (
-              <div className="mt-5 flex flex-row gap-2 overflow-x-auto max-w-[80vw] md:max-w-[50vw] px-2.5 py-1.5 bg-white/40 border border-slate-200/40 rounded-2xl shadow-inner scrollbar-none items-center justify-start md:justify-center">
+              <div className="mt-4 flex flex-row gap-3 overflow-x-auto max-w-[90vw] md:max-w-[650px] p-3 bg-white/90 backdrop-blur-md border border-slate-200/80 rounded-2xl shadow-lg scroll-smooth no-scrollbar items-center mx-auto">
                 {chatImages.map((img, idx) => {
                   const isActive = idx === lightboxIndex;
                   return (
-                    <SecureResource
+                    <div
                       key={idx}
-                      src={img.url}
-                      alt={`Thumbnail ${idx + 1}`}
+                      ref={isActive ? activeThumbRef : null}
                       onClick={(e) => {
                         e.stopPropagation();
                         setLightboxIndex(idx);
                       }}
-                      className={`w-10 h-10 md:w-14 md:h-14 shrink-0 rounded-xl object-cover cursor-pointer transition-all duration-300 ${
-                        isActive
-                          ? "border-2 border-primary scale-105 opacity-100 shadow-md ring-2 ring-primary/20"
-                          : "border border-slate-200/60 opacity-40 blur-[1px] hover:blur-none hover:opacity-90"
-                      }`}
-                    />
+                      className="shrink-0 cursor-pointer"
+                    >
+                      <SecureResource
+                        src={img.url}
+                        alt={`Thumbnail ${idx + 1}`}
+                        className={`w-12 h-12 md:w-14 md:h-14 rounded-xl object-cover transition-all duration-200 ${isActive
+                          ? "border-2 border-primary scale-110 opacity-100 shadow-md ring-2 ring-primary/40"
+                          : "border border-slate-200/80 opacity-60 hover:opacity-100"
+                          }`}
+                      />
+                    </div>
                   );
                 })}
               </div>
@@ -833,12 +862,12 @@ const ChatPage = () => {
 
           {/* Right Arrow */}
           {chatImages.length > 1 && (
-            <button 
+            <button
               onClick={(e) => {
                 e.stopPropagation();
                 setLightboxIndex((prev) => (prev === chatImages.length - 1 ? 0 : prev + 1));
               }}
-              className="absolute right-2 md:right-8 text-slate-600 hover:text-slate-900 bg-white/80 hover:bg-white p-2 md:p-3 rounded-full border border-slate-200 shadow-sm transition-all duration-200 cursor-pointer z-[1000] flex items-center justify-center active:scale-95 scale-90 md:scale-100"
+              className="absolute right-2 md:right-8 text-slate-600 hover:text-slate-900 bg-white/80 hover:bg-white p-2 md:p-3 rounded-full border border-slate-200 shadow-sm transition-all duration-200 cursor-pointer z-1000 flex items-center justify-center active:scale-95 scale-90 md:scale-100"
             >
               <ChevronRight className="w-5 h-5 md:w-6 md:h-6" />
             </button>
@@ -848,7 +877,7 @@ const ChatPage = () => {
 
       {/* PDF-only Full-screen Lightbox Modal with Left Sidebar list */}
       {pdfLightboxIndex !== null && chatPDFs.length > 0 && (
-        <div className="fixed inset-0 z-[999] bg-slate-100 flex flex-col md:flex-row select-none">
+        <div className="fixed inset-0 z-999 bg-slate-100 flex flex-col md:flex-row select-none">
           {/* Desktop Left Sidebar: full height, left side */}
           <div className="hidden md:flex w-72 h-full bg-white border-r border-slate-200 flex-col shrink-0">
             <div className="p-4 border-b border-slate-100 flex items-center justify-between">
@@ -857,7 +886,7 @@ const ChatPage = () => {
                 {chatPDFs.length} files
               </span>
             </div>
-            
+
             <div className="flex-1 overflow-y-auto p-3 flex flex-col gap-2 custom-scrollbar">
               {chatPDFs.map((pdf, idx) => {
                 const isActive = idx === pdfLightboxIndex;
@@ -865,11 +894,10 @@ const ChatPage = () => {
                   <div
                     key={idx}
                     onClick={() => setPdfLightboxIndex(idx)}
-                    className={`flex items-center gap-3 p-2.5 rounded-xl border transition-all duration-200 cursor-pointer ${
-                      isActive
-                        ? "bg-red-50 border-red-200 text-red-700 shadow-xs"
-                        : "bg-slate-50/50 hover:bg-slate-100 border-slate-100 text-slate-600 hover:text-slate-800"
-                    }`}
+                    className={`flex items-center gap-3 p-2.5 rounded-xl border transition-all duration-200 cursor-pointer ${isActive
+                      ? "bg-red-50 border-red-200 text-red-700 shadow-xs"
+                      : "bg-slate-50/50 hover:bg-slate-100 border-slate-100 text-slate-600 hover:text-slate-800"
+                      }`}
                   >
                     <FileText className={`w-5 h-5 shrink-0 ${isActive ? "text-red-600" : "text-red-400"}`} />
                     <span className="text-[11px] font-semibold truncate flex-1 leading-tight">
@@ -889,7 +917,7 @@ const ChatPage = () => {
                 {pdfLightboxIndex + 1} / {chatPDFs.length}
               </span>
             </div>
-            
+
             <div className="flex flex-row gap-2 overflow-x-auto scrollbar-none py-1">
               {chatPDFs.map((pdf, idx) => {
                 const isActive = idx === pdfLightboxIndex;
@@ -897,14 +925,13 @@ const ChatPage = () => {
                   <div
                     key={idx}
                     onClick={() => setPdfLightboxIndex(idx)}
-                    className={`flex items-center gap-2 px-3 py-1.5 rounded-lg border transition-all duration-200 cursor-pointer shrink-0 max-w-[160px] ${
-                      isActive
-                        ? "bg-red-50 border-red-200 text-red-700 shadow-xs"
-                        : "bg-slate-50/50 border-slate-100 text-slate-600"
-                    }`}
+                    className={`flex items-center gap-2 px-3 py-1.5 rounded-lg border transition-all duration-200 cursor-pointer shrink-0 max-w-40 ${isActive
+                      ? "bg-red-50 border-red-200 text-red-700 shadow-xs"
+                      : "bg-slate-50/50 border-slate-100 text-slate-600"
+                      }`}
                   >
                     <FileText className={`w-3.5 h-3.5 shrink-0 ${isActive ? "text-red-600" : "text-red-400"}`} />
-                    <span className="text-[9px] font-semibold truncate max-w-[100px]">
+                    <span className="text-[9px] font-semibold truncate max-w-25">
                       {pdf.name || `Doc ${idx + 1}`}
                     </span>
                   </div>
@@ -923,7 +950,7 @@ const ChatPage = () => {
                   {chatPDFs[pdfLightboxIndex].name || "Document.pdf"}
                 </h4>
               </div>
-              
+
               <div className="flex items-center gap-2 shrink-0">
                 {/* Download Button */}
                 <button
@@ -933,7 +960,7 @@ const ChatPage = () => {
                 >
                   <iconList.Download className="w-4 h-4 md:w-5 md:h-5" />
                 </button>
-                
+
                 {/* Close Button */}
                 <button
                   onClick={() => setPdfLightboxIndex(null)}
@@ -944,7 +971,7 @@ const ChatPage = () => {
                 </button>
               </div>
             </div>
-            
+
             {/* PDF Viewport */}
             <div className="flex-1 p-2 md:p-4 min-h-0">
               <SecureResource
