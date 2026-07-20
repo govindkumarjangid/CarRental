@@ -1,118 +1,62 @@
 import User from "../models/user.model.js";
-import bcrypt from 'bcrypt'
-import Car from '../models/car.model.js'
-import imagekit from "../utils/imagekit.js"
+import Car from "../models/car.model.js";
 import Review from "../models/review.model.js";
-import { sendEmail } from "../utils/sendEmail.js";
-import { generateToken } from "../configs/generateToken.js";
-import wrapAsync from "../configs/wrapAsync.js";
-import { welcomeEmailTemplate } from "../utils/emailTemplates.js";
+import imagekit from "../configs/imagekit.js";
+import asyncHandler from "../utils/asyncHandler.js";
+import ApiError from "../utils/ApiError.js";
+import ApiResponse from "../utils/ApiResponse.js";
 
-//* Register user
-export const registerUser = wrapAsync(async (req, res) => {
-  const { name, email, password, role } = req.body;
-
-  const userExists = await User.findOne({ email });
-
-  if (userExists) {
-    return res.json({ success: false, message: 'User already exists.' });
-  }
-
-  const validRole = ['user', 'owner'].includes(role) ? role : 'user';
-  const hashPassword = await bcrypt.hash(password, 10);
-  const user = await User.create({ name, email, password: hashPassword, role: validRole });
-  const token = generateToken(res, user._id.toString(), validRole);
-
-  await sendEmail({
-    email: email,
-    subject: 'Welcome to CarRental! 🚗',
-    htmlMessage: welcomeEmailTemplate(name),
-  });
-
-  res.json({
-    success: true, token, user: {
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      role: user.role,
-      image: user.image,
-      isBlocked: user.isBlocked,
-      createdAt: user.createdAt,
-      updatedAt: user.updatedAt
-    }
-  });
-});
-
-//*Login User
-export const loginUser = wrapAsync(async (req, res) => {
-  const { email, password } = req.body;
-
-  const user = await User.findOne({ email });
-
+//* GET /api/v1/user/data - Get authenticated user profile data
+export const getUserData = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user._id).select("-password -refreshToken").lean();
   if (!user) {
-    return res.json({ success: false, message: 'User not found!' });
+    throw new ApiError(404, "User not found");
   }
-
-  const isMatch = await bcrypt.compare(password, user.password);
-
-  if (!isMatch) {
-    return res.json({ success: false, message: 'Invalid Password' });
-  }
-  if (user.isBlocked) {
-    return res.json({ success: false, message: "User is blocked" })
-  }
-
-  const token = generateToken(res, user._id.toString(), user.role);
-  res.json({
-    success: true, token, user: {
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      role: user.role,
-      image: user.image,
-      isBlocked: user.isBlocked,
-      createdAt: user.createdAt,
-      updatedAt: user.updatedAt
-    }
+  return res.status(200).json({
+    success: true,
+    statusCode: 200,
+    message: "User profile fetched successfully",
+    user,
+    data: { user }
   });
 });
 
-//* get user data using Token (JWT)
-export const getUserData = wrapAsync(async (req, res) => {
-  const { user } = req;
-  res.json({ success: true, user });
-});
 
-//* get all user cars with pagination
-export const getCars = wrapAsync(async (req, res) => {
+//* GET /api/v1/user/cars - Get cars with pagination & filtering
+export const getCars = asyncHandler(async (req, res) => {
   const page = parseInt(req.query.page) || 1;
-  const limit = parseInt(req.query.limit) || 0; // 0 means no limit if not specified
-  
+  const limit = parseInt(req.query.limit) || 0;
+
   let query = {};
-  
+
   if (limit > 0) {
     const skip = (page - 1) * limit;
-    const cars = await Car.find(query).skip(skip).limit(limit);
-    const total = await Car.countDocuments(query);
-    res.json({ success: true, cars, total, page, totalPages: Math.ceil(total / limit) });
+    const [cars, total] = await Promise.all([
+      Car.find(query).skip(skip).limit(limit).lean(),
+      Car.countDocuments(query)
+    ]);
+    return res.status(200).json({
+      success: true,
+      cars,
+      total,
+      page,
+      totalPages: Math.ceil(total / limit)
+    });
   } else {
-    const cars = await Car.find(query);
-    res.json({ success: true, cars });
+    const cars = await Car.find(query).lean();
+    return res.status(200).json({ success: true, cars });
   }
 });
 
-//* Add Review
-export const addReview = wrapAsync(async (req, res) => {
+
+//* POST /api/v1/user/add-review - Add customer review with uploaded photo
+export const addReview = asyncHandler(async (req, res) => {
   const { _id } = req.user;
   const { name, email, location, rating, review } = req.body;
   const imageFile = req.file;
 
-  if (!req.file) {
-    return res.status(400).json({ message: "No image file provided" });
-  }
-
-  if (!name || !location || !rating || !review) {
-    return res.json({ success: false, message: 'All fields are required' })
+  if (!imageFile) {
+    throw new ApiError(400, "No review image provided");
   }
 
   const response = await imagekit.files.upload({
@@ -121,36 +65,38 @@ export const addReview = wrapAsync(async (req, res) => {
     folder: "/reviews",
     useUniqueFileName: true,
   });
+
   const optimizedImageUrl = response.url + "?tr=w-1280,q-auto,f-webp";
 
-  const image = optimizedImageUrl;
-
-  await Review.create({
+  const newReview = await Review.create({
     userId: _id,
     name,
     email,
     location,
     rating: Number(rating),
     review,
-    imageUrl: image,
-  })
+    imageUrl: optimizedImageUrl,
+  });
 
-  res.json({ success: true, message: "Review added successfully" });
+  return res.status(201).json(
+    new ApiResponse(201, { review: newReview }, "Review added successfully")
+  );
 });
 
-//* Get Reviews
-export const getReviews = wrapAsync(async (req, res) => {
-  const reviews = await Review.find().sort({ createdAt: -1 });
-  res.json({ success: true, reviews });
+
+//* GET /api/v1/user/get-reviews - Get list of recent customer reviews
+export const getReviews = asyncHandler(async (req, res) => {
+  const reviews = await Review.find().sort({ createdAt: -1 }).lean();
+  return res.status(200).json({ success: true, reviews });
 });
 
-//* get user car details
-export const getCarDetails = wrapAsync(async (req, res) => {
+
+//* GET /api/v1/user/user-cardetails/:id - Get details of specific car
+export const getCarDetails = asyncHandler(async (req, res) => {
   const { id } = req.params;
-  // console.log(id)
-  const car = await Car.findById(id);
+  const car = await Car.findById(id).lean();
   if (!car) {
-    return res.json({ success: false, message: "Car not found", });
+    throw new ApiError(404, "Car not found");
   }
-  return res.json({ success: true, car, owner: car.owner });
+  return res.status(200).json({ success: true, car, owner: car.owner });
 });

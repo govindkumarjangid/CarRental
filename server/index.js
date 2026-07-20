@@ -4,10 +4,11 @@ import cookieParser from 'cookie-parser';
 import 'dotenv/config';
 
 import connectDB from './src/configs/db.js';
-import userRouter from './src/Routes/user.route.js';
-import ownerRouter from './src/Routes/owner.route.js';
-import bookingRouter from './src/Routes/booking.route.js';
-import chatRouter from './src/Routes/chat.route.js';
+import authRouter from './src/Routes/auth.routes.js';
+import userRouter from './src/Routes/user.routes.js';
+import ownerRouter from './src/Routes/owner.routes.js';
+import bookingRouter from './src/Routes/booking.routes.js';
+import chatRouter from './src/Routes/chat.routes.js';
 
 //* Initialize Express App
 const app = express();
@@ -26,11 +27,20 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-//* routes
+//* Routes
 app.get('/', (req, res) => {
   res.send('Welcome to the Car Rental Service API');
 });
 
+//* API v1 Routes
+app.use('/api/v1/auth', authRouter);
+app.use('/api/v1/user', userRouter);
+app.use('/api/v1/owner', ownerRouter);
+app.use('/api/v1/bookings', bookingRouter);
+app.use('/api/v1/chat', chatRouter);
+
+//* API Legacy Aliases
+app.use('/api/auth', authRouter);
 app.use('/api/user', userRouter);
 app.use('/api/owner', ownerRouter);
 app.use('/api/bookings', bookingRouter);
@@ -83,7 +93,7 @@ app.use((err, req, res, next) => {
     success: false,
     status: err.status,
     message: err.message,
-    ...( (process.env.NODE_ENV === 'development' || !process.env.NODE_ENV) && { stack: err.stack } )
+    ...((process.env.NODE_ENV === 'development' || !process.env.NODE_ENV) && { stack: err.stack })
   });
 });
 

@@ -10,6 +10,8 @@ const reviewSchema = new mongoose.Schema({
   imageUrl: { type: String },
 }, { timestamps: true });
 
+reviewSchema.index({ createdAt: -1 });
+
 const Review = mongoose.model("Review", reviewSchema);
 
 export default Review;

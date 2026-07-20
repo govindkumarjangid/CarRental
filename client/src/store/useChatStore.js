@@ -8,7 +8,7 @@ export const useChatStore = create((set, get) => ({
     chatLoading: false,
     messageLoading: false,
 
-    getChats: async (endpoint = "/api/owner/owner-chats") => {
+    getChats: async (endpoint = "/api/v1/owner/owner-chats") => {
         try {
             set({ chatLoading: true })
             const { data } = await axiosInstance.get(endpoint);
@@ -24,7 +24,7 @@ export const useChatStore = create((set, get) => ({
     getMessages: async (chatId) => {
         try {
             set({ messageLoading: true });
-            const { data } = await axiosInstance.get("/api/chat/get-messages", {
+            const { data } = await axiosInstance.get("/api/v1/chat/get-messages", {
                 params: { chatId },
             });
             if (data.success) {
@@ -72,11 +72,11 @@ export const useChatStore = create((set, get) => ({
                     formData.append("files", att.file);
                 });
 
-                response = await axiosInstance.post("/api/chat/send-message", formData, {
+                response = await axiosInstance.post("/api/v1/chat/send-message", formData, {
                     headers: { 'Content-Type': 'multipart/form-data' }
                 });
             } else {
-                response = await axiosInstance.post("/api/chat/send-message", {
+                response = await axiosInstance.post("/api/v1/chat/send-message", {
                     chatId: activeChat._id,
                     from: userRole,
                     text: text,
@@ -105,7 +105,7 @@ export const useChatStore = create((set, get) => ({
 
     createChat: async (userId, ownerId, carId) => {
         try {
-            const { data } = await axiosInstance.post("/api/chat/create-chat", {
+            const { data } = await axiosInstance.post("/api/v1/chat/create-chat", {
                 userId,
                 ownerId,
                 carId,
@@ -153,11 +153,11 @@ export const useChatStore = create((set, get) => ({
                     formData.append("files", att.file);
                 });
 
-                response = await axiosInstance.post("/api/chat/send-message", formData, {
+                response = await axiosInstance.post("/api/v1/chat/send-message", formData, {
                     headers: { 'Content-Type': 'multipart/form-data' }
                 });
             } else {
-                response = await axiosInstance.post("/api/chat/send-message", {
+                response = await axiosInstance.post("/api/v1/chat/send-message", {
                     chatId,
                     from: userRole,
                     text,
@@ -180,4 +180,3 @@ export const useChatStore = create((set, get) => ({
         }
     },
 }));
-

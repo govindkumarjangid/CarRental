@@ -21,6 +21,9 @@ const messageSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+// Performance Indexes
+messageSchema.index({ chatId: 1, createdAt: 1 });
+
 const Message = mongoose.model("Message", messageSchema);
 
 export default Message;

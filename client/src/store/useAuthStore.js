@@ -63,11 +63,10 @@ export const useAuthStore = create((set, get) => ({
     ownerDetails: {},
     ownerDetailsLoading: false,
 
-
     fetchDashboardData: async () => {
         set({ dashboardLoading: true });
         try {
-            const { data } = await axiosInstance.get("/api/owner/dashboard");
+            const { data } = await axiosInstance.get("/api/v1/owner/dashboard");
             if (data.success) {
                 set({ dashboardData: data.dashboardData, dashboardLoading: false });
             } else {
@@ -83,7 +82,7 @@ export const useAuthStore = create((set, get) => ({
     fetchReviews: async () => {
         set({ reviewLoading: true });
         try {
-            const { data } = await axiosInstance.get("/api/user/get-reviews");
+            const { data } = await axiosInstance.get("/api/v1/user/get-reviews");
             if (data.success) {
                 set({ reviews: data.reviews, reviewLoading: false });
             }
@@ -96,7 +95,7 @@ export const useAuthStore = create((set, get) => ({
 
     addReview: async (formData) => {
         try {
-            const { data } = await axiosInstance.post("/api/user/add-review", formData);
+            const { data } = await axiosInstance.post("/api/v1/user/add-review", formData);
             if (data.success) {
                 toast.success(data.message);
                 set({ showReview: false });
@@ -116,7 +115,7 @@ export const useAuthStore = create((set, get) => ({
         try {
             const formData = new FormData();
             formData.append("image", imageFile);
-            const { data } = await axiosInstance.post("/api/owner/update-image", formData);
+            const { data } = await axiosInstance.post("/api/v1/owner/update-image", formData);
             if (data.success) {
                 toast.success(data.message);
                 await get().fetchUser();
@@ -134,26 +133,32 @@ export const useAuthStore = create((set, get) => ({
     fetchUser: async () => {
         set({ isLoading: true, error: null });
         try {
-            const { data } = await axiosInstance.get("/api/user/data");
-            if (data.success) {
+            const { data } = await axiosInstance.get("/api/v1/user/data");
+            if (data?.success) {
+                const userObj = data.data?.user || data.user;
+                if (!userObj) {
+                    set({ user: null, token: null, isOwner: false, isAuthenticated: false, isLoading: false });
+                    clearAuth();
+                    return;
+                }
+                const isOwnerRole = userObj.role === "owner";
                 set({
-                    user: data.user,
-                    isOwner: data.user.role === "owner",
+                    user: userObj,
+                    isOwner: isOwnerRole,
                     isAuthenticated: true,
                     isLoading: false,
                 });
                 saveAuth({
-                    user: data.user,
+                    user: userObj,
                     token: get().token,
                     isAuthenticated: true,
-                    isOwner: data.user.role === "owner",
+                    isOwner: isOwnerRole,
                 });
             } else {
                 set({ user: null, token: null, isOwner: false, isAuthenticated: false, isLoading: false });
                 clearAuth();
             }
         } catch (error) {
-            toast.error(error.message)
             set({ isAuthenticated: false, isLoading: false, error: error?.message || "Something went wrong" });
         }
     },
@@ -161,54 +166,99 @@ export const useAuthStore = create((set, get) => ({
     signup: async (userData) => {
         set({ isLoading: true, error: null });
         try {
-            const { data } = await axiosInstance.post("/api/user/register", userData);
+            const { data } = await axiosInstance.post("/api/v1/auth/register", userData);
             if (data.success) {
+                const userObj = data.data?.user || data.user;
+                const tokenVal = data.data?.token || data.token;
                 const authData = {
-                    token: data.token,
-                    user: data.user,
-                    isOwner: data.user?.role === "owner",
+                    token: tokenVal,
+                    user: userObj,
+                    isOwner: userObj?.role === "owner",
                     isAuthenticated: true,
                 };
-                set({ ...authData, isLoading: false });
+                set({ ...authData, isLoading: false, showLogin: false });
                 saveAuth(authData);
-                toast.success("Account created successfully!");
+                toast.success(data.message || "Account created successfully!");
+                return true;
             } else {
                 set({ isLoading: false });
                 toast.error(data.message);
+                return false;
             }
         } catch (error) {
             set({ isLoading: false, error: error?.message || "Something went wrong" });
             toast.error(error.response?.data?.message || error.message || "Something went wrong");
+            return false;
         }
     },
 
     login: async (credentials) => {
         set({ isLoading: true, error: null });
         try {
-            const { data } = await axiosInstance.post("/api/user/login", credentials);
+            const { data } = await axiosInstance.post("/api/v1/auth/login", credentials);
             if (data.success) {
+                const userObj = data.data?.user || data.user;
+                const tokenVal = data.data?.token || data.token;
                 const authData = {
-                    token: data.token,
-                    user: data.user,
-                    isOwner: data.user?.role === "owner",
+                    token: tokenVal,
+                    user: userObj,
+                    isOwner: userObj?.role === "owner",
                     isAuthenticated: true,
                 };
-                set({ ...authData, isLoading: false });
+                set({ ...authData, isLoading: false, showLogin: false });
                 saveAuth(authData);
-                toast.success("Logged in successfully!");
+                toast.success(data.message || "Logged in successfully!");
+                return true;
             } else {
                 set({ isLoading: false });
                 toast.error(data.message);
+                return false;
             }
         } catch (error) {
             set({ isLoading: false, error: error?.message || "Something went wrong" });
             toast.error(error.response?.data?.message || error.message || "Something went wrong");
+            return false;
+        }
+    },
+
+    googleLogin: async (credentialResponse, role = "user", mode = "login") => {
+        set({ isLoading: true, error: null });
+        try {
+            const payload = {
+                credential: credentialResponse.credential,
+                role,
+                mode
+            };
+            const endpoint = mode === "register" ? "/api/v1/auth/google/register" : "/api/v1/auth/google/login";
+            const { data } = await axiosInstance.post(endpoint, payload);
+            if (data.success) {
+                const userObj = data.data?.user || data.user;
+                const tokenVal = data.data?.token || data.token;
+                const authData = {
+                    token: tokenVal,
+                    user: userObj,
+                    isOwner: userObj?.role === "owner",
+                    isAuthenticated: true,
+                };
+                set({ ...authData, isLoading: false, showLogin: false });
+                saveAuth(authData);
+                toast.success(data.message || (mode === "register" ? "Registered with Google!" : "Logged in with Google!"));
+                return true;
+            } else {
+                set({ isLoading: false });
+                toast.error(data.message || "Google auth failed");
+                return false;
+            }
+        } catch (error) {
+            set({ isLoading: false, error: error?.response?.data?.message || error?.message || "Google auth error" });
+            toast.error(error.response?.data?.message || error.message || "Google auth error");
+            return false;
         }
     },
 
     changeRole: async () => {
         try {
-            const { data } = await axiosInstance.post("/api/owner/change-role");
+            const { data } = await axiosInstance.post("/api/v1/owner/change-role");
             if (data?.success) {
                 const currentUser = get().user;
                 const updatedUser = { ...currentUser, role: "owner" };
@@ -229,6 +279,11 @@ export const useAuthStore = create((set, get) => ({
     },
 
     logout: async (navigate) => {
+        try {
+            await axiosInstance.post("/api/v1/auth/logout");
+        } catch {
+            // ignore network errors on logout
+        }
         set({
             user: null,
             token: null,
@@ -253,11 +308,10 @@ export const useAuthStore = create((set, get) => ({
         });
     },
 
-
     fetchAllUsers: async () => {
         set({ allUsersLoading: true });
         try {
-            const { data } = await axiosInstance.get("/api/owner/allusers");
+            const { data } = await axiosInstance.get("/api/v1/owner/allusers");
             if (data.success) {
                 set({ allUsers: data.users, allUsersLoading: false });
             } else {
@@ -272,7 +326,7 @@ export const useAuthStore = create((set, get) => ({
 
     handleBlockToggle: async (userId, isBlocked) => {
         try {
-            const { data } = await axiosInstance.post("/api/owner/block-unblock", {
+            const { data } = await axiosInstance.post("/api/v1/owner/block-unblock", {
                 userId,
                 isBlocked,
             });
@@ -290,7 +344,7 @@ export const useAuthStore = create((set, get) => ({
     fetchOwnerDetails: async (ownerId) => {
         set({ ownerDetailsLoading: true });
         try {
-            const { data } = await axiosInstance.get(`/api/owner/owner-details/${ownerId}`);
+            const { data } = await axiosInstance.get(`/api/v1/owner/owner-details/${ownerId}`);
             if (data.success) {
                 set({ ownerDetails: data.owner });
             } else {
@@ -304,4 +358,3 @@ export const useAuthStore = create((set, get) => ({
     },
 
 }));
-

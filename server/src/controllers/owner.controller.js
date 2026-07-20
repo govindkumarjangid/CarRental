@@ -1,19 +1,19 @@
 import User from "../models/user.model.js";
-import imagekit from '../utils/imagekit.js';
+import imagekit from '../configs/imagekit.js';
 import Car from "../models/car.model.js";
 import Booking from "../models/booking.model.js";
 import Chat from "../models/chat.model.js";
-import wrapAsync from "../configs/wrapAsync.js";
+import asyncHandler from "../utils/asyncHandler.js";
 
 //* change role to owner
-export const changeRoleToOwner = wrapAsync(async (req, res) => {
+export const changeRoleToOwner = asyncHandler(async (req, res) => {
   const { _id } = req.user;
   await User.findByIdAndUpdate(_id, { role: "owner" });
   res.json({ success: true, message: "Now you can list cars" });
 });
 
 //* list cars
-export const addCar = wrapAsync(async (req, res) => {
+export const addCar = asyncHandler(async (req, res) => {
   const { _id } = req.user;
   const imageFile = req.file;
   const {
@@ -31,7 +31,6 @@ export const addCar = wrapAsync(async (req, res) => {
   } = req.body;
 
   if (!imageFile) return res.json({ message: "No image file provided" });
-
 
   if (!brand || !model || !year || !pricePerHour || !category || !transmission || !fuel_type || !seating_capacity || !location || !description)
     return res.json({ message: "All fields are required" });
@@ -78,24 +77,26 @@ export const addCar = wrapAsync(async (req, res) => {
 });
 
 //* get owner cars
-export const getOwnerCars = wrapAsync(async (req, res) => {
+export const getOwnerCars = asyncHandler(async (req, res) => {
   const { _id } = req.user;
   const page = parseInt(req.query.page) || 1;
   const limit = parseInt(req.query.limit) || 0;
-  
+
   if (limit > 0) {
     const skip = (page - 1) * limit;
-    const cars = await Car.find({ owner: _id }).skip(skip).limit(limit);
-    const total = await Car.countDocuments({ owner: _id });
+    const [cars, total] = await Promise.all([
+      Car.find({ owner: _id }).skip(skip).limit(limit).lean(),
+      Car.countDocuments({ owner: _id })
+    ]);
     res.json({ success: true, cars, total, page, totalPages: Math.ceil(total / limit) });
   } else {
-    const cars = await Car.find({ owner: _id });
+    const cars = await Car.find({ owner: _id }).lean();
     res.json({ success: true, cars });
   }
 });
 
 //* update car status
-export const updateCarStatus = wrapAsync(async (req, res) => {
+export const updateCarStatus = asyncHandler(async (req, res) => {
   const { _id } = req.user;
   const { carId, status } = req.body;
   const car = await Car.findById(carId);
@@ -113,7 +114,7 @@ export const updateCarStatus = wrapAsync(async (req, res) => {
 });
 
 //* delete car
-export const deleteCar = wrapAsync(async (req, res) => {
+export const deleteCar = asyncHandler(async (req, res) => {
   const { _id } = req.user;
   const { carId } = req.body;
   const car = await Car.findById(carId);
@@ -128,7 +129,7 @@ export const deleteCar = wrapAsync(async (req, res) => {
 });
 
 //* edit car
-export const editCar = wrapAsync(async (req, res) => {
+export const editCar = asyncHandler(async (req, res) => {
   const { _id } = req.user;
   const { carId, imageUrl, cleaningTime, maintenanceTime, ...data } = req.body;
   let finalImage = imageUrl;
@@ -157,7 +158,7 @@ export const editCar = wrapAsync(async (req, res) => {
 });
 
 //* update service times
-export const updateServiceTimes = wrapAsync(async (req, res) => {
+export const updateServiceTimes = asyncHandler(async (req, res) => {
   const { _id } = req.user;
   const { carId, cleaningTime, maintenanceTime } = req.body;
 
@@ -177,15 +178,17 @@ export const updateServiceTimes = wrapAsync(async (req, res) => {
   res.json({ success: true, message: "Service times updated successfully" });
 });
 
-// * get owner dashboard data
-export const getDashboardData = wrapAsync(async (req, res) => {
+// * get owner dashboard data (Optimized with Parallel execution & .lean())
+export const getDashboardData = asyncHandler(async (req, res) => {
   const { _id, role } = req.user;
 
   if (role !== "owner")
     return res.json({ success: false, message: "You are not authorized" });
 
-  const cars = await Car.find({ owner: _id });
-  const bookings = await Booking.find({ owner: _id }).populate('car').sort({ createdAt: -1 });
+  const [cars, bookings] = await Promise.all([
+    Car.find({ owner: _id }).lean(),
+    Booking.find({ owner: _id }).populate('car').sort({ createdAt: -1 }).lean(),
+  ]);
 
   const now = new Date();
   const currentMonth = now.getMonth();
@@ -256,7 +259,7 @@ export const getDashboardData = wrapAsync(async (req, res) => {
 });
 
 //* update image
-export const updateUserImage = wrapAsync(async (req, res) => {
+export const updateUserImage = asyncHandler(async (req, res) => {
   const { _id } = req.user;
   const imageFile = req.file;
 
@@ -270,7 +273,6 @@ export const updateUserImage = wrapAsync(async (req, res) => {
     folder: "/users",
     useUniqueFileName: true,
   });
-  // console.log(response);
 
   // Optimized Image URL
   const optimizedImageUrl = response.url + "?tr=w-1280,q-auto,f-webp";
@@ -281,50 +283,53 @@ export const updateUserImage = wrapAsync(async (req, res) => {
 });
 
 //* get all users (for admin)
-export const getAllUsers = wrapAsync(async (req, res) => {
+export const getAllUsers = asyncHandler(async (req, res) => {
   const page = parseInt(req.query.page) || 1;
   const limit = parseInt(req.query.limit) || 0;
-  
+
   if (limit > 0) {
     const skip = (page - 1) * limit;
-    const users = await User.find().select('-password').skip(skip).limit(limit);
-    const total = await User.countDocuments();
+    const [users, total] = await Promise.all([
+      User.find().select('-password').skip(skip).limit(limit).lean(),
+      User.countDocuments()
+    ]);
     res.json({ success: true, users, total, page, totalPages: Math.ceil(total / limit) });
   } else {
-    const users = await User.find().select('-password');
+    const users = await User.find().select('-password').lean();
     res.json({ success: true, users });
   }
 });
 
 //* block unblock user (for admin)
-export const blockUnblockUser = wrapAsync(async (req, res) => {
+export const blockUnblockUser = asyncHandler(async (req, res) => {
   const { userId, isBlocked } = req.body;
   await User.findByIdAndUpdate(userId, { isBlocked: isBlocked });
   res.json({ success: true, message: isBlocked ? "User blocked successfully" : "User unblocked successfully" });
 });
 
 //* get owner data
-export const getOwnerDetails = wrapAsync(async (req, res) => {
+export const getOwnerDetails = asyncHandler(async (req, res) => {
   const { id } = req.params;
-  // console.log(id)
-  const owner = await User.findById(id).select('-password');
+  const owner = await User.findById(id).select('-password').lean();
   res.json({ success: true, owner });
 });
 
 //* get all chats
-export const getMyChats = wrapAsync(async (req, res) => {
+export const getMyChats = asyncHandler(async (req, res) => {
   const userId = req.user._id;
 
-  const chats = await Chat.find(
-    {
-      $or: [{ user: userId }, { owner: userId }],
-    })
+  const chats = await Chat.find({
+    $or: [{ user: userId }, { owner: userId }],
+  })
     .populate("user", "name image")
     .populate("owner", "name image")
     .populate("car", "brand model image")
     .populate({
       path: "lastMessage",
       select: "message createdAt",
-    }).sort({ updatedAt: -1 });
+    })
+    .sort({ updatedAt: -1 })
+    .lean();
+
   res.json({ success: true, chats });
 });

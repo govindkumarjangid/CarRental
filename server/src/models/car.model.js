@@ -24,6 +24,11 @@ const carSchema = new mongoose.Schema({
   maintenanceTime: { type: Number, default: 60 }
 }, { timestamps: true });
 
+// Compound Performance Indexes
+carSchema.index({ owner: 1, status: 1 });
+carSchema.index({ status: 1, location: 1, category: 1 });
+carSchema.index({ createdAt: -1 });
+
 const Car = mongoose.model("Car", carSchema);
 
 export default Car;

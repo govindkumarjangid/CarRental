@@ -1,12 +1,12 @@
 import Chat from '../models/chat.model.js';
 import Message from '../models/message.model.js';
-import wrapAsync from '../configs/wrapAsync.js';
-import imagekit from '../utils/imagekit.js';
+import asyncHandler from '../utils/asyncHandler.js';
+import imagekit from '../configs/imagekit.js';
 
 // Create or get chat between user and owner
-export const getOrCreateChat = wrapAsync(async (req, res) => {
+export const getOrCreateChat = asyncHandler(async (req, res) => {
   const { userId, ownerId, carId } = req.body;
-  let chat = await Chat.findOne({ user: userId, owner: ownerId });
+  let chat = await Chat.findOne({ user: userId, owner: ownerId }).lean();
   if (!chat) {
     chat = await Chat.create({
       user: userId,
@@ -18,12 +18,12 @@ export const getOrCreateChat = wrapAsync(async (req, res) => {
 });
 
 // send messages
-export const sendMessage = wrapAsync(async (req, res) => {
+export const sendMessage = asyncHandler(async (req, res) => {
   const { chatId, from, text } = req.body;
   const files = req.files || [];
 
   const chat = await Chat.findById(chatId);
-  if (!chat) 
+  if (!chat)
     return res.status(404).json({ success: false, message: "Chat not found" });
 
 
@@ -68,10 +68,11 @@ export const sendMessage = wrapAsync(async (req, res) => {
   });
 });
 
-// get user messages
-export const getMessages = wrapAsync(async (req, res) => {
+// get user messages (Optimized with .lean())
+export const getMessages = asyncHandler(async (req, res) => {
   const { chatId } = req.query;
   const messages = await Message.find({ chatId })
-    .sort({ createdAt: 1 });
+    .sort({ createdAt: 1 })
+    .lean();
   res.json({ success: true, messages });
 });

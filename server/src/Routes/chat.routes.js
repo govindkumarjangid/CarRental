@@ -7,10 +7,17 @@ import { accessChatSchema, sendMessageSchema } from "../validators/chat.validato
 
 const chatRouter = express.Router();
 
+chatRouter
+    .route("/create-chat")
+    .post(protect, validate(accessChatSchema), getOrCreateChat);
 
-chatRouter.post('/create-chat', protect, validate(accessChatSchema), getOrCreateChat);
-chatRouter.post('/send-message', protect, upload.array('files'), validate(sendMessageSchema), sendMessage);
-chatRouter.get('/get-messages', protect, getMessages);
+chatRouter
+    .route("/send-message")
+    .post(protect, upload.array('files'), validate(sendMessageSchema), sendMessage);
+
+chatRouter
+    .route("/get-messages")
+    .get(protect, getMessages);
 
 
 export default chatRouter;

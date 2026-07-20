@@ -20,7 +20,7 @@ export const useCarStore = create((set, get) => ({
     checkAvailability: async (location, pickupDate, returnDate) => {
         set({ availableCarsLoading: true });
         try {
-            const { data } = await axiosInstance.post("/api/bookings/check-availability", {
+            const { data } = await axiosInstance.post("/api/v1/bookings/check-availability", {
                 location,
                 pickupDate,
                 returnDate,
@@ -42,7 +42,7 @@ export const useCarStore = create((set, get) => ({
     fetchCars: async () => {
         set({ carsLoading: true });
         try {
-            const { data } = await axiosInstance.get("/api/user/cars");
+            const { data } = await axiosInstance.get("/api/v1/user/cars");
             if (data.success) {
                 set({ cars: data.cars });
             } else {
@@ -58,7 +58,7 @@ export const useCarStore = create((set, get) => ({
     fetchOwnerCars: async () => {
         set({ ownerCarsLoading: true });
         try {
-            const { data } = await axiosInstance.get("/api/owner/cars");
+            const { data } = await axiosInstance.get("/api/v1/owner/cars");
             if (data.success) {
                 set({ ownerCars: data.cars });
             } else {
@@ -73,7 +73,7 @@ export const useCarStore = create((set, get) => ({
 
     updateCarStatus: async (carId, status) => {
         try {
-            const { data } = await axiosInstance.post("/api/owner/update-status", { carId, status });
+            const { data } = await axiosInstance.post("/api/v1/owner/update-status", { carId, status });
             if (data.success) {
                 toast.success(data.message);
                 get().fetchOwnerCars();
@@ -99,7 +99,7 @@ export const useCarStore = create((set, get) => ({
             });
             if (image) fd.append("image", image);
             else if (carData?.image) fd.append("imageUrl", carData.image);
-            const { data } = await axiosInstance.post("/api/owner/edit-car", fd, {
+            const { data } = await axiosInstance.post("/api/v1/owner/edit-car", fd, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },
@@ -125,7 +125,7 @@ export const useCarStore = create((set, get) => ({
             Object.entries(carData).forEach(([key, value]) => {
                 formData.append(key, value);
             });
-            const { data } = await axiosInstance.post("/api/owner/add-car", formData);
+            const { data } = await axiosInstance.post("/api/v1/owner/add-car", formData);
             if (data.success) {
                 toast.success("Car added successfully");
                 return true;
@@ -141,7 +141,7 @@ export const useCarStore = create((set, get) => ({
 
     deleteCar: async (carId) => {
         try {
-            const { data } = await axiosInstance.post("/api/owner/delete-car", { carId });
+            const { data } = await axiosInstance.post("/api/v1/owner/delete-car", { carId });
             if (data.success) {
                 toast.success("Car deleted successfully");
                 get().fetchOwnerCars();
@@ -154,7 +154,7 @@ export const useCarStore = create((set, get) => ({
     fetchUserCarDetails: async (carId) => {
         set({ carDetailsLoading: true });
         try {
-            const { data } = await axiosInstance.get(`/api/user/user-cardetails/${carId}`);
+            const { data } = await axiosInstance.get(`/api/v1/user/user-cardetails/${carId}`);
             if (data.success) {
                 set({ carDetails: data.car, carOwner: data.owner });
             } else {
@@ -168,4 +168,3 @@ export const useCarStore = create((set, get) => ({
     },
 
 }));
-

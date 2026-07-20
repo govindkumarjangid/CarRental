@@ -1,15 +1,15 @@
 import jwt from 'jsonwebtoken';
 import User from '../models/user.model.js';
 import AppError from '../utils/appError.js';
-import wrapAsync from '../configs/wrapAsync.js';
+import asyncHandler from '../utils/asyncHandler.js';
 
-export const protect = wrapAsync(async (req, res, next) => {
+export const protect = asyncHandler(async (req, res, next) => {
   let token;
 
   if (req.headers.authorization && req.headers.authorization.startsWith("Bearer ")) {
     token = req.headers.authorization.split(" ")[1];
-  } else if (req.cookies && req.cookies.jwt) {
-    token = req.cookies.jwt;
+  } else if (req.cookies && (req.cookies.accessToken || req.cookies.jwt)) {
+    token = req.cookies.accessToken || req.cookies.jwt;
   }
 
   if (!token) {
@@ -17,7 +17,8 @@ export const protect = wrapAsync(async (req, res, next) => {
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const secret = process.env.ACCESS_TOKEN_SECRET || process.env.JWT_SECRET;
+    const decoded = jwt.verify(token, secret);
 
     if (!decoded || !decoded.id)
       return next(new AppError("Not authorized, token invalid", 401));

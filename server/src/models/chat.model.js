@@ -13,8 +13,9 @@ const chatSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-
 chatSchema.index({ user: 1, owner: 1 }, { unique: true });
+chatSchema.index({ user: 1, updatedAt: -1 });
+chatSchema.index({ owner: 1, updatedAt: -1 });
 
 const Chat = mongoose.model("Chat", chatSchema);
 export default Chat;

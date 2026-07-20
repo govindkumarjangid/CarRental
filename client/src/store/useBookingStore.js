@@ -15,7 +15,7 @@ export const useBookingStore = create((set, get) => ({
     fetchUserBookings: async () => {
         set({ bookingLoading: true });
         try {
-            const { data } = await axiosInstance.get("/api/bookings/user");
+            const { data } = await axiosInstance.get("/api/v1/bookings/user");
             if (data.success) {
                 set({ bookings: data.bookings, bookingLoading: false });
             } else {
@@ -31,7 +31,7 @@ export const useBookingStore = create((set, get) => ({
     createUserBooking: async (bookingData, navigate) => {
         set({ bookingLoading: true });
         try {
-            const { data } = await axiosInstance.post("/api/bookings/create", bookingData);
+            const { data } = await axiosInstance.post("/api/v1/bookings/create", bookingData);
             if (data.success) {
                 toast.success("Booking Created");
                 set({ bookingLoading: false });
@@ -49,7 +49,7 @@ export const useBookingStore = create((set, get) => ({
     createOnlineBooking: async (bookingData) => {
         set({ bookingLoading: true });
         try {
-            const { data } = await axiosInstance.post("/api/bookings/create-online", bookingData);
+            const { data } = await axiosInstance.post("/api/v1/bookings/create-online", bookingData);
             if (data.success) {
                 set({ bookingLoading: false });
                 return data;
@@ -67,7 +67,7 @@ export const useBookingStore = create((set, get) => ({
 
     verifyPayment: async (payload) => {
         try {
-            const { data } = await axiosInstance.post("/api/bookings/verify-payment", payload);
+            const { data } = await axiosInstance.post("/api/v1/bookings/verify-payment", payload);
             return data;
         } catch (error) {
             return { success: false };
@@ -77,7 +77,7 @@ export const useBookingStore = create((set, get) => ({
     fetchOwnerBookings: async () => {
         set({ ownerBookingLoading: true });
         try {
-            const { data } = await axiosInstance.get("/api/bookings/owner");
+            const { data } = await axiosInstance.get("/api/v1/bookings/owner");
             if (data.success) {
                 set({ ownerBookings: data.bookings, ownerBookingLoading: false });
             } else {
@@ -93,7 +93,7 @@ export const useBookingStore = create((set, get) => ({
     changeBookingStatus: async (bookingId, status) => {
         set({ ownerBookingLoading: true });
         try {
-            const { data } = await axiosInstance.post("/api/bookings/change-status", {
+            const { data } = await axiosInstance.post("/api/v1/bookings/change-status", {
                 bookingId,
                 status,
             });
@@ -113,7 +113,7 @@ export const useBookingStore = create((set, get) => ({
     changePaymentStatus: async (bookingId, status) => {
         set({ ownerBookingLoading: true });
         try {
-            const { data } = await axiosInstance.post("/api/bookings/change-payment-status", {
+            const { data } = await axiosInstance.post("/api/v1/bookings/change-payment-status", {
                 bookingId,
                 status,
             });
@@ -133,7 +133,7 @@ export const useBookingStore = create((set, get) => ({
     deleteBooking: async (bookingId) => {
         set({ ownerBookingLoading: true });
         try {
-            const { data } = await axiosInstance.post("/api/bookings/delete-booking", { bookingId });
+            const { data } = await axiosInstance.post("/api/v1/bookings/delete-booking", { bookingId });
             if (data.success) {
                 toast.success(data.message);
                 await get().fetchOwnerBookings();
@@ -147,4 +147,3 @@ export const useBookingStore = create((set, get) => ({
         }
     }
 }));
-

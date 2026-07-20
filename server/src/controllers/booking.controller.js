@@ -1,25 +1,25 @@
 import Booking from "../models/booking.model.js";
 import Car from '../models/car.model.js'
 import User from '../models/user.model.js'
-import razorpay from '../utils/razorpay.js'
+import razorpay from '../configs/razorpay.js'
 import crypto from "crypto";
-import wrapAsync from "../configs/wrapAsync.js";
+import asyncHandler from "../utils/asyncHandler.js";
 import { sendEmail } from "../utils/sendEmail.js";
 import { bookingEmailTemplate, bookingConfirmationTemplate, bookingCancellationTemplate, bookingCompletedTemplate } from "../utils/emailTemplates.js";
 
-//* check avaliablity
+//* check avaliablity (Optimized using countDocuments)
 export const checkAvailability = async (car, pickupDate, returnDate) => {
-  const bookings = await Booking.find({
+  const count = await Booking.countDocuments({
     car,
     pickupDate: { $lte: returnDate },
     returnDate: { $gte: pickupDate }
   });
 
-  return bookings.length === 0;
+  return count === 0;
 };
 
 //* check avaliablity of cars
-export const checkAvaliablityofCar = wrapAsync(async (req, res) => {
+export const checkAvaliablityofCar = asyncHandler(async (req, res) => {
   const { location, pickupDate: startTime, returnDate: endTime } = req.body;
 
   if (!location || !startTime || !endTime)
@@ -27,20 +27,20 @@ export const checkAvaliablityofCar = wrapAsync(async (req, res) => {
 
   const pickupDate = new Date(startTime);
   const returnDate = new Date(endTime);
-  const car = await Car.find({ location, status: "available" });
+  const car = await Car.find({ location, status: "available" }).lean();
 
-  const avaliableCarsPromises = (car || []).map(async (car) => {
-    const isAvaliable = await checkAvailability(car._id, pickupDate, returnDate);
-    return { ...car._doc, isAvaliable: isAvaliable }
-  })
+  const avaliableCarsPromises = (car || []).map(async (carItem) => {
+    const isAvaliable = await checkAvailability(carItem._id, pickupDate, returnDate);
+    return { ...carItem, isAvaliable: isAvaliable }
+  });
 
   let avaliableCars = await Promise.all(avaliableCarsPromises);
-  avaliableCars = avaliableCars.filter(car => car.isAvaliable === true);
+  avaliableCars = avaliableCars.filter(carItem => carItem.isAvaliable === true);
   res.json({ success: true, cars: avaliableCars });
 });
 
 //* create offline booking
-export const createOfflineBooking = wrapAsync(async (req, res) => {
+export const createOfflineBooking = asyncHandler(async (req, res) => {
   const { _id } = req.user;
   const { car, startTime, endTime } = req.body;
 
@@ -52,7 +52,7 @@ export const createOfflineBooking = wrapAsync(async (req, res) => {
   if (!isAvaliable)
     return res.json({ success: false, message: "Car is not avaliable" })
 
-  const carData = await Car.findById(car);
+  const carData = await Car.findById(car).lean();
   if (!carData) return res.json({ success: false, message: "Car not found" });
 
   const durationMs = returned - picked;
@@ -75,7 +75,7 @@ export const createOfflineBooking = wrapAsync(async (req, res) => {
   });
 
   // Send booking email to user
-  const user = await User.findById(_id);
+  const user = await User.findById(_id).lean();
   const carInfo = carData;
 
   if (user?.email) {
@@ -102,7 +102,7 @@ export const createOfflineBooking = wrapAsync(async (req, res) => {
 });
 
 //* create online booking
-export const createOnlineBooking = wrapAsync(async (req, res) => {
+export const createOnlineBooking = asyncHandler(async (req, res) => {
   const { _id } = req.user;
   const { car, startTime, endTime } = req.body;
 
@@ -114,7 +114,7 @@ export const createOnlineBooking = wrapAsync(async (req, res) => {
   if (!isAvaliable)
     return res.json({ success: false, message: "Car is not avaliable" })
 
-  const carData = await Car.findById(car);
+  const carData = await Car.findById(car).lean();
   if (!carData) return res.json({ success: false, message: "Car not found" });
 
   const durationMs = returned - picked;
@@ -148,7 +148,7 @@ export const createOnlineBooking = wrapAsync(async (req, res) => {
   });
 
   // Send booking email to user
-  const user = await User.findById(_id);
+  const user = await User.findById(_id).lean();
   const carInfo = carData;
   if (user?.email) {
     await sendEmail({
@@ -181,43 +181,47 @@ export const createOnlineBooking = wrapAsync(async (req, res) => {
 });
 
 //* list user bookings
-export const getUserBookings = wrapAsync(async (req, res) => {
+export const getUserBookings = asyncHandler(async (req, res) => {
   const { _id } = req.user;
   const page = parseInt(req.query.page) || 1;
   const limit = parseInt(req.query.limit) || 0;
-  
+
   if (limit > 0) {
     const skip = (page - 1) * limit;
-    const bookings = await Booking.find({ user: _id }).populate('car').sort({ createdAt: -1 }).skip(skip).limit(limit);
-    const total = await Booking.countDocuments({ user: _id });
+    const [bookings, total] = await Promise.all([
+      Booking.find({ user: _id }).populate('car').sort({ createdAt: -1 }).skip(skip).limit(limit).lean(),
+      Booking.countDocuments({ user: _id })
+    ]);
     res.json({ success: true, bookings, total, page, totalPages: Math.ceil(total / limit) });
   } else {
-    const bookings = await Booking.find({ user: _id }).populate('car').sort({ createdAt: -1 });
+    const bookings = await Booking.find({ user: _id }).populate('car').sort({ createdAt: -1 }).lean();
     res.json({ success: true, bookings });
   }
 });
 
 //* list owner bookings
-export const getOwnerBookings = wrapAsync(async (req, res) => {
+export const getOwnerBookings = asyncHandler(async (req, res) => {
   if (req.user.role !== 'owner')
     return res.json({ success: false, message: 'Access denied' });
   const { _id } = req.user;
   const page = parseInt(req.query.page) || 1;
   const limit = parseInt(req.query.limit) || 0;
-  
+
   if (limit > 0) {
     const skip = (page - 1) * limit;
-    const bookings = await Booking.find({ owner: _id }).populate('car user').select("-user.password").sort({ createdAt: -1 }).skip(skip).limit(limit);
-    const total = await Booking.countDocuments({ owner: _id });
+    const [bookings, total] = await Promise.all([
+      Booking.find({ owner: _id }).populate('car user').select("-user.password").sort({ createdAt: -1 }).skip(skip).limit(limit).lean(),
+      Booking.countDocuments({ owner: _id })
+    ]);
     res.json({ success: true, bookings, total, page, totalPages: Math.ceil(total / limit) });
   } else {
-    const bookings = await Booking.find({ owner: _id }).populate('car user').select("-user.password").sort({ createdAt: -1 });
+    const bookings = await Booking.find({ owner: _id }).populate('car user').select("-user.password").sort({ createdAt: -1 }).lean();
     res.json({ success: true, bookings });
   }
 });
 
 //* change booking status
-export const changeBookingStatus = wrapAsync(async (req, res) => {
+export const changeBookingStatus = asyncHandler(async (req, res) => {
   const { _id } = req.user;
   const { bookingId, status } = req.body;
   const booking = await Booking.findById(bookingId).populate('car user');
@@ -245,7 +249,7 @@ export const changeBookingStatus = wrapAsync(async (req, res) => {
     const originalDurationMs = new Date(booking.returnDate) - new Date(booking.pickupDate);
     booking.pickupDate = new Date();
     booking.returnDate = new Date(booking.pickupDate.getTime() + originalDurationMs);
-    
+
     const car = await Car.findById(booking.car._id);
     if (car) {
       car.status = "unavailable";
@@ -316,7 +320,7 @@ export const changeBookingStatus = wrapAsync(async (req, res) => {
 });
 
 //* change payment status
-export const changePaymentStatus = wrapAsync(async (req, res) => {
+export const changePaymentStatus = asyncHandler(async (req, res) => {
   const { _id } = req.user;
   const { bookingId, status } = req.body;
   const booking = await Booking.findById(bookingId);
@@ -328,7 +332,7 @@ export const changePaymentStatus = wrapAsync(async (req, res) => {
 });
 
 //* verify payment
-export const verifyPayment = wrapAsync(async (req, res) => {
+export const verifyPayment = asyncHandler(async (req, res) => {
   const { razorpayOrderId, razorpayPaymentId, razorpaySignature, status, bookingId } = req.body;
 
   if (!razorpayOrderId || !razorpayPaymentId || !razorpaySignature)
@@ -415,7 +419,7 @@ export const verifyPayment = wrapAsync(async (req, res) => {
 });
 
 //* delete booking
-export const deleteBooking = wrapAsync(async (req, res) => {
+export const deleteBooking = asyncHandler(async (req, res) => {
   const { _id } = req.user;
   const { bookingId } = req.body;
   const booking = await Booking.findById(bookingId);
