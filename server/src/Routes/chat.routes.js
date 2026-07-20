@@ -1,7 +1,7 @@
 import express from "express";
 import { protect } from "../middleware/auth.middleware.js";
 import { getMessages, getOrCreateChat, sendMessage } from "../controllers/chat.controller.js";
-import upload from "../configs/multer.js";
+import { upload } from "../configs/cloudinary.js";
 import { validate } from "../middleware/validate.middleware.js";
 import { accessChatSchema, sendMessageSchema } from "../validators/chat.validator.js";
 

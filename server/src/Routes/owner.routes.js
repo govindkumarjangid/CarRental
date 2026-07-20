@@ -14,7 +14,7 @@ import {
     updateUserImage
 } from '../controllers/owner.controller.js';
 import { protect } from '../middleware/auth.middleware.js'
-import upload from '../configs/multer.js';
+import { upload } from '../configs/cloudinary.js';
 import { validate } from '../middleware/validate.middleware.js';
 import { addCarSchema, editCarSchema, updateCarStatusSchema } from '../validators/car.validator.js';
 

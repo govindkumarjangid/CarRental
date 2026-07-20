@@ -1,7 +1,6 @@
 import User from "../models/user.model.js";
 import Car from "../models/car.model.js";
 import Review from "../models/review.model.js";
-import imagekit from "../configs/imagekit.js";
 import asyncHandler from "../utils/asyncHandler.js";
 import ApiError from "../utils/ApiError.js";
 import ApiResponse from "../utils/ApiResponse.js";
@@ -53,20 +52,11 @@ export const getCars = asyncHandler(async (req, res) => {
 export const addReview = asyncHandler(async (req, res) => {
   const { _id } = req.user;
   const { name, email, location, rating, review } = req.body;
-  const imageFile = req.file;
 
-  if (!imageFile) {
-    throw new ApiError(400, "No review image provided");
-  }
+  console.log("Received review data:", { name, email, location, rating, review });
+  console.log("Received file data:", req.file);
 
-  const response = await imagekit.files.upload({
-    file: imageFile.buffer.toString("base64"),
-    fileName: imageFile.originalname,
-    folder: "/reviews",
-    useUniqueFileName: true,
-  });
-
-  const optimizedImageUrl = response.url + "?tr=w-1280,q-auto,f-webp";
+  const optimizedImageUrl = req.file ? req.file.path : "";
 
   const newReview = await Review.create({
     userId: _id,

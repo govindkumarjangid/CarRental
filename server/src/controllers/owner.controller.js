@@ -1,5 +1,4 @@
 import User from "../models/user.model.js";
-import imagekit from '../configs/imagekit.js';
 import Car from "../models/car.model.js";
 import Booking from "../models/booking.model.js";
 import Chat from "../models/chat.model.js";
@@ -15,7 +14,7 @@ export const changeRoleToOwner = asyncHandler(async (req, res) => {
 //* list cars
 export const addCar = asyncHandler(async (req, res) => {
   const { _id } = req.user;
-  const imageFile = req.file;
+
   const {
     brand,
     model,
@@ -30,23 +29,10 @@ export const addCar = asyncHandler(async (req, res) => {
     description,
   } = req.body;
 
-  if (!imageFile) return res.json({ message: "No image file provided" });
-
   if (!brand || !model || !year || !pricePerHour || !category || !transmission || !fuel_type || !seating_capacity || !location || !description)
     return res.json({ message: "All fields are required" });
 
-  // Upload to ImageKit
-  const response = await imagekit.files.upload({
-    file: imageFile.buffer.toString("base64"),
-    fileName: imageFile.originalname,
-    folder: "/cars",
-    useUniqueFileName: true,
-  });
-
-  // Optimized Image URL
-  const optimizedImageUrl = response.url + "?tr=w-1280,q-auto,f-avif";
-
-  const image = optimizedImageUrl;
+  const image = req.file.path;
 
   const { cleaningTime, maintenanceTime } = req.body;
   let finalStatus = "available";
@@ -146,12 +132,7 @@ export const editCar = asyncHandler(async (req, res) => {
     updateData.status = "unavailable";
 
   if (req.file) {
-    const uploaded = await imagekit.files.upload({
-      file: req.file.buffer.toString("base64"),
-      fileName: req.file.originalname,
-      folder: "/cars",
-    });
-    finalImage = uploaded.url;
+    finalImage = req.file.path;
   }
   await Car.findByIdAndUpdate(carId, { ...updateData, image: finalImage });
   return res.json({ success: true, message: "Car updated successfully" });
@@ -266,20 +247,9 @@ export const updateUserImage = asyncHandler(async (req, res) => {
   if (!imageFile)
     return res.status(400).json({ message: "No image file provided" });
 
-  // Upload to ImageKit
-  const response = await imagekit.files.upload({
-    file: imageFile.buffer.toString("base64"),
-    fileName: imageFile.originalname,
-    folder: "/users",
-    useUniqueFileName: true,
-  });
-
-  // Optimized Image URL
-  const optimizedImageUrl = response.url + "?tr=w-1280,q-auto,f-webp";
-
-  const image = optimizedImageUrl;
+  const image = imageFile.path;
   await User.findByIdAndUpdate(_id, { image });
-  res.json({ success: true, message: "Image updated" });
+  res.json({ success: true, message: "Image updated", image });
 });
 
 //* get all users (for admin)

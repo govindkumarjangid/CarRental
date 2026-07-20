@@ -34,7 +34,10 @@ const TestimonialForm = () => {
 			formData.append("location", form.location);
 			formData.append("rating", form.rating);
 			formData.append("review", form.review);
-			formData.append("image", image);
+			if (image) {
+				formData.append("image", image);
+			}
+			console.log("Form Data to be submitted:", Object.fromEntries(formData.entries()));
 
 			await addReview(formData);
 		} catch (error) {

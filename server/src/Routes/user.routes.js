@@ -11,7 +11,7 @@ import {
   loginUser,
 } from '../controllers/auth.controller.js';
 import { protect } from '../middleware/auth.middleware.js';
-import upload from '../configs/multer.js';
+import { upload } from '../configs/cloudinary.js';
 import { validate } from '../middleware/validate.middleware.js';
 import { registerSchema, loginSchema } from '../validators/auth.validator.js';
 import { addReviewSchema } from '../validators/review.validator.js';

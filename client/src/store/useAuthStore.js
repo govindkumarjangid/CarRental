@@ -95,7 +95,9 @@ export const useAuthStore = create((set, get) => ({
 
     addReview: async (formData) => {
         try {
+            // console.log("Submitting review with formData:", Object.fromEntries(formData.entries()));
             const { data } = await axiosInstance.post("/api/v1/user/add-review", formData);
+            // console.log("Add Review Response:", data);
             if (data.success) {
                 toast.success(data.message);
                 set({ showReview: false });

@@ -56,6 +56,14 @@ app.use((err, req, res, next) => {
   err.statusCode = err.statusCode || 500;
   err.status = err.status || 'error';
 
+  // Handle client request cancellation during file upload
+  if (err.message === 'Request aborted' || err.code === 'ECONNABORTED') {
+    return res.status(400).json({
+      success: false,
+      message: 'Upload cancelled by client or request aborted'
+    });
+  }
+
   // Handle specific database and JWT errors
   if (err.name === 'CastError') {
     err.statusCode = 400;

@@ -1,7 +1,6 @@
 import Chat from '../models/chat.model.js';
 import Message from '../models/message.model.js';
 import asyncHandler from '../utils/asyncHandler.js';
-import imagekit from '../configs/imagekit.js';
 
 // Create or get chat between user and owner
 export const getOrCreateChat = asyncHandler(async (req, res) => {
@@ -27,20 +26,11 @@ export const sendMessage = asyncHandler(async (req, res) => {
     return res.status(404).json({ success: false, message: "Chat not found" });
 
 
-  const attachments = [];
-  for (const file of files) {
-    const response = await imagekit.files.upload({
-      file: file.buffer.toString("base64"),
-      fileName: file.originalname,
-      folder: "/chat_attachments",
-    });
-
-    attachments.push({
-      url: response.url,
-      name: file.originalname,
-      type: file.mimetype.startsWith("image/") ? "image" : "file",
-    });
-  }
+  const attachments = files.map((file) => ({
+    url: file.path,
+    name: file.originalname,
+    type: file.mimetype.startsWith("image/") ? "image" : "file",
+  }));
 
   const newMessage = await Message.create({
     chatId,

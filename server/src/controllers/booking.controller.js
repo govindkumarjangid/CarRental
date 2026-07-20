@@ -383,7 +383,7 @@ export const verifyPayment = asyncHandler(async (req, res) => {
     status: "confirmed",
     pickupDate: newPickupDate,
     returnDate: newReturnDate
-  }, { new: true }).populate('car user');
+  }, { returnDocument: 'after' }).populate('car user');
 
   if (booking && booking.car) {
     const car = await Car.findById(booking.car._id);

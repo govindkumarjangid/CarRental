@@ -99,7 +99,7 @@ export const initSocket = (server) => {
                         locationName,
                         lastUpdated: new Date()
                     },
-                    { upsert: true, new: true }
+                    { upsert: true, returnDocument: 'after' }
                 );
 
                 locationSaveThrottler.set(carId, now);
