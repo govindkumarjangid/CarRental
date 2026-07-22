@@ -1,5 +1,3 @@
-import logo from "./logo.svg";
-import banner_car_image from "./banner_car_image.png";
 import {
 	Plus,
 	Car,
@@ -136,9 +134,9 @@ export const iconList = {
 };
 
 export const assets = {
-	logo,
+	logo: "/svgs/logo.svg",
 	main_car: "/main_car.png",
-	banner_car_image,
+	banner_car_image: "/images/banner_car_image.png",
 };
 
 export const menuLinks = [
@@ -160,4 +158,3 @@ export const ownerMenuLinks = [
 	{ name: "All Users", path: "/owner/users", icon: <Users /> },
 	{ name: "All Chats", path: "/owner/chats", icon: <MessageCircleMore /> }
 ];
-

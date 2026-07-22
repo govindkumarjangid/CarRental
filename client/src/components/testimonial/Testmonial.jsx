@@ -1,7 +1,39 @@
 import { useEffect } from "react";
 import { useAuthStore } from "../../store/useAuthStore.js";
 import MarqueeRow from "./MarqueeRow.jsx";
-import { iconList, Title } from "../../index.js";
+import { Title } from "../../index.js";
+import { Plus } from "lucide-react";
+
+const defaultReviews = [
+	{
+		_id: "1",
+		name: "Rahul Sharma",
+		location: "Jaipur, Rajasthan",
+		rating: 5,
+		review: "Best rental service! Rented a BMW for my weekend trip to Udaipur. Flawless car condition and 2-minute instant pickup.",
+	},
+	{
+		_id: "2",
+		name: "Ananya Verma",
+		location: "Mumbai, Maharashtra",
+		rating: 5,
+		review: "Extremely smooth booking process. The Tesla Model S was super clean and battery was fully charged. 10/10 experience!",
+	},
+	{
+		_id: "3",
+		name: "Vikram Malhotra",
+		location: "Delhi NCR",
+		rating: 5,
+		review: "Prompt customer support and zero hidden costs. Rented an Audi A6 for business meetings. Will definitely book again.",
+	},
+	{
+		_id: "4",
+		name: "Priya Patel",
+		location: "Ahmedabad, Gujarat",
+		rating: 5,
+		review: "Affordable luxury rates and door-step delivery. CarRental made our family road trip unforgettable!",
+	}
+];
 
 const Testmonial = () => {
 	const { reviews, setShowReview, fetchReviews } = useAuthStore();
@@ -10,33 +42,36 @@ const Testmonial = () => {
 		fetchReviews();
 	}, []);
 
+	const displayReviews = reviews && reviews.length > 0 ? reviews : defaultReviews;
+
 	return (
-		<div className="max-w-8xl m-auto py-28 px-6 md:px-16 lg:px-24 ">
-
-			<Title
-				title="What Our Customers Say"
-				subTitle="Discover why discerning travelers choose StayVenture for their luxury accomodations around the world."
-			/>
-
-			{/* add review button  */}
-			<div className="flex justify-end px-3 max-w-7xl m-auto">
-				<button
-					onClick={() => setShowReview(true)}
-					className="flex group items-center justify-center gap-2 px-3 py-0.5 border-2 border-gray-500 text-gray-600 hover:bg-primary rounded-xl mt-18 cursor-pointer hover:text-light hover:border-light active:scale-98 transition-all duration-300">
-					Add
-				</button>
-			</div>
-
-			{/* testimonial cards marquee  */}
-			<section className="relative py-10 mt-10 w-full max-w-7xl overflow-hidden px-3 sm:px-6 mx-auto">
-				<div className="absolute left-0 top-0 h-full w-10 z-10 pointer-events-none bg-linear-to-r from-white  to-transparent" />
-				<div className="space-y-7">
-					<MarqueeRow items={reviews} reverse={false} />
-					<MarqueeRow items={reviews} reverse={true} />
+		<div className="w-full py-24 bg-slate-50 border-t border-slate-100">
+			<div className="max-w-7xl mx-auto px-6 md:px-12">
+				<div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-10">
+					<div className="text-left w-full sm:w-auto">
+						<Title
+							title="Customer Reviews"
+							subTitle="Read what our satisfied drivers have to say about their rental experience."
+						/>
+					</div>
+					<button
+						onClick={() => setShowReview(true)}
+						className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white border border-gray-300 text-gray-800 font-bold text-sm hover:border-primary hover:text-primary transition-all shadow-xs active:scale-98 cursor-pointer shrink-0">
+						<Plus size={16} />
+						<span>Write Review</span>
+					</button>
 				</div>
-				<div className="absolute right-0 top-0 h-full w-10 z-10 pointer-events-none bg-linear-to-l from-white  to-transparent" />
-			</section>
 
+				{/* Testimonial Cards Marquee */}
+				<section className="relative py-4 w-full overflow-hidden">
+					<div className="absolute left-0 top-0 h-full w-16 z-10 pointer-events-none bg-gradient-to-r from-slate-50 to-transparent" />
+					<div className="space-y-6">
+						<MarqueeRow items={displayReviews} reverse={false} />
+						<MarqueeRow items={displayReviews} reverse={true} />
+					</div>
+					<div className="absolute right-0 top-0 h-full w-16 z-10 pointer-events-none bg-gradient-to-l from-slate-50 to-transparent" />
+				</section>
+			</div>
 		</div>
 	);
 };

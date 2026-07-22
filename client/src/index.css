@@ -1,13 +1,11 @@
 @import "tailwindcss";
 
-/* Global Font */
 * {
-      font-family: "Outfit", monospace;
+      font-family: "Outfit", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       scrollbar-width: thin;
       scrollbar-color: #2563EB transparent;
 }
 
-/* Reset */
 html,
 body {
       margin: 0;
@@ -16,6 +14,9 @@ body {
       overflow-y: hidden;
       height: 100%;
       width: 100%;
+      background-color: #f8fafc;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
 }
 
 /* Dynamic Viewport Height */
@@ -27,11 +28,11 @@ body {
 
 /* Text Selection */
 body::selection {
-      background-color: #0051ff89;
+      background-color: #2563EB;
       color: #ffffff;
 }
 
-/* Theme */
+/* Theme Design System Tokens */
 @theme {
       --color-primary: #2563EB;
       --color-primary-dull: #1F58D8;
@@ -39,16 +40,102 @@ body::selection {
       --color-main-bg: #131414;
       --color-second-bg: #333435;
 
-      /* Standardize border radius globally to rounded-xl (0.75rem) */
+      /* Standardize border radius globally to rounded-xl (0.75rem) & 2xl (1rem) */
       --radius-sm: 0.75rem;
       --radius-md: 0.75rem;
       --radius-lg: 0.75rem;
       --radius-xl: 0.75rem;
-      --radius-2xl: 0.75rem;
-      --radius-3xl: 0.75rem;
+      --radius-2xl: 1rem;
+      --radius-3xl: 1.25rem;
 }
 
+/* Global Button Hover & Active Animations */
+button {
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
 
+button:hover {
+      transform: translateY(-1px);
+}
+
+button:active {
+      transform: scale(0.98);
+}
+
+/* Standardized Button Classes */
+.btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.65rem 1.25rem;
+      background-color: #2563EB;
+      color: #ffffff;
+      font-weight: 700;
+      font-size: 0.875rem;
+      border-radius: 0.75rem;
+      border: 1px solid transparent;
+      box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2);
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: pointer;
+      user-select: none;
+}
+
+.btn-primary:hover {
+      background-color: #1F58D8;
+      box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.3);
+      transform: translateY(-2px);
+}
+
+.btn-primary:active {
+      transform: scale(0.98);
+}
+
+.btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.65rem 1.25rem;
+      background-color: #ffffff;
+      color: #1f2937;
+      font-weight: 700;
+      font-size: 0.875rem;
+      border-radius: 0.75rem;
+      border: 1.5px solid #e2e8f0;
+      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: pointer;
+}
+
+.btn-secondary:hover {
+      background-color: #f8fafc;
+      border-color: rgba(37, 99, 235, 0.4);
+      color: #2563EB;
+      transform: translateY(-2px);
+}
+
+.btn-secondary:active {
+      transform: scale(0.98);
+}
+
+/* Standardized Cards */
+.app-card {
+      background-color: #ffffff;
+      border-radius: 1rem;
+      border: 1px solid #f1f5f9;
+      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      overflow: hidden;
+}
+
+.app-card:hover {
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+      border-color: rgba(37, 99, 235, 0.2);
+      transform: translateY(-3px);
+}
+
+/* Scrollbars */
 *::-webkit-scrollbar {
       width: 4px;
       height: 4px;
@@ -71,7 +158,6 @@ body::selection {
       background-color: #1E40AF;
 }
 
-
 .no-scrollbar {
       -ms-overflow-style: none !important;
       scrollbar-width: none !important;
@@ -80,7 +166,6 @@ body::selection {
 .no-scrollbar::-webkit-scrollbar {
       display: none;
 }
-
 
 @keyframes orbit {
       0% {
@@ -109,7 +194,6 @@ body::selection {
             transform-origin: 5px 36px;
       }
 }
-
 
 @keyframes shimmer-gpu {
       0% {
@@ -144,6 +228,6 @@ body::selection {
 
 /* Custom Car-Rental/WhatsApp Style Chat Doodle Pattern */
 .chat-pattern-bg {
-  background-color: #f1f5f9;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180' viewBox='0 0 200 200'%3E%3Cg fill='none' stroke='%2364748b' stroke-width='0.85' stroke-opacity='0.25' stroke-linecap='round' stroke-linejoin='round'%3E%3C!-- Doodle 1: Car --%3E%3Cg transform='translate(20, 20) rotate(-12) scale(3.2)'%3E%3Cpath d='M0 5h12v4H0zm2-3h8l1 3H1z'/%3E%3Ccircle cx='3' cy='11' r='1'/%3E%3Ccircle cx='9' cy='11' r='1'/%3E%3C/g%3E%3C!-- Doodle 2: Heart --%3E%3Cg transform='translate(110, 20) rotate(35) scale(3.2)'%3E%3Cpath d='M10 5c-1-1.5-3-1.5-4 0l-.5.5-.5-.5c-1-1.5-3-1.5-4 0-1 1-1 3.5 0 5l4.5 4.5 4.5-4.5c1-1.5 1-4 0-5z'/%3E%3C/g%3E%3C!-- Doodle 3: Key --%3E%3Cg transform='translate(65, 60) rotate(-25) scale(3.2)'%3E%3Ccircle cx='3' cy='3' r='2.5'/%3E%3Cpath d='M5.5 3h8v2h-1.5v-2h-1.5v2h-1.5'/%3E%3C/g%3E%3C!-- Doodle 4: Smile --%3E%3Cg transform='translate(155, 50) rotate(15) scale(3.2)'%3E%3Ccircle cx='5' cy='5' r='5'/%3E%3Cpath d='M3.2 3.8a.5.5 0 1 1 1 0M6.8 3.8a.5.5 0 1 1 1 0M2.5 7.5q3 2 5 0'/%3E%3C/g%3E%3C!-- Doodle 5: Cloud --%3E%3Cg transform='translate(25, 100) rotate(5) scale(3.2)'%3E%3Cpath d='M0 4a2 2 0 0 1 3.5-1.5 2.5 2.5 0 0 1 4.5 1 2 2 0 0 1 1 3H0z'/%3E%3C/g%3E%3C!-- Doodle 6: Coffee --%3E%3Cg transform='translate(110, 115) rotate(-15) scale(3.2)'%3E%3Cpath d='M1 4h8v4a3 3 0 0 1-6 0V4z M9 5h1.5a1.5 1.5 0 0 1 1.5 1.5v0a1.5 1.5 0 0 1-1.5 1.5H9'/%3E%3Cpath d='M2.5 1q1-1 0.5 0 M5 1q1-1 0.5 0 M7.5 1q1-1 0.5 0'/%3E%3C/g%3E%3C!-- Doodle 7: Note --%3E%3Cg transform='translate(65, 160) rotate(12) scale(3.2)'%3E%3Ccircle cx='2' cy='8' r='1.5'/%3E%3Cpath d='M3.5 8v-7l5-1.5v7'/%3E%3Ccircle cx='8.5' cy='6.5' r='1.5'/%3E%3C/g%3E%3C!-- Doodle 8: Steering Wheel --%3E%3Cg transform='translate(155, 155) rotate(20) scale(2.6)'%3E%3Ccircle cx='6' cy='6' r='6' stroke='%2364748b' stroke-width='1.2' fill='none'/%3E%3Cpath d='M6 0v12M0 6h12'/%3E%3C/g%3E%3C!-- Doodle 9: Pin --%3E%3Cg transform='translate(20, 180) scale(2.6)'%3E%3Cpath d='M5 0c-2.7 0-5 2.3-5 5 0 4.5 5 9 5 9s5-4.5 5-9c0-2.7-2.3-5-5-5zm0 7a2 2 0 1 1 0-4 2 2 0 0 1 0 4z'/%3E%3C/g%3E%3C!-- Filler Sparkles --%3E%3Cg transform='translate(65, 15) scale(2.6)'%3E%3Cpath d='M0 2l1.5-3 1.5 3-1.5 1.5z'/%3E%3C/g%3E%3Cg transform='translate(20, 60) scale(2.6)'%3E%3Cpath d='M0 2l1.5-3 1.5 3-1.5 1.5z'/%3E%3C/g%3E%3Cg transform='translate(155, 100) scale(2.6)'%3E%3Cpath d='M0 2l1.5-3 1.5 3-1.5 1.5z'/%3E%3C/g%3E%3Cg transform='translate(110, 180) scale(2.6)'%3E%3Cpath d='M0 2l1.5-3 1.5 3-1.5 1.5z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      background-color: #f1f5f9;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180' viewBox='0 0 200 200'%3E%3Cg fill='none' stroke='%2364748b' stroke-width='0.85' stroke-opacity='0.25' stroke-linecap='round' stroke-linejoin='round'%3E%3C!-- Doodle 1: Car --%3E%3Cg transform='translate(20, 20) rotate(-12) scale(3.2)'%3E%3Cpath d='M0 5h12v4H0zm2-3h8l1 3H1z'/%3E%3Ccircle cx='3' cy='11' r='1'/%3E%3Ccircle cx='9' cy='11' r='1'/%3E%3C/g%3E%3C!-- Doodle 2: Heart --%3E%3Cg transform='translate(110, 20) rotate(35) scale(3.2)'%3E%3Cpath d='M10 5c-1-1.5-3-1.5-4 0l-.5.5-.5-.5c-1-1.5-3-1.5-4 0-1 1-1 3.5 0 5l4.5 4.5 4.5-4.5c1-1.5 1-4 0-5z'/%3E%3C/g%3E%3C!-- Doodle 3: Key --%3E%3Cg transform='translate(65, 60) rotate(-25) scale(3.2)'%3E%3Ccircle cx='3' cy='3' r='2.5'/%3E%3Cpath d='M5.5 3h8v2h-1.5v-2h-1.5v2h-1.5'/%3E%3C/g%3E%3C!-- Doodle 4: Smile --%3E%3Cg transform='translate(155, 50) rotate(15) scale(3.2)'%3E%3Ccircle cx='5' cy='5' r='5'/%3E%3Cpath d='M3.2 3.8a.5.5 0 1 1 1 0M6.8 3.8a.5.5 0 1 1 1 0M2.5 7.5q3 2 5 0'/%3E%3C/g%3E%3C!-- Doodle 5: Cloud --%3E%3Cg transform='translate(25, 100) rotate(5) scale(3.2)'%3E%3Cpath d='M0 4a2 2 0 0 1 3.5-1.5 2.5 2.5 0 0 1 4.5 1 2 2 0 0 1 1 3H0z'/%3E%3C/g%3E%3C!-- Doodle 6: Coffee --%3E%3Cg transform='translate(110, 115) rotate(-15) scale(3.2)'%3E%3Cpath d='M1 4h8v4a3 3 0 0 1-6 0V4z M9 5h1.5a1.5 1.5 0 0 1 1.5 1.5H9'/%3E%3Cpath d='M2.5 1q1-1 0.5 0 M5 1q1-1 0.5 0 M7.5 1q1-1 0.5 0'/%3E%3C/g%3E%3C!-- Doodle 7: Note --%3E%3Cg transform='translate(65, 160) rotate(12) scale(3.2)'%3E%3Ccircle cx='2' cy='8' r='1.5'/%3E%3Cpath d='M3.5 8v-7l5-1.5v7'/%3E%3Ccircle cx='8.5' cy='6.5' r='1.5'/%3E%3C/g%3E%3C!-- Doodle 8: Steering Wheel --%3E%3Cg transform='translate(155, 155) rotate(20) scale(2.6)'%3E%3Ccircle cx='6' cy='6' r='6' stroke='%2364748b' stroke-width='1.2' fill='none'/%3E%3Cpath d='M6 0v12M0 6h12'/%3E%3C/g%3E%3C!-- Doodle 9: Pin --%3E%3Cg transform='translate(20, 180) scale(2.6)'%3E%3Cpath d='M5 0c-2.7 0-5 2.3-5 5 0 4.5 5 9 5 9s5-4.5 5-9c0-2.7-2.3-5-5-5zm0 7a2 2 0 1 1 0-4 2 2 0 0 1 0 4z'/%3E%3C/g%3E%3C!-- Filler Sparkles --%3E%3Cg transform='translate(65, 15) scale(2.6)'%3E%3Cpath d='M0 2l1.5-3 1.5 3-1.5 1.5z'/%3E%3C/g%3E%3Cg transform='translate(20, 60) scale(2.6)'%3E%3Cpath d='M0 2l1.5-3 1.5 3-1.5 1.5z'/%3E%3C/g%3E%3Cg transform='translate(155, 100) scale(2.6)'%3E%3Cpath d='M0 2l1.5-3 1.5 3-1.5 1.5z'/%3E%3C/g%3E%3Cg transform='translate(110, 180) scale(2.6)'%3E%3Cpath d='M0 2l1.5-3 1.5 3-1.5 1.5z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
 }

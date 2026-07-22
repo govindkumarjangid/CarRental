@@ -1,23 +1,18 @@
-import { cityList, assets } from "../../assets/assets.jsx";
+import { cityList } from "../../assets/assets.jsx";
 import { useCarStore } from "../../store/useCarStore.js";
 import { useState } from "react";
-import { motion, AnimatePresence } from "motion/react";
+import { motion } from "motion/react";
 import { useNavigate } from "react-router-dom";
-import { Search, Loader } from "lucide-react";
-
-import { ResponsiveImage, CarAvailablityModal } from "../../index.js";
-
-
+import { Search, Loader, Star, CheckCircle, ArrowRight, Shield, Car, MapPin, Sparkles } from "lucide-react";
+import { CarAvailablityModal } from "../../index.js";
 const Hero = () => {
-
 	const navigate = useNavigate();
-
 	const { checkAvailability, availableCars, availableCarsLoading: loading } = useCarStore();
 
 	const [pickupDate, setPickupDate] = useState("");
 	const [returnDate, setReturnDate] = useState("");
 	const [pickupLocation, setPickupLocation] = useState("");
-	const [open, setOpen] = useState(true);
+	const [open, setOpen] = useState(false);
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
@@ -25,52 +20,97 @@ const Hero = () => {
 		setOpen(true);
 	};
 
-	const inputClasses = "text-sm text-gray-800 bg-gray-50 p-2 px-4 rounded-xl outline-none border-2 border-gray-200 focus:border-primary focus:ring-3 focus:ring-primary/50 font-medium transition-all cursor-pointer";
+	const inputClasses =
+		"w-full text-sm text-gray-800 bg-white/90 p-3 px-4 rounded-xl outline-none border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/30 font-semibold transition-all cursor-pointer shadow-xs hover:border-gray-300";
 
 	return (
-		<>
-			<div className="max-w-8xl m-auto flex flex-col justify-center items-center gap-6 bg-light text-center px-2">
+		<div className="relative w-full min-h-[85vh] lg:min-h-[90vh] bg-linear-to-b from-[#EEF6FF]/90 via-[#F4F9FF]/80 to-white flex flex-col justify-between overflow-hidden"
+			style={{
+				backgroundImage: "url('/images/main_hero_car.png')",
+				backgroundSize: "cover",
+				backgroundPosition: "center",
+				backgroundRepeat: "no-repeat",
+			}}
+		>
 
-				{/* heading  */}
-				<motion.h1
-					initial={{ opacity: 0 }}
-					whileInView={{ opacity: 1 }}
-					viewport={{ once: true }}
-					transition={{ duration: 0.2, ease: "easeOut" }}
-					style={{ willChange: "opacity" }}
-					className="text-4xl md:text-5xl font-bold text-gray-900 mt-15">
-					Luxury cars on Rent
-				</motion.h1>
+			{/* Top Hero Container */}
+			<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 md:pt-12 pb-16 w-full flex flex-col items-center relative z-10">
 
-				<motion.p
-					initial={{ opacity: 0 }}
-					whileInView={{ opacity: 1 }}
-					viewport={{ once: true }}
-					transition={{ duration: 0.2, ease: "easeOut" }}
-					style={{ willChange: "opacity" }}
-					className='text-md text-gray-800 font-medium'>Experience the pinnacle of automotive excellence, curated for your journey.</motion.p>
+				{/* Top Pill Tag */}
+				<motion.div
+					initial={{ opacity: 0, y: -15 }}
+					animate={{ opacity: 1, y: 0 }}
+					transition={{ duration: 0.3 }}
+					className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/90 border border-primary/20 backdrop-blur-md shadow-xs mb-6">
+					<Sparkles size={14} className="text-primary animate-pulse" />
+					<span className="text-xs sm:text-sm font-bold text-gray-800 tracking-wide">
+						BMW • Mercedes • Audi • Tesla
+					</span>
+				</motion.div>
 
-				{/* check car availability form  */}
-				<motion.form
-					onSubmit={handleSubmit}
-					initial={{ opacity: 0 }}
-					whileInView={{ opacity: 1 }}
-					viewport={{ once: true }}
-					transition={{ duration: 0.2, ease: "easeOut" }}
-					style={{ willChange: "opacity" }}
-					className="flex flex-col md:flex-row items-center md:items-center justify-between px-4 py-5 rounded-xl w-full max-w-120 md:max-w-200 bg-white shadow-sm border border-gray-200">
-					<div className="flex flex-col md:flex-row items-center md:items-center md:justify-center gap-10 md:ml-8">
-						<div className="flex flex-row items-center gap-2 md:flex-col">
-							<label htmlFor="pickup-location" className="sr-only">Pickup Location</label>
-							<p id="location-label" className="px-1 text-sm text-gray-700 font-medium text-center ">
-								{pickupLocation || "Please select location"}
-							</p>
+				{/* Main Headline & Left CTA */}
+				<div className="max-w-4xl text-center mb-8">
+					<motion.h1
+						initial={{ opacity: 0, y: 15 }}
+						animate={{ opacity: 1, y: 0 }}
+						transition={{ duration: 0.4 }}
+						className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-gray-900 tracking-tight leading-tight">
+						Luxury Cars on <span className="bg-gradient-to-r from-primary to-blue-700 bg-clip-text text-transparent">Rent</span>
+					</motion.h1>
+
+					<motion.p
+						initial={{ opacity: 0, y: 15 }}
+						animate={{ opacity: 1, y: 0 }}
+						transition={{ duration: 0.4, delay: 0.1 }}
+						className="mt-4 text-base sm:text-lg lg:text-xl text-gray-600 font-semibold max-w-2xl mx-auto">
+						Book your dream car in under 2 minutes. Experience top-tier performance with zero hassle.
+					</motion.p>
+
+					{/* Dual CTA Buttons */}
+					<motion.div
+						initial={{ opacity: 0, y: 15 }}
+						animate={{ opacity: 1, y: 0 }}
+						transition={{ duration: 0.4, delay: 0.15 }}
+						className="flex flex-wrap items-center justify-center gap-4 mt-6">
+						<button
+							onClick={() => {
+								document.getElementById("search-box-card")?.scrollIntoView({ behavior: "smooth" });
+							}}
+							className="px-6 py-3 rounded-xl bg-primary text-white font-bold text-sm sm:text-base hover:bg-primary-dull transition-all shadow-md hover:shadow-lg active:scale-98 cursor-pointer flex items-center gap-2">
+							Book Now
+							<ArrowRight size={18} />
+						</button>
+						<button
+							onClick={() => {
+								navigate("/cars");
+								window.scrollTo({ top: 0, behavior: "smooth" });
+							}}
+							className="px-6 py-3 rounded-xl bg-white text-gray-800 font-bold text-sm sm:text-base border border-gray-300 hover:bg-gray-50 hover:border-primary/40 transition-all shadow-xs active:scale-98 cursor-pointer">
+							Explore Cars
+						</button>
+					</motion.div>
+				</div>
+
+				{/* Floating Glassmorphic Search Card */}
+				<motion.div
+					id="search-box-card"
+					initial={{ opacity: 0, y: 20 }}
+					animate={{ opacity: 1, y: 0 }}
+					transition={{ duration: 0.4, delay: 0.2 }}
+					className="w-full max-w-4xl p-5 sm:p-7 border border-gray-500/20 my-4 z-20 rounded-xl backdrop-blur-sm">
+					<form onSubmit={handleSubmit} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 items-end">
+
+						{/* Location Field */}
+						<div className="flex flex-col gap-1.5 text-left">
+							<label htmlFor="pickup-location" className="text-xs font-bold text-gray-700 uppercase tracking-wider flex items-center gap-1.5">
+								<MapPin size={14} className="text-primary" /> Pickup Location
+							</label>
 							<select
 								id="pickup-location"
-								aria-labelledby="location-label"
+								value={pickupLocation}
 								onChange={(e) => setPickupLocation(e.target.value)}
 								className={inputClasses}>
-								<option value="">Pickup Location</option>
+								<option value="">Select Location</option>
 								{cityList.map((city, index) => (
 									<option key={index} value={city}>
 										{city}
@@ -78,107 +118,100 @@ const Hero = () => {
 								))}
 							</select>
 						</div>
-						<div className="flex flex-row items-center gap-2  md:flex-col">
-							<label
-								htmlFor="pickup-date"
-								className="text-sm font-medium text-gray-800">
+
+						{/* Pickup Date */}
+						<div className="flex flex-col gap-1.5 text-left">
+							<label htmlFor="pickup-date" className="text-xs font-bold text-gray-700 uppercase tracking-wider">
 								Pick-up Date
 							</label>
 							<input
 								type="date"
-								name="pickup-date"
 								id="pickup-date"
 								min={new Date().toISOString().split("T")[0]}
+								value={pickupDate}
 								onChange={(e) => setPickupDate(e.target.value)}
 								className={inputClasses}
 							/>
 						</div>
-						<div className="flex flex-row items-center gap-2  md:flex-col">
-							<label
-								htmlFor="return-date"
-								className="text-sm font-medium text-gray-800">
+
+						{/* Return Date */}
+						<div className="flex flex-col gap-1.5 text-left">
+							<label htmlFor="return-date" className="text-xs font-bold text-gray-700 uppercase tracking-wider">
 								Return Date
 							</label>
 							<input
 								type="date"
-								name="return-date"
 								id="return-date"
+								min={pickupDate || new Date().toISOString().split("T")[0]}
+								value={returnDate}
 								onChange={(e) => setReturnDate(e.target.value)}
 								className={inputClasses}
 							/>
 						</div>
-						<button
-							type="submit"
-							aria-label="Search available cars"
-							className={`cursor-pointer flex items-center justify-center gap-1 px-4 py-2 transition-all text-white rounded-md shadow-md active:scale-98 font-medium ${loading
-								? "bg-primary cursor-not-allowed opacity-90"
-								: "bg-primary hover:bg-primary-dull"
-								}`}>
-							{loading ? (
-								<div className="flex items-center gap-2 justify-center">
-									<Loader
-										size={16}
-										className="h-5 w-5 animate-spin text-white"
-									/>
-									<span>Search...</span>
-								</div>
-							) : (
-								<div className="flex items-center gap-2 justify-center">
-									<Search size={18} />
-									<span>Search</span>
-								</div>
-							)}
-						</button>
+
+						{/* Gradient Search Button */}
+						<div>
+							<button
+								type="submit"
+								disabled={loading}
+								style={{
+									background: "linear-gradient(90deg, #2563EB, #1D4ED8)",
+								}}
+								className="w-full py-3.5 px-6 text-white font-bold text-sm rounded-xl shadow-md transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-primary/20 active:translate-y-0 active:scale-98 cursor-pointer flex items-center justify-center gap-2">
+								{loading ? (
+									<>
+										<Loader size={18} className="animate-spin text-white" />
+										<span>Searching...</span>
+									</>
+								) : (
+									<>
+										<Search size={18} />
+										<span>Search Cars</span>
+									</>
+								)}
+							</button>
+						</div>
+					</form>
+				</motion.div>
+
+				{/* Trust Badges Bar */}
+				<motion.div
+					initial={{ opacity: 0 }}
+					animate={{ opacity: 1 }}
+					transition={{ duration: 0.4, delay: 0.25 }}
+					className="flex flex-wrap items-center justify-center gap-4 sm:gap-8 mt-4 py-2 px-5 bg-white/80 rounded-full border border-white/90 backdrop-blur-md text-xs sm:text-sm font-bold text-gray-800 shadow-xs">
+					<div className="flex items-center gap-1.5">
+						<div className="flex text-amber-400">
+							<Star size={14} className="fill-amber-400" />
+						</div>
+						<span className="font-bold text-gray-900">4.9 Rating</span>
 					</div>
-				</motion.form>
-
-				{/* main car image  */}
-				<div className="max-h-74 mb-18">
-					<picture>
-						{/* AVIF Sources */}
-						<source
-							type="image/avif"
-							srcSet="/main_car-400.avif 400w, /main_car-800.avif 800w, /main_car-1200.avif 1200w"
-							sizes="(max-width: 640px) 400px, (max-width: 1024px) 800px, 1200px"
-						/>
-						{/* WebP Sources */}
-						<source
-							type="image/webp"
-							srcSet="/main_car-400.webp 400w, /main_car-800.webp 800w, /main_car-1200.webp 1200w"
-							sizes="(max-width: 640px) 400px, (max-width: 1024px) 800px, 1200px"
-						/>
-						{/* Fallback PNG Sources */}
-						<source
-							type="image/png"
-							srcSet="/main_car-400.png 400w, /main_car-800.png 800w, /main_car-1200.png 1200w"
-							sizes="(max-width: 640px) 400px, (max-width: 1024px) 800px, 1200px"
-						/>
-						{/* Default Fallback Image */}
-						<img
-							src="/main_car.png"
-							alt="Premium luxury rental car"
-							width="1200"
-							height="600"
-							loading="eager"
-							fetchpriority="high"
-							decoding="async"
-							className="max-h-74 w-auto object-contain mx-auto"
-						/>
-					</picture>
-				</div>
-
-
-				{/* available cars modal  */}
-				<CarAvailablityModal
-					open={open}
-					setOpen={setOpen}
-					availableCars={availableCars}
-				/>
-
+					<span className="text-gray-300 hidden sm:inline">•</span>
+					<div className="flex items-center gap-1.5">
+						<CheckCircle size={15} className="text-emerald-500" />
+						<span>5000+ Happy Customers</span>
+					</div>
+					<span className="text-gray-300 hidden sm:inline">•</span>
+					<div className="flex items-center gap-1.5">
+						<Car size={15} className="text-primary" />
+						<span>100+ Premium Cars</span>
+					</div>
+					<span className="text-gray-300 hidden sm:inline">•</span>
+					<div className="flex items-center gap-1.5">
+						<Shield size={15} className="text-blue-600" />
+						<span>24/7 Support</span>
+					</div>
+				</motion.div>
 			</div>
-		</>
+
+			{/* Availability Modal */}
+			<CarAvailablityModal
+				open={open}
+				setOpen={setOpen}
+				availableCars={availableCars}
+			/>
+		</div>
 	);
 };
 
 export default Hero;
-

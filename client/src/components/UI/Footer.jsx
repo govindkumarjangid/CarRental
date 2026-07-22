@@ -10,7 +10,7 @@ const Footer = () => {
 			initial={{ opacity: 0 }}
 			animate={{ opacity: 1 }}
 			transition={{ duration: 0.2 }}
-			className="w-full bg-light text-gray-500/80 pt-16 max-w-full px-4 md:px-15 border-t border-gray-200 ">
+			className="w-full bg-light text-gray-500/80 pt-16 max-w-full px-4 sm:px-6 lg:px-8 border-t border-gray-200">
 			<div className="max-w-7xl mx-auto">
 				<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8 pb-10">
 					{/* Brand & Social */}

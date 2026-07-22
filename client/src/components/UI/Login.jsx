@@ -44,7 +44,7 @@ const Login = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-100 flex items-center justify-center p-4 sm:p-6 backdrop-blur-md bg-slate-950/40 overflow-y-auto">
+            className="fixed inset-0 z-100 flex items-center justify-center p-3 sm:p-4 backdrop-blur-md bg-slate-950/40 overflow-y-auto">
 
             <motion.form
                 initial={{ opacity: 0, scale: 0.95 }}
@@ -53,19 +53,19 @@ const Login = () => {
                 transition={{ duration: 0.2, ease: "easeOut" }}
                 onSubmit={handleSubmit}
                 onClick={(e) => e.stopPropagation()}
-                className="relative w-full max-w-sm sm:max-w-md bg-white rounded-2xl shadow-2xl border border-slate-100 p-6 sm:p-8 flex flex-col gap-4 text-slate-700 select-none overflow-hidden my-auto">
+                className="relative w-full max-w-sm sm:max-w-md bg-white rounded-2xl shadow-2xl border border-slate-100 p-4 sm:p-5 flex flex-col gap-2.5 text-slate-700 select-none max-h-[95vh] overflow-y-auto no-scrollbar my-auto">
 
                 {/* Close Button */}
                 <button
                     type="button"
                     onClick={() => setShowLogin(false)}
-                    className="absolute top-4 right-4 text-slate-400 hover:text-slate-700 bg-slate-100/80 hover:bg-slate-200/80 p-2 rounded-xl transition-all cursor-pointer z-10">
-                    <X size={18} />
+                    className="absolute top-3 right-3 text-slate-400 hover:text-slate-700 bg-slate-100/80 hover:bg-slate-200/80 p-1.5 rounded-xl transition-all cursor-pointer z-10">
+                    <X size={16} />
                 </button>
 
                 {/* Header */}
-                <div className="flex flex-col items-center gap-1 text-center w-full pt-1">
-                    <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+                <div className="flex flex-col items-center gap-0.5 text-center w-full pt-1">
+                    <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">
                         <span className="text-primary">
                             {state === "register" && role === "owner" ? "Owner" : "User"}
                         </span>{" "}
@@ -80,27 +80,27 @@ const Login = () => {
 
                 {/* Role Selector Tabs (Only on Register) */}
                 {state === "register" && (
-                    <div className="w-full mt-1">
-                        <p className="text-[11px] text-slate-400 mb-1.5 font-bold uppercase tracking-wider">Account Type</p>
-                        <div className="grid grid-cols-2 gap-2 w-full bg-slate-100/80 p-1 rounded-xl border border-slate-200/50">
+                    <div className="w-full mt-0.5">
+                        <p className="text-[10px] text-slate-400 mb-1 font-bold uppercase tracking-wider">Account Type</p>
+                        <div className="grid grid-cols-2 gap-1.5 w-full bg-slate-100/80 p-1 rounded-xl border border-slate-200/50">
                             <button
                                 type="button"
                                 onClick={() => setRole("user")}
-                                className={`flex items-center justify-center gap-2 py-2 rounded-md text-xs font-bold transition-all cursor-pointer ${role === "user"
-                                    ? "bg-white text-primary shadow-sm"
+                                className={`flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${role === "user"
+                                    ? "bg-white text-primary shadow-xs"
                                     : "text-slate-500 hover:text-slate-800"
                                     }`}>
-                                <User size={15} />
+                                <User size={14} />
                                 Customer
                             </button>
                             <button
                                 type="button"
                                 onClick={() => setRole("owner")}
-                                className={`flex items-center justify-center gap-2 py-2 rounded-md text-xs font-bold transition-all cursor-pointer ${role === "owner"
-                                    ? "bg-white text-primary shadow-sm"
+                                className={`flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${role === "owner"
+                                    ? "bg-white text-primary shadow-xs"
                                     : "text-slate-500 hover:text-slate-800"
                                     }`}>
-                                <CarFront size={15} />
+                                <CarFront size={14} />
                                 Car Owner
                             </button>
                         </div>
@@ -108,7 +108,7 @@ const Login = () => {
                 )}
 
                 {/* Input Fields */}
-                <div className="flex flex-col gap-3.5 w-full mt-1">
+                <div className="flex flex-col gap-2.5 w-full mt-0.5">
                     {/* Name field (Register only) */}
                     {state === "register" && (
                         <InputBox
@@ -148,14 +148,14 @@ const Login = () => {
                 <button
                     type="submit"
                     disabled={isLoading}
-                    className={`w-full py-3 rounded-xl text-white font-bold text-sm transition-all duration-200 shadow-md shadow-primary/20 hover:shadow-lg active:scale-98 cursor-pointer flex items-center justify-center mt-2 ${
+                    className={`w-full py-2.5 rounded-xl text-white font-bold text-sm transition-all duration-200 shadow-md shadow-primary/20 hover:shadow-lg active:scale-98 cursor-pointer flex items-center justify-center mt-1 ${
                         isLoading
                             ? "bg-primary/80 cursor-not-allowed opacity-90"
                             : "bg-linear-to-r from-primary to-indigo-600 hover:from-primary-dull hover:to-indigo-700"
                     }`}>
                     {isLoading ? (
                         <div className="flex items-center gap-2 justify-center">
-                            <Loader size={18} className="animate-spin text-white" />
+                            <Loader size={16} className="animate-spin text-white" />
                             <span>Processing...</span>
                         </div>
                     ) : state === "register" ? (
@@ -193,13 +193,13 @@ const Login = () => {
                 {/* Divider */}
                 <div className="relative flex items-center justify-center w-full my-0.5">
                     <div className="border-t border-slate-200 w-full" />
-                    <span className="bg-white px-3 text-[11px] text-slate-400 font-semibold uppercase tracking-wider absolute">
+                    <span className="bg-white px-2.5 text-[10px] text-slate-400 font-bold uppercase tracking-wider absolute">
                         Or continue with
                     </span>
                 </div>
 
                 {/* Google OAuth Button */}
-                <div className="w-full flex justify-center mt-1">
+                <div className="w-full flex justify-center pb-1">
                     <GoogleLogin
                         onSuccess={async (credentialResponse) => {
                             const ok = await googleLogin(credentialResponse, role, state);

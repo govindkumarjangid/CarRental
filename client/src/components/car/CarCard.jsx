@@ -1,95 +1,114 @@
 import { motion } from "motion/react";
 import { useNavigate } from "react-router-dom";
 import { iconList, OptimizedImage } from "../../index.js";
+import { Star, ArrowRight } from "lucide-react";
 
 const CarCard = ({ car, index = 0 }) => {
 	const navigate = useNavigate();
-	const currency = import.meta.env.VITE_CURRENCY;
+	const currency = import.meta.env.VITE_CURRENCY || "₹";
 
 	const handleClick = () => {
 		navigate(`/car-details/${car._id}`);
-		scrollTo(0, 0);
+		window.scrollTo({ top: 0, behavior: "smooth" });
 	};
+
+	const pricePerDay = car.pricePerDay || (car.pricePerHour ? car.pricePerHour * 24 : 5500);
 
 	return (
 		<motion.div
-			initial={{ opacity: 0 }}
-			whileInView={{ opacity: 1 }}
+			initial={{ opacity: 0, y: 15 }}
+			whileInView={{ opacity: 1, y: 0 }}
 			viewport={{ once: true }}
-			transition={{ duration: 0.2, ease: "easeOut" }}
-			style={{ willChange: "opacity" }}
-			className="h-full w-full group rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all cursor-pointer bg-white border border-gray-100"
+			transition={{ duration: 0.3, delay: (index % 6) * 0.05 }}
+			className="h-full w-full group rounded-2xl overflow-hidden shadow-xs hover:shadow-2xl hover:-translate-y-1.5 transition-all duration-300 cursor-pointer bg-white/85 backdrop-blur-xl border border-white/80 hover:border-primary/40 flex flex-col justify-between"
 			onClick={handleClick}
 			aria-label={`View details for ${car.brand} ${car.model}`}>
-			{/* image & availability & price  */}
-			<div className="relative h-60 overflow-hidden">
-				<OptimizedImage
-					src={car.image}
-					renderedWidth={450}
-					renderedHeight={240}
-					alt={`${car.brand} ${car.model} showcase`}
-					className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-103"
-				/>
+			<div>
+				{/* Image & Status Tag & Rating Badge */}
+				<div className="relative h-56 overflow-hidden bg-slate-100/60">
+					<OptimizedImage
+						src={car.image}
+						renderedWidth={450}
+						renderedHeight={240}
+						alt={`${car.brand} ${car.model} showcase`}
+						className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+					/>
 
-				<div className="absolute top-4 left-4 flex flex-col gap-2">
-					<p className={`text-white text-[10px] px-2.5 py-1 font-bold rounded-xl shadow-md backdrop-blur-md uppercase tracking-wider ${
-						car.status === "available"
-						? "bg-green-600/90"
-						: car.status === "cleaning"
-						? "bg-blue-600/90"
-						: car.status === "maintenance"
-						? "bg-red-600/90"
-						: "bg-gray-600/90"
-					}`}>
-						{car.status}
-					</p>
+					{/* Status Tag */}
+					<div className="absolute top-3 left-3 flex items-center gap-2">
+						<span
+							className={`text-white text-[10px] px-3 py-1 font-extrabold rounded-full shadow-md backdrop-blur-md uppercase tracking-wider ${
+								car.status === "available"
+									? "bg-emerald-600/90"
+									: car.status === "cleaning"
+									? "bg-blue-600/90"
+									: car.status === "maintenance"
+									? "bg-amber-600/90"
+									: "bg-gray-600/90"
+							}`}>
+							{car.status || "available"}
+						</span>
+					</div>
+
+					{/* Star Rating Overlay */}
+					<div className="absolute top-3 right-3 bg-white/90 backdrop-blur-md px-2.5 py-1 rounded-full text-xs font-bold text-gray-800 flex items-center gap-1 shadow-sm">
+						<Star size={13} className="text-amber-400 fill-amber-400" />
+						<span>5.0</span>
+					</div>
+
+					{/* Price Overlay */}
+					<div className="absolute bottom-3 right-3 bg-gray-900/85 backdrop-blur-md text-white px-3 py-1.5 rounded-xl font-black text-sm border border-white/10 shadow-md">
+						<span>
+							{currency}{pricePerDay}
+						</span>
+						<span className="text-[11px] font-medium opacity-80"> / day</span>
+					</div>
 				</div>
 
-				<div className="absolute bottom-4 right-4 border border-white/80 backdrop-blur-sm text-white px-3 py-1.5 rounded-xl font-bold text-sm">
-					<span>
-						{currency} {car.pricePerHour}
-					</span>
-					<span className="text-xs opacity-90"> / hr</span>
+				<div className="p-5">
+					{/* Brand & Model */}
+					<div className="flex justify-between items-start mb-3">
+						<div>
+							<h3 className="text-lg font-bold text-gray-900 group-hover:text-primary transition-colors">
+								{car.brand} {car.model}
+							</h3>
+							<p className="text-gray-500 font-medium text-xs">
+								{car.category || "Luxury"} <span className="opacity-40">•</span> {car.year || "2024"}
+							</p>
+						</div>
+					</div>
+
+					{/* Car Features Grid */}
+					<div className="grid grid-cols-2 gap-2 text-gray-700 font-bold text-xs py-2.5 border-y border-gray-100/80">
+						<div className="flex items-center gap-1.5">
+							<iconList.Users size={14} className="text-primary" />
+							<span>{car.seating_capacity || 4} Seats</span>
+						</div>
+						<div className="flex items-center gap-1.5">
+							<iconList.Fuel size={14} className="text-primary" />
+							<span>{car.fuel_type || "Electric"}</span>
+						</div>
+						<div className="flex items-center gap-1.5">
+							<iconList.Car size={14} className="text-primary" />
+							<span>{car.transmission || "Automatic"}</span>
+						</div>
+						<div className="flex items-center gap-1.5">
+							<iconList.MapPin size={14} className="text-primary" />
+							<span className="truncate">{car.location || "Jaipur"}</span>
+						</div>
+					</div>
 				</div>
 			</div>
 
-			<div className="p-4 sm:p-5">
-				{/* brand & model & catrgory  */}
-				<div className="flex justify-between items-start mb-2">
-					<div>
-						<h3 className="text-lg font-bold text-gray-900">
-							{car.brand} {car.model}
-						</h3>
-						<p className="text-gray-700 font-medium text-sm">
-							{car.category} <span className="opacity-50">◉</span> {car.year}
-						</p>
-					</div>
-				</div>
-
-				{/* feactures  */}
-				<div className="mt-4 grid grid-cols-2 gap-y-2 text-gray-800 font-medium">
-					<div className="flex items-center text-sm">
-						<iconList.Users size={15} className="mr-1 text-primary" />
-						<span>{car.seating_capacity} Seats</span>
-					</div>
-					<div className="flex items-center text-sm">
-						<iconList.Fuel size={15} className="mr-1 text-primary" />
-						<span>{car.fuel_type}</span>
-					</div>
-					<div className="flex items-center text-sm">
-						<iconList.Car size={15} className="mr-1 text-primary" />
-						<span>{car.transmission}</span>
-					</div>
-					<div className="flex items-center text-sm">
-						<iconList.MapPin size={15} className="mr-1 text-primary" />
-						<span>{car.location}</span>
-					</div>
-				</div>
+			{/* Book Now Button CTA */}
+			<div className="px-5 pb-5 pt-1">
+				<button className="w-full py-2.5 px-4 rounded-xl bg-white/80 border border-gray-200 text-gray-800 font-bold text-xs group-hover:bg-primary group-hover:text-white group-hover:border-primary transition-all duration-200 flex items-center justify-center gap-2 shadow-xs">
+					<span>Book Now</span>
+					<ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+				</button>
 			</div>
-
 		</motion.div>
 	);
 };
 
 export default CarCard;
-
