@@ -704,8 +704,7 @@ const ChatPage = () => {
                           key={index}
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
-                          exit={{ opacity: 0 }}
-                          className={`relative h-20 w-20 md:h-24 md:w-24 shrink-0 rounded-xl overflow-hidden border-2 border-white shadow-md bg-white group ${index === attachments.length - 1 ? 'mr-2' : ''}`}>
+                          className={`relative h-20 w-20 md:h-24 md:w-24 shrink-0 rounded-xl overflow-hidden border-2 border-white shadow-md bg-white group ${index === attachments.length - 1 ? 'mr-4' : ''}`}>
                           {file.type === 'image' ? (
                             <img src={file.preview} alt="" className="h-full w-full object-cover" />
                           ) : (
