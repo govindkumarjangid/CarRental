@@ -1,4 +1,3 @@
-import { motion } from "motion/react";
 import { Title } from "../../index.js";
 import { Car, ShieldCheck, MapPin, Clock } from "lucide-react";
 
@@ -31,31 +30,26 @@ const features = [
 
 const WhyChooseUs = () => {
 	return (
-		<section className="w-full py-24 bg-slate-50 border-t border-slate-100">
-			<div className="max-w-7xl mx-auto px-6 md:px-12">
+		<section className="w-full py-16 sm:py-24 bg-slate-50 border-t border-slate-100">
+			<div className="w-full max-w-7xl mx-auto px-6 sm:px-10 lg:px-12">
 				<Title
 					title="Why Choose Us"
 					subTitle="Experience unmatched luxury, premium safety standards, and flawless service on every drive."
 				/>
 
-				<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-14">
-					{features.map((item, idx) => {
+				<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-10 sm:mt-14">
+					{features.map((item) => {
 						const IconComponent = item.icon;
 						return (
-							<motion.div
+							<div
 								key={item.title}
-								initial={{ opacity: 0, y: 20 }}
-								whileInView={{ opacity: 1, y: 0 }}
-								viewport={{ once: true }}
-								transition={{ duration: 0.3, delay: idx * 0.1 }}
-								whileHover={{ y: -6 }}
-								className="relative p-6 sm:p-8 rounded-2xl bg-white border border-gray-100 shadow-sm hover:shadow-xl hover:border-primary/30 transition-all flex flex-col items-start group">
-								
+								className="relative p-6 rounded-2xl bg-white border border-gray-100 shadow-xs hover:shadow-xl hover:-translate-y-1.5 hover:border-primary/30 transition-all duration-300 flex flex-col items-start group">
+
 								<div className="absolute top-6 right-6 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-primary/10 text-primary group-hover:bg-primary group-hover:text-white transition-colors">
 									{item.badge}
 								</div>
 
-								<div className="w-14 h-14 rounded-2xl bg-light text-primary flex items-center justify-center mb-6 group-hover:bg-primary group-hover:text-white transition-all duration-300 shadow-sm">
+								<div className="w-14 h-14 rounded-2xl bg-light text-primary flex items-center justify-center mb-6 group-hover:bg-primary group-hover:text-white transition-all duration-300 shadow-xs">
 									<IconComponent size={28} />
 								</div>
 
@@ -66,7 +60,7 @@ const WhyChooseUs = () => {
 								<p className="text-sm text-gray-600 leading-relaxed font-medium">
 									{item.desc}
 								</p>
-							</motion.div>
+							</div>
 						);
 					})}
 				</div>

@@ -26,7 +26,7 @@ const steps = [
 const HowItWorks = () => {
 	return (
 		<section className="w-full py-24 bg-white border-t border-slate-100">
-			<div className="max-w-7xl mx-auto px-6 md:px-12">
+			<div className="w-full max-w-7xl mx-auto px-6 sm:px-10 lg:px-12">
 				<Title
 					title="How It Works"
 					subTitle="Renting your dream luxury vehicle is fast, easy, and completely transparent in 3 simple steps."
@@ -43,12 +43,12 @@ const HowItWorks = () => {
 								viewport={{ once: true }}
 								transition={{ duration: 0.3, delay: index * 0.15 }}
 								className="relative flex flex-col items-center text-center p-8 rounded-3xl bg-slate-50 border border-slate-100 shadow-xs hover:shadow-lg hover:border-primary/30 transition-all group">
-								
+
 								<div className="absolute top-4 right-6 text-4xl font-black text-slate-200 group-hover:text-primary/20 transition-colors">
 									{step.number}
 								</div>
 
-								<div className="w-16 h-16 rounded-2xl bg-primary/10 text-primary flex items-center justify-center mb-6 group-hover:bg-primary group-hover:text-white group-hover:scale-105 transition-all shadow-sm">
+								<div className="w-16 h-16 rounded-2xl bg-primary/10 text-primary flex items-center justify-center mb-6 group-hover:bg-primary group-hover:text-white group-hover:scale-105 transition-all duration-300 shadow-sm">
 									<IconComponent size={30} />
 								</div>
 

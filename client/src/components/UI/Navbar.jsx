@@ -44,31 +44,27 @@ const Navbar = () => {
 	};
 
 	return (
-		<motion.div
-			initial={{ opacity: 0 }}
-			animate={{ opacity: 1 }}
-			transition={{ duration: 0.2 }}
-			className={`max-w-full px-4 sm:px-6 lg:px-8 sticky top-0 z-50 transition-all duration-300 ${scrolled
-				? "bg-white/90 backdrop-blur-2xl shadow-md border-b border-gray-100/80 py-3"
-				: location.pathname === "/"
-					? "bg-white/75 backdrop-blur-xl border-b border-white/50 shadow-xs py-4"
-					: "bg-white border-b border-gray-200 py-4"
-				}`}>
-			<div className="max-w-7xl mx-auto flex items-center justify-between">
+		<div className={`w-full sticky top-0 z-50 transition-all duration-300 ${scrolled
+			? "bg-white/10 backdrop-blur-2xl shadow-md border-b border-white/10 py-3"
+			: location.pathname === "/"
+				? "bg-white/10 backdrop-blur-xl border-b border-white/10 shadow-xs py-4"
+				: "bg-white border-b border-gray-200 py-4"
+			}`}>
+			<div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
 				{/* Logo */}
-				<Link to="/" className="flex items-center">
+				<Link to="/" className="flex items-center -ml-1">
 					<ResponsiveImage
 						src={assets.logo}
 						alt="logo"
 						width={150}
 						height={40}
-						className="h-8 md:h-10 object-contain cursor-pointer"
+						className="h-8 md:h-10 object-contain object-left cursor-pointer"
 					/>
 				</Link>
 
-				{/* Right Side Links & Actions */}
+				{/* Right Side */}
 				<div className="flex items-center gap-4 sm:gap-8">
-					{/* Desktop Menu Links */}
+					{/* Menu Links */}
 					<div className="hidden sm:flex items-center gap-8 relative z-40">
 						{menuLinks
 							.filter((link) => !(link.name === "Chat with owner" && isOwner))
@@ -104,11 +100,11 @@ const Navbar = () => {
 						)}
 					</div>
 
-					{/* Action Buttons & User Menu Dropdown */}
+					{/* Action Buttons & User Menu */}
 					<div className="flex items-center gap-2 sm:gap-4 relative">
 						{!user ? (
 							<button
-								className="cursor-pointer px-5 sm:px-7 py-2 bg-primary hover:bg-primary-dull transition-all text-white rounded-xl active:scale-98 font-bold shadow-md hover:shadow-primary/20 text-sm sm:text-base gap-2 flex items-center"
+								className="cursor-pointer px-5 py-2 bg-primary hover:bg-primary-dull transition-all text-white rounded-xl active:scale-98 font-bold shadow-md hover:shadow-primary/20 text-sm sm:text-base gap-2 flex items-center"
 								onClick={() => setShowLogin(true)}>
 								<User size={20} className="font-bold" />	Login
 							</button>
@@ -193,7 +189,7 @@ const Navbar = () => {
 				</div>
 			</div>
 
-			{/* Mobile Sidebar */}
+			{/* Mobile */}
 			<div className="sm:hidden absolute inset-x-0 top-full -z-10 pointer-events-none">
 				<AnimatePresence>
 					{open && (
@@ -236,7 +232,7 @@ const Navbar = () => {
 				</AnimatePresence>
 			</div>
 
-			{/* User Profile Modal */}
+			{/* User Profile  */}
 			<AnimatePresence>
 				{openPopup && user && (
 					<motion.div
@@ -313,7 +309,7 @@ const Navbar = () => {
 					</motion.div>
 				)}
 			</AnimatePresence>
-		</motion.div>
+		</div>
 	);
 };
 

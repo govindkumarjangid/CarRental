@@ -1,8 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="35 20 120 75" width="100%" height="100%">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="35 20 120 75" preserveAspectRatio="xMinYMid meet" width="100%" height="100%">
   <defs>
     <linearGradient id="blueGrad" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#4F8BFF" />
-      <stop offset="100%" stop-color="#1E50D0" />
+      <stop offset="0%" stop-color="#2563EB" />
+      <stop offset="100%" stop-color="#1D4ED8" />
     </linearGradient>
 
     <linearGradient id="textGrad" x1="0" y1="0" x2="0" y2="1">

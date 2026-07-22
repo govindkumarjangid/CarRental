@@ -1,5 +1,3 @@
-import { motion } from "motion/react";
-
 const brands = [
 	{
 		name: "Tesla",
@@ -32,29 +30,25 @@ const brands = [
 		logo: "/svgs/honda-logo.svg",
 	},
 ];
+
 const BrandsSection = () => {
 	return (
 		<div className="w-full bg-white py-12 border-y border-gray-100">
 			<div className="max-w-7xl mx-auto px-4 sm:px-6">
-				<p className="text-center text-xs sm:text-sm font-semibold tracking-widest text-gray-400 uppercase mb-8">
+				<p className="text-center text-xs sm:text-sm font-bold tracking-widest text-gray-500 uppercase mb-8">
 					Trusted by Drivers & Partnered with Top Luxury Brands
 				</p>
 				<div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 sm:gap-6">
-					{brands.map((brand, index) => (
-						<motion.div
+					{brands.map((brand) => (
+						<div
 							key={brand.name}
-							initial={{ opacity: 0, y: 15 }}
-							whileInView={{ opacity: 1, y: 0 }}
-							viewport={{ once: true }}
-							transition={{ duration: 0.3, delay: index * 0.05 }}
-							whileHover={{ y: -4 }}
-							className="flex flex-col items-center justify-center rounded-2xl bg-white  transition-all duration-300 group">
+							className="flex flex-col items-center justify-center rounded-2xl bg-white transition-all duration-300 group hover:-translate-y-1">
 							<img
 								src={brand.logo}
 								alt={brand.name}
-								className="h-30 object-contain grayscale group-hover:grayscale-0 transition-all duration-300"
+								className="h-24 sm:h-28 object-contain grayscale group-hover:grayscale-0 transition-all duration-300"
 							/>
-						</motion.div>
+						</div>
 					))}
 				</div>
 			</div>

@@ -15,52 +15,52 @@ const Newsletter = lazy(() => import("../components/Home/Newsletter.jsx"));
 const Home = () => {
 	return (
 		<main className="w-full overflow-hidden bg-white">
-			{/* 1. Hero Section (with real animated city road background & moving cars) */}
+			{/*  Hero Section  */}
 			<Suspense fallback={<HeroSkeleton />}>
 				<Hero />
 			</Suspense>
 
-			{/* 2. Popular Brands Section */}
+			{/*  Popular Brands Section */}
 			<Suspense fallback={<div className="h-24 bg-slate-50 animate-pulse" />}>
 				<BrandsSection />
 			</Suspense>
 
-			{/* 3. Featured Luxury Cars */}
+			{/* Featured Luxury Cars */}
 			<Suspense fallback={<FeaturedSectionSkeleton />}>
 				<FeaturedSection />
 			</Suspense>
 
-			{/* 4. Why Choose Us */}
+			{/* Why Choose Us */}
 			<Suspense fallback={<div className="h-64 bg-slate-50 animate-pulse" />}>
 				<WhyChooseUs />
 			</Suspense>
 
-			{/* 5. How It Works */}
+			{/* How It Works */}
 			<Suspense fallback={<div className="h-64 bg-white animate-pulse" />}>
 				<HowItWorks />
 			</Suspense>
 
-			{/* 6. Customer Reviews */}
+			{/* Customer Reviews */}
 			<Suspense fallback={<TestimonialSectionSkeleton />}>
 				<Testmonial />
 			</Suspense>
 
-			{/* 7. Statistics Section */}
+			{/* Statistics Section */}
 			<Suspense fallback={<div className="h-32 bg-gray-900 animate-pulse" />}>
 				<StatsSection />
 			</Suspense>
 
-			{/* 8. Owner Banner */}
+			{/* Owner Banner */}
 			<Suspense fallback={<BannerSkeleton />}>
 				<Banner />
 			</Suspense>
 
-			{/* 9. FAQ Section */}
+			{/* FAQ Section */}
 			<Suspense fallback={null}>
 				<FAQSection />
 			</Suspense>
 
-			{/* 10. Newsletter */}
+			{/* Newsletter */}
 			<Suspense fallback={<NewsletterSkeleton />}>
 				<Newsletter />
 			</Suspense>
