@@ -13,7 +13,7 @@ const FeaturedSection = () => {
 		fetchCars();
 	}, []);
 
-	const displayCars = cars && cars.length > 0 ? cars.slice(0, 6) : sampleCars;
+	const displayCars = cars && cars.length > 0 ? cars.slice(0, 6) : [];
 
 	return (
 		<div className="w-full py-16 sm:py-24 bg-white">

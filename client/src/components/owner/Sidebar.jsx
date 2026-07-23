@@ -14,7 +14,7 @@ const SidebarContent = ({ user, image, setImage, handleUpdateImage, location, Mo
 					<img
 						src={image ? URL.createObjectURL(image) : user?.image}
 						alt="owner"
-						className="md:h-20 md:w-20 h-20 w-20 rounded-xl p-1 mx-auto aspect-square object-cover"
+						className="md:h-25 md:w-25 h-20 w-20 rounded-full p-1 mx-auto aspect-square object-cover"
 					/>
 				) : (
 					<iconList.CircleUser className="md:h-20 md:w-20 h-20 w-20 text-gray-400" />
@@ -29,7 +29,7 @@ const SidebarContent = ({ user, image, setImage, handleUpdateImage, location, Mo
 					onChange={(e) => setImage(e.target.files[0])}
 				/>
 
-				<div className="absolute md:h-20 md:w-20 h-20 w-20 top-0 hidden bg-black/20 rounded-xl group-hover:flex items-center justify-center cursor-pointer">
+				<div className="absolute md:h-25 md:w-25 h-20 w-20 top-0 hidden bg-black/20 rounded-full group-hover:flex items-center justify-center cursor-pointer">
 					<iconList.EditIcon size={20} className="text-white" />
 				</div>
 			</label>
@@ -59,7 +59,7 @@ const SidebarContent = ({ user, image, setImage, handleUpdateImage, location, Mo
 					<MotionNavLink
 						key={link.path}
 						to={{ pathname: link.path, scrollTo: (0, 0) }}
-						
+
 						onClick={() => setIsSidebarOpen(false)}
 						className={`relative flex items-center gap-3 rounded-xl w-full py-3 pl-6 md:pl-6 first:mt-3 transition-colors cursor-pointer ${isActive
 							? "bg-primary/20 text-primary font-semibold  "

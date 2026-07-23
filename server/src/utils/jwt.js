@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 
-export const generateAccessToken = (user) => {
+const generateAccessToken = (user) => {
     return jwt.sign(
         {
             id: user._id,
@@ -15,7 +15,7 @@ export const generateAccessToken = (user) => {
 }
 
 
-export const generateRefreshToken = (user) => {
+const generateRefreshToken = (user) => {
 
     return jwt.sign(
         {
@@ -30,7 +30,7 @@ export const generateRefreshToken = (user) => {
 }
 
 
-export const verifyAccessToken = (token) => {
+const verifyAccessToken = (token) => {
 
     return jwt.verify(
         token,
@@ -39,11 +39,18 @@ export const verifyAccessToken = (token) => {
 
 }
 
-export const verifyRefreshToken = (token) => {
+const verifyRefreshToken = (token) => {
 
     return jwt.verify(
         token,
         process.env.REFRESH_TOKEN_SECRET
     );
 
+}
+
+export default {
+    generateAccessToken,
+    generateRefreshToken,
+    verifyAccessToken,
+    verifyRefreshToken
 }

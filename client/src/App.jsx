@@ -9,8 +9,7 @@ import { Navbar, Footer, ProtectRoute, CarsPageSkeleton, DashboardSkeleton, Tabl
 import ScrollToTop from "./components/UI/ScrollToTop.jsx";
 import Lenis from "lenis";
 
-// Lazy loading all pages/modals
-const Home = lazy(() => import("./pages/Home.jsx"));
+import Home from "./pages/Home.jsx";
 const Cars = lazy(() => import("./pages/Cars.jsx"));
 const Cardetails = lazy(() => import("./pages/Cardetails.jsx"));
 const ChatPage = lazy(() => import("./pages/ChatPage.jsx"));

@@ -25,7 +25,7 @@ export const getUserData = asyncHandler(async (req, res) => {
 //* GET /api/v1/user/cars - Get cars with pagination & filtering
 export const getCars = asyncHandler(async (req, res) => {
   const page = parseInt(req.query.page) || 1;
-  const limit = parseInt(req.query.limit) || 0;
+  const limit = parseInt(req.query.limit) || 6;
 
   let query = {};
 

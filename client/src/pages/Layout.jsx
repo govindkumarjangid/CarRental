@@ -4,7 +4,6 @@ import LiveTracker from "../components/LiveTracker";
 import { Outlet, useLocation } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import Lenis from "lenis";
 
 const Layout = () => {
 	const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -12,28 +11,6 @@ const Layout = () => {
 	const [trackingCarId, setTrackingCarId] = useState(null);
 	const { pathname } = useLocation();
 	const scrollRef = useRef(null);
-
-	useEffect(() => {
-		if (!scrollRef.current) return;
-		const lenis = new Lenis({
-			wrapper: scrollRef.current,
-			content: scrollRef.current.firstElementChild || scrollRef.current,
-			smoothWheel: true,
-			lerp: 0.08,
-			duration: 0.8,
-		});
-
-		let rafId;
-		function raf(time) {
-			lenis.raf(time);
-			rafId = requestAnimationFrame(raf);
-		}
-		rafId = requestAnimationFrame(raf);
-		return () => {
-			cancelAnimationFrame(rafId);
-			lenis.destroy();
-		};
-	}, []);
 
 	useEffect(() => {
 		if (scrollRef.current) {
@@ -74,7 +51,7 @@ const Layout = () => {
 								animate={{ opacity: 1 }}
 								exit={{ opacity: 0 }}
 								transition={{ duration: 0.2 }}
-								className="absolute inset-0 bg-white z-100 flex flex-col">
+								className="absolute inset-0 bg-white z-100 flex flex-col overflow-y-auto custom-scrollbar">
 								<div className="p-4 md:p-8 flex-1 flex flex-col min-h-full">
 									<LiveTracker carId={trackingCarId} onClose={() => setIsLiveTrackerOpen(false)} />
 								</div>
@@ -88,4 +65,3 @@ const Layout = () => {
 };
 
 export default Layout;
-

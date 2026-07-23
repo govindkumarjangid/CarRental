@@ -1,69 +1,46 @@
-import { lazy, Suspense } from "react";
-import { HeroSkeleton, FeaturedSectionSkeleton, BannerSkeleton, TestimonialSectionSkeleton, NewsletterSkeleton } from "../components/skeletons";
-
-const Hero = lazy(() => import("../components/Home/Hero.jsx"));
-const BrandsSection = lazy(() => import("../components/Home/BrandsSection.jsx"));
-const FeaturedSection = lazy(() => import("../components/Home/FeaturedSection.jsx"));
-const WhyChooseUs = lazy(() => import("../components/Home/WhyChooseUs.jsx"));
-const HowItWorks = lazy(() => import("../components/Home/HowItWorks.jsx"));
-const Testmonial = lazy(() => import("../components/testimonial/Testmonial.jsx"));
-const StatsSection = lazy(() => import("../components/Home/StatsSection.jsx"));
-const Banner = lazy(() => import("../components/Home/Banner.jsx"));
-const FAQSection = lazy(() => import("../components/Home/FAQSection.jsx"));
-const Newsletter = lazy(() => import("../components/Home/Newsletter.jsx"));
+import Hero from "../components/Home/Hero.jsx";
+import BrandsSection from "../components/Home/BrandsSection.jsx";
+import FeaturedSection from "../components/Home/FeaturedSection.jsx";
+import WhyChooseUs from "../components/Home/WhyChooseUs.jsx";
+import HowItWorks from "../components/Home/HowItWorks.jsx";
+import Testmonial from "../components/testimonial/Testmonial.jsx";
+import StatsSection from "../components/Home/StatsSection.jsx";
+import Banner from "../components/Home/Banner.jsx";
+import FAQSection from "../components/Home/FAQSection.jsx";
+import Newsletter from "../components/Home/Newsletter.jsx";
 
 const Home = () => {
 	return (
 		<main className="w-full overflow-hidden bg-white">
-			{/*  Hero Section  */}
-			<Suspense fallback={<HeroSkeleton />}>
-				<Hero />
-			</Suspense>
+			{/* Hero Section */}
+			<Hero />
 
-			{/*  Popular Brands Section */}
-			<Suspense fallback={<div className="h-24 bg-slate-50 animate-pulse" />}>
-				<BrandsSection />
-			</Suspense>
+			{/* Popular Brands Section */}
+			<BrandsSection />
 
 			{/* Featured Luxury Cars */}
-			<Suspense fallback={<FeaturedSectionSkeleton />}>
-				<FeaturedSection />
-			</Suspense>
+			<FeaturedSection />
 
 			{/* Why Choose Us */}
-			<Suspense fallback={<div className="h-64 bg-slate-50 animate-pulse" />}>
-				<WhyChooseUs />
-			</Suspense>
+			<WhyChooseUs />
 
 			{/* How It Works */}
-			<Suspense fallback={<div className="h-64 bg-white animate-pulse" />}>
-				<HowItWorks />
-			</Suspense>
+			<HowItWorks />
 
 			{/* Customer Reviews */}
-			<Suspense fallback={<TestimonialSectionSkeleton />}>
-				<Testmonial />
-			</Suspense>
+			<Testmonial />
 
 			{/* Statistics Section */}
-			<Suspense fallback={<div className="h-32 bg-gray-900 animate-pulse" />}>
-				<StatsSection />
-			</Suspense>
+			<StatsSection />
 
 			{/* Owner Banner */}
-			<Suspense fallback={<BannerSkeleton />}>
-				<Banner />
-			</Suspense>
+			<Banner />
 
 			{/* FAQ Section */}
-			<Suspense fallback={null}>
-				<FAQSection />
-			</Suspense>
+			<FAQSection />
 
 			{/* Newsletter */}
-			<Suspense fallback={<NewsletterSkeleton />}>
-				<Newsletter />
-			</Suspense>
+			<Newsletter />
 		</main>
 	);
 };

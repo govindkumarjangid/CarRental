@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef } from "react";
-import { motion } from "motion/react";
 
 import { useCarStore } from "../store/useCarStore.js";
 import CarCard from "../components/car/CarCard.jsx";
@@ -8,7 +7,7 @@ import { Title } from "../components/UI/Title.jsx";
 import { iconList } from "../assets/assets.jsx";
 
 const Cars = () => {
-	const { cars, carsLoading: loading, fetchCars } = useCarStore();
+	const { cars, carsLoading: loading, loadingMore, pagination, fetchCars, loadMoreCars } = useCarStore();
 
 	const [modelFilter, setModelFilter] = useState("");
 	const [fuelFilter, setFuelFilter] = useState("");
@@ -19,8 +18,6 @@ const Cars = () => {
 	const [openFuel, setOpenFuel] = useState(false);
 	const [openTransmission, setOpenTransmission] = useState(false);
 	const [selectedCompany, setSelectedCompany] = useState("All");
-	const [visibleCount, setVisibleCount] = useState(6);
-	const [isLoadingMore, setIsLoadingMore] = useState(false);
 	const [showLeftArrow, setShowLeftArrow] = useState(false);
 	const [showRightArrow, setShowRightArrow] = useState(false);
 
@@ -50,18 +47,9 @@ const Cars = () => {
 		}
 	};
 
-
 	useEffect(() => {
-		fetchCars();
+		fetchCars(1, 6, false);
 	}, []);
-
-	const handleLoadMore = () => {
-		setIsLoadingMore(true);
-		setTimeout(() => {
-			setVisibleCount(prev => prev + 6);
-			setIsLoadingMore(false);
-		}, 800);
-	};
 
 	const filteredCars = cars.filter((car) => {
 		const matchesBrand = car.brand
@@ -78,28 +66,16 @@ const Cars = () => {
 	return (
 		<>
 			<div className="max-w-8xl m-auto flex flex-col items-center pb-20 relative">
-				{/* search bar and title  */}
-				<motion.div
-					initial={{ opacity: 0 }}
-					whileInView={{ opacity: 1 }}
-					viewport={{ once: true }}
-					transition={{ duration: 0.2, ease: "easeOut" }}
-					style={{ willChange: "opacity" }}
-					className=" bg-light w-full py-20 px-4 flex flex-col justify-center items-center">
-					{/* title  */}
+				{/* Search bar and title */}
+				<div className="bg-light w-full py-20 px-4 flex flex-col justify-center items-center">
+					{/* Title */}
 					<Title
-						title="Avaiable Cars"
-						subTitle="Browser our selection of premium veficles available for your nest adventure"
+						title="Available Cars"
+						subTitle="Browse our selection of premium vehicles available for your next adventure"
 					/>
 
-					{/* search  */}
-					<motion.div
-						initial={{ opacity: 0 }}
-						whileInView={{ opacity: 1 }}
-						viewport={{ once: true }}
-						transition={{ duration: 0.2, ease: "easeOut" }}
-						style={{ willChange: "opacity" }}
-						className="mt-8 flex items-center justify-between gap-2 border-2 border-gray-300 md:px-4 px-3 py-1 rounded-xl shadow-sm max-w-96 md:max-w-3xl bg-white w-full focus-within:border-primary transition-all">
+					{/* Search */}
+					<div className="mt-8 flex items-center justify-between gap-2 border-2 border-gray-300 md:px-4 px-3 py-1 rounded-xl shadow-sm max-w-96 md:max-w-3xl bg-white w-full focus-within:border-primary transition-all">
 						<label htmlFor="car-search" className="sr-only md:text-base text-xs">Search cars by brand, model, or features</label>
 						<iconList.Search size={18} className="text-gray-600" />
 						<input
@@ -107,19 +83,14 @@ const Cars = () => {
 							type="text"
 							onChange={(e) => setInput(e.target.value)}
 							placeholder="Search by make, model, or features"
-							className="outline-none py-2 flex-9 text-gray-800 font-medium"
+							className="outline-none py-2 flex-1 text-gray-800 font-medium"
 						/>
 						<iconList.Funnel size={18} className="text-gray-600" />
-					</motion.div>
+					</div>
+				</div>
 
-				</motion.div>
-
-				{/* sort and filter  */}
-				<motion.div
-					initial={{ opacity: 0 }}
-					animate={{ opacity: 1 }}
-					transition={{ duration: 0.2 }}
-					className="flex flex-col md:flex-row items-center justify-between gap-4 mt-4 w-full px-6 md:px-16 max-w-7xl">
+				{/* Sort and filter */}
+				<div className="flex flex-col md:flex-row items-center justify-between gap-4 mt-4 w-full px-6 md:px-16 max-w-7xl">
 					<p className="text-gray-700 font-medium w-full md:w-auto text-center md:text-left">
 						Showing <span className="text-primary font-bold">{filteredCars.length}</span> results
 					</p>
@@ -188,10 +159,8 @@ const Cars = () => {
 							</button>
 
 							{openModel && (
-								<motion.div
+								<div
 									role="listbox"
-									initial={{ opacity: 0 }}
-									animate={{ opacity: 1 }}
 									className="absolute z-50 left-0 w-40 bg-white border border-gray-200 rounded-xl mt-2 shadow-2xl p-1">
 									{["All", "SUV", "MUV", "EV", "Wagon", "Sedan", "Van", "Jeep", "Hatchback"].map((opt) => (
 										<div
@@ -206,7 +175,7 @@ const Cars = () => {
 											{opt}
 										</div>
 									))}
-								</motion.div>
+								</div>
 							)}
 						</div>
 
@@ -228,10 +197,8 @@ const Cars = () => {
 							</button>
 
 							{openFuel && (
-								<motion.div
+								<div
 									role="listbox"
-									initial={{ opacity: 0 }}
-									animate={{ opacity: 1 }}
 									className="absolute z-50 left-0 w-40 bg-white border border-gray-200 rounded-xl mt-2 shadow-2xl p-1">
 									{["All", "Petrol", "Diesel", "Hybrid", "Electric", "Gas"].map((opt) => (
 										<div
@@ -246,7 +213,7 @@ const Cars = () => {
 											{opt}
 										</div>
 									))}
-								</motion.div>
+								</div>
 							)}
 						</div>
 
@@ -268,12 +235,10 @@ const Cars = () => {
 							</button>
 
 							{openTransmission && (
-								<motion.div
+								<div
 									role="listbox"
-									initial={{ opacity: 0 }}
-									animate={{ opacity: 1 }}
 									className="absolute z-50 right-0 w-40 bg-white border border-gray-200 rounded-xl mt-2 shadow-2xl p-1">
-									{["All", "Manual", "Automatic", "Semi-Automatic", ].map((opt) => (
+									{["All", "Manual", "Automatic", "Semi-Automatic"].map((opt) => (
 										<div
 											key={opt}
 											role="option"
@@ -286,51 +251,46 @@ const Cars = () => {
 											{opt}
 										</div>
 									))}
-								</motion.div>
+								</div>
 							)}
 						</div>
 					</div>
+				</div>
 
-				</motion.div>
-
-
-				{/* cards grid  */}
+				{/* Cards grid */}
 				<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-14 px-6 md:px-16 w-full max-w-7xl">
-					{loading ? [1, 2, 3, 4, 5, 6].map((_, index) =>
+					{loading && cars.length === 0 ? [1, 2, 3, 4, 5, 6].map((_, index) =>
 						<CarCardSkeleton index={index} key={index} />
-					) : filteredCars.slice(0, visibleCount).map((car, index) => (
+					) : filteredCars.map((car, index) => (
 						<div key={car._id}>
 							<CarCard car={car} index={index} />
 						</div>
 					))}
 				</div>
 
-				{/* Load More Button Container */}
-				{!loading && visibleCount < filteredCars.length && (
-					<div className="flex justify-center mt-10 mb-5">
-						<motion.button
-							initial={{ opacity: 0 }}
-							animate={{ opacity: 1 }}
-							transition={{ duration: 0.2 }}
-							onClick={handleLoadMore}
-							disabled={isLoadingMore}
-							className={`flex group items-center justify-center gap-2 px-6 py-2 border-2 rounded-xl mt-18 transition-all
-								${isLoadingMore
-									? 'border-gray-300 text-gray-400 cursor-wait'
-									: 'border-gray-500 text-gray-600 hover:bg-primary cursor-pointer hover:text-light hover:border-light active:scale-95'
+				{/* Backend Paginated Load More Button */}
+				{pagination.hasMore && (
+					<div className="flex justify-center mt-12 mb-5">
+						<button
+							onClick={loadMoreCars}
+							disabled={loadingMore}
+							className={`flex group items-center justify-center gap-2 px-8 py-3 border-2 rounded-xl transition-all font-extrabold text-sm shadow-xs
+								${loadingMore
+									? 'border-gray-300 text-gray-400 cursor-wait bg-gray-50'
+									: 'border-primary text-primary hover:bg-primary cursor-pointer hover:text-white active:scale-95 hover:shadow-md'
 								}`}>
-							{isLoadingMore ? (
+							{loadingMore ? (
 								<>
-									Loading...
-									<iconList.Loader size={20} className="animate-spin" />
+									<span>Loading More Cars...</span>
+									<iconList.Loader size={18} className="animate-spin" />
 								</>
 							) : (
 								<>
-									Load More
-									<iconList.ArrowDown size={20} />
+									<span>Load More Cars</span>
+									<iconList.ArrowDown size={18} className="group-hover:translate-y-0.5 transition-transform" />
 								</>
 							)}
-						</motion.button>
+						</button>
 					</div>
 				)}
 

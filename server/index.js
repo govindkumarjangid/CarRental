@@ -4,11 +4,14 @@ import cookieParser from 'cookie-parser';
 import 'dotenv/config';
 
 import connectDB from './src/configs/db.js';
-import authRouter from './src/Routes/auth.routes.js';
-import userRouter from './src/Routes/user.routes.js';
-import ownerRouter from './src/Routes/owner.routes.js';
-import bookingRouter from './src/Routes/booking.routes.js';
-import chatRouter from './src/Routes/chat.routes.js';
+import {
+  authRoutes,
+  bookingRoutes,
+  ownerRoutes,
+  userRoutes,
+  chatRoutes
+} from "./routes";
+
 
 //* Initialize Express App
 const app = express();
@@ -33,18 +36,12 @@ app.get('/', (req, res) => {
 });
 
 //* API v1 Routes
-app.use('/api/v1/auth', authRouter);
-app.use('/api/v1/user', userRouter);
-app.use('/api/v1/owner', ownerRouter);
-app.use('/api/v1/bookings', bookingRouter);
-app.use('/api/v1/chat', chatRouter);
+app.use('/api/v1/auth', authRoutes);
+app.use('/api/v1/user', userRoutes);
+app.use('/api/v1/owner', ownerRoutes);
+app.use('/api/v1/bookings', bookingRoutes);
+app.use('/api/v1/chat', chatRoutes);
 
-//* API Legacy Aliases
-app.use('/api/auth', authRouter);
-app.use('/api/user', userRouter);
-app.use('/api/owner', ownerRouter);
-app.use('/api/bookings', bookingRouter);
-app.use('/api/chat', chatRouter);
 
 //* 404 Route Not Found Handler
 app.use((req, res, next) => {
@@ -56,7 +53,6 @@ app.use((err, req, res, next) => {
   err.statusCode = err.statusCode || 500;
   err.status = err.status || 'error';
 
-  // Handle client request cancellation during file upload
   if (err.message === 'Request aborted' || err.code === 'ECONNABORTED') {
     return res.status(400).json({
       success: false,
@@ -64,7 +60,6 @@ app.use((err, req, res, next) => {
     });
   }
 
-  // Handle specific database and JWT errors
   if (err.name === 'CastError') {
     err.statusCode = 400;
     err.message = `Resource not found. Invalid field: ${err.path}`;

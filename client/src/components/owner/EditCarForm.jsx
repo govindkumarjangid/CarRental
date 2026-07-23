@@ -38,9 +38,10 @@ const EditCarForm = ({ car: propCar, onClose, isFullPage = false }) => {
     if (!car) return <FormSkeleton />;
 
     const handleChange = (e) => {
+        const { name, value } = e.target;
         setCar((prev) => ({
             ...prev,
-            [e.target.name]: e.target.value,
+            [name]: value,
         }));
     };
 
@@ -54,9 +55,8 @@ const EditCarForm = ({ car: propCar, onClose, isFullPage = false }) => {
         setLoading(true);
         const res = await updateCar(car, image);
         setLoading(false);
-        if (res?.success) {
+        if (res?.success)
             handleClose();
-        }
     };
 
     const formContent = (
@@ -67,7 +67,7 @@ const EditCarForm = ({ car: propCar, onClose, isFullPage = false }) => {
             transition={{ duration: 0.2 }}
             onSubmit={handleSubmit}
             onClick={(e) => e.stopPropagation()}
-            className={`${isFullPage ? "w-full h-full" : "relative max-w-2xl mx-auto bg-white md:max-h-[90vh] rounded-xl"} px-5 md:px-10 py-8 overflow-y-auto blue-thumb-scrollbar w-full bg-white cursor-default`}>
+            className={`${isFullPage ? "w-full h-full" : "relative max-w-2xl mx-auto bg-white max-h-[85vh] rounded-2xl"} px-5 md:px-10 py-8 overflow-y-auto custom-scrollbar w-full bg-white cursor-default`}>
             {/* title and close button  */}
             <div className="flex items-center justify-between mb-8">
                 <div className="flex items-center gap-4">
@@ -243,8 +243,10 @@ const EditCarForm = ({ car: propCar, onClose, isFullPage = false }) => {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
             onClick={handleClose}
-            className="fixed inset-0 z-100 flex items-center justify-center p-0 md:p-6 backdrop-blur-md bg-black/40 cursor-pointer overflow-hidden">
-            {formContent}
+            className="fixed inset-0 z-100 flex items-center justify-center p-3 sm:p-6 backdrop-blur-md bg-black/40 cursor-pointer overflow-y-auto custom-scrollbar">
+            <div onClick={(e) => e.stopPropagation()} className="w-full max-w-2xl my-auto">
+                {formContent}
+            </div>
         </motion.div>
     );
 };

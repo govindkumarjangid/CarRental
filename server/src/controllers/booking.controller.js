@@ -5,7 +5,12 @@ import razorpay from '../configs/razorpay.js'
 import crypto from "crypto";
 import asyncHandler from "../utils/asyncHandler.js";
 import { sendEmail } from "../utils/sendEmail.js";
-import { bookingEmailTemplate, bookingConfirmationTemplate, bookingCancellationTemplate, bookingCompletedTemplate } from "../utils/emailTemplates.js";
+import {
+  bookingEmailTemplate,
+  bookingConfirmationTemplate,
+  bookingCancellationTemplate,
+  bookingCompletedTemplate
+} from "../utils/emailTemplates.js";
 
 //* check avaliablity (Optimized using countDocuments)
 export const checkAvailability = async (car, pickupDate, returnDate) => {
@@ -184,25 +189,38 @@ export const createOnlineBooking = asyncHandler(async (req, res) => {
 export const getUserBookings = asyncHandler(async (req, res) => {
   const { _id } = req.user;
   const page = parseInt(req.query.page) || 1;
-  const limit = parseInt(req.query.limit) || 0;
+  const limit = parseInt(req.query.limit) || 3;
 
   if (limit > 0) {
     const skip = (page - 1) * limit;
     const [bookings, total] = await Promise.all([
-      Booking.find({ user: _id }).populate('car').sort({ createdAt: -1 }).skip(skip).limit(limit).lean(),
-      Booking.countDocuments({ user: _id })
+      Booking.find({ user: _id })
+        .populate("car")
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limit)
+        .lean(),
+      Booking.countDocuments({ user: _id }),
     ]);
+
     res.json({ success: true, bookings, total, page, totalPages: Math.ceil(total / limit) });
+
   } else {
-    const bookings = await Booking.find({ user: _id }).populate('car').sort({ createdAt: -1 }).lean();
+    const bookings = await Booking
+      .find({ user: _id })
+      .populate('car')
+      .sort({ createdAt: -1 })
+      .lean();
     res.json({ success: true, bookings });
   }
 });
 
 //* list owner bookings
 export const getOwnerBookings = asyncHandler(async (req, res) => {
+
   if (req.user.role !== 'owner')
     return res.json({ success: false, message: 'Access denied' });
+
   const { _id } = req.user;
   const page = parseInt(req.query.page) || 1;
   const limit = parseInt(req.query.limit) || 0;
@@ -210,12 +228,24 @@ export const getOwnerBookings = asyncHandler(async (req, res) => {
   if (limit > 0) {
     const skip = (page - 1) * limit;
     const [bookings, total] = await Promise.all([
-      Booking.find({ owner: _id }).populate('car user').select("-user.password").sort({ createdAt: -1 }).skip(skip).limit(limit).lean(),
+      Booking
+        .find({ owner: _id })
+        .populate('car user')
+        .select("-user.password")
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limit)
+        .lean(),
       Booking.countDocuments({ owner: _id })
     ]);
     res.json({ success: true, bookings, total, page, totalPages: Math.ceil(total / limit) });
   } else {
-    const bookings = await Booking.find({ owner: _id }).populate('car user').select("-user.password").sort({ createdAt: -1 }).lean();
+    const bookings = await Booking
+      .find({ owner: _id })
+      .populate('car user')
+      .select("-user.password")
+      .sort({ createdAt: -1 })
+      .lean();
     res.json({ success: true, bookings });
   }
 });
@@ -224,6 +254,7 @@ export const getOwnerBookings = asyncHandler(async (req, res) => {
 export const changeBookingStatus = asyncHandler(async (req, res) => {
   const { _id } = req.user;
   const { bookingId, status } = req.body;
+
   const booking = await Booking.findById(bookingId).populate('car user');
 
   if (booking.owner.toString() !== _id.toString())
@@ -323,11 +354,15 @@ export const changeBookingStatus = asyncHandler(async (req, res) => {
 export const changePaymentStatus = asyncHandler(async (req, res) => {
   const { _id } = req.user;
   const { bookingId, status } = req.body;
+
   const booking = await Booking.findById(bookingId);
+
   if (booking.owner.toString() !== _id.toString())
     return res.json({ success: false, message: 'Access denied' });
+
   booking.paymentStatus = status;
   await booking.save();
+
   res.json({ success: true, message: 'Payment status updated' });
 });
 
@@ -345,11 +380,11 @@ export const verifyPayment = asyncHandler(async (req, res) => {
     .digest("hex");
 
   if (expected !== razorpaySignature || status === "failure") {
-    await Booking.findByIdAndUpdate(bookingId, {
-      paymentStatus: "failed",
-      status: "cancelled",
-    });
+
+    await Booking.findByIdAndUpdate(bookingId, { paymentStatus: "failed", status: "cancelled" });
+
     const booking = await Booking.findById(bookingId).populate('car user');
+
     if (booking?.user?.email) {
       await sendEmail({
         email: booking.user.email,
@@ -369,6 +404,7 @@ export const verifyPayment = asyncHandler(async (req, res) => {
   }
 
   const bookingData = await Booking.findById(bookingId);
+
   if (!bookingData) return res.status(404).json({ success: false, message: "Booking not found" });
 
   const originalDurationMs = new Date(bookingData.returnDate) - new Date(bookingData.pickupDate);
@@ -422,12 +458,12 @@ export const verifyPayment = asyncHandler(async (req, res) => {
 export const deleteBooking = asyncHandler(async (req, res) => {
   const { _id } = req.user;
   const { bookingId } = req.body;
+
   const booking = await Booking.findById(bookingId);
   if (!booking) return res.json({ success: false, message: "Booking not found" });
 
-  if (booking.owner.toString() !== _id.toString()) {
+  if (booking.owner.toString() !== _id.toString())
     return res.json({ success: false, message: "You are not authorized" });
-  }
 
   await Booking.findByIdAndDelete(bookingId);
   res.json({ success: true, message: "Booking deleted successfully" });

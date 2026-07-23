@@ -12,18 +12,23 @@ export const protect = asyncHandler(async (req, res, next) => {
     token = req.cookies.accessToken || req.cookies.jwt;
   }
 
-  if (!token) {
+  // console.log(req.headers.authorization)
+
+  if (!token)
     return next(new AppError("Not authorized, token missing", 401));
-  }
 
   try {
     const secret = process.env.ACCESS_TOKEN_SECRET || process.env.JWT_SECRET;
     const decoded = jwt.verify(token, secret);
 
+    // console.log(decoded);
+
     if (!decoded || !decoded.id)
       return next(new AppError("Not authorized, token invalid", 401));
 
     req.user = await User.findById(decoded.id).select('-password');
+
+    // console.log(req.user);
 
     if (!req.user)
       return next(new AppError("User not found", 404));

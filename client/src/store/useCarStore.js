@@ -7,6 +7,14 @@ export const useCarStore = create((set, get) => ({
     ownerCars: [],
     availableCars: [],
     carsLoading: false,
+    loadingMore: false,
+    pagination: {
+        page: 1,
+        limit: 6,
+        total: 0,
+        totalPages: 1,
+        hasMore: false,
+    },
     ownerCarsLoading: false,
     availableCarsLoading: false,
     showEditCar: false,
@@ -39,20 +47,44 @@ export const useCarStore = create((set, get) => ({
         }
     },
 
-    fetchCars: async () => {
-        set({ carsLoading: true });
+    fetchCars: async (page = 1, limit = 6, append = false) => {
+        if (append)
+            set({ loadingMore: true });
+        else
+            set({ carsLoading: true });
+
         try {
-            const { data } = await axiosInstance.get("/api/v1/user/cars");
+            const { data } = await axiosInstance.get(`/api/v1/user/cars?page=${page}&limit=${limit}`);
             if (data.success) {
-                set({ cars: data.cars });
+                const newCars = data.cars || [];
+                const pageNum = data.page || page;
+                const totalPages = data.totalPages || Math.ceil((data.total || newCars.length) / limit);
+                const hasMore = data.totalPages ? pageNum < data.totalPages : (newCars.length >= limit);
+                set((state) => ({
+                    cars: append ? [...state.cars, ...newCars] : newCars,
+                    pagination: {
+                        page: pageNum,
+                        limit,
+                        total: data.total || (append ? state.cars.length + newCars.length : newCars.length),
+                        totalPages,
+                        hasMore,
+                    },
+                }));
             } else {
                 toast.error(data.message);
             }
         } catch (error) {
             toast.error(error.response?.data?.message || error.message || "Failed to fetch cars");
         } finally {
-            set({ carsLoading: false });
+            set({ carsLoading: false, loadingMore: false });
         }
+    },
+
+    loadMoreCars: async () => {
+        const { pagination, loadingMore, fetchCars } = get();
+        if (loadingMore || !pagination.hasMore) return;
+        const nextPage = pagination.page + 1;
+        await fetchCars(nextPage, pagination.limit, true);
     },
 
     fetchOwnerCars: async () => {
