@@ -13,10 +13,16 @@ import {
     updateCarStatus,
     updateUserImage
 } from '../controllers/owner.controller.js';
-import { protect } from '../middleware/auth.middleware.js'
+import { protect } from '../middleware/auth.middleware.js';
 import { upload } from '../configs/cloudinary.config.js';
 import { validate } from '../middleware/validate.middleware.js';
-import { addCarSchema, editCarSchema, updateCarStatusSchema } from '../validators/car.validator.js';
+import {
+    addCarSchema,
+    editCarSchema,
+    updateCarStatusSchema,
+    blockUnblockUserSchema,
+    deleteCarSchema
+} from '../validators/owner.validator.js';
 
 const ownerRouter = express.Router();
 
@@ -38,11 +44,11 @@ ownerRouter
 
 ownerRouter
     .route("/delete-car")
-    .post(protect, deleteCar);
+    .post(protect, validate(deleteCarSchema), deleteCar);
 
 ownerRouter
     .route("/edit-car")
-    .post(upload.single("image"), protect, validate(editCarSchema), editCar);
+    .post(protect, upload.single("image"), validate(editCarSchema), editCar);
 
 ownerRouter
     .route("/dashboard")
@@ -50,7 +56,7 @@ ownerRouter
 
 ownerRouter
     .route("/update-image")
-    .post(upload.single('image'), protect, updateUserImage);
+    .post(protect, upload.single('image'), updateUserImage);
 
 ownerRouter
     .route("/allusers")
@@ -58,7 +64,7 @@ ownerRouter
 
 ownerRouter
     .route("/block-unblock")
-    .post(protect, blockUnblockUser);
+    .post(protect, validate(blockUnblockUserSchema), blockUnblockUser);
 
 ownerRouter
     .route("/owner-details/:id")

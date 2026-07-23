@@ -10,15 +10,20 @@ import {
   verifyPayment,
   deleteBooking
 } from '../controllers/booking.controller.js';
-import { protect } from '../middleware/auth.middleware.js'
+import { protect } from '../middleware/auth.middleware.js';
 import { validate } from '../middleware/validate.middleware.js';
-import { createBookingSchema, updateBookingStatusSchema } from '../validators/booking.validator.js';
+import {
+  createBookingSchema,
+  updateBookingStatusSchema,
+  checkAvailabilitySchema,
+  verifyPaymentSchema
+} from '../validators/booking.validator.js';
 
 const bookingRouter = express.Router();
 
 bookingRouter
   .route("/check-availability")
-  .post(checkAvaliablityofCar);
+  .post(validate(checkAvailabilitySchema), checkAvaliablityofCar);
 
 bookingRouter
   .route("/create")
@@ -30,7 +35,7 @@ bookingRouter
 
 bookingRouter
   .route("/verify-payment")
-  .post(protect, verifyPayment);
+  .post(protect, validate(verifyPaymentSchema), verifyPayment);
 
 bookingRouter
   .route("/user")
@@ -51,6 +56,5 @@ bookingRouter
 bookingRouter
   .route("/delete-booking")
   .post(protect, deleteBooking);
-
 
 export default bookingRouter;

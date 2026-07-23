@@ -1,470 +1,91 @@
-import Booking from "../models/booking.model.js";
-import Car from '../models/car.model.js'
-import User from '../models/user.model.js'
-import razorpay from '../configs/razorpay.config.js'
-import crypto from "crypto";
+import * as bookingService from "../services/booking.service.js";
 import asyncHandler from "../utils/asyncHandler.js";
-import { sendEmail } from "../utils/sendEmail.js";
-import {
-  bookingEmailTemplate,
-  bookingConfirmationTemplate,
-  bookingCancellationTemplate,
-  bookingCompletedTemplate
-} from "../utils/emailTemplates.js";
-
-//* check avaliablity (Optimized using countDocuments)
-export const checkAvailability = async (car, pickupDate, returnDate) => {
-  const count = await Booking.countDocuments({
-    car,
-    pickupDate: { $lte: returnDate },
-    returnDate: { $gte: pickupDate }
-  });
-
-  return count === 0;
-};
 
 //* check avaliablity of cars
 export const checkAvaliablityofCar = asyncHandler(async (req, res) => {
-  const { location, pickupDate: startTime, returnDate: endTime } = req.body;
-
-  if (!location || !startTime || !endTime)
-    return res.json({ success: false, message: 'All fields are required' });
-
-  const pickupDate = new Date(startTime);
-  const returnDate = new Date(endTime);
-  const car = await Car.find({ location, status: "available" }).lean();
-
-  const avaliableCarsPromises = (car || []).map(async (carItem) => {
-    const isAvaliable = await checkAvailability(carItem._id, pickupDate, returnDate);
-    return { ...carItem, isAvaliable: isAvaliable }
-  });
-
-  let avaliableCars = await Promise.all(avaliableCarsPromises);
-  avaliableCars = avaliableCars.filter(carItem => carItem.isAvaliable === true);
-  res.json({ success: true, cars: avaliableCars });
+  const cars = await bookingService.checkAvaliablityofCar(req.body);
+  return res.status(200).json({ success: true, cars });
 });
 
 //* create offline booking
 export const createOfflineBooking = asyncHandler(async (req, res) => {
-  const { _id } = req.user;
-  const { car, startTime, endTime } = req.body;
-
-  const picked = new Date(startTime);
-  const returned = new Date(endTime);
-
-  const isAvaliable = await checkAvailability(car, picked, returned);
-
-  if (!isAvaliable)
-    return res.json({ success: false, message: "Car is not avaliable" })
-
-  const carData = await Car.findById(car).lean();
-  if (!carData) return res.json({ success: false, message: "Car not found" });
-
-  const durationMs = returned - picked;
-  if (isNaN(durationMs) || durationMs <= 0)
-    return res.json({ success: false, message: "Invalid duration selected" });
-
-  const hours = Math.max(1, Math.ceil(durationMs / (1000 * 60 * 60)));
-  const pricePerHour = Number(carData.pricePerHour || Math.round((carData.pricePerDay || 0) / 24) || 100);
-
-  let price = pricePerHour * hours;
-
-  const booking = await Booking.create({
-    car,
-    user: _id,
-    owner: carData.owner,
-    pickupDate: picked,
-    returnDate: returned,
-    price,
-    paymentMethod: "offline",
-  });
-
-  // Send booking email to user
-  const user = await User.findById(_id).lean();
-  const carInfo = carData;
-
-  if (user?.email) {
-    await sendEmail({
-      email: user.email,
-      subject: `Booking Received — ${carInfo.brand} ${carInfo.model} 📋`,
-      htmlMessage: bookingEmailTemplate({
-        userName: user.name,
-        carName: `${carInfo.brand} ${carInfo.model}`,
-        pickupDate: picked,
-        returnDate: returned,
-        price,
-        paymentMethod: "offline",
-        location: carInfo.location,
-        carImage: carInfo.image,
-        fuelType: carInfo.fuel_type,
-        transmission: carInfo.transmission,
-        seatingCapacity: carInfo.seating_capacity
-      }),
-    });
-  }
-
-  res.json({ success: true, message: 'Offline Booking successfully' })
+  const message = await bookingService.createOfflineBooking(req.user._id, req.body);
+  return res.status(201).json({ success: true, message });
 });
 
 //* create online booking
 export const createOnlineBooking = asyncHandler(async (req, res) => {
-  const { _id } = req.user;
-  const { car, startTime, endTime } = req.body;
-
-  const picked = new Date(startTime);
-  const returned = new Date(endTime);
-
-  const isAvaliable = await checkAvailability(car, picked, returned);
-
-  if (!isAvaliable)
-    return res.json({ success: false, message: "Car is not avaliable" })
-
-  const carData = await Car.findById(car).lean();
-  if (!carData) return res.json({ success: false, message: "Car not found" });
-
-  const durationMs = returned - picked;
-  if (isNaN(durationMs) || durationMs <= 0)
-    return res.json({ success: false, message: "Invalid duration selected" });
-
-  const hours = Math.max(1, Math.ceil(durationMs / (1000 * 60 * 60)));
-  const pricePerHour = Number(carData.pricePerHour || Math.round((carData.pricePerDay || 0) / 24) || 100);
-  const price = pricePerHour * hours;
-
-  const order = await razorpay.orders.create({
-    amount: price * 100,
-    currency: "INR",
-    receipt: `receipt_order_${Date.now()}`
-  });
-
-  if (!order)
-    return res.status(500).json({ success: false, message: "Error creating order" });
-
-  const booking = await Booking.create({
-    car,
-    user: _id,
-    owner: carData.owner,
-    pickupDate: picked,
-    returnDate: returned,
-    price,
-    paymentMethod: "online",
-    paymentStatus: "confirmed",
-    razorpayOrderId: order.id,
-    status: "pending"
-  });
-
-  // Send booking email to user
-  const user = await User.findById(_id).lean();
-  const carInfo = carData;
-  if (user?.email) {
-    await sendEmail({
-      email: user.email,
-      subject: `Booking Received — ${carInfo.brand} ${carInfo.model} 📋`,
-      htmlMessage: bookingEmailTemplate({
-        userName: user.name,
-        carName: `${carInfo.brand} ${carInfo.model}`,
-        pickupDate: picked,
-        returnDate: returned,
-        price,
-        paymentMethod: "online",
-        location: carInfo.location,
-        carImage: carInfo.image,
-        fuelType: carInfo.fuel_type,
-        transmission: carInfo.transmission,
-        seatingCapacity: carInfo.seating_capacity
-      }),
-    });
-  }
-
-  return res.json({
+  const result = await bookingService.createOnlineBooking(req.user._id, req.body);
+  return res.status(200).json({
     success: true,
     message: "Order created",
-    order,
-    bookingId: booking._id,
-    key: process.env.RAZORPAY_KEY_ID,
-    amount: price * 100,
+    order: result.order,
+    bookingId: result.bookingId,
+    key: result.key,
+    amount: result.amount,
   });
 });
 
 //* list user bookings
 export const getUserBookings = asyncHandler(async (req, res) => {
-  const { _id } = req.user;
-  const page = parseInt(req.query.page) || 1;
-  const limit = parseInt(req.query.limit) || 3;
+  const result = await bookingService.getUserBookings(req.user._id, {
+    page: req.query.page,
+    limit: req.query.limit,
+  });
 
-  if (limit > 0) {
-    const skip = (page - 1) * limit;
-    const [bookings, total] = await Promise.all([
-      Booking.find({ user: _id })
-        .populate("car")
-        .sort({ createdAt: -1 })
-        .skip(skip)
-        .limit(limit)
-        .lean(),
-      Booking.countDocuments({ user: _id }),
-    ]);
-
-    res.json({ success: true, bookings, total, page, totalPages: Math.ceil(total / limit) });
-
-  } else {
-    const bookings = await Booking
-      .find({ user: _id })
-      .populate('car')
-      .sort({ createdAt: -1 })
-      .lean();
-    res.json({ success: true, bookings });
+  if (result.totalPages !== undefined) {
+    return res.status(200).json({
+      success: true,
+      bookings: result.bookings,
+      total: result.total,
+      page: result.page,
+      totalPages: result.totalPages,
+    });
   }
+
+  return res.status(200).json({ success: true, bookings: result.bookings });
 });
 
 //* list owner bookings
 export const getOwnerBookings = asyncHandler(async (req, res) => {
+  const result = await bookingService.getOwnerBookings(req.user, {
+    page: req.query.page,
+    limit: req.query.limit,
+  });
 
-  if (req.user.role !== 'owner')
-    return res.json({ success: false, message: 'Access denied' });
-
-  const { _id } = req.user;
-  const page = parseInt(req.query.page) || 1;
-  const limit = parseInt(req.query.limit) || 0;
-
-  if (limit > 0) {
-    const skip = (page - 1) * limit;
-    const [bookings, total] = await Promise.all([
-      Booking
-        .find({ owner: _id })
-        .populate('car user')
-        .select("-user.password")
-        .sort({ createdAt: -1 })
-        .skip(skip)
-        .limit(limit)
-        .lean(),
-      Booking.countDocuments({ owner: _id })
-    ]);
-    res.json({ success: true, bookings, total, page, totalPages: Math.ceil(total / limit) });
-  } else {
-    const bookings = await Booking
-      .find({ owner: _id })
-      .populate('car user')
-      .select("-user.password")
-      .sort({ createdAt: -1 })
-      .lean();
-    res.json({ success: true, bookings });
+  if (result.totalPages !== undefined) {
+    return res.status(200).json({
+      success: true,
+      bookings: result.bookings,
+      total: result.total,
+      page: result.page,
+      totalPages: result.totalPages,
+    });
   }
+
+  return res.status(200).json({ success: true, bookings: result.bookings });
 });
 
 //* change booking status
 export const changeBookingStatus = asyncHandler(async (req, res) => {
-  const { _id } = req.user;
-  const { bookingId, status } = req.body;
-
-  const booking = await Booking.findById(bookingId).populate('car user');
-
-  if (booking.owner.toString() !== _id.toString())
-    return res.json({ success: false, message: 'Access denied' });
-
-  if (status === 'completed' && booking.status !== 'completed') {
-    const plannedReturn = new Date(booking.returnDate);
-    const actualReturn = new Date();
-    if (actualReturn > plannedReturn) {
-      const lateDurationMs = actualReturn - plannedReturn;
-      const gracePeriodMs = 30 * 60 * 1000;
-
-      if (lateDurationMs > gracePeriodMs) {
-        const car = booking.car;
-        const lateHours = Math.ceil(lateDurationMs / (1000 * 60 * 60));
-        const lateFees = lateHours * (car.lateFeePerHour || 0);
-        if (lateFees > 0) booking.price += lateFees;
-      }
-    }
-  }
-
-  if (status === 'confirmed' && booking.status !== 'confirmed') {
-    const originalDurationMs = new Date(booking.returnDate) - new Date(booking.pickupDate);
-    booking.pickupDate = new Date();
-    booking.returnDate = new Date(booking.pickupDate.getTime() + originalDurationMs);
-
-    const car = await Car.findById(booking.car._id);
-    if (car) {
-      car.status = "unavailable";
-      await car.save();
-    }
-  }
-
-  if ((status === 'completed' || status === 'cancelled') && (booking.status !== 'completed' && booking.status !== 'cancelled')) {
-    const car = await Car.findById(booking.car._id);
-    if (car) {
-      car.status = "available";
-      await car.save();
-    }
-  }
-
-  booking.status = status;
-  await booking.save();
-
-  if (status === 'confirmed' && booking.user?.email) {
-    const car = booking.car;
-    await sendEmail({
-      email: booking.user.email,
-      subject: `Booking Confirmed — ${car.brand} ${car.model} ✅`,
-      htmlMessage: bookingConfirmationTemplate({
-        userName: booking.user.name,
-        carName: `${car.brand} ${car.model}`,
-        pickupDate: booking.pickupDate,
-        returnDate: booking.returnDate,
-        price: booking.price,
-        bookingId: booking._id.toString(),
-        location: car.location,
-        carImage: car.image,
-        fuelType: car.fuel_type,
-        transmission: car.transmission,
-        seatingCapacity: car.seating_capacity
-      }),
-    });
-  }
-
-  if (status === 'cancelled' && booking.user?.email) {
-    const car = booking.car;
-    await sendEmail({
-      email: booking.user.email,
-      subject: `Booking Cancelled — ${car.brand} ${car.model} ❌`,
-      htmlMessage: bookingCancellationTemplate({
-        userName: booking.user.name,
-        carName: `${car.brand} ${car.model}`,
-        bookingId: booking._id.toString(),
-        reason: "Cancelled by owner"
-      }),
-    });
-  }
-
-  if (status === 'completed' && booking.user?.email) {
-    const car = booking.car;
-    await sendEmail({
-      email: booking.user.email,
-      subject: `Trip Completed — ${car.brand} ${car.model} 🏁`,
-      htmlMessage: bookingCompletedTemplate({
-        userName: booking.user.name,
-        carName: `${car.brand} ${car.model}`,
-        bookingId: booking._id.toString(),
-      }),
-    });
-  }
-
-  res.json({ success: true, message: 'Booking status updated' });
+  const message = await bookingService.changeBookingStatus(req.user._id, req.body);
+  return res.status(200).json({ success: true, message });
 });
 
 //* change payment status
 export const changePaymentStatus = asyncHandler(async (req, res) => {
-  const { _id } = req.user;
-  const { bookingId, status } = req.body;
-
-  const booking = await Booking.findById(bookingId);
-
-  if (booking.owner.toString() !== _id.toString())
-    return res.json({ success: false, message: 'Access denied' });
-
-  booking.paymentStatus = status;
-  await booking.save();
-
-  res.json({ success: true, message: 'Payment status updated' });
+  const message = await bookingService.changePaymentStatus(req.user._id, req.body);
+  return res.status(200).json({ success: true, message });
 });
 
 //* verify payment
 export const verifyPayment = asyncHandler(async (req, res) => {
-  const { razorpayOrderId, razorpayPaymentId, razorpaySignature, status, bookingId } = req.body;
-
-  if (!razorpayOrderId || !razorpayPaymentId || !razorpaySignature)
-    return res.status(400).json({ success: false, message: "missing required fields" });
-
-  const sign = razorpayOrderId + "|" + razorpayPaymentId;
-
-  const expected = crypto.createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
-    .update(sign.toString())
-    .digest("hex");
-
-  if (expected !== razorpaySignature || status === "failure") {
-
-    await Booking.findByIdAndUpdate(bookingId, { paymentStatus: "failed", status: "cancelled" });
-
-    const booking = await Booking.findById(bookingId).populate('car user');
-
-    if (booking?.user?.email) {
-      await sendEmail({
-        email: booking.user.email,
-        subject: `Booking Cancelled — ${booking.car.brand} ${booking.car.model} ❌`,
-        htmlMessage: bookingCancellationTemplate({
-          userName: booking.user.name,
-          carName: `${booking.car.brand} ${booking.car.model}`,
-          bookingId: booking._id.toString(),
-          reason: "Payment verification failed"
-        }),
-      });
-    }
-    return res.status(400).json({
-      success: false,
-      message: "Invalid signature",
-    });
-  }
-
-  const bookingData = await Booking.findById(bookingId);
-
-  if (!bookingData) return res.status(404).json({ success: false, message: "Booking not found" });
-
-  const originalDurationMs = new Date(bookingData.returnDate) - new Date(bookingData.pickupDate);
-  const newPickupDate = new Date();
-  const newReturnDate = new Date(newPickupDate.getTime() + originalDurationMs);
-
-  const booking = await Booking.findByIdAndUpdate(bookingId, {
-    razorpayOrderId: razorpayOrderId,
-    razorpayPaymentId: razorpayPaymentId,
-    razorpaySignature: razorpaySignature,
-    paymentStatus: "confirmed",
-    status: "confirmed",
-    pickupDate: newPickupDate,
-    returnDate: newReturnDate
-  }, { returnDocument: 'after' }).populate('car user');
-
-  if (booking && booking.car) {
-    const car = await Car.findById(booking.car._id);
-    if (car) {
-      car.status = "unavailable";
-      await car.save();
-    }
-  }
-
-  // Send booking confirmation email after successful payment
-  if (booking?.user?.email) {
-    const car = booking.car;
-    await sendEmail({
-      email: booking.user.email,
-      subject: `Booking Confirmed — ${car.brand} ${car.model} ✅`,
-      htmlMessage: bookingConfirmationTemplate({
-        userName: booking.user.name,
-        carName: `${car.brand} ${car.model}`,
-        pickupDate: booking.pickupDate,
-        returnDate: booking.returnDate,
-        price: booking.price,
-        bookingId: booking._id.toString(),
-        location: car.location,
-        carImage: car.image,
-        fuelType: car.fuel_type,
-        transmission: car.transmission,
-        seatingCapacity: car.seating_capacity
-      }),
-    });
-  }
-
-  res.json({ success: true, message: "Payment verified" });
+  const message = await bookingService.verifyPayment(req.body);
+  return res.status(200).json({ success: true, message });
 });
 
 //* delete booking
 export const deleteBooking = asyncHandler(async (req, res) => {
-  const { _id } = req.user;
-  const { bookingId } = req.body;
-
-  const booking = await Booking.findById(bookingId);
-  if (!booking) return res.json({ success: false, message: "Booking not found" });
-
-  if (booking.owner.toString() !== _id.toString())
-    return res.json({ success: false, message: "You are not authorized" });
-
-  await Booking.findByIdAndDelete(bookingId);
-  res.json({ success: true, message: "Booking deleted successfully" });
+  const message = await bookingService.deleteBooking(req.user._id, req.body.bookingId);
+  return res.status(200).json({ success: true, message });
 });

@@ -56,7 +56,7 @@ const Navbar = () => {
 
 	return (
 		<div className={`w-full sticky top-0 z-50 transition-all duration-300 ${scrolled
-			? "bg-white/10 backdrop-blur-2xl shadow-md border-b border-white/10 py-3"
+			? "bg-white/80 backdrop-blur-2xl shadow-md border-b border-white/20 py-3"
 			: location.pathname === "/"
 				? "bg-white/10 backdrop-blur-xl border-b border-white/10 shadow-xs py-4"
 				: "bg-white border-b border-gray-200 py-4"
@@ -121,64 +121,73 @@ const Navbar = () => {
 							</button>
 						) : (
 							<div className="relative" ref={dropdownRef}>
-								{/* Sleek Profile Trigger Button */}
+								{/* Premium Profile Trigger Button */}
 								<button
 									onClick={() => setDropdownOpen(!dropdownOpen)}
-									className="flex items-center gap-2.5 p-1.5 px-3 rounded-2xl border border-gray-200/80 bg-white/90 backdrop-blur-xl hover:border-primary/40 hover:bg-white transition-all shadow-xs active:scale-[0.99] cursor-pointer group">
-									<UserAvatar
-										src={user.image}
-										name={user.name}
-										size={34}
-										className="aspect-square size-8 rounded-xl ring-2 ring-primary/20 group-hover:ring-primary/40 transition-all"
-									/>
-									<span className="hidden md:inline font-bold text-sm text-gray-800 max-w-28 truncate">
+									className="flex items-center gap-2.5 p-1.5 pl-2 pr-3.5 rounded-full border border-slate-200/80 bg-white/90 backdrop-blur-xl hover:border-primary/50 hover:bg-white transition-all duration-300 shadow-xs hover:shadow-md cursor-pointer group active:scale-95">
+									<div className="relative shrink-0">
+										<UserAvatar
+											src={user.image}
+											name={user.name}
+											size={36}
+											className="size-8.5 rounded-full ring-2 ring-primary/20 group-hover:ring-primary/50 transition-all object-cover"
+										/>
+										<span className="absolute -bottom-0.5 -right-0.5 size-2.5 bg-emerald-500 rounded-full ring-2 ring-white shadow-xs" />
+									</div>
+									<span className="hidden md:inline font-bold text-sm text-slate-800 max-w-32 truncate">
 										{user.name}
 									</span>
-									<ChevronDown size={16} className={`text-gray-500 transition-transform duration-200 ${dropdownOpen ? "rotate-180 text-primary" : ""}`} />
+									<ChevronDown size={16} className={`text-slate-400 group-hover:text-primary transition-transform duration-300 ${dropdownOpen ? "rotate-180 text-primary" : ""}`} />
 								</button>
 
-								{/* Redesigned Dropdown Menu */}
+								{/* Premium Redesigned Dropdown Menu */}
 								<AnimatePresence>
 									{dropdownOpen && (
 										<motion.div
-											initial={{ opacity: 0, y: 6, scale: 0.98 }}
+											initial={{ opacity: 0, y: 10, scale: 0.96 }}
 											animate={{ opacity: 1, y: 0, scale: 1 }}
-											exit={{ opacity: 0, y: 6, scale: 0.98 }}
-											transition={{ duration: 0.15, ease: "easeOut" }}
-											className="absolute right-0 mt-2.5 w-64 bg-white/95 backdrop-blur-2xl rounded-2xl shadow-[0_20px_40px_rgba(0,0,0,0.12)] border border-gray-100 p-2 z-50 overflow-hidden">
+											exit={{ opacity: 0, y: 8, scale: 0.96 }}
+											transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+											className="absolute right-0 mt-3 w-72 bg-white/95 backdrop-blur-2xl rounded-2xl shadow-[0_25px_60px_-15px_rgba(0,0,0,0.18)] border border-slate-100 p-2.5 z-50 overflow-hidden">
 
-											{/* User Info Card Header */}
-											<div className="flex items-center gap-3 px-3 py-3 bg-gradient-to-br from-slate-50 to-gray-100/60 border border-gray-100 rounded-xl mb-1.5">
+											{/* Dark Luxury User Info Card Header */}
+											<div className="relative flex items-center gap-3 p-3 bg-gradient-to-br from-slate-900 via-slate-800 to-indigo-950 text-white rounded-xl mb-2 shadow-md overflow-hidden">
+												<div className="absolute -top-8 -right-8 w-20 h-20 bg-primary/40 rounded-full blur-xl pointer-events-none" />
 												<UserAvatar
 													src={user.image}
 													name={user.name}
-													size={38}
-													className="aspect-square size-9 rounded-xl shrink-0"
+													size={44}
+													className="size-11 rounded-full shrink-0 ring-2 ring-white/30 shadow-md object-cover"
 												/>
-												<div className="min-w-0 flex-1">
-													<div className="flex items-center justify-between gap-1">
-														<p className="text-xs font-black text-gray-900 truncate">{user.name}</p>
-														<span className={`px-1.5 py-0.5 rounded text-[9px] font-extrabold uppercase ${isOwner ? "bg-amber-100 text-amber-700" : "bg-blue-100 text-blue-700"}`}>
+												<div className="min-w-0 flex-1 z-10">
+													<div className="flex items-center justify-between gap-1 mb-0.5">
+														<p className="text-xs font-bold text-white truncate max-w-[130px]">{user.name}</p>
+														<span className={`px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase tracking-wider backdrop-blur-md ${isOwner ? "bg-amber-400/25 text-amber-300 border border-amber-400/30" : "bg-indigo-400/25 text-indigo-200 border border-indigo-400/30"}`}>
 															{isOwner ? "Owner" : "Renter"}
 														</span>
 													</div>
-													<p className="text-[11px] font-medium text-gray-500 truncate">{user.email}</p>
+													<p className="text-[11px] font-medium text-slate-300/80 truncate max-w-[160px]">{user.email}</p>
 												</div>
 											</div>
 
-											{/* Action Menu Items */}
-											<div className="space-y-0.5">
+											{/* Action Menu Items with Icons & Subtitles */}
+											<div className="space-y-1">
 												<button
 													onClick={() => {
 														setDropdownOpen(false);
 														setOpenPopup(true);
 													}}
-													className="w-full flex items-center justify-between px-3 py-2.5 text-xs font-bold text-gray-700 hover:bg-primary/10 hover:text-primary rounded-xl transition-all active:scale-[0.99] cursor-pointer text-left group">
-													<div className="flex items-center gap-2.5">
-														<User size={16} className="text-gray-500 group-hover:text-primary transition-colors" />
-														<span>My Profile</span>
+													className="w-full flex items-center justify-between p-2.5 rounded-xl hover:bg-slate-50 transition-all duration-200 cursor-pointer group text-left">
+													<div className="flex items-center gap-3">
+														<div className="p-2.5 rounded-full bg-blue-50 text-blue-600 group-hover:bg-primary group-hover:text-white transition-all shadow-xs shrink-0">
+															<User size={16} />
+														</div>
+														<div>
+															<p className="text-xs font-bold text-slate-800 group-hover:text-primary transition-colors">My Profile</p>
+															<p className="text-[10px] text-slate-400 font-medium">Manage account & avatar</p>
+														</div>
 													</div>
-													<ChevronRight size={14} className="text-gray-400 opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all" />
+													<ChevronRight size={14} className="text-slate-400 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
 												</button>
 
 												<button
@@ -186,12 +195,17 @@ const Navbar = () => {
 														setDropdownOpen(false);
 														navigate("/my-bookings");
 													}}
-													className="w-full flex items-center justify-between px-3 py-2.5 text-xs font-bold text-gray-700 hover:bg-primary/10 hover:text-primary rounded-xl transition-all active:scale-[0.99] cursor-pointer text-left group">
-													<div className="flex items-center gap-2.5">
-														<Bookmark size={16} className="text-gray-500 group-hover:text-primary transition-colors" />
-														<span>My Bookings</span>
+													className="w-full flex items-center justify-between p-2.5 rounded-xl hover:bg-slate-50 transition-all duration-200 cursor-pointer group text-left">
+													<div className="flex items-center gap-3">
+														<div className="p-2.5 rounded-full bg-emerald-50 text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white transition-all shadow-xs shrink-0">
+															<Bookmark size={16} />
+														</div>
+														<div>
+															<p className="text-xs font-bold text-slate-800 group-hover:text-emerald-600 transition-colors">My Bookings</p>
+															<p className="text-[10px] text-slate-400 font-medium">View active & past rentals</p>
+														</div>
 													</div>
-													<ChevronRight size={14} className="text-gray-400 opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all" />
+													<ChevronRight size={14} className="text-slate-400 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
 												</button>
 
 												{isOwner && (
@@ -200,24 +214,34 @@ const Navbar = () => {
 															setDropdownOpen(false);
 															navigate("/owner");
 														}}
-														className="w-full flex items-center justify-between px-3 py-2.5 text-xs font-bold text-amber-700 hover:bg-amber-50 rounded-xl transition-all active:scale-[0.99] cursor-pointer text-left group">
-														<div className="flex items-center gap-2.5">
-															<LayoutDashboard size={16} className="text-amber-600" />
-															<span>Owner Dashboard</span>
+														className="w-full flex items-center justify-between p-2.5 rounded-xl hover:bg-amber-50/60 transition-all duration-200 cursor-pointer group text-left">
+														<div className="flex items-center gap-3">
+															<div className="p-2.5 rounded-full bg-amber-50 text-amber-600 group-hover:bg-amber-600 group-hover:text-white transition-all shadow-xs shrink-0">
+																<LayoutDashboard size={16} />
+															</div>
+															<div>
+																<p className="text-xs font-bold text-amber-900 group-hover:text-amber-700 transition-colors">Owner Dashboard</p>
+																<p className="text-[10px] text-amber-600/70 font-medium">Manage cars & earnings</p>
+															</div>
 														</div>
-														<ChevronRight size={14} className="text-amber-400 opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all" />
+														<ChevronRight size={14} className="text-amber-400 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
 													</button>
 												)}
 											</div>
 
-											<div className="h-px bg-gray-100 my-1.5" />
+											<div className="h-px bg-slate-100 my-1.5" />
 
 											<button
 												onClick={handleLogout}
-												className="w-full flex items-center justify-between px-3 py-2.5 text-xs font-extrabold text-red-500 hover:bg-red-50 hover:text-red-600 rounded-xl transition-all active:scale-[0.99] cursor-pointer text-left group">
-												<div className="flex items-center gap-2.5">
-													<LogOut size={16} />
-													<span>Log Out</span>
+												className="w-full flex items-center justify-between p-2.5 rounded-xl hover:bg-rose-50/70 transition-all duration-200 cursor-pointer group text-left">
+												<div className="flex items-center gap-3">
+													<div className="p-2.5 rounded-full bg-rose-50 text-rose-600 group-hover:bg-rose-600 group-hover:text-white transition-all shadow-xs shrink-0">
+														<LogOut size={16} />
+													</div>
+													<div>
+														<p className="text-xs font-bold text-rose-600 group-hover:text-rose-700 transition-colors">Log Out</p>
+														<p className="text-[10px] text-rose-400 font-medium">End session safely</p>
+													</div>
 												</div>
 											</button>
 										</motion.div>
@@ -238,7 +262,7 @@ const Navbar = () => {
 				</div>
 			</div>
 
-			{/* Mobile */}
+			{/* Mobile Menu */}
 			<div className="sm:hidden absolute inset-x-0 top-full -z-10 pointer-events-none">
 				<AnimatePresence>
 					{open && (
@@ -281,7 +305,7 @@ const Navbar = () => {
 				</AnimatePresence>
 			</div>
 
-			{/* User Profile  */}
+			{/* User Profile Modal */}
 			<AnimatePresence>
 				{openPopup && user && (
 					<motion.div
@@ -314,10 +338,10 @@ const Navbar = () => {
 											src={image ? URL.createObjectURL(image) : user?.image}
 											name={user?.name}
 											size={64}
-											className="h-16 w-16 border-2 border-primary/20 group-hover:border-primary transition-all"
+											className="h-16 w-16 border-2 border-primary/20 group-hover:border-primary transition-all object-cover rounded-full"
 										/>
 									) : (
-										<div className="h-16 w-16 rounded-2xl bg-slate-100 flex items-center justify-center">
+										<div className="h-16 w-16 rounded-full bg-slate-100 flex items-center justify-center">
 											<CircleUser size={40} className="text-gray-400" />
 										</div>
 									)}

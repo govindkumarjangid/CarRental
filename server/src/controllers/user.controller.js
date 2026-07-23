@@ -1,75 +1,49 @@
-import User from "../models/user.model.js";
-import Car from "../models/car.model.js";
-import Review from "../models/review.model.js";
+import * as userService from "../services/user.service.js";
 import asyncHandler from "../utils/asyncHandler.js";
-import ApiError from "../utils/ApiError.js";
 import ApiResponse from "../utils/ApiResponse.js";
-import { uploadToCloudinary } from "../configs/cloudinary.config.js";
 
-//* GET /api/v1/user/data - Get authenticated user profile data
+//* GET /api/v1/user/data
 export const getUserData = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.user._id).select("-password -refreshToken").lean();
-  if (!user) {
-    throw new ApiError(404, "User not found");
-  }
+  const user = await userService.getUserProfile(req.user._id);
   return res.status(200).json({
     success: true,
     statusCode: 200,
     message: "User profile fetched successfully",
     user,
-    data: { user }
+    data: { user },
   });
 });
 
-
-//* GET /api/v1/user/cars - Get cars with pagination & filtering
+//* GET /api/v1/user/cars
 export const getCars = asyncHandler(async (req, res) => {
-  const page = parseInt(req.query.page) || 1;
-  const limit = parseInt(req.query.limit) || 6;
+  const result = await userService.getCars({
+    page: req.query.page,
+    limit: req.query.limit,
+  });
 
-  let query = {};
-
-  if (limit > 0) {
-    const skip = (page - 1) * limit;
-    const [cars, total] = await Promise.all([
-      Car.find(query).skip(skip).limit(limit).lean(),
-      Car.countDocuments(query)
-    ]);
+  if (result.totalPages !== undefined) {
     return res.status(200).json({
       success: true,
-      cars,
-      total,
-      page,
-      totalPages: Math.ceil(total / limit)
+      cars: result.cars,
+      total: result.total,
+      page: result.page,
+      totalPages: result.totalPages,
     });
-  } else {
-    const cars = await Car.find(query).lean();
-    return res.status(200).json({ success: true, cars });
   }
+
+  return res.status(200).json({ success: true, cars: result.cars });
 });
 
-
-//* POST /api/v1/user/add-review - Add customer review with uploaded photo
+//* POST /api/v1/user/add-review
 export const addReview = asyncHandler(async (req, res) => {
-  const { _id } = req.user;
-  const { name, email, location, rating, review } = req.body;
-
-  console.log("Received review data:", { name, email, location, rating, review });
-  console.log("Received file data:", req.file);
-
-  let optimizedImageUrl = "";
-  if (req.file) {
-    optimizedImageUrl = await uploadToCloudinary(req.file.buffer, req.file.originalname, req.file.mimetype);
-  }
-
-  const newReview = await Review.create({
-    userId: _id,
-    name,
-    email,
-    location,
-    rating: Number(rating),
-    review,
-    imageUrl: optimizedImageUrl,
+  const newReview = await userService.addReview({
+    userId: req.user._id,
+    name: req.body.name,
+    email: req.body.email,
+    location: req.body.location,
+    rating: req.body.rating,
+    review: req.body.review,
+    file: req.file,
   });
 
   return res.status(201).json(
@@ -77,20 +51,14 @@ export const addReview = asyncHandler(async (req, res) => {
   );
 });
 
-
-//* GET /api/v1/user/get-reviews - Get list of recent customer reviews
+//* GET /api/v1/user/get-reviews
 export const getReviews = asyncHandler(async (req, res) => {
-  const reviews = await Review.find().sort({ createdAt: -1 }).lean();
+  const reviews = await userService.getReviews();
   return res.status(200).json({ success: true, reviews });
 });
 
-
-//* GET /api/v1/user/user-cardetails/:id - Get details of specific car
+//* GET /api/v1/user/user-cardetails/:id
 export const getCarDetails = asyncHandler(async (req, res) => {
-  const { id } = req.params;
-  const car = await Car.findById(id).lean();
-  if (!car) {
-    throw new ApiError(404, "Car not found");
-  }
-  return res.status(200).json({ success: true, car, owner: car.owner });
+  const { car, owner } = await userService.getCarDetails(req.params.id);
+  return res.status(200).json({ success: true, car, owner });
 });

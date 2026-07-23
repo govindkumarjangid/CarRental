@@ -1,4 +1,6 @@
 export * as authValidator from "./auth.validator.js";
+export * as userValidator from "./user.validator.js";
+export * as ownerValidator from "./owner.validator.js";
 export * as bookingValidator from "./booking.validator.js";
 export * as carValidator from "./car.validator.js";
 export * as chatValidator from "./chat.validator.js";

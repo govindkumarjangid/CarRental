@@ -19,5 +19,4 @@ chatRouter
     .route("/get-messages")
     .get(protect, getMessages);
 
-
 export default chatRouter;

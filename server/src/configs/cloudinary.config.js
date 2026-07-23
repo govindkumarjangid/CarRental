@@ -8,7 +8,7 @@ cloudinary.config({
   secure: true,
 });
 
-// Memory storage for Multer to safely accept files in memory without resetting TCP sockets
+// Memory storage for Multer
 const storage = multer.memoryStorage();
 export const upload = multer({
   storage: storage,

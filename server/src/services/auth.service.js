@@ -35,14 +35,13 @@ const parseGooglePayload = (body) => {
 export const registerUser = async (userData) => {
   const { name, email, password, role } = userData;
 
-  if (!name || !email || !password) {
+  if (!name || !email || !password)
     throw new ApiError(400, "All required fields (name, email, password) must be provided");
-  }
 
   const existingUser = await authRepository.findUserByEmail(email);
-  if (existingUser) {
+
+  if (existingUser)
     throw new ApiError(400, "User with this email already exists");
-  }
 
   const hashPassword = await bcrypt.hash(password, 10);
   const user = await authRepository.createUser({
@@ -52,7 +51,6 @@ export const registerUser = async (userData) => {
     role: ["user", "owner"].includes(role) ? role : "user",
   });
 
-  // Isolated non-blocking email dispatch
   sendWelcomeEmail({ email: user.email, name: user.name });
 
   const accessToken = user.generateAccessToken();
@@ -71,23 +69,22 @@ export const registerUser = async (userData) => {
 };
 
 export const loginUser = async ({ email, password }) => {
-  if (!email || !password) {
+  if (!email || !password)
     throw new ApiError(400, "Email and password are required");
-  }
+
 
   const user = await authRepository.findUserByEmail(email);
-  if (!user) {
+
+  if (!user)
     throw new ApiError(404, "User not found with this email");
-  }
 
   const isMatch = await user.isPasswordCorrect(password);
-  if (!isMatch) {
+  if (!isMatch)
     throw new ApiError(401, "Invalid email or password");
-  }
 
-  if (user.isBlocked) {
+
+  if (user.isBlocked)
     throw new ApiError(403, "Your account has been blocked");
-  }
 
   const accessToken = user.generateAccessToken();
   const refreshToken = user.generateRefreshToken();
@@ -108,19 +105,17 @@ export const googleAuth = async (body, mode = "auth") => {
   const { email, name, picture } = parseGooglePayload(body);
   const role = body.role;
 
-  if (!email) {
+  if (!email)
     throw new ApiError(400, "Valid email or Google ID token is required for Google authentication");
-  }
 
   let user = await authRepository.findUserByEmail(email);
 
-  if (mode === "register" && user) {
+  if (mode === "register" && user)
     throw new ApiError(400, "An account with this Google email already exists. Please log in instead.");
-  }
 
-  if (mode === "login" && !user) {
+  if (mode === "login" && !user)
     throw new ApiError(404, "No account found with this Google email. Please register first.");
-  }
+
 
   if (!user) {
     const randomPassword = Math.random().toString(36).slice(-10) + Math.random().toString(36).slice(-10);
@@ -145,9 +140,8 @@ export const googleAuth = async (body, mode = "auth") => {
     }
   }
 
-  if (user.isBlocked) {
+  if (user.isBlocked)
     throw new ApiError(403, "Your account has been blocked");
-  }
 
   const accessToken = user.generateAccessToken();
   const refreshToken = user.generateRefreshToken();
@@ -167,16 +161,14 @@ export const googleAuth = async (body, mode = "auth") => {
 };
 
 export const logoutUser = async (userId) => {
-  if (userId) {
+  if (userId)
     await authRepository.updateRefreshToken(userId, null);
-  }
   return true;
 };
 
 export const refreshTokens = async (incomingRefreshToken) => {
-  if (!incomingRefreshToken) {
+  if (!incomingRefreshToken)
     throw new ApiError(401, "Refresh token is required");
-  }
 
   let decoded;
   try {
@@ -186,13 +178,12 @@ export const refreshTokens = async (incomingRefreshToken) => {
   }
 
   const user = await authRepository.findUserById(decoded?.id);
-  if (!user) {
+  if (!user)
     throw new ApiError(401, "Invalid refresh token");
-  }
 
-  if (user.refreshToken !== incomingRefreshToken) {
+  if (user.refreshToken !== incomingRefreshToken)
     throw new ApiError(401, "Refresh token is invalid or has expired");
-  }
+
 
   const accessToken = user.generateAccessToken();
   const newRefreshToken = user.generateRefreshToken();
