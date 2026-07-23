@@ -4,7 +4,7 @@ import Review from "../models/review.model.js";
 import asyncHandler from "../utils/asyncHandler.js";
 import ApiError from "../utils/ApiError.js";
 import ApiResponse from "../utils/ApiResponse.js";
-import { uploadToCloudinary } from "../configs/cloudinary.js";
+import { uploadToCloudinary } from "../configs/cloudinary.config.js";
 
 //* GET /api/v1/user/data - Get authenticated user profile data
 export const getUserData = asyncHandler(async (req, res) => {

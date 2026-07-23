@@ -3,14 +3,14 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import 'dotenv/config';
 
-import connectDB from './src/configs/db.js';
+import connectDB from './src/configs/db.config.js';
 import {
   authRoutes,
   bookingRoutes,
   ownerRoutes,
   userRoutes,
   chatRoutes
-} from "./routes";
+} from "./src/Routes/index.js";
 
 
 //* Initialize Express App

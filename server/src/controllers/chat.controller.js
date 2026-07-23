@@ -1,7 +1,7 @@
 import Chat from '../models/chat.model.js';
 import Message from '../models/message.model.js';
 import asyncHandler from '../utils/asyncHandler.js';
-import { uploadToCloudinary } from '../configs/cloudinary.js';
+import { uploadToCloudinary } from '../configs/cloudinary.config.js';
 
 // Create or get chat between user and owner
 export const getOrCreateChat = asyncHandler(async (req, res) => {

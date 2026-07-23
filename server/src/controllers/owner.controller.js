@@ -4,7 +4,7 @@ import Booking from "../models/booking.model.js";
 import Chat from "../models/chat.model.js";
 import Message from "../models/message.model.js";
 import asyncHandler from "../utils/asyncHandler.js";
-import { uploadToCloudinary } from "../configs/cloudinary.js";
+import { uploadToCloudinary } from "../configs/cloudinary.config.js";
 
 //* change role to owner
 export const changeRoleToOwner = asyncHandler(async (req, res) => {
