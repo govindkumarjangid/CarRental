@@ -5,8 +5,4 @@ export { default as ApiResponse } from "./ApiResponse.js";
 export { default as emailTemplates } from "./emailTemplates.js";
 export { default as RateLimiter } from "./RateLimiter.js";
 export { default as sendEmail } from "./sendEmail.js";
-
-
-// import { jwtUtils, ApiError, asyncHandler } from "../utils";
-
-// const accessToken = jwtUtils.generateAccessToken(user);
+export { setAuthCookies, clearAuthCookies } from "./cookie.helper.js";

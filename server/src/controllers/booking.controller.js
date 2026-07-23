@@ -1,7 +1,7 @@
 import Booking from "../models/booking.model.js";
 import Car from '../models/car.model.js'
 import User from '../models/user.model.js'
-import razorpay from '../configs/razorpay.js'
+import razorpay from '../configs/razorpay.config.js'
 import crypto from "crypto";
 import asyncHandler from "../utils/asyncHandler.js";
 import { sendEmail } from "../utils/sendEmail.js";

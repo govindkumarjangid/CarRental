@@ -26,7 +26,7 @@ export const googleSchema = z.object({
     picture: z.string().optional(),
     image: z.string().optional(),
     role: z.enum(["user", "owner"]).optional(),
-    mode: z.enum(["register", "login"]).optional(),
+    mode: z.enum(["register", "login", "auth"]).optional(),
   }).refine(
     (data) => Boolean(data.credential || data.idToken || data.token || data.email),
     {
@@ -34,4 +34,13 @@ export const googleSchema = z.object({
       path: ["credential"],
     }
   ),
+});
+
+export const googleRegisterSchema = googleSchema;
+export const googleLoginSchema = googleSchema;
+
+export const refreshTokenSchema = z.object({
+  body: z.object({
+    refreshToken: z.string().optional(),
+  }).optional(),
 });

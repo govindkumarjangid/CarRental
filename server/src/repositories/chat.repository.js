@@ -1,0 +1,2 @@
+// Chat Repository Placeholder
+export {};

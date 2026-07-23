@@ -1,4 +1,4 @@
-const rateLimiter = (options = {}) => {
+export const rateLimiter = (options = {}) => {
     const { windowMs = 60 * 1000, max = 100, message = 'Too many requests from this IP, please try again later.' } = options;
     const requests = new Map();
 
@@ -27,4 +27,5 @@ const rateLimiter = (options = {}) => {
         next();
     };
 };
+
 export default rateLimiter;

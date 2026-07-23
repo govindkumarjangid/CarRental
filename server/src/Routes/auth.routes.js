@@ -10,7 +10,14 @@ import {
 } from '../controllers/auth.controller.js';
 import { protect } from '../middleware/auth.middleware.js';
 import { validate } from '../middleware/validate.middleware.js';
-import { registerSchema, loginSchema, googleSchema } from '../validators/auth.validator.js';
+import {
+  registerSchema,
+  loginSchema,
+  googleSchema,
+  googleRegisterSchema,
+  googleLoginSchema,
+  refreshTokenSchema,
+} from '../validators/auth.validator.js';
 import { rateLimiter } from '../utils/RateLimiter.js';
 
 const authRouter = express.Router();
@@ -35,11 +42,11 @@ authRouter
 
 authRouter
   .route("/google/register")
-  .post(authLimiter, validate(googleSchema), googleRegister);
+  .post(authLimiter, validate(googleRegisterSchema), googleRegister);
 
 authRouter
   .route("/google/login")
-  .post(authLimiter, validate(googleSchema), googleLogin);
+  .post(authLimiter, validate(googleLoginSchema), googleLogin);
 
 authRouter
   .route("/logout")
@@ -47,7 +54,6 @@ authRouter
 
 authRouter
   .route("/refresh-token")
-  .post(refreshToken);
-
+  .post(validate(refreshTokenSchema), refreshToken);
 
 export default authRouter;

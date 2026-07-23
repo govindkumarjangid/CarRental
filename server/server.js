@@ -1,6 +1,6 @@
 import app from './index.js';
 import http from 'http';
-import { initSocket } from './src/configs/socket.js';
+import { initSocket } from './src/configs/socket.config.js';
 
 const PORT = process.env.PORT || 3000;
 const MAX_RETRIES = 3;
