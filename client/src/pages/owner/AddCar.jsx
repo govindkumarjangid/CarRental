@@ -76,7 +76,7 @@ const AddCar = () => {
 					initial={{ opacity: 0, y: 6 }}
 					animate={{ opacity: 1, y: 0 }}
 					transition={{ duration: 0.2 }}
-					className="flex gap-4 items-center w-full">
+					className="flex gap-4 items-center w-full overflow-x-auto no-scrollbar py-1">
 					<label htmlFor="car-image">
 						{image ? (
 							<img

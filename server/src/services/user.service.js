@@ -10,9 +10,9 @@ export const getUserProfile = async (userId) => {
   return user;
 };
 
-export const getCars = async ({ page = 1, limit = 6 }) => {
+export const getCars = async ({ page, limit } = {}) => {
   const parsedPage = parseInt(page) || 1;
-  const parsedLimit = parseInt(limit) || 6;
+  const parsedLimit = (limit !== undefined && limit !== null && limit !== "") ? parseInt(limit) : 6;
   const query = {};
 
   if (parsedLimit > 0) {

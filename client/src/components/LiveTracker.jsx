@@ -101,7 +101,7 @@ const LiveTracker = ({ carId, onClose }) => {
     const position = carData.lat && carData.lng ? [carData.lat, carData.lng] : null;
 
     return (
-        <div className="w-full h-full flex flex-col font-sans bg-white relative">
+        <div className="w-full h-full flex flex-col relative">
             {/* Header */}
             <div className="flex justify-between items-center mb-4 z-10">
                 <h2 className="text-2xl font-bold flex items-center gap-2 text-gray-800">

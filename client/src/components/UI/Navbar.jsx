@@ -1,3 +1,4 @@
+import { createPortal } from "react-dom";
 import { menuLinks, assets } from "../../assets/assets.jsx";
 import { useAuthStore } from "../../store/useAuthStore.js";
 import { Link, useNavigate, useLocation } from "react-router-dom";
@@ -55,7 +56,7 @@ const Navbar = () => {
 	};
 
 	return (
-		<div className={`w-full sticky top-0 z-50 transition-all duration-300 ${scrolled
+		<div className={`w-full sticky top-0 z-[10000] transition-all duration-300 ${scrolled
 			? "bg-white/80 backdrop-blur-2xl shadow-md border-b border-white/20 py-3"
 			: location.pathname === "/"
 				? "bg-white/10 backdrop-blur-xl border-b border-white/10 shadow-xs py-4"
@@ -144,10 +145,11 @@ const Navbar = () => {
 								<AnimatePresence>
 									{dropdownOpen && (
 										<motion.div
-											initial={{ opacity: 0, y: 10, scale: 0.96 }}
-											animate={{ opacity: 1, y: 0, scale: 1 }}
-											exit={{ opacity: 0, y: 8, scale: 0.96 }}
-											transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+											initial={{ opacity: 0, scale: 0.92, y: -8 }}
+											animate={{ opacity: 1, scale: 1, y: 0 }}
+											exit={{ opacity: 0, scale: 0.92, y: -8 }}
+											transition={{ type: "spring", stiffness: 420, damping: 26 }}
+											style={{ transformOrigin: "top right" }}
 											className="absolute right-0 mt-3 w-72 bg-white/95 backdrop-blur-2xl rounded-2xl shadow-[0_25px_60px_-15px_rgba(0,0,0,0.18)] border border-slate-100 p-2.5 z-50 overflow-hidden">
 
 											{/* Dark Luxury User Info Card Header */}
@@ -157,7 +159,7 @@ const Navbar = () => {
 													src={user.image}
 													name={user.name}
 													size={44}
-													className="size-11 rounded-full shrink-0 ring-2 ring-white/30 shadow-md object-cover"
+													className="size-11 rounded-full shrink-0 border border-white/30 shadow-md object-cover"
 												/>
 												<div className="min-w-0 flex-1 z-10">
 													<div className="flex items-center justify-between gap-1 mb-0.5">
@@ -262,48 +264,128 @@ const Navbar = () => {
 				</div>
 			</div>
 
-			{/* Mobile Menu */}
-			<div className="sm:hidden absolute inset-x-0 top-full -z-10 pointer-events-none">
+			{/* Mobile Full-Screen Menu Drawer via React Portal */}
+			{typeof document !== "undefined" && createPortal(
 				<AnimatePresence>
 					{open && (
 						<motion.div
-							initial={{ opacity: 0, y: -10 }}
-							animate={{ opacity: 1, y: 0 }}
-							exit={{ opacity: 0, y: -10 }}
+							initial={{ opacity: 0 }}
+							animate={{ opacity: 1 }}
+							exit={{ opacity: 0 }}
 							transition={{ duration: 0.2 }}
-							className="w-full bg-white/95 backdrop-blur-2xl flex flex-col items-center pointer-events-auto shadow-2xl overflow-hidden border-b border-gray-200">
-							<div className="w-full flex flex-col items-start gap-4 py-6 px-6">
+							className="fixed inset-0 sm:hidden z-[9999] bg-white/98 backdrop-blur-3xl flex flex-col justify-between p-6 pt-22 pb-12 overflow-y-auto"
+						>
+							<motion.div
+								initial="closed"
+								animate="open"
+								exit="closed"
+								variants={{
+									open: { transition: { staggerChildren: 0.07, delayChildren: 0.05 } },
+									closed: { transition: { staggerChildren: 0.05, staggerDirection: -1 } }
+								}}
+								className="flex flex-col gap-3 pt-2"
+							>
 								{menuLinks
 									.filter((link) => !(link.name === "Chat with owner" && isOwner))
 									.map((menuLink, index) => {
 										const isActive = location.pathname === menuLink.path;
 										return (
-											<Link
+											<motion.div
 												key={index}
-												to={menuLink.path}
-												onClick={() => setOpen(false)}
-												className={`block font-bold w-full transition-colors text-base py-1 ${isActive ? "text-primary" : "text-gray-700 hover:text-primary"
-													}`}>
-												{menuLink.name}
-											</Link>
+												variants={{
+													open: { opacity: 1, x: 0 },
+													closed: { opacity: 0, x: -24 }
+												}}
+												transition={{ type: "spring", stiffness: 350, damping: 25 }}
+											>
+												<Link
+													to={menuLink.path}
+													onClick={() => setOpen(false)}
+													className={`flex items-center justify-between p-4 rounded-2xl font-extrabold text-base transition-all active:scale-[0.98] ${
+														isActive
+															? "bg-primary text-white shadow-lg shadow-primary/25"
+															: "bg-slate-50 text-slate-800 hover:bg-slate-100 hover:text-primary border border-slate-100"
+													}`}
+												>
+													<span>{menuLink.name}</span>
+													<ChevronRight size={18} className={isActive ? "text-white" : "text-slate-400"} />
+												</Link>
+											</motion.div>
 										);
 									})}
 
 								{isOwner && (
-									<button
-										className="cursor-pointer hover:text-primary font-bold transition-colors text-base py-1"
-										onClick={() => {
-											navigate("/owner");
-											setOpen(false);
-										}}>
-										Dashboard
-									</button>
+									<motion.div
+										variants={{
+											open: { opacity: 1, x: 0 },
+											closed: { opacity: 0, x: -24 }
+										}}
+										transition={{ type: "spring", stiffness: 350, damping: 25 }}
+									>
+										<button
+											onClick={() => {
+												navigate("/owner");
+												setOpen(false);
+											}}
+											className="w-full flex items-center justify-between p-4 rounded-2xl font-extrabold text-base bg-amber-500 text-white shadow-lg shadow-amber-500/25 active:scale-[0.98] cursor-pointer"
+										>
+											<div className="flex items-center gap-3">
+												<LayoutDashboard size={20} />
+												<span>Owner Dashboard</span>
+											</div>
+											<ChevronRight size={18} className="text-white" />
+										</button>
+									</motion.div>
 								)}
-							</div>
+							</motion.div>
+
+							{/* Mobile Footer User Bar */}
+							{user ? (
+								<motion.div
+									initial={{ opacity: 0, y: 20 }}
+									animate={{ opacity: 1, y: 0 }}
+									transition={{ delay: 0.3 }}
+									className="p-4 bg-gradient-to-r from-slate-900 via-slate-800 to-indigo-950 text-white rounded-2xl shadow-xl flex items-center justify-between mt-8 border border-white/10"
+								>
+									<div className="flex items-center gap-3 min-w-0">
+										<UserAvatar src={user.image} name={user.name} size={42} className="size-10.5 rounded-full border border-white/20 shrink-0 object-cover" />
+										<div className="min-w-0">
+											<p className="font-bold text-sm text-white truncate">{user.name}</p>
+											<p className="text-xs text-slate-300 truncate">{user.email}</p>
+										</div>
+									</div>
+									<button
+										onClick={handleLogout}
+										className="p-2.5 bg-rose-500/20 hover:bg-rose-500 text-rose-300 hover:text-white rounded-xl transition-all cursor-pointer shrink-0 ml-2"
+										title="Log Out"
+									>
+										<LogOut size={18} />
+									</button>
+								</motion.div>
+							) : (
+								<motion.div
+									initial={{ opacity: 0, y: 20 }}
+									animate={{ opacity: 1, y: 0 }}
+									transition={{ delay: 0.3 }}
+									className="mt-8"
+								>
+									<button
+										onClick={() => {
+											setShowLogin(true);
+											setOpen(false);
+										}}
+										className="w-full py-4 bg-primary text-white font-extrabold text-base rounded-2xl shadow-lg shadow-primary/25 active:scale-98 flex items-center justify-center gap-2"
+									>
+										<User size={20} />
+										Login to Account
+									</button>
+								</motion.div>
+							)}
 						</motion.div>
 					)}
-				</AnimatePresence>
-			</div>
+				</AnimatePresence>,
+				document.body
+			)}
 
 			{/* User Profile Modal */}
 			<AnimatePresence>

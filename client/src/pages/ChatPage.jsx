@@ -457,9 +457,9 @@ const ChatPage = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 md:px-8 w-full bg-gray-50/50 h-full overflow-hidden flex flex-col">
+    <div className="w-full flex-1 min-h-0 bg-slate-50/60 overflow-hidden flex flex-col p-0 md:p-4">
 
-      <div className="w-full h-full bg-white flex flex-col md:flex-row overflow-hidden">
+      <div className="max-w-7xl mx-auto w-full flex-1 min-h-0 bg-white flex flex-col md:flex-row overflow-hidden rounded-none md:rounded-3xl border-0 md:border border-slate-200/80 shadow-sm">
 
         {/* LEFT SIDE */}
         {
@@ -694,7 +694,7 @@ const ChatPage = () => {
 
 
               {/* INPUT BOX */}
-              <div className="shrink-0 p-3 md:p-4 bg-white/80 backdrop-blur-lg border-t border-slate-100 flex flex-col gap-2 z-10 shadow-lg min-w-0">
+              <div className="shrink-0 p-2.5 sm:p-4 bg-white/95 backdrop-blur-xl border-t border-slate-200 flex flex-col gap-2 z-30 shadow-lg min-w-0 sticky bottom-0">
                 {/* ATTACHMENT PREVIEW */}
                 {attachments.length > 0 && (
                   <div className="flex gap-3 mb-3 max-w-4xl mx-auto w-full overflow-x-auto pb-2 no-scrollbar">

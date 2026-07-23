@@ -43,7 +43,7 @@ userRouter
 
 userRouter
   .route('/user-cardetails/:id')
-  .get(protect, validate(getCarDetailsSchema), getCarDetails);
+  .get(validate(getCarDetailsSchema), getCarDetails);
 
 userRouter
   .route('/register')

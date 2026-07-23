@@ -15,17 +15,18 @@ export const checkAvailability = async (carId, pickupDate, returnDate) => {
   return count === 0;
 };
 
-export const checkAvaliablityofCar = async ({ location, startTime, endTime }) => {
-  if (!location || !startTime || !endTime)
-    throw new ApiError(400, "All fields are required");
+export const checkAvaliablityofCar = async (payload = {}) => {
+  const { location, startTime, endTime, pickupDate, returnDate } = payload;
+  const start = startTime || pickupDate;
+  const end = endTime || returnDate;
 
+  const pickup = start ? new Date(start) : new Date();
+  const returnD = end ? new Date(end) : new Date(Date.now() + 24 * 60 * 60 * 1000);
 
-  const pickupDate = new Date(startTime);
-  const returnDate = new Date(endTime);
   const cars = await bookingRepository.findAvailableCarsByLocation(location);
 
   const availableCarsPromises = (cars || []).map(async (carItem) => {
-    const isAvailable = await checkAvailability(carItem._id, pickupDate, returnDate);
+    const isAvailable = await checkAvailability(carItem._id, pickup, returnD);
     return { ...carItem, isAvaliable: isAvailable };
   });
 

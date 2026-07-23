@@ -11,7 +11,10 @@ export const countConflictingBookings = async (carId, pickupDate, returnDate) =>
 };
 
 export const findAvailableCarsByLocation = async (location) => {
-  return await Car.find({ location, status: "available" }).lean();
+  if (location && location.trim() && location.trim().toLowerCase() !== "all") {
+    return await Car.find({ location: { $regex: new RegExp(location.trim(), "i") }, status: "available" }).lean();
+  }
+  return await Car.find({ status: "available" }).lean();
 };
 
 export const findCarById = async (carId) => {

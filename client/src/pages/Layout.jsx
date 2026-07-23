@@ -39,6 +39,7 @@ const Layout = () => {
 					{/* Scrolling Container */}
 					<div
 						ref={scrollRef}
+						data-lenis-prevent
 						className="flex-1 overflow-y-auto overflow-x-hidden custom-theme-scrollbar w-full h-full">
 						<Outlet context={{ setTrackingCarId, setIsLiveTrackerOpen }} />
 					</div>

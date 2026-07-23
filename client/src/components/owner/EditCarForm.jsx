@@ -93,7 +93,7 @@ const EditCarForm = ({ car: propCar, onClose, isFullPage = false }) => {
 
             <div className="flex flex-col gap-5 text-gray-500 text-sm w-full">
                 {/* car image  */}
-                <div className="flex gap-4 items-center w-full mb-2">
+                <div className="flex gap-4 items-center w-full mb-2 overflow-x-auto no-scrollbar py-1">
                     <label htmlFor="car-image" className="cursor-pointer shadow-sm rounded-xl border-dashed border-primary border-2 p-1 hover:border-solid transition-all">
                         {image ? (
                             <img src={URL.createObjectURL(image)} className="h-14 w-26 object-cover rounded-xl" alt="car preview" />

@@ -39,7 +39,6 @@ const TestimonialForm = lazy(() => import("./components/testimonial/TestimonialF
 const EditCarForm = lazy(() => import("./components/owner/EditCarForm.jsx"));
 
 const App = () => {
-
 	const { showLogin, showReview, token, fetchUser } = useAuthStore();
 	const { fetchCars, showEditCar } = useCarStore();
 	const location = useLocation();
@@ -55,14 +54,18 @@ const App = () => {
 	}, [token]);
 
 	useEffect(() => {
+		if (isOwnerPath || isChatPath) return;
+
 		const mainWrapper = document.querySelector('main');
 		const scrollContent = document.getElementById('scroll-content');
+
 		const lenis = new Lenis({
 			wrapper: mainWrapper || window,
 			content: scrollContent || document.documentElement,
+			duration: 1.2,
+			easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
 			smoothWheel: true,
-			lerp: 0.08,
-            duration: 0.8,
+			touchMultiplier: 2,
 		});
 
 		function raf(time) {
@@ -73,7 +76,7 @@ const App = () => {
 		return () => {
 			lenis.destroy();
 		};
-	}, []);
+	}, [isOwnerPath, isChatPath]);
 
 	return (
 		<div className="h-screen-dynamic flex flex-col overflow-hidden bg-slate-50">
@@ -91,7 +94,7 @@ const App = () => {
 				}}
 			/>
 
-			<main className={`flex-1 min-h-0 overflow-x-hidden ${!isChatPath && !isOwnerPath ? "overflow-y-auto custom-scrollbar" : "overflow-hidden"}`}>
+			<main className={`flex flex-col flex-1 min-h-0 overflow-x-hidden ${!isChatPath && !isOwnerPath ? "overflow-y-auto custom-scrollbar scroll-smooth" : "overflow-hidden"}`}>
 				{!isOwnerPath && <Navbar />}
 
 				{showLogin && (
@@ -110,12 +113,10 @@ const App = () => {
 					</Suspense>
 				)}
 
-				<div id="scroll-content" className={`flex flex-col ${isChatPath ? "h-full" : "min-h-full"}`}>
-					<div className={`flex-1 shrink-0 ${isChatPath ? "h-full flex flex-col" : ""}`}>
+				<div id="scroll-content" className={`flex flex-col ${isChatPath ? "flex-1 min-h-0" : "min-h-full"}`}>
+					<div className={`flex-1 ${isChatPath ? "min-h-0 flex flex-col" : "shrink-0"}`}>
 						<Routes location={location}>
-							<Route path="/" element={
-								<Home />
-							} />
+							<Route path="/" element={<Home />} />
 							<Route path="/cars" element={
 								<Suspense fallback={<CarsPageSkeleton />}>
 									<Cars />
@@ -169,6 +170,7 @@ const App = () => {
 								</ProtectRoute>
 							} />
 
+							{/* Owner Routes */}
 							<Route path="/owner" element={
 								<ProtectRoute>
 									<Suspense fallback={<div className="h-screen w-full flex flex-col gap-4 items-center justify-center text-gray-500">

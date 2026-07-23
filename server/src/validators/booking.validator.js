@@ -2,11 +2,11 @@ import { z } from 'zod';
 
 export const checkAvailabilitySchema = z.object({
   body: z.object({
-    location: z.string().min(1, "Location is required"),
-    pickupDate: z.string().min(1, "Pickup date is required").optional(),
-    startTime: z.string().min(1, "Pickup date is required").optional(),
-    returnDate: z.string().min(1, "Return date is required").optional(),
-    endTime: z.string().min(1, "Return date is required").optional(),
+    location: z.string().optional(),
+    pickupDate: z.string().optional(),
+    startTime: z.string().optional(),
+    returnDate: z.string().optional(),
+    endTime: z.string().optional(),
   }),
 });
 

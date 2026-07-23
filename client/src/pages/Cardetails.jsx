@@ -17,13 +17,13 @@ const Cardetails = () => {
 	const [startTime, setStartTime] = useState("");
 	const [endTime, setEndTime] = useState("");
 	const [paymentMode, setPaymentMode] = useState("offline");
-	const currency = import.meta.env.VITE_CURRENCY;
+	const currency = import.meta.env.VITE_CURRENCY || "₹";
 
 	const { id } = useParams();
 	const navigate = useNavigate();
 
 	const { setShowLogin, token, user, loadRazorpay } = useAuthStore();
-	const { cars, fetchCars, carsLoading } = useCarStore();
+	const { fetchUserCarDetails, carDetails, carDetailsLoading, cars } = useCarStore();
 	const { createUserBooking, createOnlineBooking, verifyPayment, bookingLoading } = useBookingStore();
 
 	const isSubmitting = loading || bookingLoading;
@@ -123,17 +123,21 @@ const Cardetails = () => {
 	};
 
 	useEffect(() => {
-		fetchCars();
-	}, []);
+		if (id) {
+			fetchUserCarDetails(id);
+		}
+	}, [id, fetchUserCarDetails]);
 
 	useEffect(() => {
-		if (cars.length > 0) {
-			const found = cars.find(c => c._id === id);
-			setCar(found);
+		if (carDetails && carDetails._id === id) {
+			setCar(carDetails);
+		} else if (cars && cars.length > 0) {
+			const found = cars.find((c) => c._id === id);
+			if (found) setCar(found);
 		}
-	}, [cars, id]);
+	}, [carDetails, cars, id]);
 
-	if (carsLoading || !car) return <CarDetailsPageSkeleton />;
+	if (carDetailsLoading || (!car && !carDetails?._id)) return <CarDetailsPageSkeleton />;
 
 	return (
 		car && (

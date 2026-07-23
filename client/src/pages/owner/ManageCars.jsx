@@ -141,7 +141,7 @@ const ManageCars = () => {
 			</div>
 
 			<div className="w-full bg-white shadow-sm transition-all rounded-xl border border-gray-200 flex flex-col overflow-hidden">
-				<div className="relative overflow-x-auto">
+				<div className="relative overflow-x-auto no-scrollbar">
 					<motion.table
 						initial={{ opacity: 0 }}
 						whileInView={{ opacity: 1 }}
