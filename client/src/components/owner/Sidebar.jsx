@@ -10,41 +10,17 @@ const SidebarContent = ({ user, image, setImage, handleUpdateImage, location, Mo
 	<div className="flex flex-col h-full w-full items-center relative">
 		{/* Profile Image */}
 		<div className="group relative flex justify-center pt-4">
-			<label htmlFor="image" className="cursor-pointer">
-				{image || user?.image ? (
-					<img
-						src={image ? URL.createObjectURL(image) : user?.image}
-						alt="owner"
-						className="md:h-22 md:w-22 h-18 w-18 rounded-full p-0.5 mx-auto aspect-square object-cover border-2 border-primary/20 group-hover:border-primary transition-all shadow-sm"
-					/>
-				) : (
-					<CircleUser className="md:h-20 md:w-20 h-18 w-18 text-gray-400" />
-				)}
-
-				<input
-					type="file"
-					id="image"
-					name="image"
-					accept="image/*"
-					hidden
-					onChange={(e) => setImage(e.target.files[0])}
+			{image || user?.image ? (
+				<img
+					src={image ? URL.createObjectURL(image) : user?.image}
+					alt="owner"
+					className="md:h-22 md:w-22 h-18 w-18 rounded-full p-0.5 mx-auto aspect-square object-cover border-2 border-primary/20 group-hover:border-primary transition-all shadow-sm"
 				/>
-
-				<div className="absolute md:h-22 md:w-22 h-18 w-18 top-4 hidden bg-black/30 rounded-full group-hover:flex items-center justify-center cursor-pointer transition-all">
-					<EditIcon size={20} className="text-white" />
-				</div>
-			</label>
+			) : (
+				<CircleUser className="md:h-20 md:w-20 h-18 w-18 text-gray-400" />
+			)}
 		</div>
 
-		{/* Save Button */}
-		{image && (
-			<button
-				onClick={handleUpdateImage}
-				className="absolute top-2 right-2 flex items-center gap-1 px-3 py-1 bg-primary text-white rounded-xl text-xs font-bold shadow-sm cursor-pointer hover:bg-primary-dull transition-colors">
-				Save
-				<CircleCheckBig className="h-3 w-3 ml-1" />
-			</button>
-		)}
 
 		<p className="mt-2 text-base capitalize pb-4 w-full px-4 text-center font-bold text-gray-800 border-b border-gray-100">
 			{user?.name}
@@ -77,28 +53,6 @@ const SidebarContent = ({ user, image, setImage, handleUpdateImage, location, Mo
 					</MotionNavLink>
 				);
 			})}
-		</div>
-
-		{/* Bottom Actions: Back to Home & Log Out */}
-		<div className="w-full p-3.5 border-t border-gray-200 bg-slate-50/80 space-y-2 shrink-0">
-			<NavLink
-				to="/"
-				onClick={() => setIsSidebarOpen(false)}
-				className="flex items-center justify-center gap-2 w-full py-2 px-3 bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 rounded-xl text-xs font-bold transition-all shadow-2xs active:scale-95">
-				<ArrowLeft size={16} />
-				<span>Back to Home</span>
-			</NavLink>
-
-			<button
-				type="button"
-				onClick={() => {
-					setIsSidebarOpen(false);
-					handleLogout();
-				}}
-				className="flex items-center justify-center gap-2 w-full py-2 px-3 bg-rose-50 hover:bg-rose-600 text-rose-600 hover:text-white border border-rose-200/80 rounded-xl text-xs font-bold transition-all cursor-pointer active:scale-95 group">
-				<LogOut size={16} className="group-hover:translate-x-0.5 transition-transform" />
-				<span>Log Out</span>
-			</button>
 		</div>
 	</div>
 );

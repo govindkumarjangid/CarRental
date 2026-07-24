@@ -2,14 +2,15 @@ import * as userRepository from "../repositories/user.repository.js";
 import ApiError from "../utils/ApiError.js";
 import { uploadToCloudinary } from "../configs/cloudinary.config.js";
 import Subscriber from "../models/subscriber.model.js";
+import User from "../models/user.model.js";
+import bcrypt from "bcrypt";
 import sendEmail from "../utils/sendEmail.js";
 import { subscriptionWelcomeTemplate } from "../utils/emailTemplates.js";
 
 export const getUserProfile = async (userId) => {
   const user = await userRepository.findUserById(userId);
-  if (!user) {
+  if (!user)
     throw new ApiError(404, "User not found");
-  }
   return user;
 };
 
@@ -35,9 +36,9 @@ export const getCars = async ({ page, limit } = {}) => {
 
 export const addReview = async ({ userId, name, email, location, rating, review, file }) => {
   let optimizedImageUrl = "";
-  if (file) {
+  if (file)
     optimizedImageUrl = await uploadToCloudinary(file.buffer, file.originalname, file.mimetype);
-  }
+
 
   const newReview = await userRepository.createReview({
     userId,
@@ -57,22 +58,19 @@ export const getReviews = async () => {
 };
 
 export const getCarDetails = async (carId) => {
-  if (!carId) {
+  if (!carId)
     throw new ApiError(400, "Car ID is required");
-  }
 
   const car = await userRepository.findCarById(carId);
-  if (!car) {
+  if (!car)
     throw new ApiError(404, "Car not found");
-  }
 
   return { car, owner: car.owner };
 };
 
 export const subscribeNewsletter = async (email) => {
-  if (!email || typeof email !== "string" || !email.trim()) {
+  if (!email || typeof email !== "string" || !email.trim())
     throw new ApiError(400, "Valid email address is required");
-  }
 
   const formattedEmail = email.trim().toLowerCase();
 
@@ -88,8 +86,6 @@ export const subscribeNewsletter = async (email) => {
   } else {
     await Subscriber.create({ email: formattedEmail });
   }
-
-  // Trigger automated email using Resend
   try {
     const htmlMessage = subscriptionWelcomeTemplate({ email: formattedEmail });
     await sendEmail({
@@ -99,8 +95,41 @@ export const subscribeNewsletter = async (email) => {
     });
   } catch (emailError) {
     console.error("Failed to send subscription welcome email:", emailError);
-    // Don't throw error if DB save succeeded
   }
 
   return { isAlreadySubscribed: false };
+};
+
+export const updateUserProfile = async (userId, { name, oldPassword, newPassword }) => {
+  const user = await User.findById(userId);
+  if (!user)
+    throw new ApiError(404, "User not found");
+
+  if (name && name.trim())
+    user.name = name.trim();
+
+  if (newPassword && newPassword.trim()) {
+    if (!oldPassword)
+      throw new ApiError(400, "Current password is required to set a new password");
+
+    const isMatch = await bcrypt.compare(oldPassword, user.password);
+    if (!isMatch)
+      throw new ApiError(400, "Current password is incorrect");
+
+
+    if (newPassword.length < 6)
+      throw new ApiError(400, "New password must be at least 6 characters long");
+
+
+    const salt = await bcrypt.genSalt(10);
+    user.password = await bcrypt.hash(newPassword, salt);
+  }
+
+  await user.save();
+
+  const userObj = user.toObject();
+  delete userObj.password;
+  delete userObj.refreshToken;
+
+  return userObj;
 };

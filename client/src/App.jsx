@@ -32,6 +32,7 @@ const ManageBookings = lazy(() => import("./pages/owner/ManageBookings.jsx"));
 const LiveTrackerPage = lazy(() => import("./pages/owner/LiveTrackerPage.jsx"));
 const AllUsers = lazy(() => import("./pages/owner/AllUsers.jsx"));
 const Subscribers = lazy(() => import("./pages/owner/Subscribers.jsx"));
+const Settings = lazy(() => import("./pages/owner/Settings.jsx"));
 const Chats = lazy(() => import("./pages/owner/Chats.jsx"));
 
 // Modals and UI
@@ -235,6 +236,13 @@ const App = () => {
 									<ProtectRoute>
 										<Suspense fallback={<UserTableSkeleton />}>
 											<Subscribers />
+										</Suspense>
+									</ProtectRoute>
+								} />
+								<Route path="settings" element={
+									<ProtectRoute>
+										<Suspense fallback={<FormSkeleton />}>
+											<Settings />
 										</Suspense>
 									</ProtectRoute>
 								} />

@@ -80,3 +80,17 @@ export const subscribeNewsletter = asyncHandler(async (req, res) => {
     new ApiResponse(201, null, "Subscribed successfully! Check your inbox for confirmation.")
   );
 });
+
+//* POST /api/v1/user/update-profile
+export const updateProfile = asyncHandler(async (req, res) => {
+  const { name, oldPassword, newPassword } = req.body;
+  const updatedUser = await userService.updateUserProfile(req.user._id, {
+    name,
+    oldPassword,
+    newPassword,
+  });
+
+  return res.status(200).json(
+    new ApiResponse(200, { user: updatedUser }, "Profile updated successfully")
+  );
+});

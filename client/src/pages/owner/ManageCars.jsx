@@ -163,7 +163,35 @@ const ManageCars = () => {
 							</tr>
 						</thead>
 						<tbody>
-							{currentItems.length > 0 ? (
+							{loading ? (
+								[1, 2, 3, 4, 5].map((i) => (
+									<tr key={i} className="border-b last:border-b-0 border-gray-100">
+										<td className="p-3 flex md:flex-row flex-col items-start gap-3 justify-start">
+											<div className="h-11 aspect-video rounded-xl shimmer shrink-0" />
+											<div className="space-y-1.5 flex-1">
+												<div className="h-4.5 shimmer rounded-md w-28" />
+												<div className="h-3.5 shimmer rounded-md w-20 opacity-60 max-md:hidden" />
+											</div>
+										</td>
+										<td className="py-3 max-md:hidden">
+											<div className="h-4.5 shimmer rounded-md w-16" />
+										</td>
+										<td className="p-3">
+											<div className="h-4.5 shimmer rounded-md w-16" />
+										</td>
+										<td className="p-3 max-md:hidden">
+											<div className="h-7 w-24 shimmer rounded-xl" />
+										</td>
+										<td className="py-3 px-2">
+											<div className="flex items-center gap-4">
+												<div className="w-4.5 h-4.5 shimmer rounded-full" />
+												<div className="w-4.5 h-4.5 shimmer rounded-full" />
+												<div className="w-4.5 h-4.5 shimmer rounded-full" />
+											</div>
+										</td>
+									</tr>
+								))
+							) : currentItems.length > 0 ? (
 								currentItems.map((car, index) => (
 									<motion.tr
 										key={car._id || index}

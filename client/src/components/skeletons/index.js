@@ -18,3 +18,4 @@ export { default as TestimonialSectionSkeleton } from './TestimonialSectionSkele
 export { default as NewsletterSkeleton } from './NewsletterSkeleton.jsx';
 export { default as LoginSkeleton } from './LoginSkeleton.jsx';
 export { default as TestimonialFormSkeleton } from './TestimonialFormSkeleton.jsx';
+export { default as SubscribersSkeleton } from './SubscribersSkeleton.jsx';

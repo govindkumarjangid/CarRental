@@ -59,7 +59,8 @@ import {
 	Image,
 	FileText,
 	Download,
-	Home
+	Home,
+	Settings
 } from "lucide-react";
 
 export const cityList = [
@@ -157,5 +158,6 @@ export const ownerMenuLinks = [
 	},
 	{ name: "All Users", path: "/owner/users", icon: <Users /> },
 	{ name: "Subscribers", path: "/owner/subscribers", icon: <Mail /> },
-	{ name: "All Chats", path: "/owner/chats", icon: <MessageCircleMore /> }
+	{ name: "All Chats", path: "/owner/chats", icon: <MessageCircleMore /> },
+	{ name: "Settings", path: "/owner/settings", icon: <Settings /> }
 ];

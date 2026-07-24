@@ -6,6 +6,7 @@ import {
   getReviews,
   getCarDetails,
   subscribeNewsletter,
+  updateProfile,
 } from '../controllers/user.controller.js';
 import {
   registerUser,
@@ -29,6 +30,10 @@ const authLimiter = rateLimiter({
 userRouter
   .route('/data')
   .get(protect, getUserData);
+
+userRouter
+  .route('/update-profile')
+  .post(protect, updateProfile);
 
 userRouter
   .route('/cars')
