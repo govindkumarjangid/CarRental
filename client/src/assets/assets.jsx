@@ -156,5 +156,6 @@ export const ownerMenuLinks = [
 		icon: <ClipboardList />,
 	},
 	{ name: "All Users", path: "/owner/users", icon: <Users /> },
+	{ name: "Subscribers", path: "/owner/subscribers", icon: <Mail /> },
 	{ name: "All Chats", path: "/owner/chats", icon: <MessageCircleMore /> }
 ];

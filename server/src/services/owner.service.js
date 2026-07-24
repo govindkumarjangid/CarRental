@@ -1,6 +1,7 @@
 import * as ownerRepository from "../repositories/owner.repository.js";
 import ApiError from "../utils/ApiError.js";
 import { uploadToCloudinary } from "../configs/cloudinary.config.js";
+import Subscriber from "../models/subscriber.model.js";
 
 export const becomeOwner = async (userId) => {
   await ownerRepository.updateUserRole(userId, "owner");
@@ -274,4 +275,38 @@ export const getOwnerDetails = async (ownerId) => {
 
 export const getMyChats = async (userId) => {
   return await ownerRepository.findUserChatsWithUnread(userId);
+};
+
+export const getSubscribers = async ({ page = 1, limit = 10, search = "" }) => {
+  const parsedPage = parseInt(page) || 1;
+  const parsedLimit = parseInt(limit) || 10;
+  const skip = (parsedPage - 1) * parsedLimit;
+
+  const query = {};
+  if (search && search.trim()) {
+    query.email = { $regex: search.trim(), $options: "i" };
+  }
+
+  const [subscribers, total] = await Promise.all([
+    Subscriber.find(query)
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(parsedLimit),
+    Subscriber.countDocuments(query),
+  ]);
+
+  return {
+    subscribers,
+    total,
+    page: parsedPage,
+    totalPages: Math.ceil(total / parsedLimit),
+  };
+};
+
+export const deleteSubscriber = async (subscriberId) => {
+  const deleted = await Subscriber.findByIdAndDelete(subscriberId);
+  if (!deleted) {
+    throw new ApiError(404, "Subscriber not found");
+  }
+  return "Subscriber removed successfully";
 };

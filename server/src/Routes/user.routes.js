@@ -5,6 +5,7 @@ import {
   addReview,
   getReviews,
   getCarDetails,
+  subscribeNewsletter,
 } from '../controllers/user.controller.js';
 import {
   registerUser,
@@ -44,6 +45,10 @@ userRouter
 userRouter
   .route('/user-cardetails/:id')
   .get(validate(getCarDetailsSchema), getCarDetails);
+
+userRouter
+  .route('/subscribe')
+  .post(subscribeNewsletter);
 
 userRouter
   .route('/register')

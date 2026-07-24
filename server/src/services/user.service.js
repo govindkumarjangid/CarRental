@@ -1,6 +1,9 @@
 import * as userRepository from "../repositories/user.repository.js";
 import ApiError from "../utils/ApiError.js";
 import { uploadToCloudinary } from "../configs/cloudinary.config.js";
+import Subscriber from "../models/subscriber.model.js";
+import sendEmail from "../utils/sendEmail.js";
+import { subscriptionWelcomeTemplate } from "../utils/emailTemplates.js";
 
 export const getUserProfile = async (userId) => {
   const user = await userRepository.findUserById(userId);
@@ -64,4 +67,40 @@ export const getCarDetails = async (carId) => {
   }
 
   return { car, owner: car.owner };
+};
+
+export const subscribeNewsletter = async (email) => {
+  if (!email || typeof email !== "string" || !email.trim()) {
+    throw new ApiError(400, "Valid email address is required");
+  }
+
+  const formattedEmail = email.trim().toLowerCase();
+
+  const existing = await Subscriber.findOne({ email: formattedEmail });
+  if (existing) {
+    if (existing.status === "active") {
+      return { isAlreadySubscribed: true, subscriber: existing };
+    } else {
+      existing.status = "active";
+      existing.subscribedAt = new Date();
+      await existing.save();
+    }
+  } else {
+    await Subscriber.create({ email: formattedEmail });
+  }
+
+  // Trigger automated email using Resend
+  try {
+    const htmlMessage = subscriptionWelcomeTemplate({ email: formattedEmail });
+    await sendEmail({
+      email: formattedEmail,
+      subject: "Welcome to CarRental Newsletter!",
+      htmlMessage,
+    });
+  } catch (emailError) {
+    console.error("Failed to send subscription welcome email:", emailError);
+    // Don't throw error if DB save succeeded
+  }
+
+  return { isAlreadySubscribed: false };
 };

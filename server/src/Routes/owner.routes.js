@@ -11,7 +11,9 @@ import {
     getOwnerCars,
     getOwnerDetails,
     updateCarStatus,
-    updateUserImage
+    updateUserImage,
+    getSubscribers,
+    deleteSubscriber
 } from '../controllers/owner.controller.js';
 import { protect } from '../middleware/auth.middleware.js';
 import { upload } from '../configs/cloudinary.config.js';
@@ -73,5 +75,13 @@ ownerRouter
 ownerRouter
     .route("/owner-chats")
     .get(protect, getMyChats);
+
+ownerRouter
+    .route("/subscribers")
+    .get(protect, getSubscribers);
+
+ownerRouter
+    .route("/subscribers/:id")
+    .delete(protect, deleteSubscriber);
 
 export default ownerRouter;

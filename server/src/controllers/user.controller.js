@@ -62,3 +62,21 @@ export const getCarDetails = asyncHandler(async (req, res) => {
   const { car, owner } = await userService.getCarDetails(req.params.id);
   return res.status(200).json({ success: true, car, owner });
 });
+
+//* POST /api/v1/user/subscribe
+export const subscribeNewsletter = asyncHandler(async (req, res) => {
+  const { email } = req.body;
+  const result = await userService.subscribeNewsletter(email);
+
+  if (result.isAlreadySubscribed) {
+    return res.status(200).json({
+      success: true,
+      message: "You are already subscribed to our newsletter!",
+      alreadySubscribed: true,
+    });
+  }
+
+  return res.status(201).json(
+    new ApiResponse(201, null, "Subscribed successfully! Check your inbox for confirmation.")
+  );
+});

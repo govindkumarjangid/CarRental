@@ -56,7 +56,7 @@ const Navbar = () => {
 	};
 
 	return (
-		<div className={`w-full sticky top-0 z-[10000] transition-all duration-300 ${scrolled
+		<div className={`w-full sticky top-0 z-10000 transition-all duration-300 ${scrolled
 			? "bg-white/80 backdrop-blur-2xl shadow-md border-b border-white/20 py-3"
 			: location.pathname === "/"
 				? "bg-white/10 backdrop-blur-xl border-b border-white/10 shadow-xs py-4"
@@ -125,13 +125,13 @@ const Navbar = () => {
 								{/* Premium Profile Trigger Button */}
 								<button
 									onClick={() => setDropdownOpen(!dropdownOpen)}
-									className="flex items-center gap-2.5 p-1.5 pl-2 pr-3.5 rounded-full border border-slate-200/80 bg-white/90 backdrop-blur-xl hover:border-primary/50 hover:bg-white transition-all duration-300 shadow-xs hover:shadow-md cursor-pointer group active:scale-95">
+									className="flex items-center gap-2.5 p-1.5 pl-2 pr-3.5 rounded-full border border-slate-200/80 bg-white/90 backdrop-blur-xl  hover:bg-white transition-all duration-300 shadow-sm cursor-pointer group active:scale-100!">
 									<div className="relative shrink-0">
 										<UserAvatar
 											src={user.image}
 											name={user.name}
 											size={36}
-											className="size-8.5 rounded-full ring-2 ring-primary/20 group-hover:ring-primary/50 transition-all object-cover"
+											className="size-8.5 rounded-full ring-2 ring-primary/20  transition-all object-cover"
 										/>
 										<span className="absolute -bottom-0.5 -right-0.5 size-2.5 bg-emerald-500 rounded-full ring-2 ring-white shadow-xs" />
 									</div>
@@ -141,7 +141,7 @@ const Navbar = () => {
 									<ChevronDown size={16} className={`text-slate-400 group-hover:text-primary transition-transform duration-300 ${dropdownOpen ? "rotate-180 text-primary" : ""}`} />
 								</button>
 
-								{/* Premium Redesigned Dropdown Menu */}
+								{/* Dropdown Menu */}
 								<AnimatePresence>
 									{dropdownOpen && (
 										<motion.div
@@ -153,7 +153,7 @@ const Navbar = () => {
 											className="absolute right-0 mt-3 w-72 bg-white/95 backdrop-blur-2xl rounded-2xl shadow-[0_25px_60px_-15px_rgba(0,0,0,0.18)] border border-slate-100 p-2.5 z-50 overflow-hidden">
 
 											{/* Dark Luxury User Info Card Header */}
-											<div className="relative flex items-center gap-3 p-3 bg-gradient-to-br from-slate-900 via-slate-800 to-indigo-950 text-white rounded-xl mb-2 shadow-md overflow-hidden">
+											<div className="relative flex items-center gap-3 p-3 bg-linear-to-br from-primary via-primary/90 to-primary/80 text-white rounded-xl mb-2 shadow-md overflow-hidden">
 												<div className="absolute -top-8 -right-8 w-20 h-20 bg-primary/40 rounded-full blur-xl pointer-events-none" />
 												<UserAvatar
 													src={user.image}
@@ -163,23 +163,23 @@ const Navbar = () => {
 												/>
 												<div className="min-w-0 flex-1 z-10">
 													<div className="flex items-center justify-between gap-1 mb-0.5">
-														<p className="text-xs font-bold text-white truncate max-w-[130px]">{user.name}</p>
-														<span className={`px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase tracking-wider backdrop-blur-md ${isOwner ? "bg-amber-400/25 text-amber-300 border border-amber-400/30" : "bg-indigo-400/25 text-indigo-200 border border-indigo-400/30"}`}>
+														<p className="text-xs font-bold text-white truncate max-w-32.5">{user.name}</p>
+														<span className={`px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase tracking-wider backdrop-blur-md ${isOwner ? "bg-green-400/25 text-green-300 border border-green-400/30" : "bg-indigo-400/25 text-indigo-200 border border-indigo-400/30"}`}>
 															{isOwner ? "Owner" : "Renter"}
 														</span>
 													</div>
-													<p className="text-[11px] font-medium text-slate-300/80 truncate max-w-[160px]">{user.email}</p>
+													<p className="text-[11px] font-medium text-slate-300/80 truncate max-w-40">{user.email}</p>
 												</div>
 											</div>
 
-											{/* Action Menu Items with Icons & Subtitles */}
+											{/* Action Menu  */}
 											<div className="space-y-1">
 												<button
 													onClick={() => {
 														setDropdownOpen(false);
 														setOpenPopup(true);
 													}}
-													className="w-full flex items-center justify-between p-2.5 rounded-xl hover:bg-slate-50 transition-all duration-200 cursor-pointer group text-left">
+													className="w-full flex items-center justify-between p-2.5 rounded-xl hover:bg-primary/10 transition-all duration-200 cursor-pointer group text-left ">
 													<div className="flex items-center gap-3">
 														<div className="p-2.5 rounded-full bg-blue-50 text-blue-600 group-hover:bg-primary group-hover:text-white transition-all shadow-xs shrink-0">
 															<User size={16} />
@@ -189,7 +189,7 @@ const Navbar = () => {
 															<p className="text-[10px] text-slate-400 font-medium">Manage account & avatar</p>
 														</div>
 													</div>
-													<ChevronRight size={14} className="text-slate-400 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
+													<ChevronRight size={14} className="text-slate-400 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all group-hover:text-primary" />
 												</button>
 
 												<button
@@ -197,7 +197,7 @@ const Navbar = () => {
 														setDropdownOpen(false);
 														navigate("/my-bookings");
 													}}
-													className="w-full flex items-center justify-between p-2.5 rounded-xl hover:bg-slate-50 transition-all duration-200 cursor-pointer group text-left">
+													className="w-full flex items-center justify-between p-2.5 rounded-xl hover:bg-emerald-50 transition-all duration-200 cursor-pointer group text-left ">
 													<div className="flex items-center gap-3">
 														<div className="p-2.5 rounded-full bg-emerald-50 text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white transition-all shadow-xs shrink-0">
 															<Bookmark size={16} />
@@ -207,7 +207,7 @@ const Navbar = () => {
 															<p className="text-[10px] text-slate-400 font-medium">View active & past rentals</p>
 														</div>
 													</div>
-													<ChevronRight size={14} className="text-slate-400 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
+													<ChevronRight size={14} className="text-slate-400 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all group-hover:text-emerald-600" />
 												</button>
 
 												{isOwner && (
@@ -216,7 +216,7 @@ const Navbar = () => {
 															setDropdownOpen(false);
 															navigate("/owner");
 														}}
-														className="w-full flex items-center justify-between p-2.5 rounded-xl hover:bg-amber-50/60 transition-all duration-200 cursor-pointer group text-left">
+														className="w-full flex items-center justify-between p-2.5 rounded-xl hover:bg-amber-50 transition-all duration-200 cursor-pointer group text-left">
 														<div className="flex items-center gap-3">
 															<div className="p-2.5 rounded-full bg-amber-50 text-amber-600 group-hover:bg-amber-600 group-hover:text-white transition-all shadow-xs shrink-0">
 																<LayoutDashboard size={16} />
@@ -226,7 +226,7 @@ const Navbar = () => {
 																<p className="text-[10px] text-amber-600/70 font-medium">Manage cars & earnings</p>
 															</div>
 														</div>
-														<ChevronRight size={14} className="text-amber-400 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
+														<ChevronRight size={14} className="text-amber-400 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all group-hover:text-amber-600" />
 													</button>
 												)}
 											</div>
@@ -235,7 +235,7 @@ const Navbar = () => {
 
 											<button
 												onClick={handleLogout}
-												className="w-full flex items-center justify-between p-2.5 rounded-xl hover:bg-rose-50/70 transition-all duration-200 cursor-pointer group text-left">
+												className="w-full flex items-center justify-between p-2.5 rounded-xl hover:bg-rose-50 transition-all duration-200 cursor-pointer group text-left">
 												<div className="flex items-center gap-3">
 													<div className="p-2.5 rounded-full bg-rose-50 text-rose-600 group-hover:bg-rose-600 group-hover:text-white transition-all shadow-xs shrink-0">
 														<LogOut size={16} />
@@ -257,14 +257,14 @@ const Navbar = () => {
 							label={open ? "Close Menu" : "Open Menu"}
 							icon={open ? X : TextAlignEnd}
 							size={22}
-							className="sm:hidden text-white hover:bg-primary bg-primary cursor-pointer rounded-xl p-2"
+							className="sm:hidden text-white hover:bg-primary bg-primary cursor-pointer rounded-full p-2"
 							onClick={() => setOpen(!open)}
 						/>
 					</div>
 				</div>
 			</div>
 
-			{/* Mobile Full-Screen Menu Drawer via React Portal */}
+			{/* Mobile Full-Screen Menu */}
 			{typeof document !== "undefined" && createPortal(
 				<AnimatePresence>
 					{open && (
@@ -273,7 +273,7 @@ const Navbar = () => {
 							animate={{ opacity: 1 }}
 							exit={{ opacity: 0 }}
 							transition={{ duration: 0.2 }}
-							className="fixed inset-0 sm:hidden z-[9999] bg-white/98 backdrop-blur-3xl flex flex-col justify-between p-6 pt-22 pb-12 overflow-y-auto"
+							className="fixed inset-0 sm:hidden z-9999 bg-white/98 backdrop-blur-3xl flex flex-col justify-between p-6 pt-22 pb-12 overflow-y-auto"
 						>
 							<motion.div
 								initial="closed"
@@ -301,11 +301,10 @@ const Navbar = () => {
 												<Link
 													to={menuLink.path}
 													onClick={() => setOpen(false)}
-													className={`flex items-center justify-between p-4 rounded-2xl font-extrabold text-base transition-all active:scale-[0.98] ${
-														isActive
-															? "bg-primary text-white shadow-lg shadow-primary/25"
-															: "bg-slate-50 text-slate-800 hover:bg-slate-100 hover:text-primary border border-slate-100"
-													}`}
+													className={`flex items-center justify-between p-4 rounded-2xl font-extrabold text-base transition-all active:scale-[0.98] ${isActive
+														? "bg-primary text-white shadow-lg shadow-primary/25"
+														: "bg-slate-50 text-slate-800 hover:bg-slate-100 hover:text-primary border border-slate-100"
+														}`}
 												>
 													<span>{menuLink.name}</span>
 													<ChevronRight size={18} className={isActive ? "text-white" : "text-slate-400"} />
@@ -345,7 +344,7 @@ const Navbar = () => {
 									initial={{ opacity: 0, y: 20 }}
 									animate={{ opacity: 1, y: 0 }}
 									transition={{ delay: 0.3 }}
-									className="p-4 bg-gradient-to-r from-slate-900 via-slate-800 to-indigo-950 text-white rounded-2xl shadow-xl flex items-center justify-between mt-8 border border-white/10"
+									className="p-4 bg-linear-to-r from-slate-900 via-slate-800 to-indigo-950 text-white rounded-2xl shadow-xl flex items-center justify-between mt-8 border border-white/10"
 								>
 									<div className="flex items-center gap-3 min-w-0">
 										<UserAvatar src={user.image} name={user.name} size={42} className="size-10.5 rounded-full border border-white/20 shrink-0 object-cover" />

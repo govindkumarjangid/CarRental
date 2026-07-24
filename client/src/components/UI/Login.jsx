@@ -44,7 +44,7 @@ const Login = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-100 flex items-center justify-center p-3 sm:p-4 backdrop-blur-md bg-slate-950/40 overflow-y-auto">
+            className="fixed inset-0 z-100000 flex items-center justify-center p-3 sm:p-4 backdrop-blur-md bg-slate-950/40 overflow-y-auto">
 
             <motion.form
                 initial={{ opacity: 0, scale: 0.95 }}
@@ -53,7 +53,7 @@ const Login = () => {
                 transition={{ duration: 0.2, ease: "easeOut" }}
                 onSubmit={handleSubmit}
                 onClick={(e) => e.stopPropagation()}
-                className="relative w-full max-w-sm sm:max-w-md bg-white rounded-2xl shadow-2xl border border-slate-100 p-4 sm:p-5 flex flex-col gap-2.5 text-slate-700 select-none max-h-[95vh] overflow-y-auto no-scrollbar my-auto">
+                className="relative w-full max-w-sm sm:max-w-md bg-white rounded-2xl shadow-2xl border border-slate-100 p-4 sm:p-6 flex flex-col gap-2.5 text-slate-700 select-none max-h-[95vh] overflow-y-auto no-scrollbar my-auto">
 
                 {/* Close Button */}
                 <button
@@ -109,7 +109,7 @@ const Login = () => {
 
                 {/* Input Fields */}
                 <div className="flex flex-col gap-2.5 w-full mt-0.5">
-                    {/* Name field (Register only) */}
+                    {/* Name */}
                     {state === "register" && (
                         <InputBox
                             label="name"
@@ -121,7 +121,7 @@ const Login = () => {
                         />
                     )}
 
-                    {/* Email field */}
+                    {/* Email */}
                     <InputBox
                         label="email"
                         title="Email Address"
@@ -132,7 +132,7 @@ const Login = () => {
                         leftIcon={Mail}
                     />
 
-                    {/* Password field with Eye Toggle */}
+                    {/* Password  */}
                     <InputBox
                         label="password"
                         title="Password"
@@ -165,7 +165,7 @@ const Login = () => {
                     )}
                 </button>
 
-                {/* Toggle Login <-> Register */}
+                {/* Toggle */}
                 <div className="flex items-center justify-center w-full text-xs text-slate-500 font-medium my-0.5">
                     {state === "register" ? (
                         <p>

@@ -26,6 +26,10 @@ export const useCarStore = create((set, get) => ({
     setEditCar: (car) => set({ editCar: car }),
 
     checkAvailability: async (location, pickupDate, returnDate) => {
+        if (!location || !pickupDate || !returnDate) {
+            toast.error("Please fill all 3 fields: Location, Pick-up Date & Return Date");
+            return false;
+        }
         set({ availableCarsLoading: true });
         try {
             const { data } = await axiosInstance.post("/api/v1/bookings/check-availability", {
@@ -35,13 +39,16 @@ export const useCarStore = create((set, get) => ({
             });
             if (data.success) {
                 set({ availableCars: data.cars });
-                toast.success(`${data.cars.length} cars available for you!`);
+                toast.success(`${data.cars.length} cars available for your dates!`);
+                return true;
             } else {
-                toast.error(data.message);
+                toast.error(data.message || "No cars available");
+                return false;
             }
         } catch (error) {
             console.log(error);
-            toast.error("Error checking car availability");
+            toast.error(error.response?.data?.message || "Error checking car availability");
+            return false;
         } finally {
             set({ availableCarsLoading: false });
         }

@@ -418,3 +418,38 @@ export const bookingCompletedTemplate = ({ userName, carName, bookingId }) => {
   `;
   return baseLayout(content);
 };
+
+// Subscription Welcome Template
+export const subscriptionWelcomeTemplate = ({ email }) => {
+  const content = `
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom: 24px;">
+      <tr>
+        <td align="center">
+          <img src="${ICON_CHECK_CIRCLE}" width="64" style="width:64px; height:auto; display: block;" alt="Subscribed" />
+        </td>
+      </tr>
+    </table>
+
+    <h2 class="content-heading" style="margin:0 0 8px; color:${TEXT_MAIN}; font-size:24px; font-weight:700; text-align:center;">
+      Welcome to ${BRAND_NAME} Newsletter! 🎉
+    </h2>
+    <p class="content-text" style="color:${TEXT_MUTED}; font-size:15px; line-height:1.7; margin:0 0 24px; text-align:center;">
+      Thank you for subscribing with <strong style="color:${TEXT_MAIN};">${email}</strong>!
+    </p>
+
+    <div style="background-color:#F0F9FF; border:1px solid #BFDBFE; border-radius:12px; padding:24px; text-align:center; margin-bottom:24px;">
+      <p style="margin:0 0 8px; color:${BRAND_COLOR}; font-size:18px; font-weight:700;">What to expect next:</p>
+      <p style="margin:0 0 12px; color:${TEXT_MAIN}; font-size:14px; line-height:1.6;">
+        ✨ Exclusive discounts & promotional offers<br/>
+        🏎️ Early access to newly listed luxury & sport cars<br/>
+        📍 Expert travel guides and road trip inspirations
+      </p>
+    </div>
+
+    <p style="margin:0; color:${TEXT_MUTED}; font-size:13px; text-align:center; line-height:1.6;">
+      If you ever wish to unsubscribe, you can do so anytime through our email settings.<br/>
+      Safe travels and happy driving! 🚘
+    </p>
+  `;
+  return baseLayout(content);
+};

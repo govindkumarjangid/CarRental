@@ -8,7 +8,7 @@ const AccordionItem = ({ question, answer, className = "" }) => {
         <div className={`border border-slate-200/80 overflow-hidden shadow-2xs rounded-2xl transition-all ${className}`}>
             <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="w-full px-4 sm:px-6 py-4 flex justify-between items-center bg-white hover:bg-slate-50 transition-colors text-left cursor-pointer active:scale-[0.99] gap-3"
+                className="w-full px-4 sm:px-6 py-4 flex justify-between items-center bg-white hover:bg-slate-50 transition-colors text-left cursor-pointer gap-3"
             >
                 <span className="font-bold text-sm sm:text-base text-slate-800 leading-snug">{question}</span>
                 <motion.div

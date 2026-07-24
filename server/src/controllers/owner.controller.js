@@ -111,3 +111,21 @@ export const getMyChats = asyncHandler(async (req, res) => {
   const chats = await ownerService.getMyChats(req.user._id);
   return res.status(200).json({ success: true, chats });
 });
+
+//* GET /api/v1/owner/subscribers
+export const getSubscribers = asyncHandler(async (req, res) => {
+  const { page, limit, search } = req.query;
+  const result = await ownerService.getSubscribers({ page, limit, search });
+  return res.status(200).json({
+    success: true,
+    ...result,
+  });
+});
+
+//* DELETE /api/v1/owner/subscribers/:id
+export const deleteSubscriber = asyncHandler(async (req, res) => {
+  const message = await ownerService.deleteSubscriber(req.params.id);
+  return res.status(200).json(
+    new ApiResponse(200, null, message)
+  );
+});
