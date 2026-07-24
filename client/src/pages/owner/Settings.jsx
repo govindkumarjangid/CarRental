@@ -22,7 +22,7 @@ import {
 
 const Settings = () => {
 	const navigate = useNavigate();
-	const { user, updateProfileDetails, updateProfileImage, logout } = useAuthStore();
+	const { user, isLoading, updateProfileDetails, updateProfileImage, logout } = useAuthStore();
 
 	const [name, setName] = useState(user?.name || "");
 	const [oldPassword, setOldPassword] = useState("");

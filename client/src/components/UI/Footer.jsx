@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import { Facebook, Instagram, Twitter, Mail, MapPin, Phone } from "lucide-react";
-import { ResponsiveImage } from "../../index.js";
-import { assets } from "../../assets/assets.jsx";
+import { Logo } from "../../index.js";
 
 const Footer = () => {
 	return (
@@ -10,13 +9,7 @@ const Footer = () => {
 				<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8 pb-10">
 					{/* Brand & Social */}
 					<div className="space-y-6">
-						<ResponsiveImage
-							src={assets.logo}
-							alt="logo"
-							width={150}
-							height={40}
-							className="h-8 md:h-10 object-contain object-left cursor-pointer -ml-1"
-						/>
+						<Logo />
 
 						<p className="text-sm leading-relaxed max-w-xs font-medium text-gray-600">
 							Premium car rental service with a wide selection of

@@ -1,74 +1,54 @@
+import React from 'react';
 
 const UserTableSkeleton = () => {
   return (
-    <div className="px-4 py-10 md:px-10 flex-1 w-full max-w-6xl mx-auto">
-      {/* Title Area Skeleton */}
-      <div className="mb-6">
-        <div className="w-48 h-8.5 shimmer rounded-lg mb-2" />
-        <div className="w-full max-w-md h-4 shimmer rounded-md opacity-70 mb-2" />
-        <div className="w-full max-w-sm h-4 shimmer rounded-md opacity-70" />
-      </div>
-
-      {/* Table Container Skeleton */}
-      <div className="w-full mt-6 md:border border-0 border-gray-200 rounded-3xl bg-white flex flex-col overflow-hidden">
-
-        {/* Mobile View */}
-        <div className="md:hidden space-y-3 ">
-          {[1, 2, 3, 4].map((item) => (
-            <div key={item} className="rounded-xl border border-gray-200 bg-white p-4">
-              <div className="flex items-start gap-3">
-                <div className="w-12 h-12 shimmer rounded-full shrink-0" />
-                <div className="min-w-0 flex-1">
-                  <div className="h-5.5 shimmer rounded-md w-3/4 mb-1.5" />
-                  <div className="h-4.5 shimmer rounded-md w-1/2 opacity-60 mb-3" />
-                  <div className="mt-3 flex items-center justify-between gap-3">
-                    <div className="flex items-center gap-2">
-                      <div className="h-2.5 w-2.5 rounded-full shimmer" />
-                      <div className="h-4 w-16 shimmer rounded-md opacity-60" />
-                    </div>
-                    <div className="h-8.5 w-24 shimmer rounded-md" />
-                  </div>
+    <div className="w-full space-y-3">
+      {/* Mobile Skeleton Cards */}
+      <div className="md:hidden space-y-3">
+        {[1, 2, 3, 4].map((item) => (
+          <div key={item} className="rounded-2xl border border-gray-200 bg-white p-4 shadow-xs">
+            <div className="flex items-center gap-3.5">
+              <div className="w-12 h-12 rounded-full shimmer shrink-0" />
+              <div className="min-w-0 flex-1 space-y-2">
+                <div className="h-4.5 shimmer rounded-md w-3/4" />
+                <div className="h-3.5 shimmer rounded-md w-1/2 opacity-60" />
+                <div className="pt-2 flex items-center justify-between gap-3 border-t border-gray-100">
+                  <div className="h-6 w-20 shimmer rounded-full" />
+                  <div className="h-8 w-24 shimmer rounded-xl" />
                 </div>
               </div>
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
+      </div>
 
-        {/* Desktop View */}
-        <table className="hidden md:table w-full border-collapse bg-white rounded-xl overflow-hidden border border-red-900">
-          <thead className="bg-gray-50 text-gray-500 border-b border-gray-200">
-            <tr className="text-left">
-              <th className="py-3 px-4 font-semibold">
-                <div className="h-4 shimmer rounded-md w-24" />
-              </th>
-              <th className="py-3 px-4 font-semibold w-37.5">
-                <div className="h-4 shimmer rounded-md w-16" />
-              </th>
-              <th className="py-3 px-4 font-semibold w-37.5">
-                <div className="h-4 shimmer rounded-md w-20" />
-              </th>
+      {/* Desktop Skeleton Table */}
+      <div className="hidden md:block bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+        <table className="w-full border-collapse text-left text-sm">
+          <thead className="bg-gray-50/80 border-b border-gray-200">
+            <tr>
+              <th className="py-4 px-6"><div className="h-3.5 w-24 shimmer rounded-md opacity-60" /></th>
+              <th className="py-4 px-6"><div className="h-3.5 w-16 shimmer rounded-md opacity-60" /></th>
+              <th className="py-4 px-6 text-right"><div className="h-3.5 w-20 shimmer rounded-md opacity-60 ml-auto" /></th>
             </tr>
           </thead>
-          <tbody className="text-sm text-gray-600">
+          <tbody className="divide-y divide-gray-100">
             {[1, 2, 3, 4, 5].map((item) => (
-              <tr key={item} className="border-b last:border-b-0 border-gray-100">
-                <td className="px-4 py-2.5">
+              <tr key={item} className="hover:bg-gray-50/50">
+                <td className="px-6 py-3.5">
                   <div className="flex items-center gap-4">
-                    <div className="w-11 h-11 shimmer rounded-full shrink-0" />
-                    <div className="flex flex-col gap-1.5">
-                      <div className="h-5.5 shimmer rounded-md w-48" />
-                      <div className="h-4.5 shimmer rounded-md w-36 opacity-60" />
+                    <div className="w-11 h-11 rounded-full shimmer shrink-0" />
+                    <div className="space-y-1.5">
+                      <div className="h-4.5 shimmer rounded-md w-44" />
+                      <div className="h-3.5 shimmer rounded-md w-32 opacity-60" />
                     </div>
                   </div>
                 </td>
-                <td className="px-4 py-2 w-37.5">
-                  <div className="flex items-center gap-2">
-                    <div className="h-2.5 w-2.5 rounded-full shimmer shrink-0" />
-                    <div className="h-4 w-16 shimmer rounded-md opacity-60" />
-                  </div>
+                <td className="px-6 py-3.5">
+                  <div className="h-6 w-20 shimmer rounded-full" />
                 </td>
-                <td className="px-4 py-2 w-37.5">
-                  <div className="h-8.5 w-24 shimmer rounded-xl" />
+                <td className="px-6 py-3.5 text-right">
+                  <div className="h-8.5 w-24 shimmer rounded-xl ml-auto" />
                 </td>
               </tr>
             ))}

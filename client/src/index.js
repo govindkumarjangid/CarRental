@@ -33,6 +33,7 @@ import ResponsiveImage from "./components/UI/ResponsiveImage.jsx";
 import IconButton from "./components/UI/IconButton.jsx";
 import UserAvatar from "./components/UI/UserAvatar.jsx";
 import AccordionItem from "./components/UI/AccordionItem.jsx";
+import Logo from "./components/UI/Logo.jsx";
 
 import CarAvailablityModal from "./components/modals/CarAvailablityModal.jsx";
 
@@ -70,5 +71,6 @@ export {
   UserAvatar,
   iconList,
   AccordionItem,
-  CarAvailablityModal
+  CarAvailablityModal,
+  Logo
 }

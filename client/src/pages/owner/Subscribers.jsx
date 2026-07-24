@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { motion } from "motion/react";
 import { Title as OwnerTitle } from "../../components/owner/Title.jsx";
-import { UserTableSkeleton } from "../../components/skeletons";
+import { SubscribersSkeleton } from "../../components/skeletons";
 import { axiosInstance } from "../../lib/axios.js";
 import toast from "react-hot-toast";
 import {
@@ -152,7 +152,7 @@ const Subscribers = () => {
 			{/* Main Content */}
 			<div className="w-full mt-6">
 				{loading ? (
-					<UserTableSkeleton />
+					<SubscribersSkeleton />
 				) : subscribers.length === 0 ? (
 					<div className="p-12 text-center bg-white rounded-xl border border-gray-200 shadow-sm flex flex-col items-center justify-center gap-3">
 						<div className="w-14 h-14 rounded-full bg-blue-50 text-primary flex items-center justify-center">

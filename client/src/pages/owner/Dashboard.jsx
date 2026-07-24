@@ -121,10 +121,10 @@ const Dashboard = () => {
 						<div className="p-6 border border-gray-200 rounded-3xl bg-white w-full">
 							<div className="h-4 w-48 shimmer rounded-md mb-4" />
 							<div className="h-64 flex items-end justify-between px-8 gap-4 pt-10">
-								<div className="w-12 h-2/3 shimmer rounded-t-xl" />
-								<div className="w-12 h-4/5 shimmer rounded-t-xl" />
-								<div className="w-12 h-1/2 shimmer rounded-t-xl" />
-								<div className="w-12 h-1/3 shimmer rounded-t-xl" />
+								<div className="w-50 h-2/3 shimmer rounded-t-xl" />
+								<div className="w-50 h-4/5 shimmer rounded-t-xl" />
+								<div className="w-50 h-1/2 shimmer rounded-t-xl" />
+								<div className="w-50 h-1/3 shimmer rounded-t-xl" />
 							</div>
 						</div>
 					</div>

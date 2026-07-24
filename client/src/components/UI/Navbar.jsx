@@ -5,8 +5,8 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "motion/react";
 import { useState, useEffect, useRef } from "react";
 import { ResponsiveImage } from "../../index.js";
-import { LogOut, User, X, TextAlignEnd, CircleUser, EditIcon, Bookmark, ChevronDown, ChevronRight, LayoutDashboard } from "lucide-react";
-import { UserAvatar, IconButton, iconList } from "../../index.js";
+import { LogOut, User, X, TextAlignEnd, CircleUser, EditIcon, Bookmark, ChevronDown, ChevronRight, LayoutDashboard, Home, Car, ClipboardList, MessageCircleMore, LayoutPanelLeft } from "lucide-react";
+import { UserAvatar, IconButton, iconList, Logo } from "../../index.js";
 
 const Navbar = () => {
 	const [scrolled, setScrolled] = useState(false);
@@ -57,22 +57,14 @@ const Navbar = () => {
 
 	return (
 		<div className={`w-full sticky top-0 z-10000 transition-all duration-300 ${scrolled
-			? "bg-white/80 backdrop-blur-2xl shadow-md border-b border-white/20 py-3"
+			? "bg-white/80 backdrop-blur-2xl shadow-md border-b border-white/20 py-2 md:py-3"
 			: location.pathname === "/"
-				? "bg-white/10 backdrop-blur-xl border-b border-white/10 shadow-xs py-4"
-				: "bg-white border-b border-gray-200 py-4"
+				? "bg-white/10 backdrop-blur-xl border-b border-white/10 shadow-xs py-2.5 md:py-4"
+				: "bg-white border-b border-gray-200 py-2.5 md:py-4"
 			}`}>
 			<div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
 				{/* Logo */}
-				<Link to="/" className="flex items-center -ml-1">
-					<ResponsiveImage
-						src={assets.logo}
-						alt="logo"
-						width={150}
-						height={40}
-						className="h-8 md:h-10 object-contain object-left cursor-pointer"
-					/>
-				</Link>
+				<Logo />
 
 				{/* Right Side */}
 				<div className="flex items-center gap-4 sm:gap-8">
@@ -253,18 +245,18 @@ const Navbar = () => {
 						)}
 
 						{/* Mobile Toggle Button */}
-						<IconButton
-							label={open ? "Close Menu" : "Open Menu"}
-							icon={open ? X : TextAlignEnd}
-							size={22}
-							className="sm:hidden text-white hover:bg-primary bg-primary cursor-pointer rounded-full p-2"
+						<button
 							onClick={() => setOpen(!open)}
-						/>
+							className="sm:hidden w-10 h-10 rounded-full flex items-center justify-center text-white bg-primary hover:bg-primary-dull cursor-pointer shadow-md transition-all active:scale-95 shrink-0"
+							title={open ? "Close Menu" : "Open Menu"}
+						>
+							{open ? <X size={20} /> : <TextAlignEnd size={20} />}
+						</button>
 					</div>
 				</div>
 			</div>
 
-			{/* Mobile Full-Screen Menu */}
+			{/* Mobile Dropdown Menu Panel directly below Sticky Header */}
 			{typeof document !== "undefined" && createPortal(
 				<AnimatePresence>
 					{open && (
@@ -272,80 +264,68 @@ const Navbar = () => {
 							initial={{ opacity: 0 }}
 							animate={{ opacity: 1 }}
 							exit={{ opacity: 0 }}
-							transition={{ duration: 0.2 }}
-							className="fixed inset-0 sm:hidden z-9999 bg-white/98 backdrop-blur-3xl flex flex-col justify-between p-6 pt-22 pb-12 overflow-y-auto"
+							transition={{ duration: 0.2, ease: "easeInOut" }}
+							className="fixed inset-x-0 bottom-0 top-[58px] sm:hidden z-9999 bg-white flex flex-col justify-between p-6 overflow-y-auto border-t border-gray-100 shadow-2xl"
 						>
-							<motion.div
-								initial="closed"
-								animate="open"
-								exit="closed"
-								variants={{
-									open: { transition: { staggerChildren: 0.07, delayChildren: 0.05 } },
-									closed: { transition: { staggerChildren: 0.05, staggerDirection: -1 } }
-								}}
-								className="flex flex-col gap-3 pt-2"
-							>
-								{menuLinks
-									.filter((link) => !(link.name === "Chat with owner" && isOwner))
-									.map((menuLink, index) => {
-										const isActive = location.pathname === menuLink.path;
-										return (
-											<motion.div
-												key={index}
-												variants={{
-													open: { opacity: 1, x: 0 },
-													closed: { opacity: 0, x: -24 }
-												}}
-												transition={{ type: "spring", stiffness: 350, damping: 25 }}
-											>
-												<Link
-													to={menuLink.path}
-													onClick={() => setOpen(false)}
-													className={`flex items-center justify-between p-4 rounded-2xl font-extrabold text-base transition-all active:scale-[0.98] ${isActive
-														? "bg-primary text-white shadow-lg shadow-primary/25"
-														: "bg-slate-50 text-slate-800 hover:bg-slate-100 hover:text-primary border border-slate-100"
-														}`}
-												>
-													<span>{menuLink.name}</span>
-													<ChevronRight size={18} className={isActive ? "text-white" : "text-slate-400"} />
-												</Link>
-											</motion.div>
-										);
-									})}
+						{/* Mobile Menu Links */}
+						<div className="flex flex-col gap-2 pt-2">
+							{menuLinks
+								.filter((link) => !(link.name === "Chat with owner" && isOwner))
+								.map((menuLink, index) => {
+									const isActive = location.pathname === menuLink.path;
+									const getIcon = (name) => {
+										if (name === "Home") return <Home size={20} />;
+										if (name === "Cars") return <Car size={20} />;
+										if (name === "My Bookings") return <ClipboardList size={20} />;
+										if (name === "Chat with owner") return <MessageCircleMore size={20} />;
+										return <ChevronRight size={20} />;
+									};
 
-								{isOwner && (
-									<motion.div
-										variants={{
-											open: { opacity: 1, x: 0 },
-											closed: { opacity: 0, x: -24 }
-										}}
-										transition={{ type: "spring", stiffness: 350, damping: 25 }}
-									>
-										<button
-											onClick={() => {
-												navigate("/owner");
-												setOpen(false);
-											}}
-											className="w-full flex items-center justify-between p-4 rounded-2xl font-extrabold text-base bg-amber-500 text-white shadow-lg shadow-amber-500/25 active:scale-[0.98] cursor-pointer"
+									return (
+										<Link
+											key={index}
+											to={menuLink.path}
+											onClick={() => setOpen(false)}
+											className={`relative flex items-center justify-between py-3.5 px-4 rounded-xl font-bold text-base transition-all active:scale-[0.98] ${isActive
+												? "bg-primary/10 text-primary font-bold shadow-2xs"
+												: "text-gray-700 hover:bg-gray-100/80 hover:text-gray-900 border border-transparent"
+												}`}
 										>
-											<div className="flex items-center gap-3">
-												<LayoutDashboard size={20} />
-												<span>Owner Dashboard</span>
+											<div className="flex items-center gap-3.5">
+												<span className={isActive ? "text-primary" : "text-gray-500"}>
+													{getIcon(menuLink.name)}
+												</span>
+												<span>{menuLink.name}</span>
 											</div>
-											<ChevronRight size={18} className="text-white" />
-										</button>
-									</motion.div>
-								)}
-							</motion.div>
+											<ChevronRight size={18} className={isActive ? "text-primary" : "text-gray-400"} />
+											{isActive && (
+												<div className="absolute right-0 top-3 h-7 w-1.5 bg-primary rounded-l-xl" />
+											)}
+										</Link>
+									);
+								})}
 
-							{/* Mobile Footer User Bar */}
-							{user ? (
-								<motion.div
-									initial={{ opacity: 0, y: 20 }}
-									animate={{ opacity: 1, y: 0 }}
-									transition={{ delay: 0.3 }}
-									className="p-4 bg-linear-to-r from-slate-900 via-slate-800 to-indigo-950 text-white rounded-2xl shadow-xl flex items-center justify-between mt-8 border border-white/10"
+							{isOwner && (
+								<button
+									onClick={() => {
+										navigate("/owner");
+										setOpen(false);
+									}}
+									className="relative w-full flex items-center justify-between py-3.5 px-4 rounded-xl font-bold text-base bg-amber-500/10 text-amber-700 hover:bg-amber-500/15 transition-all active:scale-[0.98] cursor-pointer mt-1"
 								>
+									<div className="flex items-center gap-3.5">
+										<LayoutPanelLeft size={20} className="text-amber-600" />
+										<span>Owner Dashboard</span>
+									</div>
+									<ChevronRight size={18} className="text-amber-600" />
+								</button>
+							)}
+						</div>
+
+						{/* Mobile Footer User Bar */}
+						<div className="pb-4 pt-6 border-t border-gray-100 mt-6">
+							{user ? (
+								<div className="p-4 bg-linear-to-r from-slate-900 via-slate-800 to-indigo-950 text-white rounded-2xl shadow-xl flex items-center justify-between border border-white/10">
 									<div className="flex items-center gap-3 min-w-0">
 										<UserAvatar src={user.image} name={user.name} size={42} className="size-10.5 rounded-full border border-white/20 shrink-0 object-cover" />
 										<div className="min-w-0">
@@ -360,31 +340,25 @@ const Navbar = () => {
 									>
 										<LogOut size={18} />
 									</button>
-								</motion.div>
+								</div>
 							) : (
-								<motion.div
-									initial={{ opacity: 0, y: 20 }}
-									animate={{ opacity: 1, y: 0 }}
-									transition={{ delay: 0.3 }}
-									className="mt-8"
+								<button
+									onClick={() => {
+										setShowLogin(true);
+										setOpen(false);
+									}}
+									className="w-full py-4 bg-primary text-white font-extrabold text-base rounded-2xl shadow-lg shadow-primary/25 active:scale-98 flex items-center justify-center gap-2 cursor-pointer"
 								>
-									<button
-										onClick={() => {
-											setShowLogin(true);
-											setOpen(false);
-										}}
-										className="w-full py-4 bg-primary text-white font-extrabold text-base rounded-2xl shadow-lg shadow-primary/25 active:scale-98 flex items-center justify-center gap-2"
-									>
-										<User size={20} />
-										Login to Account
-									</button>
-								</motion.div>
+									<User size={20} />
+									Login to Account
+								</button>
 							)}
-						</motion.div>
-					)}
-				</AnimatePresence>,
-				document.body
-			)}
+						</div>
+					</motion.div>
+				)}
+			</AnimatePresence>,
+			document.body
+		)}
 
 			{/* User Profile Modal */}
 			<AnimatePresence>
