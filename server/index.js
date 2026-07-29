@@ -23,7 +23,8 @@ await connectDB();
 app.use(cors({
   origin: [
     'http://localhost:5173',
-    'https://car-rental-delta-rosy.vercel.app'
+    'https://car-rental-delta-rosy.vercel.app',
+    'https://car-rental-client-wine-delta.vercel.app/'
   ], credentials: true
 }));
 app.use(express.json());
